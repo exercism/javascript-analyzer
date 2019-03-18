@@ -1,0 +1,10 @@
+{
+  "status": "disapprove_with_comment",
+  "comments": [
+    {
+      "message": "You could set the default value to 'you' to avoid conditionals",
+      "template": "You could set the default value to 'you' to avoid conditionals",
+      "variables": {}
+    }
+  ]
+}

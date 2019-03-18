@@ -1,0 +1,19 @@
+{
+  "status": "disapprove_with_comment",
+  "comments": [
+    {
+      "message": "No method called twoFer",
+      "template": "No method called %<name>s",
+      "variables": {
+        "name": "twoFer"
+      }
+    },
+    {
+      "message": "No es6 export called twoFer",
+      "template": "No es6 export called %<name>s",
+      "variables": {
+        "name": "twoFer"
+      }
+    }
+  ]
+}

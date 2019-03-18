@@ -1,0 +1,12 @@
+{
+  "status": "approve_with_comment",
+  "comments": [
+    {
+      "message": "Instead of relying on name being undefined, you could set the default value of the parameter to 'you'",
+      "template": "Instead of relying on %<first_arg>s being undefined, you could set the default value of the parameter to 'you'",
+      "variables": {
+        "first_arg": "name"
+      }
+    }
+  ]
+}

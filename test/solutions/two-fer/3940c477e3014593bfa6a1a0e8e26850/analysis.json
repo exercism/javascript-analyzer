@@ -1,0 +1,10 @@
+{
+  "status": "refer_to_mentor",
+  "comments": [
+    {
+      "message": "Did you know that you can export functions, classes and constants directly inline?",
+      "template": "Did you know that you can export functions, classes and constants directly inline?",
+      "variables": {}
+    }
+  ]
+}
