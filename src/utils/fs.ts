@@ -1,7 +1,5 @@
 import fs from 'fs'
 
-export const existsSync = fs.existsSync
-
 export async function readFile(filePath: string) {
   return new Promise<Buffer>((resolve, reject) => {
     fs.readFile(filePath, (err, data) => {
@@ -18,6 +16,14 @@ export async function readDir(dirPath: string) {
       }
 
       resolve(files)
+    })
+  })
+}
+
+export async function exists(path: string) {
+  return new Promise<boolean>((resolve) => {
+    fs.exists(path, (exists) => {
+      resolve(exists)
     })
   })
 }

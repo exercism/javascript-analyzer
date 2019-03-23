@@ -1,0 +1,50 @@
+#!/bin/env/node
+
+// @ts-check
+
+const fs = require('fs')
+const path = require('path')
+
+const { Exercise } = require('../dist/exercise')
+const { Solution } = require('../dist/solution')
+const { Analyzers } = require('../dist/analyzers')
+const { Runner } = require('../dist/runner')
+const { Logger, set: setGlobalLogger } = require('../dist/utils/logger')
+const { ExecutionOptions } = require('../dist/utils/execution_options')
+
+const [slug] = process.argv.slice(2)
+setGlobalLogger(new Logger({ debug: false, console: false }))
+
+const fixturesRoot = path.join(__dirname, '..', 'test', 'fixtures', slug)
+const fixtures = fs.readdirSync(fixturesRoot)
+
+const exercise = new Exercise(slug)
+const AnalyzerClass = Analyzers.find(exercise)
+
+Promise.all(fixtures.map(rootDir => new Promise((resolve) => {
+  const inputDir = path.join(fixturesRoot, rootDir)
+  const solution = new Solution(inputDir, exercise)
+  const analyzer = new AnalyzerClass(solution)
+
+  const options = new ExecutionOptions({
+    debug: false,
+    console: false,
+    dry: false,
+    output: './analysis.json',
+    exercise: slug,
+    templates: false,
+    inputDir
+  })
+
+  Runner.call(analyzer, options)
+    .then(result => result.status)
+    .then(resolve)
+    .catch(err => resolve(undefined))
+
+})))
+.then(statuses => statuses.filter(Boolean))
+.then(statuses => statuses.reduce((counts, status) => {
+  counts[status] = (counts[status] || 0) + 1
+  return counts
+}, {}))
+.then(trees => console.log(trees))

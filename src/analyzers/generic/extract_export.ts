@@ -6,6 +6,8 @@ import traverser from 'eslint/lib/util/traverser'
 type ExportDeclarationNode = ExportDefaultDeclaration | ExportNamedDeclaration | undefined
 type ExportedNode = ClassDeclaration | VariableDeclaration | ExportDeclaration | ExportSpecifier | undefined
 
+export const extractDefaultExport = (program: Program): [ExportDefaultDeclaration | undefined, ExportedNode] => extractExport(program)
+
 export function extractExport(program: Program): [ExportDefaultDeclaration | undefined, ExportedNode]
 export function extractExport(program: Program, name: string): [ExportNamedDeclaration | undefined, ExportedNode]
 export function extractExport(program: Program, ...args: string[]): [ExportDeclarationNode, ExportedNode] {

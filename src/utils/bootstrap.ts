@@ -1,13 +1,33 @@
 import { Exercise } from '../exercise'
 import { Solution } from '../solution'
 import { ExecutionOptions } from './execution_options'
+import { Logger, set as setGlobalLogger } from '../utils/logger'
 
-const args = process.argv.slice(2)
-const options = ExecutionOptions.from(args);
-const [slug, inputDir] = args
+export interface BootstrapResult {
+  exercise: Exercise
+  solution: Solution
+  options: ExecutionOptions
+  logger: Logger
+}
 
-const exercise = new Exercise(slug)
-const solution = new Solution(inputDir, exercise)
-const outputDir = inputDir
+export class Bootstrap {
+  static call(): BootstrapResult {
 
-export { exercise, solution, options, outputDir }
+    process.on('uncaughtException', function(err) {
+      console.error(err)
+      process.stderr.write(err.message)
+
+      process.exit(-1)
+    })
+
+    const options   = ExecutionOptions.create()
+    const logger    = new Logger(options)
+    const exercise  = new Exercise(options.exercise)
+    const solution  = new Solution(options.inputDir, exercise)
+
+    setGlobalLogger(logger)
+
+    return { exercise, solution, options, logger }
+  }
+}
+

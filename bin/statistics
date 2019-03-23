@@ -1,0 +1,61 @@
+#!/bin/env/node
+
+// @ts-check
+
+const { parse } = require('@typescript-eslint/typescript-estree')
+const traverser = require('eslint/lib/util/traverser')
+
+const { Exercise } = require('../dist/exercise')
+const { Solution } = require('../dist/solution')
+
+const fs = require('fs')
+const path = require('path')
+
+const [slug] = process.argv.slice(2)
+
+const exercise = new Exercise(slug)
+
+const fixturesRoot = path.join(__dirname, '..', 'test', 'fixtures', slug)
+const fixtures = fs.readdirSync(fixturesRoot)
+
+Promise.all(fixtures.map(rootDir => new Promise((resolve, reject) => {
+    const solution = new Solution(path.join(fixturesRoot, rootDir), exercise)
+    try {
+      solution.read(1)
+        .then(([sourceFile]) => {
+          const root = parse(sourceFile.toString(), { comment: false, tokens: false, loc: false, range: false })
+
+          // There is a bug where loc and range data is not removed
+          if (root.loc || root.range) {
+            delete root.comments
+            delete root.tokens
+            delete root.loc
+            delete root.range
+
+            traverser.traverse(root, {
+              enter(node) {
+                delete node.loc
+                delete node.range
+              },
+
+              // Use typescript visitor keys (otherwise type annotations are not removed)
+              visitorKeys: require("@typescript-eslint/parser/dist/visitor-keys").visitorKeys
+            })
+          }
+
+          return root
+        })
+        .then(JSON.stringify)
+        .then(resolve)
+        .catch(() => resolve(undefined))
+    } catch (err) {
+      resolve(undefined)
+    }
+  })
+))
+.then(trees => trees.filter(Boolean))
+.then(trees => trees.reduce((counts, tree) => {
+  counts[tree] = (counts[tree] || 0) + 1
+  return counts
+}, {}))
+.then(trees => console.log(Object.keys(trees).length))

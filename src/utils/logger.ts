@@ -1,4 +1,4 @@
-import { ExecutionOptions } from "./execution_options"
+import { ExecutionOptions } from './execution_options'
 
 type StreamBuffer = string | Buffer | Uint8Array
 type LoggerInput = StreamBuffer | (() => StreamBuffer)
@@ -34,7 +34,7 @@ function noop(_: LoggerInput) {}
 const LIVE_BINDING: { current: Logger | null } = { current: null }
 
 /**
- * Set the "global" logger
+ * Set the 'global' logger
  * @param logger
  * @returns the global logger
  */
@@ -43,7 +43,7 @@ export function set(logger: Readonly<Logger>) {
 }
 
 /**
- * Get the "global" logger
+ * Get the 'global' logger
  */
 export function get(): Logger {
   return LIVE_BINDING.current!
@@ -56,7 +56,7 @@ export interface Logger {
 }
 
 export class Logger {
-  constructor({ debug, console }: ExecutionOptions) {
+  constructor({ debug, console }: Pick<ExecutionOptions, 'debug' | 'console'>) {
     return Object.freeze({
       fatal,
 

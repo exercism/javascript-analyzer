@@ -1,25 +1,54 @@
-import { BaseAnalyzer } from "../base_analyzer"
-import { extractMainMethod, MainMethod } from "../generic/extract_main_method"
-import { factory } from "../comment"
-import { extractExport } from "../generic/extract_export";
-import { Program, TemplateLiteral, BinaryExpression, LogicalExpression, IfStatement, ConditionalExpression } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
-import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree";
-import { extractAll } from "../generic/extract_all";
-import { extractFirst } from "../generic/extract_first";
+import {
+  BinaryExpression,
+  ConditionalExpression,
+  IfStatement,
+  LogicalExpression,
+  Program,
+  TemplateLiteral,
+  Parameter
+} from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
+import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
 
-const COMMENTS = {
-  no_method: factory`No method called ${'name'}`,
-  no_export: factory`No es6 export called ${'name'}`,
-  splat_args: factory`Rather than using ...${'splat_arg'}, how about actually setting a parameter called 'name'?`,
-  missing_default_param: factory`There is no correct default param - the tests will fail`,
-  incorrect_default_param: factory`You could set the default value to 'you' to avoid conditionals`,
-  string_concatenation: factory`Rather than using string concatenation, use interpolation`,
-  string_template_looks_incorrect: factory`Expected string template with 3 components`,
-  default_param_vs_falsy_value: factory`Instead of relying on ${'first_arg'} being undefined, you could set the default value of the parameter to 'you'`,
-  strict_equality: factory`In JavaScript, always prefer strict equality (=== and !==) over == and != in order to guard against implicit type coercion`,
-  export_inline: factory`Did you know that you can export functions, classes and constants directly inline?`,
-  es6_exports: factory`Use the export keyword instead of module.exports`
-}
+import { BaseAnalyzer } from "../base_analyzer"
+
+import { extractAll } from "../generic/extract_all"
+import { extractExport } from "../generic/extract_export"
+import { extractFirst } from "../generic/extract_first"
+import { extractMainMethod, MainMethod } from "../generic/extract_main_method"
+
+import { factory } from "../comment"
+import {
+  NO_METHOD,
+  NO_NAMED_EXPORT,
+  UNEXPECTED_SPLAT_ARGS,
+  PREFER_TEMPLATED_STRINGS,
+  PREFER_STRICT_EQUALITY,
+  NO_PARAMETER,
+} from "../generic/generic_comments"
+
+import { isRequired, isOptional } from "../generic/test_parameter"
+import { parameterName } from '../generic/extract_parameter'
+import { parameterType, annotateType } from "../generic/type_annotations";
+
+const OPTIMISE_DEFAULT_VALUE = factory<'parameter'>`
+  You currently use a conditional to branch in case there is no value passed
+  into twoFer, but instead you could set the default value of ${'parameter'} to
+  'you' to avoid this conditional.
+`('javascript.two-fer.optimise_default_value')
+
+const OPTIMISE_EXPLICIT_DEFAULT_VALUE = factory<'parameter' | 'maybe_undefined_expression'>`
+  Instead of relying on ${'maybe_undefined_expression'} being "undefined" when
+  no value is passed in, you could set the default value of '${'parameter'}' to
+  'you'.
+`('javascript.two-fer.optimise_explicity_default_value')
+
+const REDIRECT_INCORRECT_STRING_TEMPLATE = factory`
+  The string template looks incorrect. Expected a template with 3 components.
+`('javascript.two-fer.redirect_incorrect_string_template')
+
+const TIP_EXPORT_INLINE = factory`
+Did you know that you can export functions, classes and constants directly inline?
+`('javascript.two-fer.export_inline')
 
 export class TwoFerAnalyzer extends BaseAnalyzer {
 
@@ -28,6 +57,8 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
 
   private _mainMethod!: ReturnType<typeof extractMainMethod>
   private _mainExport!: ReturnType<typeof extractExport>
+
+  private _mainParameter!: Parameter
 
   get mainMethod() {
     if (!this._mainMethod) {
@@ -41,6 +72,14 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
       this._mainExport = extractExport(this.program, 'twoFer')
     }
     return this._mainExport
+  }
+
+  get mainParameter() {
+    if (!this._mainParameter) {
+      this._mainParameter = this.mainMethod!.params[0]
+    }
+
+    return this._mainParameter
   }
 
   public async execute(): Promise<void> {
@@ -98,11 +137,11 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
     // First we check that there is a two-fer function and that this function
     // is exported.
     if (!method) {
-      this.comment(COMMENTS.no_method({ name: 'twoFer' }))
+      this.comment(NO_METHOD({ method_name: 'twoFer' }))
     }
 
     if (!declaration) {
-      this.comment(COMMENTS.no_export({ name: 'twoFer' }))
+      this.comment(NO_NAMED_EXPORT({ export_name: 'twoFer' }))
     }
 
     if (this.hasCommentary) {
@@ -116,15 +155,18 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
     // If there is no parameter or it doesn't have a default value,
     // then this solution won't pass the tests.
     if (method.params.length === 0) {
-      this.disapprove(COMMENTS.missing_default_param())
+      this.disapprove(NO_PARAMETER({ function_name: method.id!.name }))
     }
+
+    const firstParameter = this.mainParameter!
 
     // If they provide a splat, the tests can pass but we should suggest they
     // use a real parameter.
-    const firstParameter = method.params[0]
     if (firstParameter.type === AST_NODE_TYPES.RestElement) {
-      const splat_arg = firstParameter.argument.type === AST_NODE_TYPES.Identifier && firstParameter.argument.name || undefined
-      this.disapprove(COMMENTS.splat_args({ splat_arg }))
+      const splatArgName = parameterName(firstParameter)
+      const splatArgType = annotateType(firstParameter.typeAnnotation)
+
+      this.disapprove(UNEXPECTED_SPLAT_ARGS({ 'splat_arg_name': splatArgName, parameter_type: splatArgType }))
     }
   }
 
@@ -147,13 +189,14 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
       || !this.isUsingTemplatedString()
     ) {
       // continue analyzing
+      this.logger.log('~> Solution is not optimal')
       return
     }
 
     // If the interpolation has more than three components, then they've
     // done something weird, so let's get a mentor to look at it!
     if (!this.hasThreeComponentsInTemplateLiteral()) {
-      this.redirect(COMMENTS.string_template_looks_incorrect())
+      this.redirect(REDIRECT_INCORRECT_STRING_TEMPLATE())
     }
 
     this.approve()
@@ -161,7 +204,7 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
 
   private checkForLateExport() {
     if (this.mainExport[1]!.type === AST_NODE_TYPES.ExportSpecifier) {
-      this.comment(COMMENTS.export_inline())
+      this.comment(TIP_EXPORT_INLINE())
     }
   }
 
@@ -206,7 +249,7 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
         || expression.right.type === AST_NODE_TYPES.Literal
       )
     ) {
-      this.comment(COMMENTS.string_concatenation())
+      this.comment(PREFER_TEMPLATED_STRINGS())
     }
   }
 
@@ -218,15 +261,73 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
     // `One for ${name || 'you'}, one for me.`
     //
     const expression = extractFirst<LogicalExpression>(this.mainMethod!, AST_NODE_TYPES.LogicalExpression)
+
     if (
          expression
       && expression.operator === '||'
       && expression.left.type === AST_NODE_TYPES.Identifier
-      && expression.right.type === AST_NODE_TYPES.Literal
-      && expression.right.value === 'you'
     ) {
-      this.comment(COMMENTS.default_param_vs_falsy_value({ 'first_arg': expression.left.name }))
+
+      if (
+        (
+             expression.right.type === AST_NODE_TYPES.Literal
+          && expression.right.value === 'you'
+        ) || (
+             expression.right.type === AST_NODE_TYPES.TemplateLiteral
+          && expression.right.quasis[0]
+          && expression.right.quasis[0].value.raw === 'you'
+        )
+      ) {
+        const firstParameter = this.mainMethod!.params[0]
+        const parameter =
+            firstParameter.type === AST_NODE_TYPES.AssignmentPattern
+          && firstParameter.left.type === AST_NODE_TYPES.Identifier
+          && firstParameter.left.name
+          || 'name'
+
+
+        this.comment(OPTIMISE_EXPLICIT_DEFAULT_VALUE({
+          parameter,
+          maybe_undefined_expression: expression.left.name
+        }))
+      }
+
+      return
     }
+
+
+    // `One for ${name ? name : 'you'}, one for me.`
+    const conditionalExpression = extractFirst<ConditionalExpression>(this.mainMethod!, AST_NODE_TYPES.ConditionalExpression)
+    if (
+         conditionalExpression
+      && conditionalExpression.test.type === AST_NODE_TYPES.Identifier
+      && conditionalExpression.consequent.type === conditionalExpression.test.type
+      && conditionalExpression.consequent.name === conditionalExpression.test.name
+     ) {
+
+      if (
+        (
+             conditionalExpression.alternate.type === AST_NODE_TYPES.Literal
+          && conditionalExpression.alternate.value === 'you'
+        ) || (
+             conditionalExpression.alternate.type === AST_NODE_TYPES.TemplateLiteral
+          && conditionalExpression.alternate.quasis[0]
+          && conditionalExpression.alternate.quasis[0].value.raw === 'you'
+        )
+      ) {
+        const firstParameter = this.mainMethod!.params[0]
+        const parameter =
+            firstParameter.type === AST_NODE_TYPES.AssignmentPattern
+          && firstParameter.left.type === AST_NODE_TYPES.Identifier
+          && firstParameter.left.name
+          || 'name'
+
+        this.comment(OPTIMISE_EXPLICIT_DEFAULT_VALUE({
+          parameter,
+          maybe_undefined_expression: conditionalExpression.consequent.name
+        }))
+      }
+     }
   }
 
   private checkForConditionalOnDefaultArgument() {
@@ -243,15 +344,28 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
       return
     }
 
+    const defaultParameterName = parameterName(this.mainParameter)
+
     const [ifStatement] = ifStatements
     if (ifStatement) {
+      const { test } = ifStatement
+
       // if (!name)
       if (
-           ifStatement.test.type === AST_NODE_TYPES.UnaryExpression
-        && ifStatement.test.operator === "!"
-        && ifStatement.test.argument.type === AST_NODE_TYPES.Identifier
+           test.type === AST_NODE_TYPES.UnaryExpression
+        && test.operator === "!"
+        && test.argument.type === AST_NODE_TYPES.Identifier
+        && test.argument.name === defaultParameterName
       ) {
-        this.disapprove(COMMENTS.incorrect_default_param())
+        this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
+      }
+
+      // if(name)
+      if (
+           test.type === AST_NODE_TYPES.Identifier
+        && test.name === defaultParameterName
+      ) {
+        this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
       }
 
       // if (name === undefined)
@@ -259,13 +373,15 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
       // if (name === '')           => old test
       // if ('' ==== name)          => old test
       if (
-        ifStatement.test.type === AST_NODE_TYPES.BinaryExpression
-        && ifStatement.test.operator === "==="
-        && ifStatement.test.left.type === AST_NODE_TYPES.Identifier
-        && ifStatement.test.right.type === AST_NODE_TYPES.Identifier
-        && [ifStatement.test.left.name, ifStatement.test.right.name].includes('undefined')
+        test.type === AST_NODE_TYPES.BinaryExpression
+        && test.operator === "==="
+        && test.left.type === AST_NODE_TYPES.Identifier
+        && test.right.type === AST_NODE_TYPES.Identifier
       ) {
-        this.disapprove(COMMENTS.incorrect_default_param())
+        const { left, right } = test
+        if ([parameterName(this.mainParameter), 'undefined'].every(expected => [left.name, right.name].includes(expected))) {
+          this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
+        }
       }
 
       // if (name == false)
@@ -277,13 +393,19 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
       // if (null == name)
       // if ('' == name)
       if (
-        ifStatement.test.type === AST_NODE_TYPES.BinaryExpression
-        && ifStatement.test.operator === "=="
-        && [ifStatement.test.left.type, ifStatement.test.right.type].includes(AST_NODE_TYPES.Identifier)
+           test.type === AST_NODE_TYPES.BinaryExpression
+        && test.operator === "=="
+        && (
+              (test.left.type === AST_NODE_TYPES.Identifier && test.left.name === parameterName(this.mainParameter))
+          || (test.right.type === AST_NODE_TYPES.Identifier && test.right.name === parameterName(this.mainParameter))
+        )
       ) {
-        this.comment(COMMENTS.strict_equality())
-        this.disapprove(COMMENTS.incorrect_default_param())
+        this.comment(PREFER_STRICT_EQUALITY())
+        this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
       }
+
+      // This has a conditional, but we don't know how to default with it
+      this.redirect()
 
       return
     }
@@ -293,12 +415,15 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
          (consequent.type === AST_NODE_TYPES.Literal && alternate.type === AST_NODE_TYPES.Identifier)
       || (consequent.type === AST_NODE_TYPES.Identifier && alternate.type === AST_NODE_TYPES.Literal)
     ) {
-      this.disapprove(COMMENTS.incorrect_default_param())
+      this.disapprove(OPTIMISE_DEFAULT_VALUE())
     }
+
+    // This has a conditional, but we don't know how to default with it
+    this.redirect()
   }
 
   private isDefaultArgumentOptimal() {
-    const parameter = this.mainMethod!.params[0]
+    const parameter = this.mainParameter
     return parameter.type === AST_NODE_TYPES.AssignmentPattern
       && parameter.right
       && parameter.right.type === AST_NODE_TYPES.Literal
@@ -316,18 +441,27 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
     //
     // 1: export const twoFer = (name = 'you') => ...
     //
-    const { loc: { start: { line: lineStart }, end: { line: lineEnd } } } = this.mainMethod!
+    const body = this.mainMethod!.body!
 
-    // Additionally make sure the export is inline by checking if it doesn't
-    // have any specifiers:
-    //
-    // export function twoFer
-    // => no specififers
-    //
-    // export { twoFer }
-    // => yes specififers
-    //
+    // This trick actually looks to the inner exppresion instead of the entire
+    // function in order to allow for comments inside the body.
+    const { loc: { start: { line: lineStart }, end: { line: lineEnd } } } =
+         body.type === AST_NODE_TYPES.BlockStatement
+      && body.body.length === 1
+      && body.body[0].type === AST_NODE_TYPES.ReturnStatement
+       ? body.body[0]
+       : this.mainMethod!
+
     return (lineEnd - lineStart) <= 2
+      // Additionally make sure the export is inline by checking if it doesn't
+      // have any specifiers:
+      //
+      // export function twoFer
+      // => no specififers
+      //
+      // export { twoFer }
+      // => yes specififers
+      //
       && this.mainExport[0]!.specifiers.length === 0
   }
 

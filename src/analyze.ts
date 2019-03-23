@@ -1,15 +1,15 @@
-import { exercise, solution, options, outputDir } from './utils/bootstrap'
-import { Logger, set as setGlobalLogger } from './utils/logger'
+import { Bootstrap } from './utils/bootstrap'
 import { Analyzers } from './analyzers'
-import { run } from './run';
+import { Runner } from './runner'
 
-const logger = setGlobalLogger(new Logger(options))
+const { exercise, options, solution, logger } = Bootstrap.call()
+
 logger.log('=> DEBUG mode is on')
 logger.log(`=> exercise: ${exercise.slug}`)
 
 const AnalyzerClass = Analyzers.find(exercise)
 const analyzer = new AnalyzerClass(solution)
 
-run(analyzer, outputDir)
+Runner.call(analyzer, options)
   .then(() => process.exit(0))
   .catch((err) => logger.fatal(err.toString()))

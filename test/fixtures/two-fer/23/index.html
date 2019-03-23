@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Two-fer</title>
+</head>
+<body>
+
+Please type in your name: 
+<input type="text" name="name"> <br>
+<button onclick="myFunction()">Try me!</button>
+
+<p id="test"></p>
+
+<script>
+function myFunction() {
+var s = document.getElementsByTagName('input')[0].value;
+
+	if (s.length == 0) {
+		document.getElementById('test').innerHTML = "One for you, one for me.";
+	} else {
+		document.getElementById('test').innerHTML = "One for "+ s +", one for me."
+	}
+
+}
+
+</script>
+
+</body>
+</html>

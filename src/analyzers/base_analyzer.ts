@@ -1,35 +1,56 @@
-import { Solution } from "../solution"
-import { get as getLogger, Logger } from "../utils/logger"
-import { AnalyzerOutput } from "./analyzer_output"
 import { parse as parseToTree, ParserOptions } from '@typescript-eslint/typescript-estree'
-import { Comment, factory } from "./comment";
-import { Program } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
+import { Program } from '@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree'
+
+import { Solution } from '../solution'
+import { get as getLogger, Logger } from '../utils/logger'
+
+import { AnalyzerOutput } from './analyzer_output'
+import { Comment } from './comment'
 
 class EarlyFinalization extends Error {
   constructor() {
-    super("early finalization")
+    super('Early finalization')
     Object.setPrototypeOf(this, EarlyFinalization.prototype);
     Error.captureStackTrace(this, this.constructor)
   }
 }
 
-type Comments = { [name: string]: ReturnType<typeof factory> }
-type FactoryResultParameter = Parameters<ReturnType<typeof factory>>
-
-export class BaseAnalyzer {
+export abstract class BaseAnalyzer {
   protected readonly logger: Logger
   protected readonly output: AnalyzerOutput
 
+  /**
+   * The parser options passed to typescript-estree.parse
+   *
+   * @readonly
+   * @static
+   * @type {(ParserOptions | undefined)}
+   */
   static get parseOptions(): ParserOptions | undefined {
     return undefined
   }
 
+  /**
+   * Creates an instance of an analyzer
+   *
+   * @param {Solution} solution the solution
+   */
   constructor(protected readonly solution: Solution) {
     this.logger = getLogger()
     this.output = new AnalyzerOutput()
   }
 
-  public async run(): Promise<AnalyzerOutput> {
+  /**
+   * Runs the analyzer
+   *
+   * This is defined as a property instead of a method, so that it can not be
+   * overriddden in a subclass. Subclasses should override @see execute instead.
+   *
+   * @returns The promise that resolves the analyzer output.
+   *
+   * @memberof BaseAnalyzer
+   */
+  public readonly run = async (): Promise<AnalyzerOutput> => {
     await this.execute()
       .catch((err) => {
         if (err instanceof EarlyFinalization) {
@@ -43,8 +64,13 @@ export class BaseAnalyzer {
   }
 
   /**
-   * Approve the solution early with an optional comment
-   * @param comment
+   * Approve the solution early with an optional comment.
+   *
+   * @see disapprove
+   * @see redirect
+   *
+   * @param comment the optional comment to approve with
+   * @throws {EarlyFinalization} used as control flow in @see run
    */
   protected approve(comment?: Comment): never {
     this.comment(comment)
@@ -55,7 +81,12 @@ export class BaseAnalyzer {
 
   /**
    * Disapprove the solution early with an optional comment
-   * @param comment
+   *
+   * @see approve
+   * @see redirect
+   *
+   * @param comment the optional comment to disapprove with
+   * @throws {EarlyFinalization} used as control flow in @see run
    */
   protected disapprove(comment?: Comment) {
     this.comment(comment)
@@ -66,7 +97,12 @@ export class BaseAnalyzer {
 
   /**
    * Refer the solution to the mentor early with an optional comment
-   * @param symbol
+   *
+   * @see approve
+   * @see disapprove
+   *
+   * @param comment the optional comment to redirect with
+   * @throws {EarlyFinalization} used as control flow in @see run
    */
   protected redirect(comment?: Comment): never {
     this.comment(comment)
@@ -75,6 +111,11 @@ export class BaseAnalyzer {
     throw new EarlyFinalization()
   }
 
+  /**
+   * Add a comment to the output
+   *
+   * @param {Comment} [comment]
+   */
   protected comment(comment?: Comment) {
     if (!comment) {
       return
@@ -83,13 +124,25 @@ export class BaseAnalyzer {
     this.output.add(comment)
   }
 
+  /**
+   * Property that returns true if there is at least one comment in the output.
+   *
+   * @readonly
+   * @memberof BaseAnalyzer
+   */
   get hasCommentary() {
     return this.output.comments.length > 0
   }
 
-  protected execute(): Promise<void> {
-    throw new Error(`You must overwrite "execute(): Promise<void> in ${this.constructor.name}"`)
-  }
+  /**
+   * Execute the analyzer
+   *
+   * @protected
+   * @abstract
+   * @returns {Promise<void>}
+   * @memberof BaseAnalyzer
+   */
+  protected abstract execute(): Promise<void>
 
   /**
    * Read n files from the solution
