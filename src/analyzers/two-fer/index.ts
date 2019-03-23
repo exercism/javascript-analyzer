@@ -26,9 +26,8 @@ import {
   NO_PARAMETER,
 } from "../generic/generic_comments"
 
-import { isRequired, isOptional } from "../generic/test_parameter"
 import { parameterName } from '../generic/extract_parameter'
-import { parameterType, annotateType } from "../generic/type_annotations";
+import { annotateType } from "../generic/type_annotations"
 
 const OPTIMISE_DEFAULT_VALUE = factory<'parameter'>`
   You currently use a conditional to branch in case there is no value passed
@@ -375,13 +374,12 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
       if (
         test.type === AST_NODE_TYPES.BinaryExpression
         && test.operator === "==="
-        && test.left.type === AST_NODE_TYPES.Identifier
-        && test.right.type === AST_NODE_TYPES.Identifier
+        && (
+             (test.left.type === AST_NODE_TYPES.Identifier && test.left.name === defaultParameterName)
+          || (test.right.type === AST_NODE_TYPES.Identifier  && test.right.name === defaultParameterName)
+        )
       ) {
-        const { left, right } = test
-        if ([parameterName(this.mainParameter), 'undefined'].every(expected => [left.name, right.name].includes(expected))) {
-          this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
-        }
+        this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
       }
 
       // if (name == false)
@@ -396,8 +394,8 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
            test.type === AST_NODE_TYPES.BinaryExpression
         && test.operator === "=="
         && (
-              (test.left.type === AST_NODE_TYPES.Identifier && test.left.name === parameterName(this.mainParameter))
-          || (test.right.type === AST_NODE_TYPES.Identifier && test.right.name === parameterName(this.mainParameter))
+             (test.left.type === AST_NODE_TYPES.Identifier && test.left.name === defaultParameterName)
+          || (test.right.type === AST_NODE_TYPES.Identifier && test.right.name === defaultParameterName)
         )
       ) {
         this.comment(PREFER_STRICT_EQUALITY())
@@ -411,11 +409,21 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
     }
 
     const [{ consequent, alternate }] = conditionalExpressions
+
+    // name ? name : 'you'
     if (
          (consequent.type === AST_NODE_TYPES.Literal && alternate.type === AST_NODE_TYPES.Identifier)
       || (consequent.type === AST_NODE_TYPES.Identifier && alternate.type === AST_NODE_TYPES.Literal)
     ) {
-      this.disapprove(OPTIMISE_DEFAULT_VALUE())
+      this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
+    }
+
+    // name ? `One for ${name}, and one for me` : 'One for you, and one for me')
+    if (
+         consequent.type === AST_NODE_TYPES.TemplateLiteral
+      && (alternate.type === AST_NODE_TYPES.TemplateLiteral || alternate.type === AST_NODE_TYPES.Literal)
+    ) {
+      this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
     }
 
     // This has a conditional, but we don't know how to default with it
