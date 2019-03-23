@@ -62,6 +62,15 @@ export function extractExport(program: Program, ...args: string[]): [ExportDecla
                   }
                   break;
 
+                // export class Name
+                case AST_NODE_TYPES.FunctionDeclaration:
+                  if (node.declaration.id && node.declaration.id.name === name) {
+                    exportDeclaration = node
+                    exportedNode = node.declaration
+                    this.break()
+                  }
+                  break;
+
                 // export const name
                 // export let name
                 // export var name
