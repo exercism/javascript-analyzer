@@ -216,9 +216,9 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
 
     this.checkForSolutionWithFalsyDefault()
 
-    if ( !this.isDefaultArgumentOptimal()) {
+    if (!this.isDefaultArgumentOptimal()) {
       if (this.hasCommentary) {
-        this.approve()
+        this.disapprove()
       }
       return
     }

@@ -2,6 +2,8 @@
 
 // @ts-check
 
+const rootTimeStamp = process.hrtime.bigint()
+
 const fs = require('fs')
 const path = require('path')
 
@@ -13,6 +15,11 @@ const { Logger, set: setGlobalLogger } = require('../dist/utils/logger')
 const { ExecutionOptions } = require('../dist/utils/execution_options')
 
 const [slug] = process.argv.slice(2)
+
+if (!slug) {
+  throw new Error(`Expected a valid slug, got '${slug}'. Run this as 'bin/batch-runner <slug>'.`)
+}
+
 setGlobalLogger(new Logger({ debug: false, console: false }))
 
 const fixturesRoot = path.join(__dirname, '..', 'test', 'fixtures', slug)
@@ -21,30 +28,139 @@ const fixtures = fs.readdirSync(fixturesRoot)
 const exercise = new Exercise(slug)
 const AnalyzerClass = Analyzers.find(exercise)
 
-Promise.all(fixtures.map(rootDir => new Promise((resolve) => {
-  const inputDir = path.join(fixturesRoot, rootDir)
-  const solution = new Solution(inputDir, exercise)
-  const analyzer = new AnalyzerClass(solution)
 
-  const options = new ExecutionOptions({
-    debug: false,
-    console: false,
-    dry: false,
-    output: './analysis.json',
-    exercise: slug,
-    templates: false,
-    inputDir
-  })
+;(async function() {
+  /**
+   * @type {Array<{ result: import('../src/analyzers/analyzer_output').AnalyzerOutput, runtime: bigint }>}
+   */
+  const output = await Promise.all(fixtures.map(rootDir => new Promise((resolve) => {
+    const timestamp = process.hrtime.bigint()
+    const inputDir  = path.join(fixturesRoot, rootDir)
+    const solution  = new Solution(inputDir, exercise)
+    const analyzer  = new AnalyzerClass(solution)
 
-  Runner.call(analyzer, options)
-    .then(result => result.status)
-    .then(resolve)
-    .catch(err => resolve(undefined))
+    const options = new ExecutionOptions({
+      debug: false,
+      console: false,
+      dry: false,
+      output: './analysis.json',
+      exercise: slug,
+      templates: true,
+      inputDir
+    })
 
-})))
-.then(statuses => statuses.filter(Boolean))
-.then(statuses => statuses.reduce((counts, status) => {
-  counts[status] = (counts[status] || 0) + 1
-  return counts
-}, {}))
-.then(trees => console.log(trees))
+    Runner.call(analyzer, options)
+      .then(result => resolve({ result: JSON.parse(result.toString(options)), runtime: process.hrtime.bigint() - timestamp }))
+      .catch(_ => resolve(undefined))
+
+  })))
+
+  const validOutput = output.filter(Boolean)
+
+  /** @type {{ [K: string]: { runtimes: bigint[], count: number, comments: any[] }}} */
+  const grouped = validOutput.reduce((groups, { result: { status, comments }, runtime }) => {
+    groups[status] = (groups[status] || { runtimes: [], comments: [], count: 0 })
+
+    groups[status].runtimes.push(runtime)
+    groups[status].comments.push(...comments)
+    groups[status].count += 1
+
+    return groups
+  }, {})
+
+  /** @type {{ [K: string]: { count: number, comments: { unique: string[], unique_templates: string[] }, runtimes: { total: bigint, average: bigint, median: bigint }}}} */
+  const aggregatedGroups = Object.keys(grouped).reduce((aggregated, status) => {
+    const { count, comments, runtimes } = grouped[status]
+
+    const sortedRuntimes = runtimes.sort()
+
+    const totalRuntime = runtimes.reduce((result, time) => result + time, BigInt(0))
+    const averageRuntime = totalRuntime / BigInt(sortedRuntimes.length)
+    const medianRuntime = sortedRuntimes[(sortedRuntimes.length / 2) | 0]
+
+    const uniqueComments = [...new Set(comments.filter(Boolean).map(comment => JSON.stringify(comment)))]
+    const uniqueTemplates = [...new Set(comments.filter(Boolean).map(c => typeof c === 'string' ? c : c.comment))]
+
+    return { ...aggregated,
+      [status]: {
+        count,
+        comments: {
+          unique: uniqueComments,
+          unique_templates: uniqueTemplates
+        },
+        runtimes: {
+          total: totalRuntime,
+          average: averageRuntime,
+          median: medianRuntime
+        }
+      }
+    }
+  }, {})
+
+  const totalCount = Object.keys(aggregatedGroups).reduce((result, status) => result + aggregatedGroups[status].count, 0)
+
+  const totalRuntime = Object.keys(aggregatedGroups).reduce((result, status) => result + aggregatedGroups[status].runtimes.total, BigInt(0))
+  const allRuntimesSorted = Object.keys(grouped).reduce((runtimes, status) => runtimes.concat(grouped[status].runtimes), []).sort()
+  const totalAverageRuntime = totalRuntime / BigInt(allRuntimesSorted.length)
+  const totalMedianRuntime = allRuntimesSorted[(allRuntimesSorted.length / 2) | 0]
+
+  const totalTotalRuntime = Object.keys(aggregatedGroups).reduce((result, status) => result + aggregatedGroups[status].runtimes.total, BigInt(0))
+  const allComments = Object.keys(grouped).reduce((runtimes, status) => runtimes.concat(grouped[status].comments), [])
+  const allUniqueComments = [...new Set(allComments.filter(Boolean).map(comment => JSON.stringify(comment)))]
+  const allUniqueTemplates = [...new Set(allComments.filter(Boolean).map(c => typeof c === 'string' ? c : c.comment))]
+
+  const totalData = {
+    count: totalCount,
+    comments: {
+      unique: allUniqueComments,
+      unique_templates: allUniqueTemplates
+    },
+    runtimes: {
+      total: totalTotalRuntime,
+      average: totalAverageRuntime,
+      median: totalMedianRuntime
+    }
+  }
+
+  process.stdout.write(JSON.stringify(Object.keys(aggregatedGroups).reduce((serializable, status) => {
+    return {
+      ...serializable,
+      [status]: {
+        ...aggregatedGroups[status],
+        runtimes: {
+          total: Number(aggregatedGroups[status].runtimes.total.toString()),
+          average: Number(aggregatedGroups[status].runtimes.average.toString()),
+          median: Number(aggregatedGroups[status].runtimes.median.toString())
+        }
+      }
+    }
+  }, {
+    toolRuntime: ((process.hrtime.bigint() - rootTimeStamp) / BigInt(1000000)).toString() + 'ms'
+  })) + "\n")
+
+  function pad(value, length = 20, padc = ' ') {
+    const pad = Array(length).fill(padc).join('')
+    return (pad + value).slice(-length)
+  }
+
+  function line(status, humanStatus, data = aggregatedGroups[status] || { count: 0, comments: { unique: [], unique_templates: [] }, runtimes: { total: BigInt(0), average: BigInt(0), median: BigInt(0) }}) {
+    const {
+      count,
+      comments: { unique, unique_templates },
+      runtimes: { total, average, median }
+    } = data
+    return `| ${pad(humanStatus, 20)} | ${pad(count, 5)} | ${pad(unique.length, 8)} | ${pad(unique_templates.length, 6)} | ${pad((average / BigInt(1000000)), 4)}ms | ${pad((median / BigInt(1000000)), 4)}ms | ${pad((total / BigInt(10000000000)), 6)}s |`
+  }
+  process.stdout.write('\n\n')
+  process.stdout.write(`
+## Statistics
+|               Status | Count | Comments | Unique |    Avg | Median |   Total |
+| --------------------:| -----:| --------:| ------:| ------:|-------:|--------:|
+${line('approve_as_optimal', 'Approve (optimal)')}
+${line('approve_with_comment', 'Approve (comment)')}
+${line('disapprove_with_comment', 'Disapprove (comment)')}
+${line('refer_to_mentor', 'Refer to mentor')}
+${line(undefined, 'Total', totalData)}
+  `.trim())
+
+})()

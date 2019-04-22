@@ -13,12 +13,17 @@ const path = require('path')
 
 const [slug] = process.argv.slice(2)
 
+if (!slug) {
+  throw new Error(`Expected a valid slug, got '${slug}'. Run this as 'bin/statistics <slug>'.`)
+}
+
 const exercise = new Exercise(slug)
 
 const fixturesRoot = path.join(__dirname, '..', 'test', 'fixtures', slug)
 const fixtures = fs.readdirSync(fixturesRoot)
 
-Promise.all(fixtures.map(rootDir => new Promise((resolve, reject) => {
+;(async function() {
+  const trees = await Promise.all(fixtures.map(rootDir => new Promise((resolve) => {
     const solution = new Solution(path.join(fixturesRoot, rootDir), exercise)
     try {
       solution.read(1)
@@ -51,11 +56,30 @@ Promise.all(fixtures.map(rootDir => new Promise((resolve, reject) => {
     } catch (err) {
       resolve(undefined)
     }
-  })
-))
-.then(trees => trees.filter(Boolean))
-.then(trees => trees.reduce((counts, tree) => {
-  counts[tree] = (counts[tree] || 0) + 1
-  return counts
-}, {}))
-.then(trees => console.log(Object.keys(trees).length))
+  })))
+
+  const realTrees = trees.filter(Boolean)
+  const counts = {
+    invalid: trees.length - realTrees.length,
+    valid: realTrees.length,
+    total: trees.length,
+    unique: Object.keys(
+      realTrees.reduce((counts, tree) => {
+        counts[tree] = (counts[tree] || 0) + 1
+        return counts
+      }, {})
+    ).length
+  }
+
+  function pad(value, pad = '       ') {
+    return (pad + value).slice(-pad.length)
+  }
+
+  const { total, unique, valid, invalid } = counts
+  process.stdout.write(JSON.stringify(counts) + "\n")
+  process.stdout.write(`
+|   total |  unique |   valid | invalid |
+|--------:|--------:|--------:|--------:|
+| ${pad(total)} | ${pad(unique)} | ${pad(valid)} | ${pad(invalid)} |
+  `.trim())
+})()
