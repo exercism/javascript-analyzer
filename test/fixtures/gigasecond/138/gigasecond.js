@@ -1,0 +1,1 @@
+export let gigasecond = (date) => new Date(date.getTime() + 1e12);

@@ -1,0 +1,1 @@
+export const gigasecond = (startDate) => new Date(startDate.getTime() + 1e12)

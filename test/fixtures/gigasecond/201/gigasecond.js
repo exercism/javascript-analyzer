@@ -1,0 +1,1 @@
+export const gigasecond = time => new Date(time.valueOf()+10**12)
