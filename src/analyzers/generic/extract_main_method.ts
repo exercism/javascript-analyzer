@@ -26,16 +26,22 @@ export function extractMainMethod(program: Program, name: string): MainMethod | 
             enter(innerNode: Node) {
               switch(innerNode.type) {
 
-                // const name = () => {}
                 case AST_NODE_TYPES.VariableDeclarator:
                   if (innerNode.id.type === AST_NODE_TYPES.Identifier) {
                     if (
                          innerNode.id.name === name
                       && innerNode.init
-                      && innerNode.init.type === AST_NODE_TYPES.ArrowFunctionExpression
                     ) {
-                      result = innerNode.init
-                      this.break()
+                      // const name = () => {}
+                      if (innerNode.init.type === AST_NODE_TYPES.ArrowFunctionExpression) {
+                        result = innerNode.init
+                        this.break()
+                      }
+                      // const name = function() {}
+                      else if (innerNode.init.type === AST_NODE_TYPES.FunctionExpression) {
+                        result = innerNode.init
+                        this.break()
+                      }
                     }
                   }
               }
