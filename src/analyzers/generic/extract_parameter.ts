@@ -1,12 +1,17 @@
-import { Parameter, ObjectLiteralElementLike, Expression, PropertyName } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
+import { Parameter, ObjectLiteralElementLike, Expression, PropertyName, VariableDeclarator } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
 import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
 
-export function parameterName(parameter: Parameter, fallback: string = '<unknown>'): string {
+export function parameterName(parameter: Parameter | VariableDeclarator, fallback: string = '<unknown>'): string {
   switch(parameter.type) {
+    case AST_NODE_TYPES.VariableDeclarator:
+      return parameterName(parameter.id)
 
     // [arg]?: type
     case AST_NODE_TYPES.ArrayPattern:
       return `[${parameter.elements.map(element => expressionName(element, fallback)).join(', ')}]`
+
+    case AST_NODE_TYPES.AssignmentPattern:
+      return parameterName(parameter.left)
 
     // arg?: type
     case AST_NODE_TYPES.Identifier:

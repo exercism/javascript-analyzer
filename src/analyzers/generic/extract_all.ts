@@ -1,17 +1,6 @@
 import { Node } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
-
-import traverser from 'eslint/lib/util/traverser'
+import { findAll } from "./find_all";
 
 export function extractAll<T extends Node = Node>(root: Node, type: Node['type']): T[] {
-  const results: T[] = []
-
-  traverser.traverse(root, {
-    enter(node: Node) {
-      if (node.type === type) {
-        results.push(node as T)
-      }
-    }
-  })
-
-  return results
+  return findAll(root, (node): node is T => node.type === type) as T[]
 }

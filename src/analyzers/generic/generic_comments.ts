@@ -12,7 +12,11 @@ export const NO_NAMED_EXPORT = factory<'export_name'>`
 export const NO_PARAMETER = factory<'function_name'>`
   Your function \`${'function_name'}\` does not have a parameter. The tests
   won't pass without it.
-`(`javascript.generic.no_parameter`)
+`('javascript.generic.no_parameter')
+
+export const UNEXPECTED_PARAMETER = factory<'type'>`
+  Did not a parameter of type \`${'type'}\`.
+`('javascript.generic.unexpected_parameter')
 
 export const UNEXPECTED_SPLAT_ARGS = factory<'splat_arg_name' | 'parameter_type'>`
   Instead of using \`...${'splat_arg_name'}: ${'parameter_type'}[]\`, you should

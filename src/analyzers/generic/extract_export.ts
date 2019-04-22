@@ -1,9 +1,9 @@
-import { Program, Node, ExportDefaultDeclaration, ExportNamedDeclaration, ClassDeclaration, VariableDeclaration, ExportDeclaration, ExportSpecifier } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
+import { Program, Node, ExportDefaultDeclaration, ExportNamedDeclaration, ClassDeclaration, VariableDeclaration, ExportDeclaration, ExportSpecifier, AssignmentExpression } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
 import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
 
 import traverser from 'eslint/lib/util/traverser'
 
-type ExportDeclarationNode = ExportDefaultDeclaration | ExportNamedDeclaration | undefined
+type ExportDeclarationNode = ExportDefaultDeclaration | ExportNamedDeclaration | AssignmentExpression | undefined
 type ExportedNode = ClassDeclaration | VariableDeclaration | ExportDeclaration | ExportSpecifier | undefined
 
 export const extractDefaultExport = (program: Program): [ExportDefaultDeclaration | undefined, ExportedNode] => extractExport(program)
@@ -13,8 +13,8 @@ export function extractExport(program: Program, name: string): [ExportNamedDecla
 export function extractExport(program: Program, ...args: string[]): [ExportDeclarationNode, ExportedNode] {
   const [name] = args
 
-  let exportDeclaration: ExportDefaultDeclaration | ExportNamedDeclaration | undefined = undefined
-  let exportedNode: ExportedNode | undefined = undefined
+  let exportDeclaration: ExportDeclarationNode = undefined
+  let exportedNode: ExportedNode = undefined
 
   let type = name ? AST_NODE_TYPES.ExportNamedDeclaration : AST_NODE_TYPES.ExportDefaultDeclaration
 
@@ -85,6 +85,40 @@ export function extractExport(program: Program, ...args: string[]): [ExportDecla
                     exportedNode = node.declaration
                   }
                   break;
+              }
+            }
+          }
+          break;
+
+        case AST_NODE_TYPES.ExpressionStatement:
+
+          // module.exports = { ... }
+          if (node.expression.type === AST_NODE_TYPES.AssignmentExpression) {
+            this.skip()
+
+            const { left, right } = node.expression
+
+            if (left.type === AST_NODE_TYPES.MemberExpression) {
+              const { object, property } = left
+
+              if (object.type === AST_NODE_TYPES.Identifier && object.name === 'module') {
+                if (property.type === AST_NODE_TYPES.Identifier && property.name === 'exports') {
+
+                  switch (right.type) {
+                    case AST_NODE_TYPES.ObjectExpression:
+                      const exportProperty = right.properties.find(property =>
+                            (property.type === AST_NODE_TYPES.Property)
+                         && (property.key.type === AST_NODE_TYPES.Identifier)
+                         && (property.key.name === (name || 'default'))
+                      )
+                      if (exportProperty) {
+                        exportDeclaration = node.expression
+                        this.break()
+                      }
+                      break;
+                  }
+
+                }
               }
             }
           }
