@@ -28,6 +28,13 @@ import {
 
 import { parameterName } from '../utils/extract_parameter'
 import { annotateType } from "../utils/type_annotations"
+import { isAssignmentPattern } from "../utils/is_assignment_pattern";
+import { isBinaryExpression } from "../utils/is_binary_expression";
+import { isIdentifier } from "../utils/is_identifier";
+import { isLiteral } from "../utils/is_literal";
+import { isTemplateLiteral } from "../utils/is_template_literal";
+import { isUnaryExpression } from "../utils/is_unary_expression";
+import { isLogicalExpression } from "../utils/is_logical_expression";
 
 const OPTIMISE_DEFAULT_VALUE = factory<'parameter'>`
 You currently use a conditional to branch in case there is no value passed into
@@ -100,10 +107,6 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
     // and can just be approved. If we have it, then let's just acknowledge it
     // and get out of here.
     this.checkForOptimalSolutions()
-
-    // Some students don't export the function inline. They might not know about
-    // inline exporting because they're still used to module.exports = {}
-    this.checkForLateExport()
 
     // We often see solutions that are correct but use different string
     // concatenation options (e.g. String#+, Array#join, etc). We'll approve
@@ -199,11 +202,12 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
       this.redirect(REDIRECT_INCORRECT_STRING_TEMPLATE())
     }
 
+    this.checkForTips()
     this.approve()
   }
 
-  private checkForLateExport() {
-    if (this.mainExport[1]!.type === AST_NODE_TYPES.ExportSpecifier) {
+  private checkForTips() {
+    if (!this.hasInlineExport()) {
       this.comment(TIP_EXPORT_INLINE())
     }
   }
@@ -227,6 +231,7 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
     this.checkForSolutionWithoutStringTemplate()
 
     if (this.hasCommentary) {
+      this.checkForTips()
       this.approve()
     } else {
       // If we have a one-line method that passes the tests, then it's not
@@ -238,53 +243,32 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
   private checkForSolutionWithoutStringTemplate() {
     const [expression] = extractAll<BinaryExpression>(this.mainMethod!, AST_NODE_TYPES.BinaryExpression)
 
+
     //
     // "One for " + name + ", one for me."
     //
-    if (
-         expression
-      && expression.operator === '+'
-      && (
+    if (isBinaryExpression(expression, '+') && (
            expression.left.type === AST_NODE_TYPES.Literal
         || expression.right.type === AST_NODE_TYPES.Literal
-      )
-    ) {
-      this.comment(PREFER_TEMPLATED_STRINGS())
+      )) {
+      this.disapprove(PREFER_TEMPLATED_STRINGS())
     }
   }
 
   private checkForSolutionWithFalsyDefault() {
-    // This is correct in current version; but we need to update the exercise so
-    // this is implemented as if it is.
     //
     // "One for " + (name || 'you') + ", one for me."
     // `One for ${name || 'you'}, one for me.`
     //
     const expression = extractFirst<LogicalExpression>(this.mainMethod!, AST_NODE_TYPES.LogicalExpression)
 
-    if (
-         expression
-      && expression.operator === '||'
-      && expression.left.type === AST_NODE_TYPES.Identifier
-    ) {
-
+    if (expression && isLogicalExpression(expression, '||') && isIdentifier(expression.left)) {
       if (
-        (
-             expression.right.type === AST_NODE_TYPES.Literal
-          && expression.right.value === 'you'
-        ) || (
-             expression.right.type === AST_NODE_TYPES.TemplateLiteral
-          && expression.right.quasis[0]
-          && expression.right.quasis[0].value.raw === 'you'
-        )
+           isLiteral(expression.right, 'you')
+        || isTemplateLiteral(expression.right, ['you'])
       ) {
         const firstParameter = this.mainMethod!.params[0]
-        const parameter =
-            firstParameter.type === AST_NODE_TYPES.AssignmentPattern
-          && firstParameter.left.type === AST_NODE_TYPES.Identifier
-          && firstParameter.left.name
-          || 'name'
-
+        const parameter = parameterName(firstParameter, 'name')
 
         this.comment(OPTIMISE_EXPLICIT_DEFAULT_VALUE({
           parameter,
@@ -300,27 +284,18 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
     const conditionalExpression = extractFirst<ConditionalExpression>(this.mainMethod!, AST_NODE_TYPES.ConditionalExpression)
     if (
          conditionalExpression
-      && conditionalExpression.test.type === AST_NODE_TYPES.Identifier
+      && isIdentifier(conditionalExpression.test)
       && conditionalExpression.consequent.type === conditionalExpression.test.type
       && conditionalExpression.consequent.name === conditionalExpression.test.name
      ) {
 
       if (
-        (
-             conditionalExpression.alternate.type === AST_NODE_TYPES.Literal
-          && conditionalExpression.alternate.value === 'you'
-        ) || (
-             conditionalExpression.alternate.type === AST_NODE_TYPES.TemplateLiteral
-          && conditionalExpression.alternate.quasis[0]
-          && conditionalExpression.alternate.quasis[0].value.raw === 'you'
+             isLiteral(conditionalExpression.alternate, 'you')
+          || isTemplateLiteral(conditionalExpression.alternate, ['you'])
         )
-      ) {
+      {
         const firstParameter = this.mainMethod!.params[0]
-        const parameter =
-            firstParameter.type === AST_NODE_TYPES.AssignmentPattern
-          && firstParameter.left.type === AST_NODE_TYPES.Identifier
-          && firstParameter.left.name
-          || 'name'
+        const parameter = parameterName(firstParameter, 'name')
 
         this.comment(OPTIMISE_EXPLICIT_DEFAULT_VALUE({
           parameter,
@@ -351,34 +326,26 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
       const { test } = ifStatement
 
       // if (!name)
-      if (
-           test.type === AST_NODE_TYPES.UnaryExpression
-        && test.operator === "!"
-        && test.argument.type === AST_NODE_TYPES.Identifier
-        && test.argument.name === defaultParameterName
-      ) {
+      if (isUnaryExpression(test, '!') && isIdentifier(test.argument, defaultParameterName)) {
         this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
       }
 
       // if(name)
-      if (
-           test.type === AST_NODE_TYPES.Identifier
-        && test.name === defaultParameterName
-      ) {
+      if (isIdentifier(test, defaultParameterName)) {
         this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
       }
 
       // if (name === undefined)
       // if (undefined === name)
-      // if (name === '')           => old test
-      // if ('' ==== name)          => old test
+      // if (name !== undefined)
+      // if (undefined !== name)
+      // if (name === '')          => old test
+      // if ('' === name)          => old test
+      // if (name !== '')          => old test
+      // if ('' !== name)          => old test
       if (
-        test.type === AST_NODE_TYPES.BinaryExpression
-        && test.operator === "==="
-        && (
-             (test.left.type === AST_NODE_TYPES.Identifier && test.left.name === defaultParameterName)
-          || (test.right.type === AST_NODE_TYPES.Identifier  && test.right.name === defaultParameterName)
-        )
+        (isBinaryExpression(test, '===') || isBinaryExpression(test, '!=='))
+        && (isIdentifier(test.left, defaultParameterName) || isIdentifier(test.right, defaultParameterName))
       ) {
         this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
       }
@@ -391,13 +358,17 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
       // if (undefined == name)
       // if (null == name)
       // if ('' == name)
+      // if (name != false)
+      // if (name != undefined)
+      // if (name != null)
+      // if (name != '')
+      // if (false != name)
+      // if (undefined != name)
+      // if (null != name)
+      // if ('' != name)
       if (
-           test.type === AST_NODE_TYPES.BinaryExpression
-        && test.operator === "=="
-        && (
-             (test.left.type === AST_NODE_TYPES.Identifier && test.left.name === defaultParameterName)
-          || (test.right.type === AST_NODE_TYPES.Identifier && test.right.name === defaultParameterName)
-        )
+        (isBinaryExpression(test, '==') || isBinaryExpression(test, '!='))
+        && (isIdentifier(test.left, defaultParameterName) || isIdentifier(test.right, defaultParameterName))
       ) {
         this.comment(PREFER_STRICT_EQUALITY())
         this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
@@ -405,24 +376,28 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
 
       // This has a conditional, but we don't know how to default with it
       this.redirect()
-
       return
     }
 
     const [{ consequent, alternate }] = conditionalExpressions
 
     // name ? name : 'you'
+    // !name ? 'you' : 'name'
+    // name ? name : `you`
+    // !name ? `you` : 'name'
     if (
-         (consequent.type === AST_NODE_TYPES.Literal && alternate.type === AST_NODE_TYPES.Identifier)
-      || (consequent.type === AST_NODE_TYPES.Identifier && alternate.type === AST_NODE_TYPES.Literal)
+      (isIdentifier(consequent) && (isLiteral(alternate, 'you') || isTemplateLiteral(alternate)))
+      || (isIdentifier(alternate) && (isLiteral(consequent, 'you') || isTemplateLiteral(consequent)))
     ) {
       this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
     }
 
-    // name ? `One for ${name}, and one for me` : 'One for you, and one for me')
+    // name ? `One for ${name}, and one for me` : 'One for you, one for me.')
+    // !name ? 'One for you, one for me.' : `One for ${name}, and one for me`
     if (
-         consequent.type === AST_NODE_TYPES.TemplateLiteral
-      && (alternate.type === AST_NODE_TYPES.TemplateLiteral || alternate.type === AST_NODE_TYPES.Literal)
+        (isTemplateLiteral(consequent) && (isLiteral(alternate, 'One for you, one for me.') || isTemplateLiteral(alternate)))
+      || isTemplateLiteral(alternate) && (isLiteral(consequent, 'One for you, one for me.') || isTemplateLiteral(consequent))
+
     ) {
       this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
     }
@@ -432,11 +407,7 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
   }
 
   private isDefaultArgumentOptimal() {
-    const parameter = this.mainParameter
-    return parameter.type === AST_NODE_TYPES.AssignmentPattern
-      && parameter.right
-      && parameter.right.type === AST_NODE_TYPES.Literal
-      && parameter.right.value === 'you'
+    return isAssignmentPattern(this.mainParameter, 'you')
   }
 
   private isOneLineSolution() {
@@ -462,16 +433,19 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
        : this.mainMethod!
 
     return (lineEnd - lineStart) <= 2
-      // Additionally make sure the export is inline by checking if it doesn't
-      // have any specifiers:
-      //
-      // export function twoFer
-      // => no specififers
-      //
-      // export { twoFer }
-      // => yes specififers
-      //
-      && this.mainExport[0]!.specifiers.length === 0
+  }
+
+  private hasInlineExport() {
+    // Additionally make sure the export is inline by checking if it doesn't
+    // have any specifiers:
+    //
+    // export function gigasecond
+    // => no specififers
+    //
+    // export { gigasecond }
+    // => yes specififers
+    //
+    return this.mainExport[0]!.specifiers && this.mainExport[0]!.specifiers.length === 0
   }
 
   private isUsingTemplatedString() {
