@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-import { Comment } from './comment'
+import { Comment } from '../comments/comment'
 import { ExecutionOptions } from '../utils/execution_options';
 
 export type SolutionStatus =

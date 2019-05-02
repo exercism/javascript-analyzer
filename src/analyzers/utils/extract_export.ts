@@ -1,10 +1,11 @@
 import { Program, Node, ExportDefaultDeclaration, ExportNamedDeclaration, ClassDeclaration, VariableDeclaration, ExportDeclaration, ExportSpecifier, AssignmentExpression } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
 import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
+import { traverse, Traverser } from 'eslint/lib/util/traverser'
 
-import traverser from 'eslint/lib/util/traverser'
+export { Traverser }
 
-type ExportDeclarationNode = ExportDefaultDeclaration | ExportNamedDeclaration | AssignmentExpression | undefined
-type ExportedNode = ClassDeclaration | VariableDeclaration | ExportDeclaration | ExportSpecifier | undefined
+export type ExportDeclarationNode = ExportDefaultDeclaration | ExportNamedDeclaration | AssignmentExpression | undefined
+export type ExportedNode = ClassDeclaration | VariableDeclaration | ExportDeclaration | ExportSpecifier | undefined
 
 export const extractDefaultExport = (program: Program): [ExportDefaultDeclaration | undefined, ExportedNode] => extractExport(program)
 
@@ -18,7 +19,7 @@ export function extractExport(program: Program, ...args: string[]): [ExportDecla
 
   let type = name ? AST_NODE_TYPES.ExportNamedDeclaration : AST_NODE_TYPES.ExportDefaultDeclaration
 
-  traverser.traverse(program, {
+  traverse(program, {
     enter(node: Node) {
       // export statements must be top-level
       if (node.type !== AST_NODE_TYPES.Program) {

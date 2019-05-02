@@ -1,36 +1,26 @@
-import {
-  Program,
-  Identifier,
-  Node,
-  VariableDeclarator
-} from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
 import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
+import { Identifier, Node, Program, VariableDeclarator } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
+
+import { Traverser } from "eslint/lib/util/traverser"
 
 import { BaseAnalyzer } from "../base_analyzer"
+import { factory } from "../../comments/comment"
 
-import { extractExport } from "../generic/extract_export"
-import { extractMainMethod, MainMethod } from "../generic/extract_main_method"
+import { extractExport } from "../utils/extract_export"
+import { extractMainMethod, MainMethod } from "../utils/extract_main_method"
+import { parameterName } from '../utils/extract_parameter'
+import { findAll } from "../utils/find_all"
+import { findFirst } from "../utils/find_first"
+import { findFirstOfType } from "../utils/find_first_of_type"
+import { isNewExpression } from "../utils/find_new_expression"
+import { findRawLiteral } from "../utils/find_raw_literal"
+import { findTopLevelConstants } from "../utils/find_top_level_constants"
+import { isBinaryExpression } from "../utils/is_binary_expression"
+import { isCallExpression } from "../utils/is_call_expression"
+import { isIdentifier } from "../utils/is_identifier"
+import { isLiteral } from "../utils/is_literal"
 
-import { factory } from "../comment"
-import {
-  NO_METHOD,
-  NO_NAMED_EXPORT,
-  UNEXPECTED_PARAMETER,
-  NO_PARAMETER,
-} from "../generic/generic_comments"
-
-import { parameterName } from '../generic/extract_parameter'
-import { isNewExpression } from "../generic/find_new_expression";
-import { findRawLiteral } from "../generic/find_raw_literal";
-import { findFirst } from "../generic/find_first";
-import { isBinaryExpression } from "../generic/is_binary_expression";
-import { isLiteral } from "../generic/is_literal";
-import { isCallExpression } from "../generic/is_call_expression";
-import { Traverser } from "eslint/lib/util/traverser";
-import { findTopLevelConstants } from "../generic/find_top_level_constants";
-import { findFirstOfType } from "../generic/find_first_of_type";
-import { findAll } from "../generic/find_all";
-import { isIdentifier } from "../generic/is_identifier";
+import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_PARAMETER } from "../../comments/shared";
 
 const TIP_EXPORT_INLINE = factory<'method_signature' | 'const_name'>`
 Did you know that you can export functions, classes and constants directly
@@ -114,16 +104,11 @@ export class GigasecondAnalyzer extends BaseAnalyzer {
     // acknowledge it and get out of here.
     this.checkForOptimalSolutions()
 
-    // Some students don't export the function inline. They might not know about
-    // inline exporting because they're still used to module.exports = {}
-    this.checkForLateExport()
-
     // The solution might not be optimal but still be approvable. Check these
     // first and bail-out (with approval) if that's the case.
     this.checkForApprovableSolutions()
 
     // Time to find sub-optimal code.
-
 
     // The solution is automatically referred to the mentor if it reaches this
   }
@@ -199,43 +184,11 @@ export class GigasecondAnalyzer extends BaseAnalyzer {
       return
     }
 
-    if (!this.hasInlineExport()) {
-      // export { gigasecond }
-      const gigasecondConstant = this.findExtractedNumberConstant()
-      this.approve(
-        TIP_EXPORT_INLINE({
-          method_signature: 'function gigasecond(...) { ... }',
-          const_name: gigasecondConstant && parameterName(gigasecondConstant) || 'MY_CONST'
-        })
-      )
-    } else {
-      this.approve()
-    }
+    this.checkForTips()
+    this.approve()
   }
 
-  private checkForLateExport() {
-    if (this.hasInlineExport()) {
-      return
-    }
-
-    const gigasecondConstant = this.findExtractedNumberConstant()
-    this.comment(
-      TIP_EXPORT_INLINE({
-        method_signature: 'function gigasecond(...) { ... }',
-        const_name: gigasecondConstant && parameterName(gigasecondConstant) || 'MY_CONST'
-      })
-    )
-  }
-
-  private checkForApprovableSolutions() {
-    if (!this.isOneLineSolution()) {
-      return
-    }
-
-    if (!this.isUsingGetTimeOnce() || !this.isUsingNewDateOnce()) {
-      return
-    }
-
+  private checkForTips() {
     const optimizeLargeNumber = this.isUsingLargeNumberLiteral()
     const numberComprehension = this.findNumberComprehension()
     const extracted = this.findExtractedNumberConstant()
@@ -259,6 +212,28 @@ export class GigasecondAnalyzer extends BaseAnalyzer {
       )
     }
 
+    if (!this.hasInlineExport()) {
+      // export { gigasecond }
+      const gigasecondConstant = this.findExtractedNumberConstant()
+      this.comment(
+        TIP_EXPORT_INLINE({
+          method_signature: 'function gigasecond(...) { ... }',
+          const_name: gigasecondConstant && parameterName(gigasecondConstant) || 'MY_CONST'
+        })
+      )
+    }
+  }
+
+  private checkForApprovableSolutions() {
+    if (!this.isOneLineSolution()) {
+      return
+    }
+
+    if (!this.isUsingGetTimeOnce() || !this.isUsingNewDateOnce()) {
+      return
+    }
+
+    this.checkForTips()
     this.approve()
   }
 

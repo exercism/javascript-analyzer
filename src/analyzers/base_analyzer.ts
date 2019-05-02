@@ -5,7 +5,7 @@ import { Solution } from '../solution'
 import { get as getLogger, Logger } from '../utils/logger'
 
 import { AnalyzerOutput } from './analyzer_output'
-import { Comment } from './comment'
+import { Comment } from '../comments/comment'
 
 class EarlyFinalization extends Error {
   constructor() {

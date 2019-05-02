@@ -11,12 +11,12 @@ import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
 
 import { BaseAnalyzer } from "../base_analyzer"
 
-import { extractAll } from "../generic/extract_all"
-import { extractExport } from "../generic/extract_export"
-import { extractFirst } from "../generic/extract_first"
-import { extractMainMethod, MainMethod } from "../generic/extract_main_method"
+import { extractAll } from "../utils/extract_all"
+import { extractExport } from "../utils/extract_export"
+import { extractFirst } from "../utils/extract_first"
+import { extractMainMethod, MainMethod } from "../utils/extract_main_method"
 
-import { factory } from "../comment"
+import { factory } from "../../comments/comment"
 import {
   NO_METHOD,
   NO_NAMED_EXPORT,
@@ -24,29 +24,30 @@ import {
   PREFER_TEMPLATED_STRINGS,
   PREFER_STRICT_EQUALITY,
   NO_PARAMETER,
-} from "../generic/generic_comments"
+} from "../../comments/shared"
 
-import { parameterName } from '../generic/extract_parameter'
-import { annotateType } from "../generic/type_annotations"
+import { parameterName } from '../utils/extract_parameter'
+import { annotateType } from "../utils/type_annotations"
 
 const OPTIMISE_DEFAULT_VALUE = factory<'parameter'>`
-  You currently use a conditional to branch in case there is no value passed
-  into twoFer, but instead you could set the default value of ${'parameter'} to
-  'you' to avoid this conditional.
+You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of ${'parameter'} to 'you' to avoid this conditional.
 `('javascript.two-fer.optimise_default_value')
 
 const OPTIMISE_EXPLICIT_DEFAULT_VALUE = factory<'parameter' | 'maybe_undefined_expression'>`
-  Instead of relying on ${'maybe_undefined_expression'} being "undefined" when
-  no value is passed in, you could set the default value of '${'parameter'}' to
-  'you'.
+Instead of relying on ${'maybe_undefined_expression'} being "undefined" when
+no value is passed in, you could set the default value of '${'parameter'}' to
+'you'.
 `('javascript.two-fer.optimise_explicity_default_value')
 
 const REDIRECT_INCORRECT_STRING_TEMPLATE = factory`
-  The string template looks incorrect. Expected a template with 3 components.
+The string template looks incorrect. Expected a template with 3 components.
 `('javascript.two-fer.redirect_incorrect_string_template')
 
 const TIP_EXPORT_INLINE = factory`
-Did you know that you can export functions, classes and constants directly inline?
+Did you know that you can export functions, classes and constants directly
+inline?
 `('javascript.two-fer.export_inline')
 
 export class TwoFerAnalyzer extends BaseAnalyzer {

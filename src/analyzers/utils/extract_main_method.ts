@@ -3,7 +3,9 @@ import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
 
 import traverser from 'eslint/lib/util/traverser'
 
+export type Traverser = traverser.Traverser
 export type MainMethod = FunctionDeclaration | ArrowFunctionExpression | FunctionExpression
+
 export function extractMainMethod(program: Program, name: string): MainMethod | undefined {
   let result: MainMethod | undefined = undefined
 
