@@ -55,7 +55,7 @@ export class Solution {
     }
 
     const files = await readDir(this.rootDir)
-    const candidates = await findCandidates(files, n, `${this.exercise.slug}.ts`)
+    const candidates = await findCandidates(files, n, `${this.exercise.slug}.js`)
 
     return Promise.all(
       candidates.map(candidate => readFile(path.join(this.rootDir, candidate)))
