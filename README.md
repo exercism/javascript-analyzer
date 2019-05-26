@@ -45,5 +45,5 @@ docker run -v $(PATH_TO_SOLUTION):/solution exercism/javascript-analyzer ${SLUG}
 Example:
 
 ```bash
-docker run -v ~/solution-238382y7sds7fsadfasj23j:/solution exercism/go-analyzer two-fer /solution
+docker run -v ~/solution-238382y7sds7fsadfasj23j:/solution exercism/javascript-analyzer two-fer /solution
 ```
