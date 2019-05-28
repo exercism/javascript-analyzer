@@ -14,14 +14,19 @@
     "analyze:dev": "yarn build && yarn analyze",
     "analyze:dev:bat": "yarn build && yarn analyze:bat",
     "build": "yarn tsc",
-    "prepublish": "yarn build",
-    "test": "ava"
+    "prepublish": "yarn test",
+    "test": "yarn build && jest"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/jest": "^24.0.13",
     "@types/node": "^11.11.6",
     "@types/yargs": "^12.0.10",
-    "ava": "^1.3.1",
+    "babel-jest": "^24.8.0",
     "eslint": "^5.15.3",
+    "jest": "^24.8.0",
     "typescript": "^3.3.4000"
   },
   "dependencies": {
