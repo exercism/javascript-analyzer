@@ -16,7 +16,7 @@ export class Analyzers {
    * @returns the constructor for the analyzer
    */
   public static find<T extends BaseAnalyzer>(exercise: Readonly<Exercise>): new (solution: Solution) => T  {
-    const file = require(`./${exercise.slug}`)
+    const file = Analyzers.autoload(exercise)
     const key = Object.keys(file).find(key => file[key] instanceof Function)
 
     if (key === undefined) {
@@ -26,5 +26,25 @@ export class Analyzers {
     const analyzer = file[key]
     getLogger().log(`=> analyzer: ${analyzer.name}`)
     return analyzer
+  }
+
+  private static autoload(exercise: Readonly<Exercise>) {
+    const path = `./${exercise.slug}/index.js` // explicit path
+    try {
+      return require(path)
+    } catch(err) {
+      const logger = getLogger()
+      logger.error(`
+Could not find the index.js analyzer in "${__dirname}/${exercise.slug}"
+
+Make sure that:
+ - the slug "${exercise.slug}" is valid (hint: use dashes, not underscores)
+ - there is actually an analyzer written for that exercise
+
+Original error:
+
+`.trimLeft())
+      logger.fatal(JSON.stringify(err), -32)
+    }
   }
 }
