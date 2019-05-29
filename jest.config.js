@@ -10,7 +10,9 @@ module.exports = {
   ],
   testPathIgnorePatterns: [
     '/node_modules/',
-    '<rootDir>/test/fixtures'
+    '.d.ts$',
+    '<rootDir>/test/fixtures',
+    '<rootDir>/test/helpers'
   ],
   transform: {
     '^.+\\.[jt]sx?$': 'babel-jest',
