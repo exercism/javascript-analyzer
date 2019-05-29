@@ -27,11 +27,11 @@
     "babel-jest": "^24.8.0",
     "eslint": "^5.15.3",
     "jest": "^24.8.0",
-    "typescript": "^3.3.4000"
+    "typescript": "^3.4.5"
   },
   "dependencies": {
-    "@typescript-eslint/parser": "^1.5.0",
-    "@typescript-eslint/typescript-estree": "^1.5.0",
+    "@typescript-eslint/parser": "^1.9.0",
+    "@typescript-eslint/typescript-estree": "^1.9.0",
     "esm": "^3.2.20",
     "yargs": "^13.2.2"
   }
