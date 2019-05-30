@@ -1,15 +1,16 @@
 import { Bootstrap } from './utils/bootstrap'
-import { Analyzers } from './analyzers'
-import { Runner } from './runner'
+import { find } from './analyzers/Autoload'
+import { run } from './runner'
 
-const { exercise, options, solution, logger } = Bootstrap.call()
+const { exercise, options, input, logger } = Bootstrap.call()
 
 logger.log('=> DEBUG mode is on')
 logger.log(`=> exercise: ${exercise.slug}`)
 
-const AnalyzerClass = Analyzers.find(exercise)
-const analyzer = new AnalyzerClass(solution)
+const AnalyzerClass = find(exercise)
+const analyzer = new AnalyzerClass()
 
-Runner.call(analyzer, options)
+run(analyzer, input, options)
   .then(() => process.exit(0))
-  .catch((err) => logger.fatal(err.toString()))
+  .catch((err: any) => logger.fatal(err.toString()))
+

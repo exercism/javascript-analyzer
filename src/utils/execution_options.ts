@@ -20,9 +20,7 @@ export class ExecutionOptions {
   public templates!: boolean
 
   public constructor(options: ExecutionOptionsArgs) {
-    (Object.keys(options) as (keyof typeof options)[]).forEach((option) => {
-      this[option] = options[option]
-    })
+    Object.assign(this, options);
   }
 
   public static create() {

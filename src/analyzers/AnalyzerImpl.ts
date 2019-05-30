@@ -1,11 +1,8 @@
-import { parse as parseToTree, TSESTreeOptions as ParserOptions } from '@typescript-eslint/typescript-estree'
-import { Program } from '@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree'
+import { getProcessLogger as getLogger, Logger } from '../utils/logger'
 
-import { Solution } from '../solution'
-import { get as getLogger, Logger } from '../utils/logger'
-
-import { AnalyzerOutput } from './analyzer_output'
 import { Comment } from '../comments/comment'
+import { AnalyzerOutput } from '../output/AnalyzerOutput';
+import { ParsedSource, AstParser } from '../parsers/AstParser';
 
 class EarlyFinalization extends Error {
   constructor() {
@@ -15,29 +12,15 @@ class EarlyFinalization extends Error {
   }
 }
 
-export abstract class BaseAnalyzer {
+export abstract class AnalyzerImpl implements Analyzer {
   protected readonly logger: Logger
-  protected readonly output: AnalyzerOutput
-
-  /**
-   * The parser options passed to typescript-estree.parse
-   *
-   * @readonly
-   * @static
-   * @type {(ParserOptions | undefined)}
-   */
-  static get parseOptions(): ParserOptions | undefined {
-    return undefined
-  }
+  private output!: AnalyzerOutput
 
   /**
    * Creates an instance of an analyzer
-   *
-   * @param {Solution} solution the solution
    */
-  constructor(protected readonly solution: Solution) {
+  constructor() {
     this.logger = getLogger()
-    this.output = new AnalyzerOutput()
   }
 
   /**
@@ -50,8 +33,11 @@ export abstract class BaseAnalyzer {
    *
    * @memberof BaseAnalyzer
    */
-  public async run(): Promise<AnalyzerOutput> {
-    await this.execute()
+  public async run(input: Input): Promise<Output> {
+    // Ensure each run has a fresh output
+    this.output = new AnalyzerOutput()
+
+    await this.execute(input)
       .catch((err) => {
         if (err instanceof EarlyFinalization) {
           this.logger.log(`=> early finialization (${this.output.status})`)
@@ -126,9 +112,6 @@ export abstract class BaseAnalyzer {
 
   /**
    * Property that returns true if there is at least one comment in the output.
-   *
-   * @readonly
-   * @memberof BaseAnalyzer
    */
   get hasCommentary() {
     return this.output.comments.length > 0
@@ -136,40 +119,6 @@ export abstract class BaseAnalyzer {
 
   /**
    * Execute the analyzer
-   *
-   * @protected
-   * @abstract
-   * @returns {Promise<void>}
-   * @memberof BaseAnalyzer
    */
-  protected abstract execute(): Promise<void>
-
-  /**
-   * Read n files from the solution
-   *
-   * @param solution
-   * @param n
-   * @returns
-   */
-  protected static read(solution: Solution, n: number): Promise<Buffer[]> {
-    return solution.read(n)
-  }
-
-  /**
-   * Parse a solution's files
-   *
-   * @param solution
-   * @param n number of files expected
-   * @returns n programs
-   */
-  protected static async parse(solution: Solution, n = 1): Promise<{ program: Program, source: string }[]> {
-    const sourceBuffers = await this.read(solution, n)
-    const sources = sourceBuffers.map(source => source.toString())
-    const logger = getLogger()
-
-    logger.log(`=> inputs: ${sources.length}`)
-    sources.forEach(source => logger.log(`\n${source}\n`))
-
-    return sources.map(source => ({ program: parseToTree(source, this.parseOptions), source }))
-  }
+  protected abstract execute(input: Input): Promise<void>
 }

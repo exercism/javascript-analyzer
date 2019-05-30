@@ -13,7 +13,7 @@
     "analyze:help": "yarn analyze help",
     "analyze:dev": "yarn build && yarn analyze",
     "analyze:dev:bat": "yarn build && yarn analyze:bat",
-    "build": "yarn tsc",
+    "build": "yarn tsc --build src",
     "prepublish": "yarn test",
     "test": "yarn build && jest"
   },
@@ -27,7 +27,7 @@
     "babel-jest": "^24.8.0",
     "eslint": "^5.15.3",
     "jest": "^24.8.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.5.1"
   },
   "dependencies": {
     "@typescript-eslint/parser": "^1.9.0",

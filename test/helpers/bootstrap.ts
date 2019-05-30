@@ -1,9 +1,9 @@
 import { ExecutionOptions } from "../../src/utils/execution_options";
 import { Exercise } from "../../src/exercise";
-import { set as setGlobalLogger, Logger } from "../../src/utils/logger";
-import { BootstrapResult } from "../../dist/utils/bootstrap";
+import { BootstrapResult } from "../../src/utils/bootstrap";
+import { setProcessLogger, Logger } from "../../src/utils/logger";
 
-export function bootstrap({ exercise, ...overrides }: { exercise: string } & Partial<ExecutionOptions>): Omit<BootstrapResult, 'solution'> {
+export function bootstrap({ exercise, ...overrides }: { exercise: string } & Partial<ExecutionOptions>): Omit<BootstrapResult, 'input'> {
   const options = new ExecutionOptions({
     debug: false,
     console: false,
@@ -15,7 +15,7 @@ export function bootstrap({ exercise, ...overrides }: { exercise: string } & Par
     ...overrides
   })
 
-  const logger = setGlobalLogger(new Logger(options))
+  const logger = setProcessLogger(new Logger(options))
 
   return {
     options,

@@ -1,7 +1,4 @@
-import fs from 'fs'
-
 import { Comment } from '../comments/comment'
-import { ExecutionOptions } from '../utils/execution_options';
 
 enum SolutionStatus {
   /** This is the default situation and should be used when there is any uncertainty. */
@@ -22,7 +19,7 @@ enum SolutionStatus {
  * @export
  * @class AnalyzerOutput
  */
-export class AnalyzerOutput {
+export class AnalyzerOutput implements Output {
   public status: SolutionStatus
   public comments: Comment[]
 
@@ -73,36 +70,38 @@ export class AnalyzerOutput {
    * [doc]: https://github.com/exercism/automated-mentoring-support/blob/master/docs/interface.md#output-format
    *
    * @param {ExecutionOptions} options
-   * @returns {string}
+   * @returns {Promise<string>}
    */
-  public toString(options: ExecutionOptions): string {
-    return JSON.stringify({
-      status: this.status,
-      comments: this.comments.map((comment) => {
-        if (!comment.variables || Object.keys(comment.variables).length === 0) {
-          return options.templates ? comment.externalTemplate : comment.message
-        }
+  toProcessable({ templates }: ExecutionOptions): Promise<string> {
+    return Promise.resolve(
+      JSON.stringify({
+        status: this.status,
+        comments: this.comments.map(templates ? makeExternalComment : makeIsolatedComment)
 
-        return {
-          comment: options.templates ? comment.externalTemplate : comment.template,
-          params: comment.variables
-        }
       })
-    }, null, 2)
-  }
-
-  /**
-   * Writes self to `path`
-   *
-   * @param {string} path
-   * @param {ExecutionOptions} options
-   * @returns {Promise<void>} The future which resolves / rejects when its done
-   */
-  public writeTo(path: string, options: ExecutionOptions): Promise<void> {
-    return new Promise((resolve, reject) => {
-      fs.writeFile(path, this.toString(options), (err) => {
-        err ? reject(err) : resolve()
-      })
-    })
+    )
   }
 }
+
+function makeExternalComment(comment: Comment) {
+  if (!comment.variables || Object.keys(comment.variables).length === 0) {
+    return comment.externalTemplate
+  }
+
+  return {
+    comment: comment.externalTemplate,
+    params: comment.variables
+  }
+}
+
+function makeIsolatedComment(comment: Comment) {
+  if (!comment.variables || Object.keys(comment.variables).length === 0) {
+    return comment.message
+  }
+
+  return {
+    comment: comment.template,
+    params: comment.variables
+  }
+}
+

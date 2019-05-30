@@ -1,11 +1,11 @@
 import { Exercise } from '../exercise'
-import { Solution } from '../solution'
 import { ExecutionOptions } from './execution_options'
-import { Logger, set as setGlobalLogger } from '../utils/logger'
+import { Logger, setProcessLogger as setGlobalLogger } from '../utils/logger'
+import { DirectoryInput } from '../input/DirectoryInput';
 
 export interface BootstrapResult {
   exercise: Exercise
-  solution: Solution
+  input: DirectoryInput
   options: ExecutionOptions
   logger: Logger
 }
@@ -23,11 +23,11 @@ export class Bootstrap {
     const options   = ExecutionOptions.create()
     const logger    = new Logger(options)
     const exercise  = new Exercise(options.exercise)
-    const solution  = new Solution(options.inputDir, exercise)
+    const input     = new DirectoryInput(options.inputDir, exercise.slug)
 
     setGlobalLogger(logger)
 
-    return { exercise, solution, options, logger }
+    return { exercise, input, options, logger }
   }
 }
 

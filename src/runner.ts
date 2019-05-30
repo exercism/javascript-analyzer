@@ -1,53 +1,31 @@
-import path from 'path'
-
-import { BaseAnalyzer } from './analyzers/base_analyzer'
-
 import { ExecutionOptions } from './utils/execution_options'
-import { get as getLogger } from './utils/logger'
-import { AnalyzerOutput } from './analyzers/analyzer_output';
 
-export class Runner {
+import { LogOutput } from './output/processor/LogOutput'
+import { FileOutput } from './output/processor/FileOutput'
+import { PassThroughOutput } from './output/processor/PassThroughOutput'
 
-  /**
-   * Run a specific analyzer, given a set of execution options
-   *
-   * @param analyzer the analyzer to run
-   * @param options the options
-   *
-   */
-  static async call(analyzer: BaseAnalyzer, options: ExecutionOptions): Promise<AnalyzerOutput> {
-    return await options.dry
-      ? DryRunner.call(analyzer, options)
-      : WetRunner.call(analyzer, options)
-  }
+/**
+ * Run a specific analyzer, given a set of execution options
+ *
+ * @param analyzer the analyzer to run
+ * @param input the input (source of the solution)
+ * @param options the options
+ *
+ * @returns the output
+ *
+ */
+export async function run(analyzer: Analyzer, input: Input, options: ExecutionOptions): Promise<Output> {
+  const analysis = await analyzer.run(input)
+
+  const processors: OutputProcessor[] = [
+    LogOutput,
+    options.dry ? PassThroughOutput : FileOutput
+  ]
+
+  return process(options, analysis, ...processors)
 }
 
-class DryRunner {
-  static async call(analyzer: BaseAnalyzer, options: ExecutionOptions): Promise<AnalyzerOutput> {
-    const logger = getLogger()
-    const analysis = await analyzer.run()
-
-    logger.log(`=> output: \n\n${analysis.toString(options)}\n`)
-    logger.log('=> running dry, no writing to file')
-
-    return Promise.resolve(analysis)
-  }
-}
-
-class WetRunner {
-  static async call(analyzer: BaseAnalyzer, options: ExecutionOptions): Promise<AnalyzerOutput> {
-    const logger = getLogger()
-    const analysis = await analyzer.run()
-
-    const { output, inputDir } = options
-    const outputPath = path.isAbsolute(output)
-      ? output
-      : path.join(inputDir, output)
-
-    logger.log(`=> output: \n\n${analysis.toString(options)}\n`)
-    logger.log(`=> writing to ${outputPath}`)
-
-    return analysis.writeTo(outputPath, options)
-      .then(() => analysis)
-  }
+async function process(options: Readonly<ExecutionOptions>, analysis: Output, ...processors: OutputProcessor[]): Promise<Output> {
+  await processors.reduce((previous, processor) => processor(previous, options), analysis.toProcessable(options))
+  return analysis
 }
