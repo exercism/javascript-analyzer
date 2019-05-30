@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Usage:
 # ./bin/analyze.sh two_fer ~/test/

@@ -27,3 +27,23 @@ Or directly via the provided shell script:
 ```
 
 Add the `--debug` and `--console` flags to get output in the terminal window.
+
+## Usage with docker
+
+To create the image, execute the following command from the repository root:
+
+```bash
+docker build -t exercism/javascript-analyzer .
+```
+
+To `run` from docker pass in the solutions path as a volume and execute with the necessary parameters:
+
+```bash
+docker run -v $(PATH_TO_SOLUTION):/solution exercism/javascript-analyzer ${SLUG} /solution
+```
+
+Example:
+
+```bash
+docker run -v ~/solution-238382y7sds7fsadfasj23j:/solution exercism/javascript-analyzer two-fer /solution
+```
