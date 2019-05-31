@@ -11,7 +11,6 @@ export const FileOutput: OutputProcessor = async (previous: Promise<string>, opt
   getProcessLogger().log(`=> writing output to ${outputPath}`)
 
   return new Promise((resolve, reject) => {
-
     fs.writeFile(outputPath, output, (err) => {
       err ? reject(err) : resolve(output)
     })

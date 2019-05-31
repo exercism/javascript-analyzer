@@ -1,5 +1,3 @@
-import { Exercise } from '../exercise'
-
 import path from 'path'
 
 import { getProcessLogger } from '../utils/logger'

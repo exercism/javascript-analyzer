@@ -1,5 +1,3 @@
-import { ExecutionOptions } from './execution_options'
-
 type StreamBuffer = string | Buffer | Uint8Array
 type LoggerInput = StreamBuffer | (() => StreamBuffer)
 

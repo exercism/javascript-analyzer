@@ -1,6 +1,5 @@
 import { getProcessLogger as getLogger, Logger } from '../utils/logger'
 
-import { Comment } from '../comments/comment'
 import { AnalyzerOutput } from '../output/AnalyzerOutput';
 import { ParsedSource, AstParser } from '../parsers/AstParser';
 
@@ -35,6 +34,15 @@ export abstract class AnalyzerImpl implements Analyzer {
    */
   public async run(input: Input): Promise<Output> {
     // Ensure each run has a fresh output
+    //
+    // Note: still need to wait for a run to complete before the next one can be
+    //       started. We could work around this by providing an execution
+    //       context that is fresh on each run.
+    //
+    // The reason output is not passed to execute, is that it doesn't _actually_
+    // enforce the implementing analyzer to not use local state, so we don't
+    // gain anything by it.
+    //
     this.output = new AnalyzerOutput()
 
     await this.execute(input)

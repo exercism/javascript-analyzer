@@ -1,5 +1,5 @@
 import { TwoFerAnalyzer } from '../src/analyzers/two-fer'
-import { run } from '../src/runner'
+import { run } from '../src/utils/runner'
 import { find } from '../src/analyzers/Autoload'
 
 import { bootstrap } from './helpers/bootstrap'

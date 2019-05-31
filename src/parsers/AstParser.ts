@@ -26,7 +26,5 @@ export class AstParser {
 }
 
 export class ParsedSource {
-  public constructor(public readonly program: Program, public readonly source: string) {
-
-  }
+  public constructor(public readonly program: Program, public readonly source: string) {}
 }

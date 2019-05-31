@@ -1,5 +1,3 @@
-import { Comment } from '../comments/comment'
-
 enum SolutionStatus {
   /** This is the default situation and should be used when there is any uncertainty. */
   Redirect = 'refer_to_mentor',

@@ -1,5 +1,4 @@
 import {
-  BinaryExpression,
   ConditionalExpression,
   IfStatement,
   LogicalExpression,
@@ -246,7 +245,7 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
   }
 
   private checkForSolutionWithoutStringTemplate() {
-    const [expression] = extractAll<BinaryExpression>(this.mainMethod!, AST_NODE_TYPES.BinaryExpression)
+    const [expression] = extractAll(this.mainMethod!, AST_NODE_TYPES.BinaryExpression)
 
 
     //
