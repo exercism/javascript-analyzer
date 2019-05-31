@@ -17,13 +17,15 @@ yarn build
 ## Usage
 
 You can run this either via `yarn`:
+
 ```
 yarn analyze:bat --debug --console two-fer ~/path/to/solution/folder
 ```
 
 Or directly via the provided shell script:
+
 ```
-./bin/analyze.sh two_fer ~/path/to/solution
+./bin/analyze.sh --debug --console two-fer ~/path/to/solution/folder
 ```
 
 Add the `--debug` and `--console` flags to get output in the terminal window.
