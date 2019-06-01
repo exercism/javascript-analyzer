@@ -1,7 +1,5 @@
 import { Node } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
-import { Traverser, traverse } from 'eslint/lib/util/traverser'
-
-export { Traverser }
+import { traverse, Traverser } from 'eslint/lib/util/traverser'
 
 /**
  * Find the first note (starting at root) that matches the given predicate.

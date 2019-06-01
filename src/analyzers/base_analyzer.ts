@@ -1,4 +1,4 @@
-import { parse as parseToTree, ParserOptions } from '@typescript-eslint/typescript-estree'
+import { parse as parseToTree, TSESTreeOptions as ParserOptions } from '@typescript-eslint/typescript-estree'
 import { Program } from '@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree'
 
 import { Solution } from '../solution'
@@ -50,7 +50,7 @@ export abstract class BaseAnalyzer {
    *
    * @memberof BaseAnalyzer
    */
-  public readonly run = async (): Promise<AnalyzerOutput> => {
+  public async run(): Promise<AnalyzerOutput> {
     await this.execute()
       .catch((err) => {
         if (err instanceof EarlyFinalization) {

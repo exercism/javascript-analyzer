@@ -1,8 +1,6 @@
 import { Node } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
 import { traverse, Traverser } from 'eslint/lib/util/traverser'
 
-export { Traverser }
-
 /**
  * Find all nodes, traversing from root, that match the given predicate
  *
@@ -25,7 +23,7 @@ export { Traverser }
  * @param predicate predicate function that gets the traverse as bound this
  * @returns the nodes that return true for the predicate
  */
-export function findAll(root: Node, predicate: (this: Traverser , node: Node) => boolean): Node[] {
+export function findAll(root: Node, predicate: (this: Traverser, node: Node) => boolean): Node[] {
   const results: Node[] = []
 
   traverse(root, {

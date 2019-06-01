@@ -5,6 +5,8 @@ import { Solution } from '../solution'
 
 import { get as getLogger } from '../utils/logger'
 
+import path from 'path'
+
 export class Analyzers {
 
   /**
@@ -29,13 +31,13 @@ export class Analyzers {
   }
 
   private static autoload(exercise: Readonly<Exercise>) {
-    const path = `./${exercise.slug}/index.js` // explicit path
+    const modulePath = path.join(__dirname, exercise.slug, 'index') // explicit path (no extension)
     try {
-      return require(path)
+      return require(modulePath)
     } catch(err) {
       const logger = getLogger()
       logger.error(`
-Could not find the index.js analyzer in "${__dirname}/${exercise.slug}"
+Could not find the index.js analyzer in "${modulePath}"
 
 Make sure that:
  - the slug "${exercise.slug}" is valid (hint: use dashes, not underscores)
