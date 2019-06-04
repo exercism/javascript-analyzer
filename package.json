@@ -1,15 +1,19 @@
 {
-  "name": "exercism-javascript-analyzer",
+  "name": "@exercism/javascript-analyzer",
   "version": "0.1.0",
   "description": "Exercism analyzer for javascript",
-  "main": "index.js",
   "repository": "https://github.com/exercism/javascript-analyzer",
   "author": "Derk-Jan Karrenbeld <derk-jan+github@karrenbeld.info>",
   "license": "MIT",
-  "bin": "./bin/analyze.sh",
+  "directories": {
+    "lib": "./dist",
+    "bin": "./bin",
+    "doc": "./docs",
+    "test": "./test"
+  },
   "scripts": {
-    "analyze": "bin/analyze.sh",
-    "analyze:bat": "bin/analyze.bat",
+    "analyze": "./bin/analyze.sh",
+    "analyze:bat": "./bin/analyze.bat",
     "analyze:help": "yarn analyze help",
     "analyze:dev": "yarn build && yarn analyze",
     "analyze:dev:bat": "yarn build && yarn analyze:bat",
@@ -22,17 +26,17 @@
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-typescript": "^7.3.3",
     "@types/jest": "^24.0.13",
-    "@types/node": "^11.11.6",
-    "@types/yargs": "^12.0.10",
+    "@types/node": "^12.0.4",
+    "@types/yargs": "^13.0.0",
     "babel-jest": "^24.8.0",
-    "eslint": "^5.15.3",
+    "eslint": "^5.16.0",
     "jest": "^24.8.0",
     "typescript": "^3.5.1"
   },
   "dependencies": {
     "@typescript-eslint/parser": "^1.9.0",
     "@typescript-eslint/typescript-estree": "^1.9.0",
-    "esm": "^3.2.20",
-    "yargs": "^13.2.2"
+    "esm": "^3.2.25",
+    "yargs": "^13.2.4"
   }
 }
