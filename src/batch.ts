@@ -8,24 +8,70 @@ import { readDir } from './utils/fs';
 import { DirectoryInput } from './input/DirectoryInput'
 import { FileOutput } from './output/processor/FileOutput';
 
-
+// The bootstrap call uses the arguments passed to the process to figure out
+// which exercise to target, where the input lives (directory input) and what
+// execution options to set.
+//
+// batch -c two-fer ~/fixtures
+//
+// For example, if arguments are passed directly, the above will run the two-fer
+// exercise analyzer for all the folders inside the two-fer fixture folder, with
+// console log output turned on
+//
 const { exercise, options, logger } = Bootstrap.call()
 
 const AnalyzerClass = find(exercise)
 const FIXTURES_ROOT = path.join(options.inputDir || path.join(__dirname, '..', 'test', 'fixtures'), exercise.slug)
 
-function pad(value: string | number | bigint, length = 20, padc = ' ') {
+/**
+ * Pad the input `value` to `length` using the `padc` pad character
+ *
+ * @param {(string | number | bigint)} value
+ * @param {number} [length=20]
+ * @param {string} [padc=' ']
+ * @returns {string} the padded string
+ */
+function pad(value: string | number | bigint, length: number = 20, padc: string = ' '): string {
   const pad = Array(length).fill(padc).join('')
   return (pad + value).slice(-length)
 }
 
-function line(humanStatus: string, data = { count: 0, comments: { unique: [] as string[], unique_templates: [] as string[] }, runtimes: { total: BigInt(0), average: BigInt(0), median: BigInt(0) }}) {
+const DEFAULT_LINE_DATA =  {
+  count: 0,
+  comments: {
+    unique: [] as string[],
+    unique_templates: [] as string[]
+  },
+  runtimes: {
+    total: BigInt(0),
+    average: BigInt(0),
+    median: BigInt(0)
+  }
+}
+
+/**
+ * Turns a data set into a table row
+ *
+ * @param {string} humanStatus
+ * @param {typeof DEFAULT_LINE_DATA} [data=DEFAULT_LINE_DATA]
+ * @returns {string}
+ */
+function line(humanStatus: string, data = DEFAULT_LINE_DATA): string {
   const {
     count,
     comments: { unique, unique_templates },
     runtimes: { total, average, median }
   } = data
-  return `| ${pad(humanStatus, 20)} | ${pad(count, 5)} | ${pad(unique.length, 8)} | ${pad(unique_templates.length, 6)} | ${pad((average / BigInt(1000000)), 4)}ms | ${pad((median / BigInt(1000000)), 4)}ms | ${pad((total / BigInt(10000000000)), 6)}s |`
+  return `| ${[
+    pad(humanStatus, 20),
+    pad(count, 5),
+    pad(unique.length, 8),
+    pad(unique_templates.length, 6),
+    `${pad((average / BigInt(1000000)), 4)}ms`,
+    `${pad((median / BigInt(1000000)), 4)}ms`,
+    `${pad((total / BigInt(10000000000)), 6)}s`
+   ].join(' | ')
+   } |`
 }
 
 const rootTimeStamp = process.hrtime.bigint()
