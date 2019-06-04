@@ -1,0 +1,12 @@
+{
+  "composite": true,
+  "extends": "../tsconfig.json",
+  "exclude": ["./fixtures"],
+  "compilerOptions": {
+    "noEmit": true,
+  },
+  "include": [
+    "./",
+    "../src"
+  ]
+}

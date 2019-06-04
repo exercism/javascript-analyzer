@@ -1,16 +1,6 @@
 import yargs from 'yargs'
 
-interface ExecutionOptionsArgs {
-  debug: boolean
-  console: boolean
-  dry: boolean
-  output: string
-  inputDir: string
-  exercise: string
-  templates: boolean
-}
-
-export class ExecutionOptions {
+export class ExecutionOptionsImpl implements ExecutionOptions {
   public debug!: boolean
   public console!: boolean
   public output!: string
@@ -19,10 +9,8 @@ export class ExecutionOptions {
   public dry!: boolean
   public templates!: boolean
 
-  public constructor(options: ExecutionOptionsArgs) {
-    (Object.keys(options) as (keyof typeof options)[]).forEach((option) => {
-      this[option] = options[option]
-    })
+  public constructor(options: ExecutionOptions) {
+    Object.assign(this, options);
   }
 
   public static create() {
@@ -49,7 +37,7 @@ export class ExecutionOptions {
       .argv
 
     const { d, c, o, dry, templates, _ } = args
-    return new ExecutionOptions({
+    return new ExecutionOptionsImpl({
       debug: d,
       console: c,
       output: o,

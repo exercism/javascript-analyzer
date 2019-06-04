@@ -1,5 +1,3 @@
-import { ExecutionOptions } from './execution_options'
-
 type StreamBuffer = string | Buffer | Uint8Array
 type LoggerInput = StreamBuffer | (() => StreamBuffer)
 
@@ -38,14 +36,14 @@ const LIVE_BINDING: { current: Logger | null } = { current: null }
  * @param logger
  * @returns the global logger
  */
-export function set(logger: Readonly<Logger>) {
+export function setProcessLogger(logger: Readonly<Logger>) {
   return LIVE_BINDING.current = logger
 }
 
 /**
  * Get the 'global' logger
  */
-export function get(): Logger {
+export function getProcessLogger(): Logger {
   return LIVE_BINDING.current!
 }
 

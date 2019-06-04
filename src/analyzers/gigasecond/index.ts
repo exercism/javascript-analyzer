@@ -3,7 +3,7 @@ import { Identifier, Node, Program, VariableDeclarator } from "@typescript-eslin
 
 import { Traverser } from "eslint/lib/util/traverser"
 
-import { BaseAnalyzer } from "../base_analyzer"
+import { AnalyzerImpl } from "../AnalyzerImpl"
 import { factory } from "../../comments/comment"
 
 import { extractExport } from "../utils/extract_export"
@@ -21,6 +21,7 @@ import { isIdentifier } from "../utils/is_identifier"
 import { isLiteral } from "../utils/is_literal"
 
 import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_PARAMETER } from "../../comments/shared";
+import { AstParser } from "../../parsers/AstParser";
 
 const TIP_EXPORT_INLINE = factory<'method_signature' | 'const_name'>`
 Did you know that you can export functions, classes and constants directly
@@ -48,7 +49,9 @@ export const gigasecond = (...)
 `('javascript.gigasecond.prefer_top_level_constant')
 
 
-export class GigasecondAnalyzer extends BaseAnalyzer {
+export class GigasecondAnalyzer extends AnalyzerImpl {
+
+  static Parser: AstParser = new AstParser(undefined, 1)
 
   private program!: Program
   private source!: string
@@ -83,8 +86,8 @@ export class GigasecondAnalyzer extends BaseAnalyzer {
     return this._mainParameter
   }
 
-  public async execute(): Promise<void> {
-    const [parsed] = await GigasecondAnalyzer.parse(this.solution)
+  public async execute(input: Input): Promise<void> {
+    const [parsed] = await GigasecondAnalyzer.Parser.parse(input)
 
     this.program = parsed.program
     this.source = parsed.source

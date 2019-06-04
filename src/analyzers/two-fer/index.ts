@@ -1,5 +1,4 @@
 import {
-  BinaryExpression,
   ConditionalExpression,
   IfStatement,
   LogicalExpression,
@@ -9,7 +8,7 @@ import {
 } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
 import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
 
-import { BaseAnalyzer } from "../base_analyzer"
+import { AnalyzerImpl } from "../AnalyzerImpl"
 
 import { extractAll } from "../utils/extract_all"
 import { extractExport } from "../utils/extract_export"
@@ -35,6 +34,7 @@ import { isLiteral } from "../utils/is_literal";
 import { isTemplateLiteral } from "../utils/is_template_literal";
 import { isUnaryExpression } from "../utils/is_unary_expression";
 import { isLogicalExpression } from "../utils/is_logical_expression";
+import { AstParser } from "../../parsers/AstParser";
 
 const OPTIMISE_DEFAULT_VALUE = factory<'parameter'>`
 You currently use a conditional to branch in case there is no value passed into
@@ -57,7 +57,11 @@ Did you know that you can export functions, classes and constants directly
 inline?
 `('javascript.two-fer.export_inline')
 
-export class TwoFerAnalyzer extends BaseAnalyzer {
+const Parser: AstParser = new AstParser(undefined, 1)
+
+
+export class TwoFerAnalyzer extends AnalyzerImpl {
+
 
   private program!: Program
   private source!: string
@@ -89,8 +93,8 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
     return this._mainParameter
   }
 
-  public async execute(): Promise<void> {
-    const [parsed] = await TwoFerAnalyzer.parse(this.solution)
+  public async execute(input: Input): Promise<void> {
+    const [parsed] = await Parser.parse(input)
 
     this.program = parsed.program
     this.source = parsed.source
@@ -241,7 +245,7 @@ export class TwoFerAnalyzer extends BaseAnalyzer {
   }
 
   private checkForSolutionWithoutStringTemplate() {
-    const [expression] = extractAll<BinaryExpression>(this.mainMethod!, AST_NODE_TYPES.BinaryExpression)
+    const [expression] = extractAll(this.mainMethod!, AST_NODE_TYPES.BinaryExpression)
 
 
     //

@@ -2,7 +2,7 @@ type TemplateKeys = Array<number | string>
 
 export type FactoryResultParameter<R extends string = string> = Array<string> | [Record<R, string | undefined>]
 
-export class Comment {
+export class CommentImpl implements Comment {
 
   constructor(
     public readonly message: string,
@@ -65,7 +65,7 @@ export function factory<R extends string = ''>(strings: TemplateStringsArray, ..
         template += tag + next
       }
 
-      return new Comment(
+      return new CommentImpl(
         message.trimRight(),
         template.trimRight(),
         dict as any,
