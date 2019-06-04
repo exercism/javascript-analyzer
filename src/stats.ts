@@ -7,6 +7,16 @@ import { DirectoryInput } from './input/DirectoryInput'
 import { AstParser } from './parsers/AstParser';
 import { Node } from '@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree';
 
+// The bootstrap call uses the arguments passed to the process to figure out
+// which exercise to target, where the input lives (directory input) and what
+// execution options to set.
+//
+// stats -c two-fer ~/fixtures
+//
+// For example, if arguments are passed directly, the above will run the two-fer
+// exercise analyzer (dry: without output) for all the folders inside the
+// two-fer fixture folder, with console log output turned on
+//
 const { exercise, options, logger } = Bootstrap.call()
 
 const FIXTURES_ROOT = path.join(options.inputDir || path.join(__dirname, '..', 'test', 'fixtures'), exercise.slug)
@@ -54,7 +64,7 @@ readDir(FIXTURES_ROOT)
 
       return JSON.stringify(root)
     } catch ({ message, ...other}) {
-      logger.error(`=> skipping ${inputDirectory}`)
+      logger.error(`=> skipping ~${path.relative(path.dirname(FIXTURES_ROOT), inputDirectory)}`)
       logger.error(`   ${message}${Object.keys(other).length > 0 ? ` (${JSON.stringify(other)})` : ''}\n`)
       return undefined
     }
