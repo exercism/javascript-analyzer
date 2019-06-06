@@ -1,6 +1,6 @@
 {
   "name": "@exercism/javascript-analyzer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Exercism analyzer for javascript",
   "repository": "https://github.com/exercism/javascript-analyzer",
   "author": "Derk-Jan Karrenbeld <derk-jan+github@karrenbeld.info>",
