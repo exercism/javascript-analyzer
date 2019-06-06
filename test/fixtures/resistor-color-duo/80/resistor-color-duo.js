@@ -1,0 +1,2 @@
+const COLORS = ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'blue', 'violet', 'grey', 'white']
+export const value = (list) => list.reduce((acc, value) => parseInt(acc + COLORS.indexOf(value).toString()), '')
