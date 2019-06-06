@@ -1,4 +1,5 @@
 node_modules
+production_node_modules
 dist
 yarn-error.log
 analysis.json
