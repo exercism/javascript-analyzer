@@ -9,7 +9,7 @@ module.exports = {
     "**/?(*.)+(spec|test).[jt]s?(x)"
   ],
   testPathIgnorePatterns: [
-    '/node_modules/',
+    '/(?:production_)?node_modules/',
     '.d.ts$',
     '<rootDir>/test/fixtures',
     '<rootDir>/test/helpers'
