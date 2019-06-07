@@ -119,7 +119,7 @@ export class ResistorColorAnalyzer extends AnalyzerImpl {
   private checkSignature() {
     const method: MainMethod = this.mainMethod!
 
-    // If there is no parameter or it doesn't have a default value,
+    // If there is no parameter
     // then this solution won't pass the tests.
     if (method.params.length === 0) {
       this.disapprove(NO_PARAMETER({ function_name: method.id!.name }))
