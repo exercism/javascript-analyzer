@@ -1,11 +1,12 @@
 
-import path from 'path'
-
-import { Bootstrap } from './utils/bootstrap'
-import { readDir } from './utils/fs';
-import { DirectoryInput } from './input/DirectoryInput'
-import { AstParser } from './parsers/AstParser';
 import { Node } from '@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree';
+
+import path from 'path';
+
+import { DirectoryInput } from '~src/input/DirectoryInput';
+import { AstParser } from '~src/parsers/AstParser';
+import { Bootstrap } from '~src/utils/bootstrap';
+import { readDir } from '~src/utils/fs';
 
 // The bootstrap call uses the arguments passed to the process to figure out
 // which exercise to target, where the input lives (directory input) and what

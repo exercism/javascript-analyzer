@@ -1,7 +1,7 @@
-import { ExecutionOptionsImpl } from "../../src/utils/execution_options";
-import { ExerciseImpl } from "../../src/ExerciseImpl";
-import { BootstrapResult } from "../../src/utils/bootstrap";
-import { setProcessLogger, Logger } from "../../src/utils/logger";
+import { ExecutionOptionsImpl } from "~src/utils/execution_options";
+import { ExerciseImpl } from "~src/ExerciseImpl";
+import { BootstrapResult } from "~src/utils/bootstrap";
+import { setProcessLogger, Logger } from "~src/utils/logger";
 
 export function bootstrap({ exercise, ...overrides }: { exercise: string } & Partial<ExecutionOptions>): Omit<BootstrapResult, 'input'> {
   const options = new ExecutionOptionsImpl({

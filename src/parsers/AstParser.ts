@@ -1,5 +1,5 @@
 import { parse as parseToTree, TSESTree, TSESTreeOptions } from "@typescript-eslint/typescript-estree";
-import { getProcessLogger } from "../utils/logger";
+import { getProcessLogger } from "~src/utils/logger";
 
 type Program = TSESTree.Program
 

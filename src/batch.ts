@@ -1,12 +1,11 @@
 
-import fs from 'fs'
-import path from 'path'
+import path from 'path';
 
-import { Bootstrap } from './utils/bootstrap'
-import { find } from './analyzers/Autoload'
-import { readDir } from './utils/fs';
-import { DirectoryInput } from './input/DirectoryInput'
-import { FileOutput } from './output/processor/FileOutput';
+import { find } from '~src/analyzers/Autoload';
+import { DirectoryInput } from '~src/input/DirectoryInput';
+import { FileOutput } from '~src/output/processor/FileOutput';
+import { Bootstrap } from '~src/utils/bootstrap';
+import { readDir } from '~src/utils/fs';
 
 // The bootstrap call uses the arguments passed to the process to figure out
 // which exercise to target, where the input lives (directory input) and what
@@ -88,29 +87,32 @@ readDir(FIXTURES_ROOT)
         const analysis     = await analyzer.run(input)
         const runtime      = process.hrtime.bigint() - fixtureStamp
 
+        const fixture      = fixtureDir
+
         await FileOutput(analysis.toProcessable(options), { ...options, inputDir, output: './analysis.json' })
 
-        return { result: analysis, runtime }
+        return { result: analysis, runtime, fixture }
       } catch (_ignore) {
         return undefined
       }
     }))
   )
-  .then((results) => results.filter(Boolean) as ReadonlyArray<{ result: Output, runtime: bigint }>)
+  .then((results) => results.filter(Boolean) as ReadonlyArray<{ result: Output, runtime: bigint, fixture: string }>)
   .then((results) => {
-    return results.reduce((groups, { result: { status, comments }, runtime }) => {
-      groups[status] = (groups[status] || { runtimes: [], comments: [], count: 0 })
+    return results.reduce((groups, { result: { status, comments }, runtime, fixture }) => {
+      groups[status] = (groups[status] || { runtimes: [], comments: [], count: 0, fixtures: [] })
 
       groups[status].runtimes.push(runtime)
       groups[status].comments.push(...comments)
       groups[status].count += 1
+      groups[status].fixtures.push(fixture)
 
       return groups
-    }, {} as { [K in Output['status']]: { runtimes: bigint[], count: number, comments: Comment[] } })
+    }, {} as { [K in Output['status']]: { runtimes: bigint[], count: number, comments: Comment[], fixtures: string[] } })
   })
   .then((grouped) => {
     const aggregatedGroups = (Object.keys(grouped) as Output['status'][]).reduce((aggregated, status) => {
-      const { count, comments, runtimes } = grouped[status]
+      const { count, comments, runtimes, fixtures } = grouped[status]
 
       const sortedRuntimes = runtimes.sort()
 
@@ -132,10 +134,11 @@ readDir(FIXTURES_ROOT)
             total: totalRuntime,
             average: averageRuntime,
             median: medianRuntime
-          }
+          },
+          fixtures
         }
       }
-    }, {} as { [K in Output['status']]: { count: number, comments: { unique: string[], unique_templates: string[] }, runtimes: { total: bigint, average: bigint, median: bigint }}})
+    }, {} as { [K in Output['status']]: { count: number, fixtures: string[], comments: { unique: string[], unique_templates: string[] }, runtimes: { total: bigint, average: bigint, median: bigint }}})
 
     const groupKeys = (Object.keys(aggregatedGroups) as Output['status'][])
     const allRuntimesSorted = groupKeys.reduce((runtimes, status) => runtimes.concat(grouped[status].runtimes), [] as bigint[]).sort()
