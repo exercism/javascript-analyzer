@@ -1,0 +1,679 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`When running analysis on two-fer can approve as optimal: two-fer/70 should be approve_as_optimal 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "approve_as_optimal",
+}
+`;
+
+exports[`When running analysis on two-fer can approve as optimal: two-fer/118 should be approve_as_optimal 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "approve_as_optimal",
+}
+`;
+
+exports[`When running analysis on two-fer can approve as optimal: two-fer/129 should be approve_as_optimal 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "approve_as_optimal",
+}
+`;
+
+exports[`When running analysis on two-fer can approve as optimal: two-fer/139 should be approve_as_optimal 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "approve_as_optimal",
+}
+`;
+
+exports[`When running analysis on two-fer can approve as optimal: two-fer/313 should be approve_as_optimal 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "approve_as_optimal",
+}
+`;
+
+exports[`When running analysis on two-fer can approve as optimal: two-fer/400 should be approve_as_optimal 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "approve_as_optimal",
+}
+`;
+
+exports[`When running analysis on two-fer can approve as optimal: two-fer/493 should be approve_as_optimal 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "approve_as_optimal",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/1 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %<parameter>s to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/10 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %<parameter>s to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/11 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.generic.no_method",
+      "message": "No method called \`twoFer\`. The tests won't pass without it.",
+      "template": "No method called \`%<method_name>s\`. The tests won't pass without it.",
+      "variables": Object {
+        "method_name": "twoFer",
+      },
+    },
+    CommentImpl {
+      "externalTemplate": "javascript.generic.no_named_export",
+      "message": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`twoFer\`.
+The tests won't pass without it.
+
+Did you forget adding: \`export twoFer\`?",
+      "template": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`%<export_name>s\`.
+The tests won't pass without it.
+
+Did you forget adding: \`export %<export_name>s\`?",
+      "variables": Object {
+        "export_name": "twoFer",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/12 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %<parameter>s to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/100 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %<parameter>s to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/101 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.generic.prefer_strict_equality",
+      "message": "In _JavaScript_, always prefer [strict (identity and non-identity) equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity)
+such as \`===\` and \`!==\` over the forms that use implicit type coercion,
+such as [\`==\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Equality)
+and [\`!=\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Inequality),
+unless you explicitly want to coerce the type of one of the two operands.
+
+There are definitely cases where you'll want to use non-strict equality, but
+that's not the case in this exercise.",
+      "template": "In _JavaScript_, always prefer [strict (identity and non-identity) equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity)
+such as \`===\` and \`!==\` over the forms that use implicit type coercion,
+such as [\`==\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Equality)
+and [\`!=\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Inequality),
+unless you explicitly want to coerce the type of one of the two operands.
+
+There are definitely cases where you'll want to use non-strict equality, but
+that's not the case in this exercise.",
+      "variables": Object {},
+    },
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %<parameter>s to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/102 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.generic.prefer_strict_equality",
+      "message": "In _JavaScript_, always prefer [strict (identity and non-identity) equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity)
+such as \`===\` and \`!==\` over the forms that use implicit type coercion,
+such as [\`==\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Equality)
+and [\`!=\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Inequality),
+unless you explicitly want to coerce the type of one of the two operands.
+
+There are definitely cases where you'll want to use non-strict equality, but
+that's not the case in this exercise.",
+      "template": "In _JavaScript_, always prefer [strict (identity and non-identity) equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity)
+such as \`===\` and \`!==\` over the forms that use implicit type coercion,
+such as [\`==\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Equality)
+and [\`!=\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Inequality),
+unless you explicitly want to coerce the type of one of the two operands.
+
+There are definitely cases where you'll want to use non-strict equality, but
+that's not the case in this exercise.",
+      "variables": Object {},
+    },
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %<parameter>s to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/104 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of X to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %<parameter>s to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "X",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/105 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_explicity_default_value",
+      "message": "Instead of relying on name being \\"undefined\\" when
+no value is passed in, you could set the default value of 'name' to
+'you'.",
+      "template": "Instead of relying on %<maybe_undefined_expression>s being \\"undefined\\" when
+no value is passed in, you could set the default value of '%<parameter>s' to
+'you'.",
+      "variables": Object {
+        "maybe_undefined_expression": "name",
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/107 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_explicity_default_value",
+      "message": "Instead of relying on name being \\"undefined\\" when
+no value is passed in, you could set the default value of 'name' to
+'you'.",
+      "template": "Instead of relying on %<maybe_undefined_expression>s being \\"undefined\\" when
+no value is passed in, you could set the default value of '%<parameter>s' to
+'you'.",
+      "variables": Object {
+        "maybe_undefined_expression": "name",
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/109 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %<parameter>s to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/110 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.generic.prefer_strict_equality",
+      "message": "In _JavaScript_, always prefer [strict (identity and non-identity) equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity)
+such as \`===\` and \`!==\` over the forms that use implicit type coercion,
+such as [\`==\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Equality)
+and [\`!=\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Inequality),
+unless you explicitly want to coerce the type of one of the two operands.
+
+There are definitely cases where you'll want to use non-strict equality, but
+that's not the case in this exercise.",
+      "template": "In _JavaScript_, always prefer [strict (identity and non-identity) equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity)
+such as \`===\` and \`!==\` over the forms that use implicit type coercion,
+such as [\`==\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Equality)
+and [\`!=\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Inequality),
+unless you explicitly want to coerce the type of one of the two operands.
+
+There are definitely cases where you'll want to use non-strict equality, but
+that's not the case in this exercise.",
+      "variables": Object {},
+    },
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %<parameter>s to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/111 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %<parameter>s to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/112 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.generic.no_method",
+      "message": "No method called \`twoFer\`. The tests won't pass without it.",
+      "template": "No method called \`%<method_name>s\`. The tests won't pass without it.",
+      "variables": Object {
+        "method_name": "twoFer",
+      },
+    },
+    CommentImpl {
+      "externalTemplate": "javascript.generic.no_named_export",
+      "message": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`twoFer\`.
+The tests won't pass without it.
+
+Did you forget adding: \`export twoFer\`?",
+      "template": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`%<export_name>s\`.
+The tests won't pass without it.
+
+Did you forget adding: \`export %<export_name>s\`?",
+      "variables": Object {
+        "export_name": "twoFer",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/114 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %<parameter>s to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/115 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %<parameter>s to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/116 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %<parameter>s to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/121 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %<parameter>s to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/123 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %<parameter>s to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can disapprove with comment: two-fer/124 should be disapprove_with_comment 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %<parameter>s to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove_with_comment",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/0 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/103 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/106 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/108 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/113 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/119 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/120 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.redirect_incorrect_string_template",
+      "message": "The string template looks incorrect. Expected a template with 3 components.",
+      "template": "The string template looks incorrect. Expected a template with 3 components.",
+      "variables": Object {},
+    },
+  ],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/122 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/133 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/138 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/143 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/147 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/148 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/166 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/171 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/175 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/181 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/183 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/192 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
+
+exports[`When running analysis on two-fer can refer to mentor: two-fer/194 should be refer_to_mentor 1`] = `
+AnalyzerOutput {
+  "comments": Array [],
+  "status": "refer_to_mentor",
+}
+`;
