@@ -1,12 +1,7 @@
 import { TwoFerAnalyzer } from '~src/analyzers/two-fer'
-import { InlineInput } from '~test/helpers/input/InlineInput'
+import { makeAnalyze } from '~test/helpers/smoke'
 
-async function analyze(solutionContent: string): Promise<Output> {
-  const analyzer = new TwoFerAnalyzer()
-  const input = new InlineInput([solutionContent])
-
-  return analyzer.run(input)
-}
+const analyze = makeAnalyze(() => new TwoFerAnalyzer())
 
 describe('When running analysis on two-fer', () => {
   it('can approve as optimal', async () => {
