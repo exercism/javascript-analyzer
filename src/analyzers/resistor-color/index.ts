@@ -1,28 +1,19 @@
-import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
-
-import { AnalyzerImpl } from "../AnalyzerImpl"
-
-import { extractExport } from "../utils/extract_export"
-import { extractMainMethod, MainMethod } from "../utils/extract_main_method"
-
-import { factory } from "../../comments/comment"
-import {
-  NO_METHOD,
-  NO_NAMED_EXPORT,
-  UNEXPECTED_SPLAT_ARGS,
-  NO_PARAMETER,
-} from "../../comments/shared"
-
-import { parameterName } from '../utils/extract_parameter'
-import { annotateType } from "../utils/type_annotations"
-import { isIdentifier } from "../utils/is_identifier";
-import { AstParser } from "../../parsers/AstParser";
-
+import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree";
 import { Program } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
-import { findTopLevelConstants } from "../utils/find_top_level_constants";
-import { isCallExpression } from "../utils/is_call_expression";
-import { isReturnBlockStatement } from "../utils/is_return_block_statement";
-import { isReturnStatementWithValue } from "../utils/is_return_statement_with_value";
+
+import { isReturnBlockStatement } from "~src/analyzers//utils/is_return_block_statement";
+import { isReturnStatementWithValue } from "~src/analyzers//utils/is_return_statement_with_value";
+import { AnalyzerImpl } from "~src/analyzers/AnalyzerImpl";
+import { extractExport } from "~src/analyzers/utils/extract_export";
+import { extractMainMethod, MainMethod } from "~src/analyzers/utils/extract_main_method";
+import { parameterName } from '~src/analyzers/utils/extract_parameter';
+import { findTopLevelConstants } from "~src/analyzers/utils/find_top_level_constants";
+import { isCallExpression } from "~src/analyzers/utils/is_call_expression";
+import { isIdentifier } from "~src/analyzers/utils/is_identifier";
+import { annotateType } from "~src/analyzers/utils/type_annotations";
+import { factory } from "~src/comments/comment";
+import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_SPLAT_ARGS } from "~src/comments/shared";
+import { AstParser } from "~src/parsers/AstParser";
 
 const TIP_EXPORT_INLINE = factory`
 Did you know that you can export functions, classes and constants directly
@@ -62,7 +53,7 @@ export class ResistorColorAnalyzer extends AnalyzerImpl {
   get mainConstant() {
     if (!this._mainConstant) {
       this._mainConstant = findTopLevelConstants(this.program, ['let', 'const', 'var']).find(
-        ({ declarations }) => declarations.find((declaration) => {
+        ({ declarations }) => !!declarations.find((declaration) => {
           return isIdentifier(declaration.id, 'COLORS')
         })
       ) || NOT_FOUND
