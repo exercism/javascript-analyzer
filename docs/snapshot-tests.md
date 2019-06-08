@@ -31,7 +31,7 @@ const snapshotTestsGenerator = makeTestGenerator(
   () => new SlugAnalyzer()
 )
 
-describe('When running analysis on two-fer', () => {
+describe('When running analysis on two-fer fixtures', () => {
   snapshotTestsGenerator('approve_as_optimal', [
     // <fixture numbers>
   ])

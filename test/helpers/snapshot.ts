@@ -12,14 +12,15 @@ export function makeTestGenerator(slug: string, AnalyzerFactory: AnalyzerFactory
   }
 
   return async function (status: Output['status'], fixtures: readonly number[]) {
-    it(`can ${status.replace(/_/g, ' ')}`, async () => {
-      await Promise.all(
-        fixtures.map(async (fixture) => {
+    describe(`and expecting it to ${status.replace(/_/g, ' ')}`, () => {
+      fixtures.slice().sort().forEach((fixture) => {
+        const identifier = `${slug}/${fixture}`
+        it(`matches ${identifier}'s output`, async () => {
           const output = await analyze(fixture)
           expect(output.status).toBe(status);
-          expect(output).toMatchSnapshot(`${slug}/${fixture} output`)
+          expect(output).toMatchSnapshot(`output`)
         })
-      )
+      })
     })
   }
 }

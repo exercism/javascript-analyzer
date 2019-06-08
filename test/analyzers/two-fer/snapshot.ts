@@ -6,7 +6,7 @@ const snapshotTestsGenerator = makeTestGenerator(
   () => new TwoFerAnalyzer()
 )
 
-describe('When running analysis on two-fer', () => {
+describe('When running analysis on two-fer fixtures', () => {
   snapshotTestsGenerator('approve_as_optimal', [
     118, 129, 139, 313, 400, 493, 70
   ])
