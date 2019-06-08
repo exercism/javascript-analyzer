@@ -7,8 +7,8 @@ const CONSTANT_MODIFIERS = [
   AST_NODE_TYPES.ExportNamedDeclaration
 ]
 
-function isTopLevelConstant(this: Traverser, node: Node): boolean {
-  if (node.type !== AST_NODE_TYPES.VariableDeclaration || node.kind !== 'const') {
+function isTopLevelConstant(this: Traverser, node: Node, kinds: VariableDeclaration["kind"][] = ['const']): boolean {
+  if (node.type !== AST_NODE_TYPES.VariableDeclaration || !kinds.includes(node.kind)) {
     if (!CONSTANT_MODIFIERS.indexOf(node.type)) {
       this.skip() // doesn't traverse this node any further
     }
@@ -24,9 +24,9 @@ function isTopLevelConstant(this: Traverser, node: Node): boolean {
  * @param root the top-level
  * @returns Node[]
  */
-export function findTopLevelConstants(root: Node) {
+export function findTopLevelConstants(root: Node, kinds: VariableDeclaration["kind"][] = ['const']) {
   return findAll(
     root,
-    isTopLevelConstant
+    function(node) { return isTopLevelConstant.apply(this, [node, kinds]) }
   ) as VariableDeclaration[]
 }

@@ -1,0 +1,21 @@
+import { ResistorColorAnalyzer } from '~src/analyzers/resistor-color'
+import { makeAnalyze } from '~test/helpers/smoke'
+
+const analyze = makeAnalyze(() => new ResistorColorAnalyzer())
+
+describe('When running analysis on resistor-color', () => {
+  it('can approve as optimal', async () => {
+
+    const solutionContent = `
+    export const COLORS = ['...', '...']
+    export function colorCode(color) {
+      return COLORS.indexOf(color)
+    }
+    `.trim()
+
+    const output = await analyze(solutionContent)
+
+    expect(output.status).toBe('approve_as_optimal');
+    expect(output.comments.length).toBe(0);
+  })
+})
