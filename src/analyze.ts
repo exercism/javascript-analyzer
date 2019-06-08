@@ -1,6 +1,6 @@
-import { Bootstrap } from './utils/bootstrap'
-import { find } from './analyzers/Autoload'
-import { run } from './utils/runner'
+import { Bootstrap } from '~src/utils/bootstrap'
+import { find } from '~src/analyzers/Autoload'
+import { run } from '~src/utils/runner'
 
 // The bootstrap call uses the arguments passed to the process to figure out
 // which exercise to target, where the input lives (directory input) and what

@@ -1,7 +1,6 @@
-import { getProcessLogger as getLogger, Logger } from '../utils/logger'
+import { getProcessLogger as getLogger, Logger } from '~src/utils/logger'
 
-import { AnalyzerOutput } from '../output/AnalyzerOutput';
-import { ParsedSource, AstParser } from '../parsers/AstParser';
+import { AnalyzerOutput } from '~src/output/AnalyzerOutput';
 
 class EarlyFinalization extends Error {
   constructor() {

@@ -1,7 +1,7 @@
-import { readDir } from "../utils/fs";
+import { readDir } from "~src/utils/fs";
 import { FileInput } from "./FileInput";
 
-import path from 'path'
+import nodePath from 'path'
 
 const EXTENSIONS = /\.(jsx?|tsx?|mjs)$/
 const TEST_FILES = /\.spec|test\./
@@ -15,7 +15,7 @@ export class DirectoryInput implements Input {
 
     const candidates = findCandidates(files, n, `${this.exerciseSlug}.js`)
     const fileSources = await Promise.all(
-      candidates.map(candidate => new FileInput(path.join(this.path, candidate)).read().then(([source]) => source))
+      candidates.map(candidate => new FileInput(nodePath.join(this.path, candidate)).read().then(([source]) => source))
     )
 
     return fileSources

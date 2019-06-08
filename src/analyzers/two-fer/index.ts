@@ -1,40 +1,23 @@
-import {
-  ConditionalExpression,
-  IfStatement,
-  LogicalExpression,
-  Program,
-  TemplateLiteral,
-  Parameter
-} from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
-import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
+import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree";
+import { ConditionalExpression, IfStatement, LogicalExpression, Parameter, Program, TemplateLiteral } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
 
-import { AnalyzerImpl } from "../AnalyzerImpl"
-
-import { extractAll } from "../utils/extract_all"
-import { extractExport } from "../utils/extract_export"
-import { extractFirst } from "../utils/extract_first"
-import { extractMainMethod, MainMethod } from "../utils/extract_main_method"
-
-import { factory } from "../../comments/comment"
-import {
-  NO_METHOD,
-  NO_NAMED_EXPORT,
-  UNEXPECTED_SPLAT_ARGS,
-  PREFER_TEMPLATED_STRINGS,
-  PREFER_STRICT_EQUALITY,
-  NO_PARAMETER,
-} from "../../comments/shared"
-
-import { parameterName } from '../utils/extract_parameter'
-import { annotateType } from "../utils/type_annotations"
-import { isAssignmentPattern } from "../utils/is_assignment_pattern";
-import { isBinaryExpression } from "../utils/is_binary_expression";
-import { isIdentifier } from "../utils/is_identifier";
-import { isLiteral } from "../utils/is_literal";
-import { isTemplateLiteral } from "../utils/is_template_literal";
-import { isUnaryExpression } from "../utils/is_unary_expression";
-import { isLogicalExpression } from "../utils/is_logical_expression";
-import { AstParser } from "../../parsers/AstParser";
+import { AnalyzerImpl } from "~src/analyzers/AnalyzerImpl";
+import { extractAll } from "~src/analyzers/utils/extract_all";
+import { extractExport } from "~src/analyzers/utils/extract_export";
+import { extractFirst } from "~src/analyzers/utils/extract_first";
+import { extractMainMethod, MainMethod } from "~src/analyzers/utils/extract_main_method";
+import { parameterName } from '~src/analyzers/utils/extract_parameter';
+import { isAssignmentPattern } from "~src/analyzers/utils/is_assignment_pattern";
+import { isBinaryExpression } from "~src/analyzers/utils/is_binary_expression";
+import { isIdentifier } from "~src/analyzers/utils/is_identifier";
+import { isLiteral } from "~src/analyzers/utils/is_literal";
+import { isLogicalExpression } from "~src/analyzers/utils/is_logical_expression";
+import { isTemplateLiteral } from "~src/analyzers/utils/is_template_literal";
+import { isUnaryExpression } from "~src/analyzers/utils/is_unary_expression";
+import { annotateType } from "~src/analyzers/utils/type_annotations";
+import { factory } from "~src/comments/comment";
+import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, PREFER_STRICT_EQUALITY, PREFER_TEMPLATED_STRINGS, UNEXPECTED_SPLAT_ARGS } from "~src/comments/shared";
+import { AstParser } from "~src/parsers/AstParser";
 
 const OPTIMISE_DEFAULT_VALUE = factory<'parameter'>`
 You currently use a conditional to branch in case there is no value passed into
@@ -93,7 +76,7 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     return this._mainParameter
   }
 
-  public async execute(input: Input): Promise<void> {
+  protected async execute(input: Input): Promise<void> {
     const [parsed] = await Parser.parse(input)
 
     this.program = parsed.program

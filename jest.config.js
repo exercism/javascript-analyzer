@@ -3,6 +3,10 @@ module.exports = {
   projects: [
     '<rootDir>'
   ],
+  moduleNameMapper: {
+    '^~src/(.*)$': '<rootDir>/src/$1',
+    '^~test/(.*)$': '<rootDir>/test/$1'
+  },
   testMatch: [
     "**/__tests__/**/*.[jt]s?(x)",
     "**/test/**/*.[jt]s?(x)",

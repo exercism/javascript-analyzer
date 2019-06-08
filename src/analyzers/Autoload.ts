@@ -1,6 +1,6 @@
 import path from 'path'
 
-import { getProcessLogger } from '../utils/logger'
+import { getProcessLogger } from '~src/utils/logger'
 
 type AnalyzerConstructor = new () => Analyzer
 

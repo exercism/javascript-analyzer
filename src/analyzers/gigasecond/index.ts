@@ -86,7 +86,7 @@ export class GigasecondAnalyzer extends AnalyzerImpl {
     return this._mainParameter
   }
 
-  public async execute(input: Input): Promise<void> {
+  protected async execute(input: Input): Promise<void> {
     const [parsed] = await GigasecondAnalyzer.Parser.parse(input)
 
     this.program = parsed.program

@@ -29,24 +29,6 @@ function fatal(this: Logger, buffer: LoggerInput, status = 1): never {
 
 function noop(_: LoggerInput) {}
 
-const LIVE_BINDING: { current: Logger | null } = { current: null }
-
-/**
- * Set the 'global' logger
- * @param logger
- * @returns the global logger
- */
-export function setProcessLogger(logger: Readonly<Logger>) {
-  return LIVE_BINDING.current = logger
-}
-
-/**
- * Get the 'global' logger
- */
-export function getProcessLogger(): Logger {
-  return LIVE_BINDING.current!
-}
-
 export interface Logger {
   error: typeof error
   fatal: typeof fatal
@@ -62,4 +44,23 @@ export class Logger {
       log: debug ? (console ? global.console.log : log) : noop,
     })
   }
+}
+
+const NOOP_LOGGER = new Logger({ debug: false, console: false })
+const LIVE_BINDING: { current: Logger | null } = { current: NOOP_LOGGER }
+
+/**
+ * Set the 'global' logger
+ * @param logger
+ * @returns the global logger
+ */
+export function setProcessLogger(logger: Readonly<Logger>) {
+  return LIVE_BINDING.current = logger
+}
+
+/**
+ * Get the 'global' logger
+ */
+export function getProcessLogger(): Logger {
+  return LIVE_BINDING.current || NOOP_LOGGER
 }

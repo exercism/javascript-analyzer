@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { getProcessLogger } from '../../utils/logger'
+import { getProcessLogger } from '~src/utils/logger'
 
 type FileOutputOptions = Pick<ExecutionOptions, 'output' | 'inputDir'>
 
