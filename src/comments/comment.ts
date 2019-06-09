@@ -1,13 +1,19 @@
 type TemplateKeys = Array<number | string>
+type NamedTags<R extends string> = Record<R, string | undefined>
 
-export type FactoryResultParameter<R extends string = string> = Array<string> | [Record<R, string | undefined>]
+export type FactoryResultParameter<R extends string = string> =
+    []                         // ()
+  | [string[]]                 // (['a', 'b'])
+  | [string, ...string[]]      // ('a', 'b')
+  | [string[], NamedTags<R>]   // (['a', 'b'], { foo: 'foo' })
+  | [NamedTags<R>]             // ({ foo: foo })
 
 export class CommentImpl implements Comment {
 
   constructor(
     public readonly message: string,
     public readonly template: string,
-    public readonly variables: Readonly<{ [name: string]: string | undefined, [name: number]: string | undefined }>,
+    public readonly variables: CommentVariables,
     public readonly externalTemplate: string
   ) {}
 
@@ -17,6 +23,7 @@ export class CommentImpl implements Comment {
 }
 
 export type CommentFactory<R extends string> = (...values: FactoryResultParameter<R>) => Comment
+type CommentVariables = Readonly<{ [key: number]: string, [key: string]: string }>
 
 /**
  * Creates a comment factory that can be used to generate a comment.
@@ -50,15 +57,24 @@ export type CommentFactory<R extends string> = (...values: FactoryResultParamete
 export function factory<R extends string = ''>(strings: TemplateStringsArray, ...keys: TemplateKeys) {
   return (externalTemplate: string): CommentFactory<R> => {
     return (function(...values: FactoryResultParameter<R>): Comment {
-      const dict = ((values.splice(values.length - 1, 1)[0]) || {}) as Record<R, string | undefined>
+
+      const { positionalValues, dictionary } = separateValues(...values)
+
+      // Throw away leading whitespace. This allows us to define factories and
+      // start the first line of comment on a new line  (see example).
       let template = strings[0].trimLeft()
       let message = strings[0].trimLeft()
 
+      // This replaces all the template tags with the actual values passed into
+      // the templatable factory.
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i]
 
-        const value = typeof key === 'number' ? values[key] as string : dict[key as R]
-        const tag = typeof key === 'number' ? `%${key}$s` : `%<${key}>s`
+        const value = typeof key === 'number'
+          ? positionalValues[key] as string
+          : dictionary[key as R]
+
+        const tag = buildTemplateTag(key)
 
         const next = strings[i + 1]
         message += (value || tag) + next
@@ -66,11 +82,63 @@ export function factory<R extends string = ''>(strings: TemplateStringsArray, ..
       }
 
       return new CommentImpl(
+        // Trim the right side of the output, so that the closing statement of
+        // the factory can be made on a new line (see example).
         message.trimRight(),
         template.trimRight(),
-        dict as any,
+        // Widen the type so we don't need to make `Comment` a generic
+        combineValues({ dictionary, positionalValues }),
         externalTemplate
       )
     })
   }
+}
+
+/**
+ * Builds a template tag based on a "tag".
+ *
+ * **Note**: Change this once the comment interface is defined properly.
+ *
+ * @param tag
+ */
+function buildTemplateTag(tag: string | number) {
+  return typeof tag === 'number'
+    ? `%${tag}$s`
+    : `%<${tag}>s`
+}
+
+function separateValues<R extends string>(...values: FactoryResultParameter<R>) {
+  // Get the last value in the splat and coerce it as a dictionary.
+  const last = values[values.length - 1]
+
+  // This allows the positional arguments to be passed in as array or as list of
+  // rest parameters or as list of arrays.
+  const positionalValues = (values as string[][])
+    .map((item) => typeof item === 'string' ? [item] : item)
+    .filter(Array.isArray)
+    .reduce((total, array) => total.concat(array), []) as string[]
+
+  // When there is no dictionairy
+  if (!last || typeof last === 'string' || Array.isArray(last) || Object.keys(last).length === 0) {
+    return {
+      dictionary: {} as NamedTags<R>,
+      positionalValues
+    }
+  }
+
+  // Removes the dictionary from the original array. Probably unnecessary as we
+  // filter out the dictionary in positionalValues anyway.
+  return {
+    dictionary: (values.splice(values.length - 1, 1)[0] || {}) as NamedTags<R>,
+    positionalValues
+  }
+}
+
+function combineValues<R extends string>({ dictionary, positionalValues }: { dictionary: NamedTags<R>, positionalValues: string[] }): CommentVariables {
+  if (positionalValues.length === 0) {
+    return Object.freeze(dictionary) as unknown as CommentVariables
+  }
+
+  // Assigns the positional variables as keys
+  return Object.freeze(Object.assign({}, dictionary, positionalValues)) as unknown as CommentVariables
 }
