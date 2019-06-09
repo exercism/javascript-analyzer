@@ -33,6 +33,8 @@ export class AnalyzerOutput implements Output {
     this.status = this.comments.length === 0
       ? SolutionStatus.ApproveAsOptimal
       : SolutionStatus.ApproveWithComment
+
+    this.freeze()
   }
 
   /**
@@ -40,6 +42,8 @@ export class AnalyzerOutput implements Output {
    */
   public disapprove() {
     this.status = SolutionStatus.DisapproveWithComment
+
+    this.freeze()
   }
 
   /**
@@ -47,6 +51,8 @@ export class AnalyzerOutput implements Output {
    */
   public redirect() {
     this.status = SolutionStatus.Redirect
+
+    this.freeze()
   }
 
   /**
@@ -60,6 +66,11 @@ export class AnalyzerOutput implements Output {
     return this
   }
 
+  private freeze() {
+    Object.freeze(this)
+    Object.freeze(this.comments)
+  }
+
   /**
    * Transforms the output into a structured data string for output.
    *
@@ -70,12 +81,11 @@ export class AnalyzerOutput implements Output {
    * @param {ExecutionOptions} options
    * @returns {Promise<string>}
    */
-  toProcessable({ templates }: ExecutionOptions): Promise<string> {
+  toProcessable({ templates }: Pick<ExecutionOptions, 'templates'>): Promise<string> {
     return Promise.resolve(
       JSON.stringify({
         status: this.status,
         comments: this.comments.map(templates ? makeExternalComment : makeIsolatedComment)
-
       })
     )
   }

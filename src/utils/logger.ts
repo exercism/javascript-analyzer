@@ -1,5 +1,5 @@
 type StreamBuffer = string | Buffer | Uint8Array
-type LoggerInput = StreamBuffer | (() => StreamBuffer)
+export type LoggerInput = StreamBuffer | (() => StreamBuffer)
 
 /**
  * Log the buffer to the output

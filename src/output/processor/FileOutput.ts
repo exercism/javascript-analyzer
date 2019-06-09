@@ -1,4 +1,4 @@
-import fs from 'fs'
+import { writeFile } from '~src/utils/fs'
 import path from 'path'
 
 import { getProcessLogger } from '~src/utils/logger'
@@ -10,11 +10,7 @@ export const FileOutput: OutputProcessor = async (previous: Promise<string>, opt
   const outputPath = getOutputPath(options)
   getProcessLogger().log(`=> writing output to ${outputPath}`)
 
-  return new Promise((resolve, reject) => {
-    fs.writeFile(outputPath, output, (err) => {
-      err ? reject(err) : resolve(output)
-    })
-  })
+  return writeFile(outputPath, output)
 }
 
 function getOutputPath({ output, inputDir }: FileOutputOptions): string {
