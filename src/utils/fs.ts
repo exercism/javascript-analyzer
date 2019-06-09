@@ -33,3 +33,11 @@ export async function exists(path: string): Promise<boolean> {
     })
   })
 }
+
+export async function writeFile<T>(filePath: string, data: T): Promise<T> {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(filePath, data, (err) => {
+      err ? reject(err) : resolve(data)
+    })
+  })
+}
