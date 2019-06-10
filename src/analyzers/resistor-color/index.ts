@@ -55,9 +55,7 @@ export class ResistorColorAnalyzer extends AnalyzerImpl {
   get mainConstant() {
     if (!this._mainConstant) {
       this._mainConstant = findTopLevelConstants(this.program, ['let', 'const', 'var']).find(
-        ({ declarations }) => !!declarations.find((declaration) => {
-          return isIdentifier(declaration.id, 'COLORS')
-        })
+        (declaration) => isIdentifier(declaration.id, 'COLORS')
       ) || NOT_FOUND
     }
 

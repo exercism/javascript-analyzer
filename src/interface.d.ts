@@ -61,6 +61,15 @@ interface Output {
   toProcessable(options: Readonly<ExecutionOptions>): Promise<string>
 }
 
+interface WritableOutput extends Output {
+  approve(comment?: Comment): void
+  disapprove(comment?: Comment): void
+  redirect(comment?: Comment): void
+  add(comment: Comment): void
+
+  hasCommentary: boolean
+}
+
 interface OutputProcessor {
   (previous: Promise<string>, options: Readonly<ExecutionOptions>): Promise<string>
 }

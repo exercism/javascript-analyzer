@@ -66,7 +66,7 @@ export class AnalyzerOutput implements Output {
     return this
   }
 
-  private freeze() {
+  protected freeze() {
     Object.freeze(this)
     Object.freeze(this.comments)
   }

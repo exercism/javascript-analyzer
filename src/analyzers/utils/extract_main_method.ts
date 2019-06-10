@@ -1,22 +1,36 @@
-import { Program, Node, FunctionDeclaration, ArrowFunctionExpression, MethodDefinition, ClassProperty, FunctionExpression, ObjectExpression, Property } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
-import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
+import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree"
 
-import traverser from 'eslint/lib/util/traverser'
+import { traverse, Traverser as importedTraverser } from 'eslint/lib/util/traverser'
+import { isIdentifier } from "./is_identifier";
 
-export type Traverser = traverser.Traverser
-export type MainMethod = FunctionDeclaration | ArrowFunctionExpression | FunctionExpression
+type Program = TSESTree.Program
+type Node = TSESTree.Node
 
-export function extractMainMethod(program: Program, name: string): MainMethod | undefined {
+type ArrowFunctionExpression = TSESTree.ArrowFunctionExpression
+type FunctionDeclaration = TSESTree.FunctionDeclaration
+type FunctionExpression = TSESTree.FunctionExpression
+type Identifier = TSESTree.Identifier
+type ObjectExpression = TSESTree.ObjectExpression
+type Property = TSESTree.Property
+
+export type Traverser = importedTraverser
+export type MainMethod<T extends string = string> =
+    FunctionDeclaration & { id: Identifier & { name: T } }
+  | ArrowFunctionExpression & { id: Identifier & { name: T } }
+  | FunctionExpression & { id: Identifier & { name: T } }
+
+export function extractMainMethod<T extends string = string>(program: Program, name: T): MainMethod<T> | undefined {
   let result: MainMethod | undefined = undefined
 
-  traverser.traverse(program, {
+  traverse(program, {
     enter(node: Node) {
       switch (node.type) {
 
         // function name() {}
         case AST_NODE_TYPES.FunctionDeclaration:
-          if (node.id && node.id.name === name) {
-            result = node
+          const { id } = node
+          if (id && isIdentifier(id, name)) {
+            result = Object.assign(node, { id })
             this.break()
           }
           break;
@@ -24,26 +38,24 @@ export function extractMainMethod(program: Program, name: string): MainMethod | 
         case AST_NODE_TYPES.VariableDeclaration:
           this.skip()
 
-          traverser.traverse(node, {
+          traverse(node, {
             enter(innerNode: Node) {
               switch(innerNode.type) {
 
                 case AST_NODE_TYPES.VariableDeclarator:
-                  if (innerNode.id.type === AST_NODE_TYPES.Identifier) {
-                    if (
-                         innerNode.id.name === name
-                      && innerNode.init
-                    ) {
-                      // const name = () => {}
-                      if (innerNode.init.type === AST_NODE_TYPES.ArrowFunctionExpression) {
-                        result = innerNode.init
-                        this.break()
-                      }
-                      // const name = function() {}
-                      else if (innerNode.init.type === AST_NODE_TYPES.FunctionExpression) {
-                        result = innerNode.init
-                        this.break()
-                      }
+                  const { id } = innerNode
+                  if (isIdentifier(id, name) && innerNode.init) {
+
+                    // const name = () => {}
+                    if (innerNode.init.type === AST_NODE_TYPES.ArrowFunctionExpression) {
+                      result = Object.assign(innerNode.init, { id })
+                      this.break()
+                    }
+
+                    // const name = function() {}
+                    else if (innerNode.init.type === AST_NODE_TYPES.FunctionExpression) {
+                      result = Object.assign(innerNode.init, { id })
+                      this.break()
                     }
                   }
               }
@@ -60,14 +72,12 @@ export function extractMainMethod(program: Program, name: string): MainMethod | 
           // }
           case AST_NODE_TYPES.MethodDefinition:
             this.skip()
-            if (
-              node.static
-              && node.key.type === AST_NODE_TYPES.Identifier
-              && node.key.name === name
-            ) {
+
+            const { key: methodKey } = node
+            if (isIdentifier(methodKey, name)) {
               switch(node.value.type) {
                 case AST_NODE_TYPES.FunctionExpression:
-                  result = node.value
+                  result = Object.assign(node.value, { id: methodKey })
                   this.break()
                   break;
               }
@@ -81,15 +91,12 @@ export function extractMainMethod(program: Program, name: string): MainMethod | 
           case AST_NODE_TYPES.ClassProperty:
             this.skip()
 
-            if (
-                 node.static
-              && node.key.type === AST_NODE_TYPES.Identifier
-              && node.key.name === name
-            ) {
+            const { key: propertyKey } = node
+            if (isIdentifier(propertyKey, name) && node.static) {
               switch(node.value.type) {
                 case AST_NODE_TYPES.ArrowFunctionExpression:
                 case AST_NODE_TYPES.FunctionExpression:
-                  result = node.value
+                  result = Object.assign(node.value, { id: propertyKey })
                   this.break()
                   break;
               }
@@ -108,16 +115,15 @@ export function extractMainMethod(program: Program, name: string): MainMethod | 
               const property = objectNode.properties.find(
                 property =>
                    property.type === AST_NODE_TYPES.Property
-                && property.key.type === AST_NODE_TYPES.Identifier
-                && property.key.name === name
-              ) as Property | undefined
+                && isIdentifier(property.key, name)
+              ) as Property & { key: { name: T }} | undefined
 
               if (property) {
                 if (
                      property.value.type === AST_NODE_TYPES.ArrowFunctionExpression
                   || property.value.type === AST_NODE_TYPES.FunctionExpression
                 ) {
-                  result = property.value
+                  result = Object.assign(property.value, { id: property.key })
                   this.break()
                 }
               }

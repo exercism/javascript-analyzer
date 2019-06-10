@@ -1,13 +1,11 @@
-import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
-import { Identifier, Node, Program, VariableDeclarator } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
+import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree"
+import { Identifier, Node, VariableDeclarator, VariableDeclaration } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
 
 import { Traverser } from "eslint/lib/util/traverser"
 
-import { AnalyzerImpl } from "../AnalyzerImpl"
+import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl"
 import { factory } from "../../comments/comment"
 
-import { extractExport } from "../utils/extract_export"
-import { extractMainMethod, MainMethod } from "../utils/extract_main_method"
 import { parameterName } from '../utils/extract_parameter'
 import { findAll } from "../utils/find_all"
 import { findFirst } from "../utils/find_first"
@@ -20,23 +18,26 @@ import { isCallExpression } from "../utils/is_call_expression"
 import { isIdentifier } from "../utils/is_identifier"
 import { isLiteral } from "../utils/is_literal"
 
-import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_PARAMETER } from "../../comments/shared";
+import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_PARAMETER, PREFER_CONST_OVER_LET_AND_VAR } from "../../comments/shared";
 import { AstParser } from "../../parsers/AstParser";
+import { GigasecondSolution } from "./GigasecondSolution";
 
-const TIP_EXPORT_INLINE = factory<'method_signature' | 'const_name'>`
+import { NoMethodError } from "~src/errors/NoMethodError";
+import { NoExportError } from "~src/errors/NoExportError";
+
+const TIP_EXPORT_INLINE = factory<'method_signature'>`
 Did you know that you can export functions, classes and constants directly
 inline?
 \`\`\`javascript
-export const ${'const_name'} = ...
-
 export ${'method_signature'}
 \`\`\`
 `('javascript.gigasecond.export_inline')
 
-const PREFER_NUMBER_COMPREHENSION = factory<'literal'>`
-You can rewrite the literal \`${'literal'}\` using \`Math.pow\` or \`10 ** n\`,
-which makes it more readable.
-`('javascript.gigasecond.prefer_number_comprehension')
+const USE_NUMBER_COMPREHENSION = factory<'literal'>`
+Large numbers like \`${'literal'}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`${'literal'}\` using \`Math.pow\` or
+\`10 ** n\` to make it more readable and lower the cognitive complexity.
+`('javascript.gigasecond.use_number_comprehension')
 
 const PREFER_TOP_LEVEL_CONSTANT = factory<'value' | 'name'>`
 Consider extracting the gigasecond number into a constant:
@@ -48,111 +49,92 @@ export const gigasecond = (...)
 \`\`\`
 `('javascript.gigasecond.prefer_top_level_constant')
 
+const SIGNATURE_NOT_OPTIMAL = factory`
+If you look at the tests, the function \`gigasecond\` only receives one
+paremeter. Nothing more and nothing less.
 
-export class GigasecondAnalyzer extends AnalyzerImpl {
+Remove the additional parameters from your function, as their value will always
+be \`undefined\` or whatever default you've assigned.
+`('javascript.gigasecond.signature_not_optimal')
 
-  static Parser: AstParser = new AstParser(undefined, 1)
+type Program = TSESTree.Program
 
-  private program!: Program
-  private source!: string
+const Parser: AstParser = new AstParser(undefined, 1)
 
-  private _mainMethod!: ReturnType<typeof extractMainMethod>
-  private _mainExport!: ReturnType<typeof extractExport>
+export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
 
-  // Typed as Identifier because that's the only expected type. When checking
-  // the signature, make sure it _does_ check if this is an identifier.
-  private _mainParameter!: Identifier
-  private memoized: { [P: string]: any } = {};
-
-  get mainMethod() {
-    if (!this._mainMethod) {
-      this._mainMethod = extractMainMethod(this.program, 'gigasecond')
-    }
-    return this._mainMethod
-  }
-
-  get mainExport() {
-    if (!this._mainExport) {
-      this._mainExport = extractExport(this.program, 'gigasecond')
-    }
-    return this._mainExport
-  }
-
-  get mainParameter() {
-    if (!this._mainParameter) {
-      this._mainParameter = this.mainMethod!.params[0] as Identifier
-    }
-
-    return this._mainParameter
-  }
-
-  protected async execute(input: Input): Promise<void> {
-    const [parsed] = await GigasecondAnalyzer.Parser.parse(input)
-
-    this.program = parsed.program
-    this.source = parsed.source
-
-    this.memoized = {}
+  protected async execute(input: Input, output: WritableOutput): Promise<void> {
+    const [parsed] = await Parser.parse(input)
 
     // Firstly we want to check that the structure of this solution is correct
     // and that there is nothing structural stopping it from passing the tests
-    this.checkStructure()
+    const solution = this.checkStructure(parsed.program, output)
 
     // Now we want to ensure that the method signature is sane and that it has
-    // valid arguments
-    this.checkSignature()
+    // valid arguments.
+    this.checkSignature(solution, output)
 
     // There are a handful optimal solutions for gigasecond which needs no
     // comments and can just be approved. If we have it, then let's just
     // acknowledge it and get out of here.
-    this.checkForOptimalSolutions()
+    this.checkForOptimalSolutions(solution, output)
 
     // The solution might not be optimal but still be approvable. Check these
     // first and bail-out (with approval) if that's the case.
-    this.checkForApprovableSolutions()
+    // this.checkForApprovableSolutions()
 
     // Time to find sub-optimal code.
 
     // The solution is automatically referred to the mentor if it reaches this
   }
 
-  private checkStructure() {
-    const method = this.mainMethod
-    const [declaration,] = this.mainExport
+  private checkStructure(program: Readonly<Program>, output: WritableOutput) {
+    try {
+      return new GigasecondSolution(program)
+    } catch (error) {
+      if (error instanceof NoMethodError) {
+        output.disapprove(NO_METHOD({ method_name: error.method }))
+      }
 
-    // First we check that there is a gigasecond function and that this function
-    // is exported.
-    if (!method) {
-      this.comment(NO_METHOD({ method_name: 'gigasecond' }))
-    }
+      if (error instanceof NoExportError) {
+        output.disapprove(NO_NAMED_EXPORT({ export_name: error.namedExport }))
+      }
 
-    if (!declaration) {
-      this.comment(NO_NAMED_EXPORT({ export_name: 'gigasecond' }))
-    }
-
-    if (this.hasCommentary) {
-      this.disapprove()
+      throw error
     }
   }
 
-  private checkSignature() {
-    const method: MainMethod = this.mainMethod!
-
+  private checkSignature({ entry }: GigasecondSolution, output: WritableOutput) {
     // If there is no parameter then this solution won't pass the tests.
-    if (method.params.length === 0) {
-      this.disapprove(NO_PARAMETER({ function_name: method.id!.name }))
+    //
+    if (!entry.hasAtLeastOneParameter) {
+      output.disapprove(NO_PARAMETER({ function_name: entry.name }))
     }
-
-    const firstParameter = this.mainParameter!
 
     // If this is not a simple parameter, but something else such as a splat,
     // or a parameter with a default argument, bail out and refer to mentor.
-    if (firstParameter.type !== AST_NODE_TYPES.Identifier) {
-      this.redirect(UNEXPECTED_PARAMETER({ type: firstParameter.type }))
+    //
+    if (!entry.hasSimpleParameter) {
+      output.redirect(UNEXPECTED_PARAMETER({ type: entry.parameterType }))
+    }
+
+    // If there is more than one parameter, something fishy is going on. Collect
+    // the comment for the student, to disapprove later on.
+    //
+    if (!entry.hasExactlyOneParameter) {
+      output.add(SIGNATURE_NOT_OPTIMAL())
+    }
+
+    // TODO: do we want to check more here?
+
+    //
+    //
+    if (output.hasCommentary) {
+      output.disapprove()
     }
   }
 
-  private checkForOptimalSolutions() {
+  private checkForOptimalSolutions(solution: GigasecondSolution, output: WritableOutput) {
     // The optional solution looks like this:
     //
     // const GIGASECOND_IN_MS = 10 ** 9
@@ -166,67 +148,43 @@ export class GigasecondAnalyzer extends AnalyzerImpl {
     // number.
     //
 
-    if (
-         !this.isOneLineSolution()
-      || !this.isUsingGetTimeOnce()
-      || !this.isUsingNewDateOnce()
-      || !this.findExtractedNumberConstant()
-      || this.isUsingLargeNumberLiteral()
-      || this.isUsingIntermediateVariable()
-    ) {
+    if (!solution.isOptimal()) {
       // continue analyzing
       this.logger.log('~> Solution is not optimal')
-      this.logger.log(JSON.stringify({
-        isOneLineSolution: this.isOneLineSolution(),
-        isUsingGetTimeOnce: !!this.isUsingGetTimeOnce(),
-        isUsingNewDateOnce: !!this.isUsingNewDateOnce(),
-        findExtractedNumberConstant: !!this.findExtractedNumberConstant(),
-        isUsingLargeNumberLiteral: !!this.isUsingLargeNumberLiteral(),
-        isUsingIntermediateVariable: !!this.isUsingIntermediateVariable()
-      }, null, 2))
       return
     }
 
-    this.checkForTips()
-    this.approve()
+    this.checkForTips(solution, output)
+    output.approve()
   }
 
-  private checkForTips() {
-    const optimizeLargeNumber = this.isUsingLargeNumberLiteral()
-    const numberComprehension = this.findNumberComprehension()
-    const extracted = this.findExtractedNumberConstant()
-
-    if (extracted === undefined) {
-      // Should extract into constant
-      this.comment(
-        PREFER_TOP_LEVEL_CONSTANT({
-          name: 'GIGASECOND_IN_MS',
-          value: '1000000000000',
-        })
-      )
-    }
-
-    if (optimizeLargeNumber) {
-      // Should use Math.pow(10, 12) or 10 ** 12
-      this.comment(
-        PREFER_NUMBER_COMPREHENSION({
-          literal: '1000000000000'
-        })
-      )
-    }
-
-    if (!this.hasInlineExport()) {
+  private checkForTips(solution: GigasecondSolution, output: WritableOutput) {
+    if (!solution.hasInlineExport) {
       // export { gigasecond }
-      const gigasecondConstant = this.findExtractedNumberConstant()
-      this.comment(
+      output.add(
         TIP_EXPORT_INLINE({
           method_signature: 'function gigasecond(...) { ... }',
-          const_name: gigasecondConstant && parameterName(gigasecondConstant) || 'MY_CONST'
         })
       )
     }
-  }
 
+    if (solution.hasOneConstant && !solution.areFileConstantsConst) {
+      const { constant } = solution
+
+      if (constant) {
+        // let GIGASECOND_IN_MS =
+        output.add(
+          PREFER_CONST_OVER_LET_AND_VAR({
+            kind: constant.kind,
+            name: constant.name
+          })
+        )
+      }
+    }
+  }
+}
+
+/*
   private checkForApprovableSolutions() {
     if (!this.isOneLineSolution()) {
       return
@@ -238,44 +196,6 @@ export class GigasecondAnalyzer extends AnalyzerImpl {
 
     this.checkForTips()
     this.approve()
-  }
-
-  private isOneLineSolution() {
-    // Maximum body count may be 2 (3 - 1)
-    //
-    // 1: export function gigasecond(input) {
-    // 2:  return ...
-    // 3: }
-    //
-    // but can also be less:
-    //
-    // 1: export const gigasecond = (input) => ...
-    //
-    const body = this.mainMethod!.body!
-
-    // This trick actually looks to the inner exppresion instead of the entire
-    // function in order to allow for comments inside the body.
-    const { loc: { start: { line: lineStart }, end: { line: lineEnd } } } =
-         body.type === AST_NODE_TYPES.BlockStatement
-      && body.body.length === 1
-      && body.body[0].type === AST_NODE_TYPES.ReturnStatement
-       ? body.body[0]
-       : this.mainMethod!
-
-    return (lineEnd - lineStart) <= 2
-  }
-
-  private hasInlineExport() {
-    // Additionally make sure the export is inline by checking if it doesn't
-    // have any specifiers:
-    //
-    // export function gigasecond
-    // => no specififers
-    //
-    // export { gigasecond }
-    // => yes specififers
-    //
-    return this.mainExport[0]!.specifiers && this.mainExport[0]!.specifiers.length === 0
   }
 
   private isUsingGetTimeOnce() {
@@ -404,4 +324,4 @@ export class GigasecondAnalyzer extends AnalyzerImpl {
     return false
   }
 }
-
+*/

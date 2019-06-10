@@ -1,21 +1,28 @@
-import { Node, VariableDeclaration } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
 import { findAll } from "./find_all";
 import { Traverser } from "eslint/lib/util/traverser";
-import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree";
+import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree";
+import { isVariableDeclarationOfKind } from "./is_variable_declaration_of_kind";
+
+type Node = TSESTree.Node
+type VariableDeclaration = TSESTree.VariableDeclaration
+type VariableDeclarator = TSESTree.VariableDeclarator
+export type ProgramConstant = VariableDeclarator & { kind: VariableDeclaration['kind'] }
+export type ProgramConstants = ProgramConstant[]
 
 const CONSTANT_MODIFIERS = [
   AST_NODE_TYPES.ExportNamedDeclaration
 ]
 
-function isTopLevelConstant(this: Traverser, node: Node, kinds: VariableDeclaration["kind"][] = ['const']): boolean {
-  if (node.type !== AST_NODE_TYPES.VariableDeclaration || !kinds.includes(node.kind)) {
-    if (!CONSTANT_MODIFIERS.indexOf(node.type)) {
-      this.skip() // doesn't traverse this node any further
-    }
-    return false
+function isTopLevelConstant(this: Traverser, node: Node, kinds: readonly VariableDeclaration["kind"][] = ['const']): boolean {
+  if (isVariableDeclarationOfKind(node, kinds as ['let', 'const', 'var'])) {
+    return true
   }
 
-  return true
+  if (!CONSTANT_MODIFIERS.indexOf(node.type)) {
+    this.skip() // doesn't traverse this node any further
+  }
+
+  return false
 }
 
 /**
@@ -24,9 +31,16 @@ function isTopLevelConstant(this: Traverser, node: Node, kinds: VariableDeclarat
  * @param root the top-level
  * @returns Node[]
  */
-export function findTopLevelConstants(root: Node, kinds: VariableDeclaration["kind"][] = ['const']) {
-  return findAll(
+export function findTopLevelConstants(root: Node, kinds?: readonly VariableDeclaration["kind"][]) {
+  const constants = findAll(
     root,
     function(node) { return isTopLevelConstant.apply(this, [node, kinds]) }
   ) as VariableDeclaration[]
+
+  return constants.reduce(
+    (declarations, declaration) => declarations.concat(
+      declaration.declarations.map(d => ({ ...d, kind: declaration.kind }))
+    ),
+    [] as ProgramConstants
+  )
 }
