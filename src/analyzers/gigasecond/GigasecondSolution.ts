@@ -12,9 +12,12 @@ import { isBinaryExpression } from "../utils/is_binary_expression";
 import { isCallExpression } from "../utils/is_call_expression";
 import { parameterName } from "../utils/extract_parameter";
 import { isAssignmentPattern } from "../utils/is_assignment_pattern";
+import { getProcessLogger } from "~src/utils/logger";
+import { isLiteral } from "../utils/is_literal";
 
 type Program = TSESTree.Program
 type Parameter = TSESTree.Parameter
+type Expression = TSESTree.Expression
 
 type MainExport = ReturnType<typeof extractExport>
 
@@ -55,10 +58,19 @@ export class GigasecondSolution {
   }
 
   get hasOptimalEntry(): boolean {
-    return this.hasOneConstant && this.entry.isOptimal(this.constant!)
+    return this.entry.isOptimal(this.constant)
   }
 
   get areFileConstantsConst(): boolean  {
+    // const foo;
+    // => kind: "const"
+    //
+    // let foo;
+    // => kind: "let"
+    //
+    // var foo;
+    // => kind: "var"
+    //
     return this.fileConstants.every((declaration) => declaration.kind === 'const')
   }
 
@@ -73,7 +85,7 @@ export class GigasecondSolution {
   }
 
   isOptimal(): boolean {
-    return this.hasOptimalConstant && this.hasOptimalEntry
+    return this.hasOptimalEntry && this.hasOptimalConstant
   }
 }
 
@@ -109,11 +121,13 @@ class Entry {
     return parameterName(this.params[0])
   }
 
-  isOptimal(constant: Readonly<Constant>): boolean {
+  isOptimal(constant?: Readonly<Constant>): boolean {
+    const logger = getProcessLogger()
 
     // If is not a simple return
     //
     if(this.body.type !== AST_NODE_TYPES.ReturnStatement) {
+      logger.log(`~> body type is: ${this.body.type}`)
       return false
     }
 
@@ -124,6 +138,7 @@ class Entry {
 
     const { argument } = this.body
     if (!argument || !isNewExpression(argument, 'Date')) {
+      logger.log(`~> argument is not new XXX: ${argument}`)
       return false
     }
 
@@ -136,11 +151,18 @@ class Entry {
 
     // Make sure we're passing a single binary expression
     if (newDateParams.length !== 1) {
+      logger.log(`~> there are ${newDateParams.length} parameters`)
       return false
     }
 
     const [expression] = newDateParams
     if (!isBinaryExpression(expression, '+')) {
+      logger.log(`~> expression is ${expression.type}`)
+      return false
+    }
+
+    if (!constant) {
+      logger.log(`~> doesn't have a top-level constant`)
       return false
     }
 
@@ -161,26 +183,60 @@ class Entry {
       ? expression.left
       : isCallExpression(expression.right, this.parameterName, 'getTime') && expression.right
 
+    logger.log(`=> identifier: ${!!identifier}, expression: ${!!callExpression}`)
     return !!(identifier && callExpression)
   }
 }
 
 class Constant {
   public readonly name: string
+  private _memoized: { [key: string]: string | number | boolean }
 
   constructor(private readonly constant: Readonly<ProgramConstant>) {
-    this.name = (isIdentifier(constant.id) && constant.id.name) || 'GIGASECOND_IN_MS'
+    this.name = (isIdentifier(constant.id) && constant.id.name) || '<NO-CONSTANT-NAME>'
+    this._memoized = {}
   }
 
   get kind(): ProgramConstant['kind'] {
     return this.constant.kind
   }
 
-  isOptimal(): boolean {
-    // && isAssignmentPattern(this.constant!)
-    //  && this.usesComprehension
-    return isAssignmentPattern(this.constant)
+  get isOfKindConst(): boolean {
+    return this.kind === 'const'
   }
+
+  get isOptimisedLiteral(): boolean {
+    return !!this.constant.init && isLiteral(this.constant.init, undefined, '1e12')
+  }
+
+  get isLargeNumberLiteral(): boolean {
+    return !!this.constant.init && isLiteral(this.constant.init, 1000000000000)
+  }
+
+  get isOptimisedExpression(): boolean {
+    const { init } = this.constant
+
+    if (!init) {
+      return false
+    }
+
+    if ('isOptimisedExpression' in this._memoized) {
+      return !!this._memoized['isOptimisedComprehension']
+    }
+
+    return this._memoized['isOptimisedComprehension'] = isOptimisedComprehension(init)
+  }
+
+  isOptimal(): boolean {
+    if ('isOptimal' in this._memoized) {
+      return !!this._memoized['isOptimal']
+    }
+
+    const result = this.isOfKindConst && this.isOptimisedExpression
+    this._memoized['isOptimal'] = result
+    return result
+  }
+
 }
 
 function ensureExists(method?: MainMethod<typeof EXPECTED_METHOD>): Entry {
@@ -195,4 +251,83 @@ function ensureExported([declaration, node]: MainExport): [NonNullable<MainExpor
     throw new NoExportError(EXPECTED_EXPORT)
   }
   return [declaration, node]
+}
+
+function isOptimisedComprehension(expression: Expression): boolean {
+  // 1e12
+  if (isLiteral(expression, undefined, '1e12')) {
+    return true
+  }
+
+  // Math.pow(10, 12)
+  if (
+    isCallExpression(expression, 'Math', 'pow')
+    && isLiteral(expression.arguments[0], 10)
+    && isLiteral(expression.arguments[1], 12)
+  ) {
+    return true
+  }
+
+  // 10 ** 12
+  if (
+    isBinaryExpression(expression, '**')
+    && isLiteral(expression.left, 10)
+    && isLiteral(expression.right, 12)) {
+    return true
+  }
+
+  // ◼ * ◼
+  if (isBinaryExpression(expression, '*')) {
+    // 1e9 * ◼
+    // 10 ** 9 * ◼
+    // Math.pow(10, 9) * ◼
+    const isOptimisedGigasecondLeft =
+         isLiteral(expression.left, undefined, '1e9')
+      || (isBinaryExpression(expression.left, '**') && isLiteral(expression.left.left, 10) && isLiteral(expression.left.right, 9))
+      || (isCallExpression(expression.left, 'Math', 'pow') && isLiteral(expression.left.arguments[0], 10) && isLiteral(expression.left.arguments[1], 9))
+
+    if (isOptimisedGigasecondLeft) {
+      // ◼ * 1000
+      // ◼ * 1e3
+      return isLiteral(expression.right, 1000)
+        || isLiteral(expression.right, undefined, '1e3')
+    }
+
+    // ◼ * 1e9
+    // ◼ * 10 ** 9
+    // ◼ * Math.pow(10, 9)
+    const isOptimisedGigasecondRight =
+         isLiteral(expression.right, undefined, '1e9')
+      || (isBinaryExpression(expression.right, '**') && isLiteral(expression.right.left, 10) && isLiteral(expression.right.right, 9))
+      || (isCallExpression(expression.right, 'Math', 'pow') && isLiteral(expression.right.arguments[0], 10) && isLiteral(expression.right.arguments[1], 9))
+
+    // 1000 * ◼
+    // 1e3 * ◼
+    return isOptimisedGigasecondRight && (
+         isLiteral(expression.left, 1000)
+      || isLiteral(expression.left, undefined, '1e3')
+    )
+  }
+
+  // Math.pow(10, 12)
+  if (
+    isCallExpression(expression, 'Math', 'pow')
+    && isLiteral(expression.arguments[0], 10)
+    && isLiteral(expression.arguments[1], 12)
+  ) {
+    return true
+  }
+
+  // 10 ** 12
+  if (
+    isBinaryExpression(expression, '**')
+    && isLiteral(expression.left, 10)
+    && isLiteral(expression.right, 12)) {
+    return true
+  }
+
+  const logger = getProcessLogger()
+  logger.log('~> expression is not an optimised comprehension')
+  logger.log(JSON.stringify(expression, null, 2))
+  return false
 }

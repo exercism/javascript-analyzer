@@ -81,7 +81,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
 
     // The solution might not be optimal but still be approvable. Check these
     // first and bail-out (with approval) if that's the case.
-    // this.checkForApprovableSolutions()
+    this.checkForApprovableSolutions(solution, output)
 
     // Time to find sub-optimal code.
 
@@ -137,7 +137,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
   private checkForOptimalSolutions(solution: GigasecondSolution, output: WritableOutput) {
     // The optional solution looks like this:
     //
-    // const GIGASECOND_IN_MS = 10 ** 9
+    // const GIGASECOND_IN_MS = 10 ** 12
     //
     // export function gigasecond(input) {
     //   return new Date(input.getTime() + GIGASECOND_IN_MS)
@@ -158,6 +158,26 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     output.approve()
   }
 
+  private checkForApprovableSolutions(solution: GigasecondSolution, output: WritableOutput) {
+    if (!solution.constant) {
+      // This means there is no constant found. The approvable solution looks
+      // like this
+      //
+      // export function gigasecond(input) {
+      //   return new Date(input.getTime() + 10 ** 12)
+      // }
+      //
+      // Or this
+      //
+      // export function gigasecond(input) {
+      //   const GIGASECOND_IN_MS = 10 ** 12
+      //   return new Date(input.getTime() + GIGASECOND_IN_MS)
+      // }
+
+      return
+    }
+  }
+
   private checkForTips(solution: GigasecondSolution, output: WritableOutput) {
     if (!solution.hasInlineExport) {
       // export { gigasecond }
@@ -168,11 +188,14 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
       )
     }
 
+    // For the optimal solution, this may be anything
+    //
     if (solution.hasOneConstant && !solution.areFileConstantsConst) {
       const { constant } = solution
 
       if (constant) {
         // let GIGASECOND_IN_MS =
+        // var GIGASECOND_IN_MS =
         output.add(
           PREFER_CONST_OVER_LET_AND_VAR({
             kind: constant.kind,
