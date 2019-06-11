@@ -67,3 +67,13 @@ most IDEs from highlighting that parameter if it's unused, which is actually a
 tool you probably want to keep in this case. Remove the underscore \`_\` from
 ${'parameter_name'} in order to fix this.
 `('javascript.generic.prefer_unprefixed_underscore_parameters')
+
+export const PARSE_ERROR = factory<'error' | 'details'>`
+There is something wrong with your submission, most likely a Syntax Error:
+
+Message: "${'error'}"
+
+\`\`\`
+${'details'}
+\`\`\`
+`('javascript.generic.parse_error')
