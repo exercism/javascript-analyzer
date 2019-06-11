@@ -89,7 +89,13 @@ readDir(FIXTURES_ROOT)
 
         const fixture      = fixtureDir
 
-        await FileOutput(analysis.toProcessable(options), { ...options, inputDir, output: './analysis.json' })
+        const processable = analysis.toProcessable(options)
+
+        if (options.dry) {
+          await processable
+        } else {
+          await FileOutput(processable, { ...options, inputDir, output: './analysis.json' })
+        }
 
         return { result: analysis, runtime, fixture }
       } catch (_ignore) {
@@ -197,7 +203,7 @@ ${JSON.stringify(groupKeys.reduce((serializable, status) => {
 ${line('Approve (optimal)', aggregatedGroups['approve_as_optimal'])}
 ${line('Approve (comment)', aggregatedGroups['approve_with_comment'])}
 ${line('Disapprove (comment)', aggregatedGroups['disapprove_with_comment'])}
-${line( 'Refer to mentor', aggregatedGroups['refer_to_mentor'])}
+${line('Refer to mentor', aggregatedGroups['refer_to_mentor'])}
 ${line('Total', totalData)}
 `.trim())
   })
