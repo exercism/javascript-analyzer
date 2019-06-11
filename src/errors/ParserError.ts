@@ -1,7 +1,7 @@
 import { SOURCE_PARSE_ERROR } from "./codes";
 
 export class ParserError extends Error {
-  code = SOURCE_PARSE_ERROR
+  public readonly code: typeof SOURCE_PARSE_ERROR;
 
   constructor(public readonly original: Error) {
     super(`
@@ -12,5 +12,6 @@ ${original.message}
     `.trim())
 
     Error.captureStackTrace(this, this.constructor)
+    this.code = SOURCE_PARSE_ERROR
   }
 }
