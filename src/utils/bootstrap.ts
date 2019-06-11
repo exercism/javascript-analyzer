@@ -1,8 +1,8 @@
-import { ExecutionOptionsImpl } from './execution_options'
-import { Logger, setProcessLogger as setGlobalLogger } from '../utils/logger'
-import { DirectoryInput } from '../input/DirectoryInput';
-import { GENERIC_FAILURE } from '../errors/codes';
-import { ExerciseImpl } from '../ExerciseImpl';
+import { registerExceptionHandler } from '~src/errors/handler';
+import { ExerciseImpl } from '~src/ExerciseImpl';
+import { DirectoryInput } from '~src/input/DirectoryInput';
+import { Logger, setProcessLogger as setGlobalLogger } from '~src/utils/logger';
+import { ExecutionOptionsImpl } from './execution_options';
 
 export interface BootstrapResult {
   exercise: Exercise
@@ -30,12 +30,7 @@ export class Bootstrap {
    */
   static call(): BootstrapResult {
 
-    process.on('uncaughtException', function<T extends Error & { code?: number }>(err: T) {
-      console.error(err)
-      process.stderr.write(err.message)
-
-      process.exit('code' in err ? err.code : GENERIC_FAILURE)
-    })
+    registerExceptionHandler()
 
     const options   = ExecutionOptionsImpl.create()
     const logger    = new Logger(options)
