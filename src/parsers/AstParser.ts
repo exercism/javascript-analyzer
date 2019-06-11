@@ -1,4 +1,6 @@
 import { parse as parseToTree, TSESTree, TSESTreeOptions } from "@typescript-eslint/typescript-estree";
+import { NoSourceError } from '~src/errors/NoSourceError';
+import { ParserError } from "~src/errors/ParserError";
 import { getProcessLogger } from "~src/utils/logger";
 
 type Program = TSESTree.Program
@@ -21,7 +23,15 @@ export class AstParser {
     logger.log(`=> inputs: ${sources.length}`)
     sources.forEach(source => logger.log(`\n${source}\n`))
 
-    return sources.map(source => new ParsedSource(parseToTree(source, this.options), source))
+    if (sources.length === 0) {
+      throw new NoSourceError()
+    }
+
+    try {
+      return sources.map(source => new ParsedSource(parseToTree(source, this.options), source))
+    } catch(error) {
+      throw new ParserError(error)
+    }
   }
 }
 

@@ -12,8 +12,10 @@ import { isCallExpression } from "~src/analyzers/utils/is_call_expression";
 import { isIdentifier } from "~src/analyzers/utils/is_identifier";
 import { annotateType } from "~src/analyzers/utils/type_annotations";
 import { factory } from "~src/comments/comment";
-import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_SPLAT_ARGS } from "~src/comments/shared";
+import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_SPLAT_ARGS, PARSE_ERROR } from "~src/comments/shared";
 import { AstParser } from "~src/parsers/AstParser";
+import { NoSourceError } from "~src/errors/NoSourceError";
+import { ParserError } from "~src/errors/ParserError";
 
 const TIP_EXPORT_INLINE = factory`
 Did you know that you can export functions, classes and constants directly
@@ -63,7 +65,7 @@ export class ResistorColorAnalyzer extends AnalyzerImpl {
   }
 
   public async execute(input: Input): Promise<void> {
-    const [parsed] = await Parser.parse(input)
+    const [parsed] = await this.parse(input)
 
     this.program = parsed.program
     this.source = parsed.source
@@ -82,6 +84,25 @@ export class ResistorColorAnalyzer extends AnalyzerImpl {
     this.checkForOptimalSolutions()
 
     // The solution is automatically referred to the mentor if it reaches this
+  }
+
+  private async parse(input: Input) {
+    try {
+      return await Parser.parse(input)
+    } catch (err) {
+      if (err instanceof NoSourceError) {
+        this.logger.error(`=> [NoSourceError] ${err.message}`)
+        this.redirect()
+      }
+
+      if (err instanceof ParserError) {
+        this.logger.error(`=> [ParserError] ${err.message}`)
+        const { message, ...details } = err.original
+        this.disapprove(PARSE_ERROR({ error: message, details: JSON.stringify(details) }))
+      }
+
+      throw err
+    }
   }
 
   private checkStructure() {

@@ -16,8 +16,10 @@ import { isTemplateLiteral } from "~src/analyzers/utils/is_template_literal";
 import { isUnaryExpression } from "~src/analyzers/utils/is_unary_expression";
 import { annotateType } from "~src/analyzers/utils/type_annotations";
 import { factory } from "~src/comments/comment";
-import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, PREFER_STRICT_EQUALITY, PREFER_TEMPLATED_STRINGS, UNEXPECTED_SPLAT_ARGS } from "~src/comments/shared";
+import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, PREFER_STRICT_EQUALITY, PREFER_TEMPLATED_STRINGS, UNEXPECTED_SPLAT_ARGS, PARSE_ERROR } from "~src/comments/shared";
 import { AstParser } from "~src/parsers/AstParser";
+import { NoSourceError } from "~src/errors/NoSourceError";
+import { ParserError } from "~src/errors/ParserError";
 
 const OPTIMISE_DEFAULT_VALUE = factory<'parameter'>`
 You currently use a conditional to branch in case there is no value passed into
@@ -44,8 +46,6 @@ const Parser: AstParser = new AstParser(undefined, 1)
 
 
 export class TwoFerAnalyzer extends AnalyzerImpl {
-
-
   private program!: Program
   private source!: string
 
@@ -77,7 +77,7 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
   }
 
   protected async execute(input: Input): Promise<void> {
-    const [parsed] = await Parser.parse(input)
+    const [parsed] = await this.parse(input)
 
     this.program = parsed.program
     this.source = parsed.source
@@ -118,6 +118,25 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     //
 
     // The solution is automatically referred to the mentor if it reaches this
+  }
+
+  private async parse(input: Input) {
+    try {
+      return await Parser.parse(input)
+    } catch (err) {
+      if (err instanceof NoSourceError) {
+        this.logger.error(`=> [NoSourceError] ${err.message}`)
+        this.redirect()
+      }
+
+      if (err instanceof ParserError) {
+        this.logger.error(`=> [ParserError] ${err.message}`)
+        const { message, ...details } = err.original
+        this.disapprove(PARSE_ERROR({ error: message, details: JSON.stringify(details) }))
+      }
+
+      throw err
+    }
   }
 
   private checkStructure() {
