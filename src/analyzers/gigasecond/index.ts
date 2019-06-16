@@ -1,29 +1,13 @@
-import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree"
-import { Identifier, Node, VariableDeclarator, VariableDeclaration } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
+import { TSESTree, AST_NODE_TYPES } from "@typescript-eslint/typescript-estree";
 
-import { Traverser } from "eslint/lib/util/traverser"
-
-import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl"
-import { factory } from "../../comments/comment"
-
-import { parameterName } from '../utils/extract_parameter'
-import { findAll } from "../utils/find_all"
-import { findFirst } from "../utils/find_first"
-import { findFirstOfType } from "../utils/find_first_of_type"
-import { isNewExpression } from "../utils/find_new_expression"
-import { findRawLiteral } from "../utils/find_raw_literal"
-import { findTopLevelConstants } from "../utils/find_top_level_constants"
-import { isBinaryExpression } from "../utils/is_binary_expression"
-import { isCallExpression } from "../utils/is_call_expression"
-import { isIdentifier } from "../utils/is_identifier"
-import { isLiteral } from "../utils/is_literal"
-
-import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_PARAMETER, PREFER_CONST_OVER_LET_AND_VAR } from "../../comments/shared";
-import { AstParser } from "../../parsers/AstParser";
-import { GigasecondSolution } from "./GigasecondSolution";
-
-import { NoMethodError } from "~src/errors/NoMethodError";
+import { factory } from "~src/comments/comment";
+import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, PREFER_CONST_OVER_LET_AND_VAR, UNEXPECTED_PARAMETER } from "~src/comments/shared";
 import { NoExportError } from "~src/errors/NoExportError";
+import { NoMethodError } from "~src/errors/NoMethodError";
+import { AstParser } from "~src/parsers/AstParser";
+
+import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl";
+import { GigasecondSolution } from "./GigasecondSolution";
 
 const TIP_EXPORT_INLINE = factory<'method_signature'>`
 Did you know that you can export functions, classes and constants directly
@@ -150,7 +134,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
 
     if (!solution.isOptimal()) {
       // continue analyzing
-      this.logger.log('~> Solution is not optimal')
+      this.logger.log('~> solution is not optimal')
       return
     }
 
@@ -173,6 +157,28 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
       //   const GIGASECOND_IN_MS = 10 ** 12
       //   return new Date(input.getTime() + GIGASECOND_IN_MS)
       // }
+
+      const comprehension = solution.numberComprehension
+
+      if (comprehension) {
+        console.log(`=> found a comprehension (${comprehension.type})`)
+        switch (comprehension.type) {
+          // Top case
+          case AST_NODE_TYPES.BinaryExpression: {
+            // TODO: extract into const
+          }
+          default: {
+            // TODO: extract into const to top-level
+          }
+        }
+
+        // TODO: check if the _rest_ is optimal. If yes approve, otherwise
+        // comment don't approve and have the rest of this analyzer disapprove
+      } else {
+        // TODO: check if there is 1000000000000
+      }
+
+      this.logger.log(JSON.stringify(comprehension, null, 2))
 
       return
     }

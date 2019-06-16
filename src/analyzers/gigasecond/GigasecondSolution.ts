@@ -14,10 +14,12 @@ import { parameterName } from "../utils/extract_parameter";
 import { isAssignmentPattern } from "../utils/is_assignment_pattern";
 import { getProcessLogger } from "~src/utils/logger";
 import { isLiteral } from "../utils/is_literal";
+import { findFirst } from "../utils/find_first";
 
 type Program = TSESTree.Program
 type Parameter = TSESTree.Parameter
 type Expression = TSESTree.Expression
+type LargeNumberComprehension = TSESTree.AssignmentExpression | TSESTree.AssignmentPattern | TSESTree.BinaryExpression | TSESTree.ExpressionStatement | TSESTree.VariableDeclarator
 
 type MainExport = ReturnType<typeof extractExport>
 
@@ -29,6 +31,7 @@ export class GigasecondSolution {
   private mainExport: [NonNullable<MainExport[0]>, MainExport[1]]
   private fileConstants: ProgramConstants
   private mainConstant: Constant | undefined
+  private largeNumberComprehension: LargeNumberComprehension | undefined;
 
   constructor(readonly program: Program) {
     this.mainMethod = ensureExists(extractMainMethod(program, EXPECTED_METHOD))
@@ -39,6 +42,7 @@ export class GigasecondSolution {
       .filter((declaration) => isIdentifier(declaration.id) && declaration.id.name !== EXPECTED_METHOD)
 
     this.mainConstant = this.fileConstants.length > 0 && new Constant(this.fileConstants[0]) || undefined
+    this.largeNumberComprehension = findNumberComprehension(program)
   }
 
   get entry(): Readonly<Entry> {
@@ -47,6 +51,10 @@ export class GigasecondSolution {
 
   get constant(): Readonly<Constant> | undefined {
     return this.mainConstant
+  }
+
+  get numberComprehension(): Readonly<LargeNumberComprehension> | undefined {
+    return this.largeNumberComprehension
   }
 
   get hasOneConstant(): boolean  {
@@ -253,9 +261,28 @@ function ensureExported([declaration, node]: MainExport): [NonNullable<MainExpor
   return [declaration, node]
 }
 
+function findNumberComprehension(program: TSESTree.Node): LargeNumberComprehension | undefined {
+  return findFirst(program, (node): boolean => {
+    switch(node.type) {
+      case AST_NODE_TYPES.AssignmentExpression:
+        return isOptimisedComprehension(node.right)
+      case AST_NODE_TYPES.AssignmentPattern:
+        return node.right !== undefined && isOptimisedComprehension(node.right)
+      case AST_NODE_TYPES.BinaryExpression:
+        return isOptimisedComprehension(node.left) || isOptimisedComprehension(node.right)
+      case AST_NODE_TYPES.ExpressionStatement:
+        return isOptimisedComprehension(node.expression)
+      case AST_NODE_TYPES.VariableDeclarator:
+        return node.init !== null && isOptimisedComprehension(node.init)
+      default:
+        return false
+    }
+  }) as LargeNumberComprehension | undefined
+}
+
 function isOptimisedComprehension(expression: Expression): boolean {
   // 1e12
-  if (isLiteral(expression, undefined, '1e12')) {
+  if (isLiteral(expression, undefined, '1e12') || isLiteral(expression, undefined, '1E12')) {
     return true
   }
 
@@ -283,6 +310,7 @@ function isOptimisedComprehension(expression: Expression): boolean {
     // Math.pow(10, 9) * ◼
     const isOptimisedGigasecondLeft =
          isLiteral(expression.left, undefined, '1e9')
+      || isLiteral(expression.left, undefined, '1E9')
       || (isBinaryExpression(expression.left, '**') && isLiteral(expression.left.left, 10) && isLiteral(expression.left.right, 9))
       || (isCallExpression(expression.left, 'Math', 'pow') && isLiteral(expression.left.arguments[0], 10) && isLiteral(expression.left.arguments[1], 9))
 
@@ -291,6 +319,7 @@ function isOptimisedComprehension(expression: Expression): boolean {
       // ◼ * 1e3
       return isLiteral(expression.right, 1000)
         || isLiteral(expression.right, undefined, '1e3')
+        || isLiteral(expression.right, undefined, '1E3')
     }
 
     // ◼ * 1e9
@@ -298,6 +327,7 @@ function isOptimisedComprehension(expression: Expression): boolean {
     // ◼ * Math.pow(10, 9)
     const isOptimisedGigasecondRight =
          isLiteral(expression.right, undefined, '1e9')
+      || isLiteral(expression.right, undefined, '1E9')
       || (isBinaryExpression(expression.right, '**') && isLiteral(expression.right.left, 10) && isLiteral(expression.right.right, 9))
       || (isCallExpression(expression.right, 'Math', 'pow') && isLiteral(expression.right.arguments[0], 10) && isLiteral(expression.right.arguments[1], 9))
 
@@ -306,6 +336,7 @@ function isOptimisedComprehension(expression: Expression): boolean {
     return isOptimisedGigasecondRight && (
          isLiteral(expression.left, 1000)
       || isLiteral(expression.left, undefined, '1e3')
+      || isLiteral(expression.left, undefined, '1E3')
     )
   }
 
@@ -327,7 +358,7 @@ function isOptimisedComprehension(expression: Expression): boolean {
   }
 
   const logger = getProcessLogger()
-  logger.log('~> expression is not an optimised comprehension')
-  logger.log(JSON.stringify(expression, null, 2))
+  logger.log(`~> expression (${expression.type}) is not an optimised comprehension`)
+  // logger.log(JSON.stringify(expression, null, 2))
   return false
 }
