@@ -5,10 +5,10 @@ import { Logger, setProcessLogger as setGlobalLogger } from '~src/utils/logger';
 import { ExecutionOptionsImpl } from './execution_options';
 
 export interface BootstrapResult {
-  exercise: Exercise
-  input: DirectoryInput
-  options: ExecutionOptions
-  logger: Logger
+  exercise: Exercise;
+  input: DirectoryInput;
+  options: ExecutionOptions;
+  logger: Logger;
 }
 
 /**
@@ -28,7 +28,7 @@ export class Bootstrap {
    * Builds execution options, exercise and input based on the process arguments
    *
    */
-  static call(): BootstrapResult {
+  public static call(): BootstrapResult {
 
     registerExceptionHandler()
 

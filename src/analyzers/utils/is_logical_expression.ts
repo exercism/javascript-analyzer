@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree";
 
 export function isLogicalExpression(node: Node, operator?: string): node is LogicalExpression {
   return node.type === AST_NODE_TYPES.LogicalExpression && (
-       operator === undefined
+    operator === undefined
     || node.operator === operator
   )
 }

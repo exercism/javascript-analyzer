@@ -6,6 +6,6 @@ import { isMemberExpression } from "./is_member_expression"
 export const isCallExpression = (node: Node): node is CallExpression => node.type === AST_NODE_TYPES.CallExpression
 
 export function findMemberCall(root: Node, object: string, property: string): CallExpression | undefined {
-  const isMemberCall = (node: Node) => isCallExpression(node) && isMemberExpression(node.callee, object, property)
+  const isMemberCall = (node: Node): boolean => isCallExpression(node) && isMemberExpression(node.callee, object, property)
   return findFirst(root, isMemberCall) as CallExpression | undefined
 }

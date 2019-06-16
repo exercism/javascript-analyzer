@@ -3,8 +3,10 @@ import fs from 'fs'
 
 jest.mock('fs');
 
-function mockFiles(files: { [path: string]: string }) {
-  (fs as any).__setMockFiles(files)
+const mockedFs = fs as unknown as MockedFs
+
+function mockFiles(files: { [path: string]: string }): void {
+  mockedFs.__setMockFiles(files)
 }
 
 describe('FileInput', () => {

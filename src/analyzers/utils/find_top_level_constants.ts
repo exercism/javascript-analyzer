@@ -24,9 +24,9 @@ function isTopLevelConstant(this: Traverser, node: Node, kinds: VariableDeclarat
  * @param root the top-level
  * @returns Node[]
  */
-export function findTopLevelConstants(root: Node, kinds: VariableDeclaration["kind"][] = ['const']) {
+export function findTopLevelConstants(root: Node, kinds: VariableDeclaration["kind"][] = ['const']): VariableDeclaration[] {
   return findAll(
     root,
-    function(node) { return isTopLevelConstant.apply(this, [node, kinds]) }
+    function(node): boolean { return isTopLevelConstant.apply(this, [node, kinds]) }
   ) as VariableDeclaration[]
 }

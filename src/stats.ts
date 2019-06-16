@@ -22,7 +22,7 @@ const { exercise, options, logger } = Bootstrap.call()
 
 const FIXTURES_ROOT = path.join(options.inputDir || path.join(__dirname, '..', 'test', 'fixtures'), exercise.slug)
 
-function pad(value: string | number, pad = '       ') {
+function pad(value: string | number, pad = '       '): string {
   return (pad + value).slice(-pad.length)
 }
 
@@ -31,6 +31,7 @@ logger.log(`=> start statistics collection for ${exercise.slug}`)
 const parser = new AstParser({ comment: false, tokens: false, loc: false, range: false })
 
 readDir(FIXTURES_ROOT)
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   .then(async (fixtureDirs) => Promise.all(fixtureDirs.map(async (fixtureDir) => {
     const inputDirectory = path.join(FIXTURES_ROOT, fixtureDir)
     try {
@@ -52,6 +53,7 @@ readDir(FIXTURES_ROOT)
 
         require('eslint/lib/util/traverser').traverse(
           root, {
+            // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
             enter(node: Node) {
               delete node.loc
               delete node.range
@@ -70,7 +72,9 @@ readDir(FIXTURES_ROOT)
       return undefined
     }
   })))
-  .then((trees) => trees.filter(Boolean) as ReadonlyArray<string>)
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  .then((trees) => trees.filter(Boolean) as readonly string[])
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   .then((trees) => {
     const realTrees = trees.filter(Boolean)
     const counts = {
@@ -78,9 +82,11 @@ readDir(FIXTURES_ROOT)
       valid: realTrees.length,
       total: trees.length,
       unique: Object.keys(
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
         realTrees.reduce((counts, tree) => {
           counts[tree] = (counts[tree] || 0) + 1
           return counts
+        // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
         }, {} as { [tree: string]: number })
       ).length
     }
