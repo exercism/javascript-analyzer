@@ -9,11 +9,11 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
   public dry!: boolean
   public templates!: boolean
 
-  public constructor(options: ExecutionOptions) {
+  constructor(options: ExecutionOptions) {
     Object.assign(this, options);
   }
 
-  public static create() {
+  public static create(): ExecutionOptions {
     const args = yargs
       .usage('Usage: $0 <exercise> <input-directory> [options]')
       .example('$0 two-fer ~/javascript/two-fer/128/', 'Analyze the input directory "128" against the two-fer analyzer')

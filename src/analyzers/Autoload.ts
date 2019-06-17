@@ -12,7 +12,7 @@ type AnalyzerConstructor = new () => Analyzer
  */
 export function find(exercise: Readonly<Exercise>): AnalyzerConstructor {
   const file = autoload(exercise)
-  const key = Object.keys(file).find(key => file[key] instanceof Function)
+  const key = Object.keys(file).find((key): boolean => file[key] instanceof Function)
 
   if (key === undefined) {
     throw new Error(`No Analyzer found in './${exercise.slug}`)
@@ -23,7 +23,7 @@ export function find(exercise: Readonly<Exercise>): AnalyzerConstructor {
   return analyzer
 }
 
-function autoload(exercise: Readonly<Exercise>) {
+function autoload(exercise: Readonly<Exercise>): ReturnType<NodeRequire> {
   const modulePath = path.join(__dirname, exercise.slug, 'index') // explicit path (no extension)
   try {
     return require(modulePath)

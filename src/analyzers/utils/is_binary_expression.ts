@@ -9,7 +9,7 @@ export function isBinaryExpression(node: Node): node is BinaryExpression
 export function isBinaryExpression<T extends BinaryOperator>(node: Node, operator: T): node is BinaryExpressionWithOperator<T>
 export function isBinaryExpression(node: Node, operator?: string): node is BinaryExpression {
   return node.type === AST_NODE_TYPES.BinaryExpression && (
-       operator === undefined
+    operator === undefined
     || node.operator === operator
   )
 }

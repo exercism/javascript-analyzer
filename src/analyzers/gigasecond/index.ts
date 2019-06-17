@@ -8,14 +8,13 @@ import { AstParser } from "~src/parsers/AstParser";
 
 import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl";
 import { GigasecondSolution } from "./GigasecondSolution";
-import { annotateType } from "../utils/type_annotations";
 import { isIdentifier } from "../utils/is_identifier";
 
-const TIP_EXPORT_INLINE = factory<'method_signature'>`
+const TIP_EXPORT_INLINE = factory<'method.signature'>`
 Did you know that you can export functions, classes and constants directly
 inline?
 \`\`\`javascript
-export ${'method_signature'}
+export ${'method.signature'}
 \`\`\`
 `('javascript.gigasecond.export_inline')
 
@@ -81,11 +80,11 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
       return new GigasecondSolution(program, source)
     } catch (error) {
       if (error instanceof NoMethodError) {
-        output.disapprove(NO_METHOD({ method_name: error.method }))
+        output.disapprove(NO_METHOD({ 'method.name': error.method }))
       }
 
       if (error instanceof NoExportError) {
-        output.disapprove(NO_NAMED_EXPORT({ export_name: error.namedExport }))
+        output.disapprove(NO_NAMED_EXPORT({ 'export.name': error.namedExport }))
       }
 
       throw error
@@ -96,7 +95,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     // If there is no parameter then this solution won't pass the tests.
     //
     if (!entry.hasAtLeastOneParameter) {
-      output.disapprove(NO_PARAMETER({ function_name: entry.name }))
+      output.disapprove(NO_PARAMETER({ 'function.name': entry.name }))
     }
 
     // If this is not a simple parameter, but something else such as a splat,
@@ -242,7 +241,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
       // export { gigasecond }
       output.add(
         TIP_EXPORT_INLINE({
-          method_signature: solution.entry.signature,
+          'method.signature': solution.entry.signature,
         })
       )
     }

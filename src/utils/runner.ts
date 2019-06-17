@@ -32,6 +32,6 @@ export async function run(analyzer: Analyzer, input: Input, options: ExecutionOp
 }
 
 async function process(options: Readonly<ExecutionOptions>, analysis: Output, ...processors: OutputProcessor[]): Promise<Output> {
-  await processors.reduce((previous, processor) => processor(previous, options), analysis.toProcessable(options))
+  await processors.reduce((previous, processor): Promise<string> => processor(previous, options), analysis.toProcessable(options))
   return analysis
 }

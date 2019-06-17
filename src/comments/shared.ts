@@ -1,14 +1,14 @@
 import { factory } from "./comment"
 
-export const NO_METHOD = factory<'method_name'>`
-No method called \`${'method_name'}\`. The tests won't pass without it.
+export const NO_METHOD = factory<'method.name'>`
+No method called \`${'method.name'}\`. The tests won't pass without it.
 `('javascript.generic.no_method')
 
-export const NO_NAMED_EXPORT = factory<'export_name'>`
-No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`${'export_name'}\`.
+export const NO_NAMED_EXPORT = factory<'export.name'>`
+No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`${'export.name'}\`.
 The tests won't pass without it.
 
-Did you forget adding: \`export ${'export_name'}\`?
+Did you forget adding: \`export ${'export.name'}\`?
 `('javascript.generic.no_named_export')
 
 export const NO_DEFAULT_EXPORT = factory`
@@ -19,8 +19,8 @@ The tests won't pass without it.
 Did you forget adding: \`export default ...\`?
 `('javascript.generic.no_default_export')
 
-export const NO_PARAMETER = factory<'function_name'>`
-Your function \`${'function_name'}\` does not have a parameter.
+export const NO_PARAMETER = factory<'function.name'>`
+Your function \`${'function.name'}\` does not have a parameter.
 The tests won't pass without it.
 `('javascript.generic.no_parameter')
 
@@ -28,9 +28,9 @@ export const UNEXPECTED_PARAMETER = factory<'type'>`
 Did not find a parameter of type \`${'type'}\`.
 `('javascript.generic.unexpected_parameter')
 
-export const UNEXPECTED_SPLAT_ARGS = factory<'splat_arg_name' | 'parameter_type'>`
-Instead of using \`...${'splat_arg_name'}: ${'parameter_type'}[]\`, you should
-define a parameter called \`${'splat_arg_name'}\` with the type \`${'parameter_type'}\`.
+export const UNEXPECTED_SPLAT_ARGS = factory<'splat-arg.name' | 'parameter.type'>`
+Instead of using \`...${'splat-arg.name'}: ${'parameter.type'}[]\`, you should
+define a parameter called \`${'splat-arg.name'}\` with the type \`${'parameter.type'}\`.
 
 [Rest parameters / splat arguments](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters)
 are great if you don't know how many values you will receive and it can be an
@@ -59,13 +59,13 @@ There are definitely cases where you'll want to use non-strict equality, but
 that's not the case in this exercise.
 `('javascript.generic.prefer_strict_equality')
 
-export const PREFER_UNPREFIXED_UNDERSCORE_PARAMETERS = factory<'parameter_name'>`
+export const PREFER_UNPREFIXED_UNDERSCORE_PARAMETERS = factory<'parameter.name'>`
 Unlike other languages, \`_parameter\` does not signify a *private* variable.
 
 Instead, in Javascript, prefixing a parameter with an underscore will stop
 most IDEs from highlighting that parameter if it's unused, which is actually a
 tool you probably want to keep in this case. Remove the underscore \`_\` from
-${'parameter_name'} in order to fix this.
+${'parameter.name'} in order to fix this.
 `('javascript.generic.prefer_unprefixed_underscore_parameters')
 
 export const PARSE_ERROR = factory<'error' | 'details'>`

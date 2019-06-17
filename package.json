@@ -19,7 +19,9 @@
     "analyze:dev:bat": "yarn build && yarn analyze:bat",
     "build": "yarn tsc --build src",
     "prepublish": "yarn test",
-    "test": "yarn build && jest"
+    "lint": "yarn eslint . --ext ts,js,tsx,jsx,mjs",
+    "test": "yarn build && jest",
+    "posttest": "yarn lint"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
@@ -28,8 +30,10 @@
     "@types/jest": "^24.0.13",
     "@types/node": "^12.0.4",
     "@types/yargs": "^13.0.0",
+    "@typescript-eslint/eslint-plugin": "^1.10.2",
     "babel-jest": "^24.8.0",
     "eslint": "^5.16.0",
+    "eslint-plugin-jest": "^22.6.4",
     "jest": "^24.8.0",
     "typescript": "^3.5.1"
   },

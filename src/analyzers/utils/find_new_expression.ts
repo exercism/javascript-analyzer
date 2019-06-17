@@ -14,6 +14,6 @@ export function isNewExpression<T extends string>(node: Node, className?: T): no
 }
 
 export function findNewExpression<T extends string>(root: Node, className: T): NewExpressionWithName<T> | undefined {
-  const isNewClass = (node: Node) => isNewExpression(node) && isIdentifier(node.callee, className)
+  const isNewClass = (node: Node): boolean => isNewExpression(node) && isIdentifier(node.callee, className)
   return findFirst(root, isNewClass) as NewExpressionWithName<T> | undefined
 }

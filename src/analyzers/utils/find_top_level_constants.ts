@@ -31,10 +31,10 @@ function isTopLevelConstant(this: Traverser, node: Node, kinds: readonly Variabl
  * @param root the top-level
  * @returns Node[]
  */
-export function findTopLevelConstants(root: Node, kinds?: readonly VariableDeclaration["kind"][]) {
+export function findTopLevelConstants(root: Node, kinds: readonly VariableDeclaration["kind"][] = ['const']): ProgramConstants {
   const constants = findAll(
     root,
-    function(node) { return isTopLevelConstant.apply(this, [node, kinds]) }
+    function(node): boolean { return isTopLevelConstant.apply(this, [node, kinds]) }
   ) as VariableDeclaration[]
 
   return constants.reduce(
