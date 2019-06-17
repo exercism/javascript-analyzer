@@ -1,25 +1,33 @@
-import { TSESTree, AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
+import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree";
 
-import { extractMainMethod, MainMethod } from "~src/analyzers/utils/extract_main_method";
 import { extractExport } from "~src/analyzers/utils/extract_export";
-import { findTopLevelConstants, ProgramConstant, ProgramConstants } from "../utils/find_top_level_constants";
-import { isIdentifier } from "../utils/is_identifier";
-import { NoMethodError } from "~src/errors/NoMethodError";
+import { extractMainBody, MainBody } from "~src/analyzers/utils/extract_main_body";
+import { extractMainMethod, MainMethod } from "~src/analyzers/utils/extract_main_method";
+import { parameterName } from "~src/analyzers/utils/extract_parameter";
+import { findFirst } from "~src/analyzers/utils/find_first";
+import { isNewExpression } from "~src/analyzers/utils/find_new_expression";
+import { findTopLevelConstants, ProgramConstant, ProgramConstants } from "~src/analyzers/utils/find_top_level_constants";
+import { isBinaryExpression } from "~src/analyzers/utils/is_binary_expression";
+import { isCallExpression } from "~src/analyzers/utils/is_call_expression";
+import { isIdentifier } from "~src/analyzers/utils/is_identifier";
+import { isLiteral } from "~src/analyzers/utils/is_literal";
 import { NoExportError } from "~src/errors/NoExportError";
-import { extractMainBody, MainBody } from "../utils/extract_main_body";
-import { isNewExpression } from "../utils/find_new_expression";
-import { isBinaryExpression } from "../utils/is_binary_expression";
-import { isCallExpression } from "../utils/is_call_expression";
-import { parameterName } from "../utils/extract_parameter";
-import { isAssignmentPattern } from "../utils/is_assignment_pattern";
+import { NoMethodError } from "~src/errors/NoMethodError";
 import { getProcessLogger } from "~src/utils/logger";
-import { isLiteral } from "../utils/is_literal";
-import { findFirst } from "../utils/find_first";
+import { Source } from "../SourceImpl";
+
 
 type Program = TSESTree.Program
 type Parameter = TSESTree.Parameter
 type Expression = TSESTree.Expression
-type LargeNumberComprehension = TSESTree.AssignmentExpression | TSESTree.AssignmentPattern | TSESTree.BinaryExpression | TSESTree.ExpressionStatement | TSESTree.VariableDeclarator
+type LargeNumberComprehension =
+  TSESTree.AssignmentExpression
+  | TSESTree.AssignmentPattern
+  | TSESTree.BinaryExpression
+  | TSESTree.CallExpression
+  | TSESTree.ExpressionStatement
+  | TSESTree.Literal
+  | TSESTree.VariableDeclarator
 
 type MainExport = ReturnType<typeof extractExport>
 
@@ -32,8 +40,10 @@ export class GigasecondSolution {
   private fileConstants: ProgramConstants
   private mainConstant: Constant | undefined
   private largeNumberComprehension: LargeNumberComprehension | undefined;
+  private largeNumberLiteral: LargeNumberComprehension | undefined;
+  public readonly source: Source;
 
-  constructor(readonly program: Program) {
+  constructor(readonly program: Program, source: string) {
     this.mainMethod = ensureExists(extractMainMethod(program, EXPECTED_METHOD))
     this.mainExport = ensureExported(extractExport(program, EXPECTED_EXPORT))
 
@@ -43,6 +53,9 @@ export class GigasecondSolution {
 
     this.mainConstant = this.fileConstants.length > 0 && new Constant(this.fileConstants[0]) || undefined
     this.largeNumberComprehension = findNumberComprehension(program)
+    this.largeNumberLiteral = findNumberLiteral(program)
+
+    this.source = new Source(source)
   }
 
   get entry(): Readonly<Entry> {
@@ -55,6 +68,10 @@ export class GigasecondSolution {
 
   get numberComprehension(): Readonly<LargeNumberComprehension> | undefined {
     return this.largeNumberComprehension
+  }
+
+  get numberLiteral(): Readonly<LargeNumberComprehension> | undefined {
+    return this.largeNumberLiteral
   }
 
   get hasOneConstant(): boolean  {
@@ -213,14 +230,6 @@ class Constant {
     return this.kind === 'const'
   }
 
-  get isOptimisedLiteral(): boolean {
-    return !!this.constant.init && isLiteral(this.constant.init, undefined, '1e12')
-  }
-
-  get isLargeNumberLiteral(): boolean {
-    return !!this.constant.init && isLiteral(this.constant.init, 1000000000000)
-  }
-
   get isOptimisedExpression(): boolean {
     const { init } = this.constant
 
@@ -233,6 +242,20 @@ class Constant {
     }
 
     return this._memoized['isOptimisedComprehension'] = isOptimisedComprehension(init)
+  }
+
+  get isLargeNumberLiteral(): boolean {
+    const { init } = this.constant
+
+    if (!init) {
+      return false
+    }
+
+    if ('isLargeNumberLiteral' in this._memoized) {
+      return !!this._memoized['isLargeNumberLiteral']
+    }
+
+    return this._memoized['isLargeNumberLiteral'] = isLargeNumberLiteral(init)
   }
 
   isOptimal(): boolean {
@@ -269,7 +292,9 @@ function findNumberComprehension(program: TSESTree.Node): LargeNumberComprehensi
       case AST_NODE_TYPES.AssignmentPattern:
         return node.right !== undefined && isOptimisedComprehension(node.right)
       case AST_NODE_TYPES.BinaryExpression:
-        return isOptimisedComprehension(node.left) || isOptimisedComprehension(node.right)
+        return isOptimisedComprehension(node)
+      case AST_NODE_TYPES.CallExpression:
+        return isOptimisedComprehension(node)
       case AST_NODE_TYPES.ExpressionStatement:
         return isOptimisedComprehension(node.expression)
       case AST_NODE_TYPES.VariableDeclarator:
@@ -360,5 +385,45 @@ function isOptimisedComprehension(expression: Expression): boolean {
   const logger = getProcessLogger()
   logger.log(`~> expression (${expression.type}) is not an optimised comprehension`)
   // logger.log(JSON.stringify(expression, null, 2))
+  return false
+}
+
+function findNumberLiteral(program: TSESTree.Node): LargeNumberComprehension | undefined {
+  return findFirst(program, (node): boolean => {
+    switch(node.type) {
+      case AST_NODE_TYPES.AssignmentExpression:
+        return isLargeNumberLiteral(node.right)
+      case AST_NODE_TYPES.AssignmentPattern:
+        return node.right !== undefined && isLargeNumberLiteral(node.right)
+      case AST_NODE_TYPES.BinaryExpression:
+        return isLargeNumberLiteral(node)
+      case AST_NODE_TYPES.ExpressionStatement:
+        return isLargeNumberLiteral(node.expression)
+      case AST_NODE_TYPES.Literal:
+        return isLargeNumberLiteral(node)
+      case AST_NODE_TYPES.VariableDeclarator:
+        return node.init !== null && isLargeNumberLiteral(node.init)
+      default:
+        return false
+    }
+  }) as LargeNumberComprehension | undefined
+}
+
+function isLargeNumberLiteral(node: TSESTree.Node): boolean {
+  if (isLiteral(node, undefined, '1000000000000')) {
+    return true
+  }
+
+  if (isBinaryExpression(node, '*') && (
+      // 1000000000 * 1000
+      // 1000 * 1000000000
+      // 1000 * 1000 * 1000
+      (isLiteral(node.left, 1000000000) && isLiteral(node.right, undefined, '1000'))
+      || (isLiteral(node.left, undefined, '1000') && isLiteral(node.right, 1000000000))
+      || (isBinaryExpression(node.left, '*') && isLiteral(node.right, undefined, '1000') && isLiteral(node.left.left, undefined, '1000') && isLiteral(node.left.right, undefined, '1000'))
+    )) {
+    return true
+  }
+
   return false
 }

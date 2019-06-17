@@ -8,6 +8,8 @@ import { AstParser } from "~src/parsers/AstParser";
 
 import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl";
 import { GigasecondSolution } from "./GigasecondSolution";
+import { annotateType } from "../utils/type_annotations";
+import { isIdentifier } from "../utils/is_identifier";
 
 const TIP_EXPORT_INLINE = factory<'method_signature'>`
 Did you know that you can export functions, classes and constants directly
@@ -24,7 +26,9 @@ comprehend. Rewrite the literal \`${'literal'}\` using \`Math.pow\` or
 `('javascript.gigasecond.use_number_comprehension')
 
 const PREFER_TOP_LEVEL_CONSTANT = factory<'value' | 'name'>`
-Consider extracting the gigasecond number into a constant:
+Your solution current has a magic number, or rather a magic expression. Consider
+extracting the gigasecond number into a top-level constant, so that you may
+remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
 const ${'name'} = ${'value'}
@@ -35,7 +39,7 @@ export const gigasecond = (...)
 
 const SIGNATURE_NOT_OPTIMAL = factory`
 If you look at the tests, the function \`gigasecond\` only receives one
-paremeter. Nothing more and nothing less.
+parameter. Nothing more and nothing less.
 
 Remove the additional parameters from your function, as their value will always
 be \`undefined\` or whatever default you've assigned.
@@ -52,7 +56,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
 
     // Firstly we want to check that the structure of this solution is correct
     // and that there is nothing structural stopping it from passing the tests
-    const solution = this.checkStructure(parsed.program, output)
+    const solution = this.checkStructure(parsed.program, parsed.source, output)
 
     // Now we want to ensure that the method signature is sane and that it has
     // valid arguments.
@@ -72,9 +76,9 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     // The solution is automatically referred to the mentor if it reaches this
   }
 
-  private checkStructure(program: Readonly<Program>, output: WritableOutput) {
+  private checkStructure(program: Readonly<Program>, source: Readonly<string>, output: WritableOutput) {
     try {
-      return new GigasecondSolution(program)
+      return new GigasecondSolution(program, source)
     } catch (error) {
       if (error instanceof NoMethodError) {
         output.disapprove(NO_METHOD({ method_name: error.method }))
@@ -143,7 +147,29 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
   }
 
   private checkForApprovableSolutions(solution: GigasecondSolution, output: WritableOutput) {
-    if (!solution.constant) {
+    if (solution.constant) {
+      console.log(`=> found a constant (${solution.constant.kind})`)
+
+      if (solution.constant.kind !== 'const') {
+        output.add(PREFER_CONST_OVER_LET_AND_VAR({
+          kind: solution.constant.kind,
+          name: solution.constant.name
+        }))
+
+        // If this is the only issue, approve
+        if (solution.entry.isOptimal(solution.constant)) {
+          output.approve()
+          return
+        }
+      }
+
+      if (solution.constant.isLargeNumberLiteral) {
+        output.disapprove(USE_NUMBER_COMPREHENSION({
+          literal: solution.constant.name
+        }))
+        return
+      }
+    } else {
       // This means there is no constant found. The approvable solution looks
       // like this
       //
@@ -159,13 +185,32 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
       // }
 
       const comprehension = solution.numberComprehension
+      const literal = solution.numberLiteral
 
       if (comprehension) {
         console.log(`=> found a comprehension (${comprehension.type})`)
         switch (comprehension.type) {
           // Top case
           case AST_NODE_TYPES.BinaryExpression: {
-            // TODO: extract into const
+            output.add(PREFER_TOP_LEVEL_CONSTANT({
+              'name': 'GIGASECOND_IN_MS',
+              'value': solution.source.get(comprehension)
+            }))
+            break;
+          }
+          case AST_NODE_TYPES.CallExpression: {
+            output.add(PREFER_TOP_LEVEL_CONSTANT({
+              'name': 'GIGASECOND_IN_MS',
+              'value': solution.source.get(comprehension)
+            }))
+            break;
+          }
+          case AST_NODE_TYPES.VariableDeclarator: {
+            output.add(PREFER_TOP_LEVEL_CONSTANT({
+              'name': 'id' in comprehension && isIdentifier(comprehension.id) && comprehension.id.name || 'GIGASECOND_IN_MS',
+              'value': comprehension.init && solution.source.get(comprehension.init) || '...'
+            }))
+            break;
           }
           default: {
             // TODO: extract into const to top-level
@@ -174,8 +219,11 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
 
         // TODO: check if the _rest_ is optimal. If yes approve, otherwise
         // comment don't approve and have the rest of this analyzer disapprove
-      } else {
-        // TODO: check if there is 1000000000000
+      } else if (literal) {
+        console.log(`=> found a literal (${literal.type})`)
+        output.disapprove(USE_NUMBER_COMPREHENSION({
+          literal: 'raw' in literal && literal.raw || literal.type
+        }))
       }
 
       this.logger.log(JSON.stringify(comprehension, null, 2))
