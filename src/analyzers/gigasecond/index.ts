@@ -205,6 +205,13 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
             }))
             break;
           }
+          case AST_NODE_TYPES.Literal: {
+            output.add(PREFER_TOP_LEVEL_CONSTANT({
+              'name': 'GIGASECOND_IN_MS',
+              'value': solution.source.get(comprehension)
+            }))
+            break;
+          }
           case AST_NODE_TYPES.VariableDeclarator: {
             output.add(PREFER_TOP_LEVEL_CONSTANT({
               'name': 'id' in comprehension && isIdentifier(comprehension.id) && comprehension.id.name || 'GIGASECOND_IN_MS',
@@ -226,8 +233,6 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
         }))
       }
 
-      this.logger.log(JSON.stringify(comprehension, null, 2))
-
       return
     }
   }
@@ -237,7 +242,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
       // export { gigasecond }
       output.add(
         TIP_EXPORT_INLINE({
-          method_signature: 'function gigasecond(...) { ... }',
+          method_signature: solution.entry.signature,
         })
       )
     }
@@ -260,145 +265,3 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 }
-
-/*
-  private checkForApprovableSolutions() {
-    if (!this.isOneLineSolution()) {
-      return
-    }
-
-    if (!this.isUsingGetTimeOnce() || !this.isUsingNewDateOnce()) {
-      return
-    }
-
-    this.checkForTips()
-    this.approve()
-  }
-
-  private isUsingGetTimeOnce() {
-    const { name } = this.mainParameter
-    return findAll(this.mainMethod!, (node) => isCallExpression(node, name, 'getTime')).length === 1
-  }
-
-  private isUsingNewDateOnce() {
-    return findAll(this.mainMethod!, (node) => isNewExpression(node) && isIdentifier(node.callee, 'Date')).length === 1
-  }
-
-  private findExtractedNumberConstant(): VariableDeclarator | undefined {
-    // Remove the main method (which could be a top-level constant)
-    const found = findTopLevelConstants(this.program)
-      .flatMap((constant) => constant.declarations)
-      .filter(declaration => declaration.init !== this.mainMethod)
-
-    if (found.length === 0) {
-      return undefined
-    }
-
-    const numberComprehension = this.findNumberComprehension()
-    return found.find(f => f.init === numberComprehension)
-  }
-
-  private isUsingLargeNumberLiteral() {
-    return findRawLiteral(this.mainMethod!, '1000000000000') === undefined
-      && findRawLiteral(this.mainMethod!, '1000000000') === undefined
-  }
-
-  private isUsingIntermediateVariable() {
-    return findFirstOfType(this.mainMethod!, AST_NODE_TYPES.VariableDeclaration)
-  }
-
-  private findNumberComprehension(): Node | undefined {
-    if (this.memoized['number-comprehension']) {
-      return this.memoized['number-comprehension']
-    }
-    const self = this
-    return this.memoized['number-comprehension'] =
-      findFirst(this.mainMethod!, function(node) {
-        return self.isNumberComprehension.call(this, self, node)
-      })
-  }
-
-  private isNumberComprehension(this: Traverser, self: this, node: Node): boolean {
-    // Math.pow(10, 12)
-    if (isCallExpression(node, 'Math', 'pow')) {
-      this.skip()
-
-      if (node.arguments.length === 2) {
-        if (isLiteral(node.arguments[0], 10)) {
-          return isLiteral(node.arguments[1], 12)
-        }
-      }
-
-      return false
-    }
-
-    // 1e12
-    if (isLiteral(node, undefined, '1e12')) {
-      return true
-    }
-
-    // (a ** b) and (a * b)
-    if (isBinaryExpression(node)) {
-      // 1e9 * 1e3
-      // (10 ** 9) * 1000
-      // Math.pow(10, 9) * 1000
-      if (isBinaryExpression(node, '*')) {
-
-        // ... * 1000
-        // ... * 1e3
-        const rightIsLiteral = isLiteral(node.right, 1000)
-        if (rightIsLiteral) {
-          return self.isSmallerNumberComprehension.call(this, node.left)
-        }
-
-        // 1000 * ...
-        // 1e3  * ...
-        const leftIsLiteral = isLiteral(node.left, 1000)
-        if (leftIsLiteral) {
-          return self.isSmallerNumberComprehension.call(this, node.right)
-        }
-
-        // Don't return here, because of the type guard being too tight, it
-        // will think that `node` now must be "never"
-        //
-        // return false
-      }
-
-      if (isBinaryExpression(node, '**')) {
-        // 10 ** 12
-        return isLiteral(node.left, 10) && isLiteral(node.right, 12)
-      }
-
-      return false
-    }
-
-    // 1e12
-    if (isLiteral(node, undefined, '1e12')) {
-      return true
-    }
-
-    return false
-  }
-
-  private isSmallerNumberComprehension(this: Traverser, node: Node): boolean {
-    // 1e9
-    // 1000000000
-    if (isLiteral(node, 1e9)) {
-      return true
-    }
-
-    // Math.pow(10, 9)
-    if (isCallExpression(node, 'Math', 'pow')) {
-      this.skip()
-
-      if (node.arguments.length === 2) {
-        if (isLiteral(node.arguments[0], 10)) {
-          return isLiteral(node.arguments[1], 9)
-        }
-      }
-    }
-
-    return false
-  }
-}
-*/

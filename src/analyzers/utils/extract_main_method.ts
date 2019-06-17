@@ -15,9 +15,12 @@ type Property = TSESTree.Property
 
 export type Traverser = importedTraverser
 export type MainMethod<T extends string = string> =
-    FunctionDeclaration & { id: Identifier & { name: T } }
-  | ArrowFunctionExpression & { id: Identifier & { name: T } }
-  | FunctionExpression & { id: Identifier & { name: T } }
+  { id: Identifier & { name: T }, parent: undefined | Node } &
+  (
+    FunctionDeclaration
+    | ArrowFunctionExpression
+    | FunctionExpression
+  )
 
 export function extractMainMethod<T extends string = string>(program: Program, name: T): MainMethod<T> | undefined {
   let result: MainMethod | undefined = undefined
@@ -30,7 +33,7 @@ export function extractMainMethod<T extends string = string>(program: Program, n
         case AST_NODE_TYPES.FunctionDeclaration:
           const { id } = node
           if (id && isIdentifier(id, name)) {
-            result = Object.assign(node, { id })
+            result = Object.assign(node, { id, parent: undefined })
             this.break()
           }
           break;
@@ -48,13 +51,13 @@ export function extractMainMethod<T extends string = string>(program: Program, n
 
                     // const name = () => {}
                     if (innerNode.init.type === AST_NODE_TYPES.ArrowFunctionExpression) {
-                      result = Object.assign(innerNode.init, { id })
+                      result = Object.assign(innerNode.init, { id, parent: node })
                       this.break()
                     }
 
                     // const name = function() {}
                     else if (innerNode.init.type === AST_NODE_TYPES.FunctionExpression) {
-                      result = Object.assign(innerNode.init, { id })
+                      result = Object.assign(innerNode.init, { id, parent: node })
                       this.break()
                     }
                   }
@@ -77,7 +80,7 @@ export function extractMainMethod<T extends string = string>(program: Program, n
             if (isIdentifier(methodKey, name)) {
               switch(node.value.type) {
                 case AST_NODE_TYPES.FunctionExpression:
-                  result = Object.assign(node.value, { id: methodKey })
+                  result = Object.assign(node.value, { id: methodKey, parent: node })
                   this.break()
                   break;
               }
@@ -96,7 +99,7 @@ export function extractMainMethod<T extends string = string>(program: Program, n
               switch(node.value.type) {
                 case AST_NODE_TYPES.ArrowFunctionExpression:
                 case AST_NODE_TYPES.FunctionExpression:
-                  result = Object.assign(node.value, { id: propertyKey })
+                  result = Object.assign(node.value, { id: propertyKey, parent: node })
                   this.break()
                   break;
               }
@@ -123,7 +126,7 @@ export function extractMainMethod<T extends string = string>(program: Program, n
                      property.value.type === AST_NODE_TYPES.ArrowFunctionExpression
                   || property.value.type === AST_NODE_TYPES.FunctionExpression
                 ) {
-                  result = Object.assign(property.value, { id: property.key })
+                  result = Object.assign(property.value, { id: property.key, parent: property })
                   this.break()
                 }
               }

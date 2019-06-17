@@ -1,4 +1,4 @@
-import { TSESTree } from "@typescript-eslint/typescript-estree";
+import { TSESTree, AST_NODE_TYPES } from "@typescript-eslint/typescript-estree";
 
 type NodeWithLocation = TSESTree.Node & {
   range?: TSESTree.Range;
@@ -30,6 +30,27 @@ class SourceImpl implements Source {
     ].join("\n")
   }
 
+  getOuter(node: NodeWithLocation): string {
+    console.log(node.type)
+    switch (node.type) {
+      case AST_NODE_TYPES.ArrowFunctionExpression: {
+        return this.get(node).replace(this.get(node.body), '...')
+      }
+      case AST_NODE_TYPES.FunctionDeclaration: {
+        return this.get(node).replace(node.body && this.get(node.body) || '...', '...')
+      }
+      case AST_NODE_TYPES.FunctionExpression: {
+        return this.get(node).replace(node.body && this.get(node.body) || '...', '...')
+      }
+      case AST_NODE_TYPES.VariableDeclaration: {
+        const first = node.declarations[0].init
+        return this.get(node).replace(first && this.get(first) || '...', first && this.getOuter(first) || '...')
+      }
+      default: {
+        return this.get(node)
+      }
+    }
+  }
 }
 
 export { SourceImpl as Source }

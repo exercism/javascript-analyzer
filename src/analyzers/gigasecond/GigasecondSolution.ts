@@ -35,16 +35,19 @@ const EXPECTED_METHOD = 'gigasecond'
 const EXPECTED_EXPORT = 'gigasecond'
 
 export class GigasecondSolution {
+  public readonly source: Source;
+
   private mainMethod: Entry
   private mainExport: [NonNullable<MainExport[0]>, MainExport[1]]
   private fileConstants: ProgramConstants
   private mainConstant: Constant | undefined
   private largeNumberComprehension: LargeNumberComprehension | undefined;
   private largeNumberLiteral: LargeNumberComprehension | undefined;
-  public readonly source: Source;
 
   constructor(readonly program: Program, source: string) {
-    this.mainMethod = ensureExists(extractMainMethod(program, EXPECTED_METHOD))
+    this.source = new Source(source)
+
+    this.mainMethod = ensureExists(extractMainMethod(program, EXPECTED_METHOD), this.source)
     this.mainExport = ensureExported(extractExport(program, EXPECTED_EXPORT))
 
     // All constants at the top level that are _not_ the main method
@@ -54,8 +57,6 @@ export class GigasecondSolution {
     this.mainConstant = this.fileConstants.length > 0 && new Constant(this.fileConstants[0]) || undefined
     this.largeNumberComprehension = findNumberComprehension(program)
     this.largeNumberLiteral = findNumberLiteral(program)
-
-    this.source = new Source(source)
   }
 
   get entry(): Readonly<Entry> {
@@ -116,14 +117,17 @@ export class GigasecondSolution {
 
 class Entry {
   public readonly name: string
+  public readonly signature: string
 
   private readonly params: ReadonlyArray<Parameter>;
   private readonly body: MainBody;
 
-  constructor(method: Readonly<NonNullable<MainMethod>>) {
+  constructor(method: Readonly<NonNullable<MainMethod>>, source: Readonly<Source>) {
     this.name = (method.id && method.id.name) || EXPECTED_METHOD
     this.params = method.params
     this.body = extractMainBody(method)
+
+    this.signature = source.getOuter(method.parent || method)
   }
 
   get hasAtLeastOneParameter(): boolean {
@@ -270,11 +274,11 @@ class Constant {
 
 }
 
-function ensureExists(method?: MainMethod<typeof EXPECTED_METHOD>): Entry {
+function ensureExists(method: MainMethod<typeof EXPECTED_METHOD> | undefined, source: Source): Entry {
   if (typeof method === 'undefined') {
     throw new NoMethodError(EXPECTED_METHOD)
   }
-  return new Entry(method)
+  return new Entry(method, source)
 }
 
 function ensureExported([declaration, node]: MainExport): [NonNullable<MainExport[0]>, MainExport[1]] {
@@ -297,6 +301,8 @@ function findNumberComprehension(program: TSESTree.Node): LargeNumberComprehensi
         return isOptimisedComprehension(node)
       case AST_NODE_TYPES.ExpressionStatement:
         return isOptimisedComprehension(node.expression)
+      case AST_NODE_TYPES.Literal:
+        return isOptimisedComprehension(node)
       case AST_NODE_TYPES.VariableDeclarator:
         return node.init !== null && isOptimisedComprehension(node.init)
       default:
