@@ -23,13 +23,13 @@ import { isLiteral } from "../utils/is_literal"
 import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_PARAMETER } from "../../comments/shared";
 import { AstParser } from "../../parsers/AstParser";
 
-const TIP_EXPORT_INLINE = factory<'method_signature' | 'const_name'>`
+const TIP_EXPORT_INLINE = factory<'method-signature' | 'const.name'>`
 Did you know that you can export functions, classes and constants directly
 inline?
 \`\`\`javascript
-export const ${'const_name'} = ...
+export const ${'const.name'} = ...
 
-export ${'method_signature'}
+export ${'method-signature'}
 \`\`\`
 `('javascript.gigasecond.export_inline')
 
@@ -51,7 +51,7 @@ export const gigasecond = (...)
 
 export class GigasecondAnalyzer extends AnalyzerImpl {
 
-  static Parser: AstParser = new AstParser(undefined, 1)
+  private static Parser: AstParser = new AstParser(undefined, 1)
 
   private program!: Program
   private source!: string
@@ -62,23 +62,24 @@ export class GigasecondAnalyzer extends AnalyzerImpl {
   // Typed as Identifier because that's the only expected type. When checking
   // the signature, make sure it _does_ check if this is an identifier.
   private _mainParameter!: Identifier
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private memoized: { [P: string]: any } = {};
 
-  get mainMethod() {
+  private get mainMethod(): ReturnType<typeof extractMainMethod> {
     if (!this._mainMethod) {
       this._mainMethod = extractMainMethod(this.program, 'gigasecond')
     }
     return this._mainMethod
   }
 
-  get mainExport() {
+  private get mainExport(): ReturnType<typeof extractExport> {
     if (!this._mainExport) {
       this._mainExport = extractExport(this.program, 'gigasecond')
     }
     return this._mainExport
   }
 
-  get mainParameter() {
+  public get mainParameter(): Identifier {
     if (!this._mainParameter) {
       this._mainParameter = this.mainMethod!.params[0] as Identifier
     }
@@ -116,18 +117,18 @@ export class GigasecondAnalyzer extends AnalyzerImpl {
     // The solution is automatically referred to the mentor if it reaches this
   }
 
-  private checkStructure() {
+  private checkStructure(): void | never {
     const method = this.mainMethod
     const [declaration,] = this.mainExport
 
     // First we check that there is a gigasecond function and that this function
     // is exported.
     if (!method) {
-      this.comment(NO_METHOD({ method_name: 'gigasecond' }))
+      this.comment(NO_METHOD({ 'method.name': 'gigasecond' }))
     }
 
     if (!declaration) {
-      this.comment(NO_NAMED_EXPORT({ export_name: 'gigasecond' }))
+      this.comment(NO_NAMED_EXPORT({ 'export.name': 'gigasecond' }))
     }
 
     if (this.hasCommentary) {
@@ -135,12 +136,12 @@ export class GigasecondAnalyzer extends AnalyzerImpl {
     }
   }
 
-  private checkSignature() {
+  private checkSignature(): void | never {
     const method: MainMethod = this.mainMethod!
 
     // If there is no parameter then this solution won't pass the tests.
     if (method.params.length === 0) {
-      this.disapprove(NO_PARAMETER({ function_name: method.id!.name }))
+      this.disapprove(NO_PARAMETER({ 'function.name': method.id!.name }))
     }
 
     const firstParameter = this.mainParameter!
@@ -152,7 +153,7 @@ export class GigasecondAnalyzer extends AnalyzerImpl {
     }
   }
 
-  private checkForOptimalSolutions() {
+  private checkForOptimalSolutions(): void | never {
     // The optional solution looks like this:
     //
     // const GIGASECOND_IN_MS = 10 ** 9
@@ -167,7 +168,7 @@ export class GigasecondAnalyzer extends AnalyzerImpl {
     //
 
     if (
-         !this.isOneLineSolution()
+      !this.isOneLineSolution()
       || !this.isUsingGetTimeOnce()
       || !this.isUsingNewDateOnce()
       || !this.findExtractedNumberConstant()
@@ -191,9 +192,9 @@ export class GigasecondAnalyzer extends AnalyzerImpl {
     this.approve()
   }
 
-  private checkForTips() {
+  private checkForTips(): void | never {
     const optimizeLargeNumber = this.isUsingLargeNumberLiteral()
-    const numberComprehension = this.findNumberComprehension()
+    const _numberComprehension = this.findNumberComprehension()
     const extracted = this.findExtractedNumberConstant()
 
     if (extracted === undefined) {
@@ -220,14 +221,14 @@ export class GigasecondAnalyzer extends AnalyzerImpl {
       const gigasecondConstant = this.findExtractedNumberConstant()
       this.comment(
         TIP_EXPORT_INLINE({
-          method_signature: 'function gigasecond(...) { ... }',
-          const_name: gigasecondConstant && parameterName(gigasecondConstant) || 'MY_CONST'
+          'method-signature': 'function gigasecond(...) { ... }',
+          'const.name': gigasecondConstant && parameterName(gigasecondConstant) || 'MY_CONST'
         })
       )
     }
   }
 
-  private checkForApprovableSolutions() {
+  private checkForApprovableSolutions(): void | never {
     if (!this.isOneLineSolution()) {
       return
     }
@@ -240,7 +241,7 @@ export class GigasecondAnalyzer extends AnalyzerImpl {
     this.approve()
   }
 
-  private isOneLineSolution() {
+  private isOneLineSolution(): boolean {
     // Maximum body count may be 2 (3 - 1)
     //
     // 1: export function gigasecond(input) {
@@ -259,13 +260,13 @@ export class GigasecondAnalyzer extends AnalyzerImpl {
          body.type === AST_NODE_TYPES.BlockStatement
       && body.body.length === 1
       && body.body[0].type === AST_NODE_TYPES.ReturnStatement
-       ? body.body[0]
-       : this.mainMethod!
+           ? body.body[0]
+           : this.mainMethod!
 
     return (lineEnd - lineStart) <= 2
   }
 
-  private hasInlineExport() {
+  private hasInlineExport(): boolean {
     // Additionally make sure the export is inline by checking if it doesn't
     // have any specifiers:
     //
@@ -278,35 +279,35 @@ export class GigasecondAnalyzer extends AnalyzerImpl {
     return this.mainExport[0]!.specifiers && this.mainExport[0]!.specifiers.length === 0
   }
 
-  private isUsingGetTimeOnce() {
+  private isUsingGetTimeOnce(): boolean {
     const { name } = this.mainParameter
-    return findAll(this.mainMethod!, (node) => isCallExpression(node, name, 'getTime')).length === 1
+    return findAll(this.mainMethod!, (node): boolean => isCallExpression(node, name, 'getTime')).length === 1
   }
 
-  private isUsingNewDateOnce() {
-    return findAll(this.mainMethod!, (node) => isNewExpression(node) && isIdentifier(node.callee, 'Date')).length === 1
+  private isUsingNewDateOnce(): boolean {
+    return findAll(this.mainMethod!, (node): boolean => isNewExpression(node) && isIdentifier(node.callee, 'Date')).length === 1
   }
 
   private findExtractedNumberConstant(): VariableDeclarator | undefined {
     // Remove the main method (which could be a top-level constant)
     const found = findTopLevelConstants(this.program)
-      .flatMap((constant) => constant.declarations)
-      .filter(declaration => declaration.init !== this.mainMethod)
+      .flatMap((constant): VariableDeclarator[] => constant.declarations)
+      .filter((declaration): boolean => declaration.init !== this.mainMethod)
 
     if (found.length === 0) {
       return undefined
     }
 
     const numberComprehension = this.findNumberComprehension()
-    return found.find(f => f.init === numberComprehension)
+    return found.find((f): boolean => f.init === numberComprehension)
   }
 
-  private isUsingLargeNumberLiteral() {
+  private isUsingLargeNumberLiteral(): boolean {
     return findRawLiteral(this.mainMethod!, '1000000000000') === undefined
       && findRawLiteral(this.mainMethod!, '1000000000') === undefined
   }
 
-  private isUsingIntermediateVariable() {
+  private isUsingIntermediateVariable(): VariableDeclarator | undefined {
     return findFirstOfType(this.mainMethod!, AST_NODE_TYPES.VariableDeclaration)
   }
 
@@ -316,7 +317,7 @@ export class GigasecondAnalyzer extends AnalyzerImpl {
     }
     const self = this
     return this.memoized['number-comprehension'] =
-      findFirst(this.mainMethod!, function(node) {
+      findFirst(this.mainMethod!, function(node): boolean {
         return self.isNumberComprehension.call(this, self, node)
       })
   }

@@ -32,6 +32,6 @@ const analyzer = new AnalyzerClass()
 // logged and/or written to a file.
 //
 run(analyzer, input, options)
-  .then(() => process.exit(0))
-  .catch((err: any) => logger.fatal(err.toString()))
+  .then((): never => process.exit(0))
+  .catch((err): never => logger.fatal(err.toString()))
 

@@ -6,6 +6,6 @@ import { isIdentifier } from "./is_identifier"
 export const isNewExpression = (node: Node): node is NewExpression => node.type === AST_NODE_TYPES.NewExpression
 
 export function findNewExpression(root: Node, className: string): NewExpression | undefined {
-  const isNewClass = (node: Node) => isNewExpression(node) && isIdentifier(node.callee, className)
+  const isNewClass = (node: Node): boolean => isNewExpression(node) && isIdentifier(node.callee, className)
   return findFirst(root, isNewClass) as NewExpression | undefined
 }

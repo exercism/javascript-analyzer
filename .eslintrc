@@ -1,10 +1,59 @@
 {
+  "root": true,
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
+    "project": "./tsconfig.json",
     "ecmaVersion": 6,
     "sourceType": "module",
     "ecmaFeatures": {
       "modules": true
     }
+  },
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": [
+      "warn", {
+        "allowExpressions": false,
+        "allowTypedFunctionExpressions": true,
+        "allowHigherOrderFunctions": true
+      }
+    ],
+    "@typescript-eslint/explicit-member-accessibility": [
+      "warn", {
+        "accessibility": "no-public",
+        "overrides": {
+          "accessors": "explicit",
+          "constructors": "no-public",
+          "methods": "explicit",
+          "properties": "explicit",
+          "parameterProperties": "off"
+        }
+      }
+    ],
+    "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-parameter-properties": [
+      "warn", {
+        "allows": [
+          "private", "protected", "public",
+          "private readonly", "protected readonly", "public readonly"
+        ]
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-use-before-define": [
+      "error", {
+        "functions": false,
+        "typedefs": false
+      }
+    ]
   }
 }

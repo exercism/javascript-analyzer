@@ -39,7 +39,7 @@ const DEFAULT_LINE_DATA =  {
   count: 0,
   comments: {
     unique: [] as string[],
-    unique_templates: [] as string[]
+    uniqueTemplates: [] as string[]
   },
   runtimes: {
     total: BigInt(0),
@@ -55,56 +55,60 @@ const DEFAULT_LINE_DATA =  {
  * @param {typeof DEFAULT_LINE_DATA} [data=DEFAULT_LINE_DATA]
  * @returns {string}
  */
-function line(humanStatus: string, data = DEFAULT_LINE_DATA): string {
+function line(humanStatus: string, data: typeof DEFAULT_LINE_DATA = DEFAULT_LINE_DATA): string {
   const {
     count,
-    comments: { unique, unique_templates },
+    comments: { unique, uniqueTemplates },
     runtimes: { total, average, median }
   } = data
   return `| ${[
     pad(humanStatus, 20),
     pad(count, 5),
     pad(unique.length, 8),
-    pad(unique_templates.length, 6),
+    pad(uniqueTemplates.length, 6),
     `${pad((average / BigInt(1000000)), 4)}ms`,
     `${pad((median / BigInt(1000000)), 4)}ms`,
     `${pad((total / BigInt(10000000000)), 6)}s`
-   ].join(' | ')
-   } |`
+  ].join(' | ')
+  } |`
 }
 
 const rootTimeStamp = process.hrtime.bigint()
 logger.log(`=> start batch runner for ${exercise.slug}`)
 
 readDir(FIXTURES_ROOT)
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   .then(async (fixtureDirs) => Promise.all(fixtureDirs.map(async (fixtureDir) => {
-      try {
-        const inputDir     = path.join(FIXTURES_ROOT, fixtureDir)
-        const input        = new DirectoryInput(inputDir, exercise.slug)
-        const analyzer     = new AnalyzerClass()
+    try {
+      const inputDir     = path.join(FIXTURES_ROOT, fixtureDir)
+      const input        = new DirectoryInput(inputDir, exercise.slug)
+      const analyzer     = new AnalyzerClass()
 
-        const fixtureStamp = process.hrtime.bigint()
-        const analysis     = await analyzer.run(input)
-        const runtime      = process.hrtime.bigint() - fixtureStamp
+      const fixtureStamp = process.hrtime.bigint()
+      const analysis     = await analyzer.run(input)
+      const runtime      = process.hrtime.bigint() - fixtureStamp
 
-        const fixture      = fixtureDir
+      const fixture      = fixtureDir
 
-        const processable = analysis.toProcessable(options)
+      const processable = analysis.toProcessable(options)
 
-        if (options.dry) {
-          await processable
-        } else {
-          await FileOutput(processable, { ...options, inputDir, output: './analysis.json' })
-        }
-
-        return { result: analysis, runtime, fixture }
-      } catch (_ignore) {
-        return undefined
+      if (options.dry) {
+        await processable
+      } else {
+        await FileOutput(processable, { ...options, inputDir, output: './analysis.json' })
       }
-    }))
+
+      return { result: analysis, runtime, fixture }
+    } catch (_ignore) {
+      return undefined
+    }
+  }))
   )
-  .then((results) => results.filter(Boolean) as ReadonlyArray<{ result: Output, runtime: bigint, fixture: string }>)
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  .then((results) => results.filter(Boolean) as readonly { result: Output; runtime: bigint; fixture: string }[])
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   .then((results) => {
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     return results.reduce((groups, { result: { status, comments }, runtime, fixture }) => {
       groups[status] = (groups[status] || { runtimes: [], comments: [], count: 0, fixtures: [] })
 
@@ -114,27 +118,30 @@ readDir(FIXTURES_ROOT)
       groups[status].fixtures.push(fixture)
 
       return groups
-    }, {} as { [K in Output['status']]: { runtimes: bigint[], count: number, comments: Comment[], fixtures: string[] } })
+    // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
+    }, {} as { [K in Output['status']]: { runtimes: bigint[]; count: number; comments: Comment[]; fixtures: string[] } })
   })
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   .then((grouped) => {
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const aggregatedGroups = (Object.keys(grouped) as Output['status'][]).reduce((aggregated, status) => {
       const { count, comments, runtimes, fixtures } = grouped[status]
 
       const sortedRuntimes = runtimes.sort()
 
-      const totalRuntime = runtimes.reduce((result, time) => result + time, BigInt(0))
+      const totalRuntime = runtimes.reduce((result, time): bigint => result + time, BigInt(0))
       const averageRuntime = totalRuntime / BigInt(sortedRuntimes.length)
       const medianRuntime = sortedRuntimes[(sortedRuntimes.length / 2) | 0]
 
-      const uniqueComments = [...new Set(comments.filter(Boolean).map(comment => comment.message))]
-      const uniqueTemplates = [...new Set(comments.filter(Boolean).map(comment => comment.template))]
+      const uniqueComments = [...new Set(comments.filter(Boolean).map((comment): string => comment.message))]
+      const uniqueTemplates = [...new Set(comments.filter(Boolean).map((comment): string => comment.template))]
 
       return { ...aggregated,
         [status]: {
           count,
           comments: {
             unique: uniqueComments,
-            unique_templates: uniqueTemplates
+            uniqueTemplates: uniqueTemplates
           },
           runtimes: {
             total: totalRuntime,
@@ -144,26 +151,27 @@ readDir(FIXTURES_ROOT)
           fixtures
         }
       }
-    }, {} as { [K in Output['status']]: { count: number, fixtures: string[], comments: { unique: string[], unique_templates: string[] }, runtimes: { total: bigint, average: bigint, median: bigint }}})
+    // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
+    }, {} as { [K in Output['status']]: { count: number; fixtures: string[]; comments: { unique: string[]; uniqueTemplates: string[] }; runtimes: { total: bigint; average: bigint; median: bigint }}})
 
     const groupKeys = (Object.keys(aggregatedGroups) as Output['status'][])
-    const allRuntimesSorted = groupKeys.reduce((runtimes, status) => runtimes.concat(grouped[status].runtimes), [] as bigint[]).sort()
+    const allRuntimesSorted = groupKeys.reduce((runtimes, status): bigint[] => runtimes.concat(grouped[status].runtimes), [] as bigint[]).sort()
 
-    const totalCount = groupKeys.reduce((result, status) => result + aggregatedGroups[status].count, 0)
-    const totalRuntime = groupKeys.reduce((result, status) => result + aggregatedGroups[status].runtimes.total, BigInt(0))
+    const totalCount = groupKeys.reduce((result, status): number => result + aggregatedGroups[status].count, 0)
+    const totalRuntime = groupKeys.reduce((result, status): bigint => result + aggregatedGroups[status].runtimes.total, BigInt(0))
     const totalAverageRuntime = totalRuntime / BigInt(allRuntimesSorted.length)
     const totalMedianRuntime = allRuntimesSorted[(allRuntimesSorted.length / 2) | 0]
-    const totalTotalRuntime = groupKeys.reduce((result, status) => result + aggregatedGroups[status].runtimes.total, BigInt(0))
+    const totalTotalRuntime = groupKeys.reduce((result, status): bigint => result + aggregatedGroups[status].runtimes.total, BigInt(0))
 
-    const allComments = groupKeys.reduce((comments, status) => comments.concat(grouped[status].comments), [] as Comment[])
-    const allUniqueComments = [...new Set(allComments.filter(Boolean).map(comment => comment.message))]
-    const allUniqueTemplates = [...new Set(allComments.filter(Boolean).map(comment => comment.template))]
+    const allComments = groupKeys.reduce((comments, status): Comment[] => comments.concat(grouped[status].comments), [] as Comment[])
+    const allUniqueComments = [...new Set(allComments.filter(Boolean).map((comment): string => comment.message))]
+    const allUniqueTemplates = [...new Set(allComments.filter(Boolean).map((comment): string => comment.template))]
 
     const totalData = {
       count: totalCount,
       comments: {
         unique: allUniqueComments,
-        unique_templates: allUniqueTemplates
+        uniqueTemplates: allUniqueTemplates
       },
       runtimes: {
         total: totalTotalRuntime,
@@ -176,21 +184,24 @@ readDir(FIXTURES_ROOT)
 ## Raw
 
 \`\`\`json
-${JSON.stringify(groupKeys.reduce((serializable, status) => {
-  return {
-    ...serializable,
-    [status]: {
-      ...aggregatedGroups[status],
-      runtimes: {
-        total: Number(aggregatedGroups[status].runtimes.total.toString()),
-        average: Number(aggregatedGroups[status].runtimes.average.toString()),
-        median: Number(aggregatedGroups[status].runtimes.median.toString())
+${JSON.stringify(
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    groupKeys.reduce((serializable, status) => {
+      return {
+        ...serializable,
+        [status]: {
+          ...aggregatedGroups[status],
+          runtimes: {
+            total: Number(aggregatedGroups[status].runtimes.total.toString()),
+            average: Number(aggregatedGroups[status].runtimes.average.toString()),
+            median: Number(aggregatedGroups[status].runtimes.median.toString())
+          }
+        }
       }
-    }
-  }
-}, {
-  toolRuntime: ((process.hrtime.bigint() - rootTimeStamp) / BigInt(1000000)).toString() + 'ms'
-}), null, 2)}
+    }, {
+      toolRuntime: ((process.hrtime.bigint() - rootTimeStamp) / BigInt(1000000)).toString() + 'ms'
+    }), null, 2
+  )}
 \`\`\``)
 
 

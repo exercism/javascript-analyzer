@@ -10,12 +10,16 @@ const CONFIGURATION_FILES = /(?:babel\.config\.js|jest\.config\.js|\.eslintrc\.j
 export class DirectoryInput implements Input {
   constructor(private readonly path: string, private readonly exerciseSlug: string) {}
 
-  async read(n = 1): Promise<string[]> {
+  public async read(n = 1): Promise<string[]> {
     const files = await readDir(this.path)
 
     const candidates = findCandidates(files, n, `${this.exerciseSlug}.js`)
     const fileSources = await Promise.all(
-      candidates.map(candidate => new FileInput(nodePath.join(this.path, candidate)).read().then(([source]) => source))
+      candidates.map((candidate): Promise<string> => {
+        return new FileInput(nodePath.join(this.path, candidate))
+          .read()
+          .then(([source]): string => source)
+      })
     )
 
     return fileSources
@@ -30,19 +34,19 @@ export class DirectoryInput implements Input {
  * @param n the number of files it should return
  * @param preferredNames the names of the files it prefers
  */
-function findCandidates(files: string[], n: number, ...preferredNames: string[]) {
+function findCandidates(files: string[], n: number, ...preferredNames: string[]): string[] {
   const candidates = files
-    .filter(file => EXTENSIONS.test(file))
-    .filter(file => !TEST_FILES.test(file))
-    .filter(file => !CONFIGURATION_FILES.test(file))
+    .filter((file): boolean => EXTENSIONS.test(file))
+    .filter((file): boolean => !TEST_FILES.test(file))
+    .filter((file): boolean => !CONFIGURATION_FILES.test(file))
 
   const preferredMatches = preferredNames
-    ? candidates.filter(file => preferredNames.includes(file))
+    ? candidates.filter((file): boolean => preferredNames.includes(file))
     : []
 
   const allMatches = preferredMatches.length >= n
     ? preferredMatches
-    : preferredMatches.concat(candidates.filter(file => !preferredMatches.includes(file)))
+    : preferredMatches.concat(candidates.filter((file): boolean => !preferredMatches.includes(file)))
 
   return allMatches.slice(0, n)
 }

@@ -29,7 +29,7 @@ export class AnalyzerOutput implements Output {
   /**
    * Mark the solution as approved
    */
-  public approve() {
+  public approve(): void {
     this.status = this.comments.length === 0
       ? SolutionStatus.ApproveAsOptimal
       : SolutionStatus.ApproveWithComment
@@ -40,7 +40,7 @@ export class AnalyzerOutput implements Output {
   /**
    * Mark the solution as dissapproved
    */
-  public disapprove() {
+  public disapprove(): void {
     this.status = SolutionStatus.DisapproveWithComment
 
     this.freeze()
@@ -49,7 +49,7 @@ export class AnalyzerOutput implements Output {
   /**
    * Mark the solution as refer to mentor
    */
-  public redirect() {
+  public redirect(): void {
     this.status = SolutionStatus.Redirect
 
     this.freeze()
@@ -61,12 +61,12 @@ export class AnalyzerOutput implements Output {
    * @param {Comment} comment the comment to add
    * @returns self
    */
-  public add(comment: Comment) {
+  public add(comment: Comment): this {
     this.comments.push(comment)
     return this
   }
 
-  private freeze() {
+  private freeze(): void {
     Object.freeze(this)
     Object.freeze(this.comments)
   }
@@ -81,7 +81,7 @@ export class AnalyzerOutput implements Output {
    * @param {ExecutionOptions} options
    * @returns {Promise<string>}
    */
-  toProcessable({ templates }: Pick<ExecutionOptions, 'templates'>): Promise<string> {
+  public toProcessable({ templates }: Pick<ExecutionOptions, 'templates'>): Promise<string> {
     return Promise.resolve(
       JSON.stringify({
         status: this.status,
@@ -91,7 +91,7 @@ export class AnalyzerOutput implements Output {
   }
 }
 
-function makeExternalComment(comment: Comment) {
+function makeExternalComment(comment: Comment): string | { comment: string; params: Comment['variables'] } {
   if (!comment.variables || Object.keys(comment.variables).length === 0) {
     return comment.externalTemplate
   }
@@ -102,7 +102,7 @@ function makeExternalComment(comment: Comment) {
   }
 }
 
-function makeIsolatedComment(comment: Comment) {
+function makeIsolatedComment(comment: Comment): string | { comment: string; params: Comment['variables'] } {
   if (!comment.variables || Object.keys(comment.variables).length === 0) {
     return comment.message
   }

@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
 
 export function isIdentifier(node: Node, name?: string): node is Identifier {
   return node.type === AST_NODE_TYPES.Identifier && (
-       name === undefined
+    name === undefined
     || node.name === name
   )
 }
