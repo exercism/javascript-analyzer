@@ -4,9 +4,8 @@ Comments are the output analyzers directly give to the respective parties:
 
 - `refer_to_mentor`: at the moment of writing, the consensus is that comments
   will be passed to the mentor;
-- `approve_with_comment`: the comments will be passed to the student;
-- `disapprove_with_comment`: the comments will be passed to the student;
-- `approve_as_optimal`: no comments are passed to _anyone_.
+- `approve`: the comments, if any, will be passed to the student;
+- `disapprove`: the comments will be passed to the student;
 
 ## Using the Comment Factory
 

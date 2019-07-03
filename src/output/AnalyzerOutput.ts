@@ -1,12 +1,13 @@
 enum SolutionStatus {
-  /** This is the default situation and should be used when there is any uncertainty. */
+  /** This is the default situation and should be used when there is any
+   *  uncertainty. */
   Redirect = 'refer_to_mentor',
-  /** To be used when a solution matches pre-known optimal solutions */
-  ApproveAsOptimal = 'approve_as_optimal',
-  /** To be used when a solution can be approved but with a known improvement. */
-  ApproveWithComment = 'approve_with_comment',
-  /** To be used when a solution can be disapproved as suboptimal and a comment is provided. */
-  DisapproveWithComment = 'disapprove_with_comment'
+  /** To be used when a solution matches pre-known optimal solutions or when a
+   *  solution can be approved but with a known improvement. */
+  Approve = 'approve',
+  /** To be used when a solution can be disapproved as suboptimal and a comment
+   *  is provided. */
+  Disapprove = 'disapprove'
 }
 
 /**
@@ -30,9 +31,7 @@ export class AnalyzerOutput implements Output {
    * Mark the solution as approved
    */
   public approve(): void {
-    this.status = this.comments.length === 0
-      ? SolutionStatus.ApproveAsOptimal
-      : SolutionStatus.ApproveWithComment
+    this.status = SolutionStatus.Approve
 
     this.freeze()
   }
@@ -41,7 +40,7 @@ export class AnalyzerOutput implements Output {
    * Mark the solution as dissapproved
    */
   public disapprove(): void {
-    this.status = SolutionStatus.DisapproveWithComment
+    this.status = SolutionStatus.Disapprove
 
     this.freeze()
   }
