@@ -20,7 +20,7 @@ const DEFAULT_OPTIONS: Omit<ExecutionOptions, 'inputDir' | 'output'> = {
   dry: false,
   console: false,
   exercise: '<no-exercise>',
-  templates: false
+  noTemplates: false,
 }
 
 describe('FileOutput', () => {

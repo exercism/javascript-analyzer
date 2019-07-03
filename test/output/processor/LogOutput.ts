@@ -13,7 +13,7 @@ const DEFAULT_OPTIONS: ExecutionOptions = {
   debug: false,
   dry: false,
   console: true,
-  templates: false,
+  noTemplates: false,
   exercise: '<no-exercise>',
   output: '<no-output>',
   inputDir: '<no-input>'

@@ -80,11 +80,11 @@ export class AnalyzerOutput implements Output {
    * @param {ExecutionOptions} options
    * @returns {Promise<string>}
    */
-  public toProcessable({ templates }: Pick<ExecutionOptions, 'templates'>): Promise<string> {
+  public toProcessable({ noTemplates }: Pick<ExecutionOptions, 'noTemplates'>): Promise<string> {
     return Promise.resolve(
       JSON.stringify({
         status: this.status,
-        comments: this.comments.map(templates ? makeExternalComment : makeIsolatedComment)
+        comments: this.comments.map(noTemplates ? makeIsolatedComment : makeExternalComment)
       })
     )
   }

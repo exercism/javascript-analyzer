@@ -23,6 +23,14 @@ import { isLiteral } from "../utils/is_literal"
 import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_PARAMETER } from "../../comments/shared";
 import { AstParser } from "../../parsers/AstParser";
 
+/**
+ * The factories here SHOULD be kept in sync with exercism/website-copy. Under
+ * normal use, they do NOT dictate the actual commentary output of the analyzer,
+ * as that is provided by the website-copy repo.
+ *
+ * https://github.com/exercism/website-copy/tree/master/automated-comments/javascript/gigasecond
+ */
+
 const TIP_EXPORT_INLINE = factory<'method-signature' | 'const.name'>`
 Did you know that you can export functions, classes and constants directly
 inline?
