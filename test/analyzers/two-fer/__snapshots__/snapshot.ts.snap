@@ -93,7 +93,7 @@ exports[`When running analysis on two-fer fixtures and expecting it to disapprov
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.generic.no_method",
+      "externalTemplate": "javascript.general.no_method",
       "message": "No method called \`twoFer\`. The tests won't pass without it.",
       "template": "No method called \`%<method.name>s\`. The tests won't pass without it.",
       "variables": Object {
@@ -101,7 +101,7 @@ AnalyzerOutput {
       },
     },
     CommentImpl {
-      "externalTemplate": "javascript.generic.no_named_export",
+      "externalTemplate": "javascript.general.no_named_export",
       "message": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`twoFer\`.
 The tests won't pass without it.
 
@@ -163,7 +163,7 @@ exports[`When running analysis on two-fer fixtures and expecting it to disapprov
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.generic.prefer_strict_equality",
+      "externalTemplate": "javascript.general.prefer_strict_equality",
       "message": "In _JavaScript_, always prefer [strict (identity and non-identity) equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity)
 such as \`===\` and \`!==\` over the forms that use implicit type coercion,
 such as [\`==\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Equality)
@@ -203,7 +203,7 @@ exports[`When running analysis on two-fer fixtures and expecting it to disapprov
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.generic.prefer_strict_equality",
+      "externalTemplate": "javascript.general.prefer_strict_equality",
       "message": "In _JavaScript_, always prefer [strict (identity and non-identity) equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity)
 such as \`===\` and \`!==\` over the forms that use implicit type coercion,
 such as [\`==\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Equality)
@@ -325,7 +325,7 @@ exports[`When running analysis on two-fer fixtures and expecting it to disapprov
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.generic.prefer_strict_equality",
+      "externalTemplate": "javascript.general.prefer_strict_equality",
       "message": "In _JavaScript_, always prefer [strict (identity and non-identity) equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity)
 such as \`===\` and \`!==\` over the forms that use implicit type coercion,
 such as [\`==\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Equality)
@@ -385,7 +385,7 @@ exports[`When running analysis on two-fer fixtures and expecting it to disapprov
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.generic.no_method",
+      "externalTemplate": "javascript.general.no_method",
       "message": "No method called \`twoFer\`. The tests won't pass without it.",
       "template": "No method called \`%<method.name>s\`. The tests won't pass without it.",
       "variables": Object {
@@ -393,7 +393,7 @@ AnalyzerOutput {
       },
     },
     CommentImpl {
-      "externalTemplate": "javascript.generic.no_named_export",
+      "externalTemplate": "javascript.general.no_named_export",
       "message": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`twoFer\`.
 The tests won't pass without it.
 

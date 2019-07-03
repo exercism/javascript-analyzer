@@ -15,14 +15,14 @@ ${'foo'} is foo, given also ${'bar'}
 const PARAMS = { foo: 'actual-foo', bar: 'actual-bar' }
 
 describe('AnalyzerOutput#toProcessable', () => {
-  describe('with no templates flag passed', () => {
+  describe('with noTemplates flag passed', () => {
     it('generates the correct output', async () => {
       const output = new AnalyzerOutput()
       output.add(COMMENT_SIMPLE())
       output.add(COMMENT_PARAMETERS(PARAMS))
       output.approve()
 
-      const result = await output.toProcessable({ templates: false })
+      const result = await output.toProcessable({ noTemplates: true })
       expect(JSON.parse(result)).toEqual({
         status: 'approve',
         comments: [
@@ -36,14 +36,14 @@ describe('AnalyzerOutput#toProcessable', () => {
     })
   })
 
-  describe('with templates flag passed', () => {
+  describe('without noTemplates flag passed', () => {
     it('generates the correct output', async () => {
       const output = new AnalyzerOutput()
       output.add(COMMENT_SIMPLE())
       output.add(COMMENT_PARAMETERS(PARAMS))
       output.approve()
 
-      const result = await output.toProcessable({ templates: true })
+      const result = await output.toProcessable({ noTemplates: false })
       expect(JSON.parse(result)).toEqual({
         status: 'approve',
         comments: [
@@ -62,7 +62,7 @@ describe('AnalyzerOutput#toProcessable', () => {
       const output = new AnalyzerOutput()
       output.approve()
 
-      const result = await output.toProcessable({ templates: true })
+      const result = await output.toProcessable({ noTemplates: false })
       expect(JSON.parse(result)).toMatchObject({ status: 'approve' })
 
     })
@@ -74,7 +74,7 @@ describe('AnalyzerOutput#toProcessable', () => {
       output.add(COMMENT_SIMPLE())
       output.approve()
 
-      const result = await output.toProcessable({ templates: true })
+      const result = await output.toProcessable({ noTemplates: false })
       expect(JSON.parse(result)).toMatchObject({ status: 'approve' })
     })
   })
@@ -85,7 +85,7 @@ describe('AnalyzerOutput#toProcessable', () => {
       output.add(COMMENT_SIMPLE())
       output.disapprove()
 
-      const result = await output.toProcessable({ templates: true })
+      const result = await output.toProcessable({ noTemplates: false })
       expect(JSON.parse(result)).toMatchObject({ status: 'disapprove' })
     })
   })
@@ -95,7 +95,7 @@ describe('AnalyzerOutput#toProcessable', () => {
       const output = new AnalyzerOutput()
       output.redirect()
 
-      const result = await output.toProcessable({ templates: true })
+      const result = await output.toProcessable({ noTemplates: false })
       expect(JSON.parse(result)).toMatchObject({ status: 'refer_to_mentor' })
     })
   })

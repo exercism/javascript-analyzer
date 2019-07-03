@@ -11,8 +11,8 @@ interface ExecutionOptions {
   inputDir: string;
   /** The exercise slug */
   exercise: string;
-  /** If true, expects website-copy to provide the contents of the templates */
-  templates: boolean;
+  /** Unless true, expects website-copy to provide the contents of the templates */
+  noTemplates: boolean;
 }
 
 interface AstParser<T extends object> {
