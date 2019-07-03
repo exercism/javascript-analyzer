@@ -3,4 +3,6 @@ production_node_modules
 dist
 yarn-error.log
 analysis.json
+analysis.out
+analysis.md
 tmp
