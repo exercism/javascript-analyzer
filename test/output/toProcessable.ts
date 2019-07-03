@@ -24,7 +24,7 @@ describe('AnalyzerOutput#toProcessable', () => {
 
       const result = await output.toProcessable({ templates: false })
       expect(JSON.parse(result)).toEqual({
-        status: 'approve_with_comment',
+        status: 'approve',
         comments: [
           'simple comment without parameters',
           {
@@ -45,7 +45,7 @@ describe('AnalyzerOutput#toProcessable', () => {
 
       const result = await output.toProcessable({ templates: true })
       expect(JSON.parse(result)).toEqual({
-        status: 'approve_with_comment',
+        status: 'approve',
         comments: [
           COMMENT_WITHOUT_PARAMS_IDENTIFIER,
           {
@@ -63,7 +63,7 @@ describe('AnalyzerOutput#toProcessable', () => {
       output.approve()
 
       const result = await output.toProcessable({ templates: true })
-      expect(JSON.parse(result)).toMatchObject({ status: 'approve_as_optimal' })
+      expect(JSON.parse(result)).toMatchObject({ status: 'approve' })
 
     })
   })
@@ -75,7 +75,7 @@ describe('AnalyzerOutput#toProcessable', () => {
       output.approve()
 
       const result = await output.toProcessable({ templates: true })
-      expect(JSON.parse(result)).toMatchObject({ status: 'approve_with_comment' })
+      expect(JSON.parse(result)).toMatchObject({ status: 'approve' })
     })
   })
 
@@ -86,7 +86,7 @@ describe('AnalyzerOutput#toProcessable', () => {
       output.disapprove()
 
       const result = await output.toProcessable({ templates: true })
-      expect(JSON.parse(result)).toMatchObject({ status: 'disapprove_with_comment' })
+      expect(JSON.parse(result)).toMatchObject({ status: 'disapprove' })
     })
   })
 

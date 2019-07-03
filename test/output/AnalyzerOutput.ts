@@ -35,7 +35,7 @@ describe('AnalyzerOutput', () => {
       output.approve()
 
       it('approves as optimal', () => {
-        expect(output.status).toBe('approve_as_optimal')
+        expect(output.status).toBe('approve')
       })
 
       it('has no comments', () => {
@@ -49,7 +49,7 @@ describe('AnalyzerOutput', () => {
       output.approve()
 
       it('approves with comment', () => {
-        expect(output.status).toBe('approve_with_comment')
+        expect(output.status).toBe('approve')
       })
 
       it('has that comment', () => {
@@ -93,7 +93,7 @@ describe('AnalyzerOutput', () => {
       output.disapprove()
 
       it('disapproves with comment', () => {
-        expect(output.status).toBe('disapprove_with_comment')
+        expect(output.status).toBe('disapprove')
       })
 
       it('has no comments', () => {
@@ -107,7 +107,7 @@ describe('AnalyzerOutput', () => {
       output.disapprove()
 
       it('disapproves with comment', () => {
-        expect(output.status).toBe('disapprove_with_comment')
+        expect(output.status).toBe('disapprove')
       })
 
       it('has that comment', () => {

@@ -21,7 +21,7 @@ describe('When running analysis', () => {
     const input = new InlineInput([solutionContent])
     const output = await run(analyzer, input, options)
 
-    expect(output.status).toBe('approve_as_optimal');
+    expect(output.status).toBe('approve');
     expect(output.comments.length).toBe(0);
   })
 
@@ -39,7 +39,7 @@ describe('When running analysis', () => {
     const input = new InlineInput([solutionContent])
     const output = await run(analyzer, input, options)
 
-    expect(output.status).toBe('approve_with_comment');
+    expect(output.status).toBe('approve');
     expect(output.comments.length).toBeGreaterThanOrEqual(1);
   })
 
@@ -55,7 +55,7 @@ describe('When running analysis', () => {
     const input = new InlineInput([solutionContent])
     const output = await run(analyzer, input, options)
 
-    expect(output.status).toBe('disapprove_with_comment');
+    expect(output.status).toBe('disapprove');
     expect(output.comments.length).toBeGreaterThanOrEqual(1);
   })
 

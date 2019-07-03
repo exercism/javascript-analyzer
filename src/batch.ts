@@ -211,9 +211,8 @@ ${JSON.stringify(
 
 |               Status | Count | Comments | Unique |    Avg | Median |   Total |
 | --------------------:| -----:| --------:| ------:| ------:|-------:|--------:|
-${line('Approve (optimal)', aggregatedGroups['approve_as_optimal'])}
-${line('Approve (comment)', aggregatedGroups['approve_with_comment'])}
-${line('Disapprove (comment)', aggregatedGroups['disapprove_with_comment'])}
+${line('Approve', aggregatedGroups['approve'])}
+${line('Disapprove', aggregatedGroups['disapprove'])}
 ${line('Refer to mentor', aggregatedGroups['refer_to_mentor'])}
 ${line('Total', totalData)}
 `.trim())

@@ -25,15 +25,15 @@ describe('When running analysis on <slug>', () => {
 
     const output = await analyze(solutionContent)
 
-    expect(output.status).toBe('approve_as_optimal');
+    expect(output.status).toBe('approve');
     expect(output.comments.length).toBe(0);
   })
 })
 ```
 
-Add additional test cases for `approve_with_comment` and
-`disapprove_with_comment`, if your analyzer can actually output those. If you
-have explicit code that should always return `refer_to_mentor` add it to.
+Add additional test cases for `approve` and `disapprove`, if your analyzer can
+actually output those. If you have explicit code that should always return
+`refer_to_mentor`, add it too.
 
 **Note**: This is not the place to add an exhaustive test of inputs to outputs.
 It's merely trying to detect when one of the known cases changes!
