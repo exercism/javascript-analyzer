@@ -11,6 +11,7 @@ export function bootstrap({ exercise, ...overrides }: { exercise: string } & Par
     inputDir: '__fake__',
     dry: true,
     noTemplates: false,
+    pretty: false,
     exercise,
     ...overrides
   })
