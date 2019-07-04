@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1
+
+- Change `--noTemplates` output to use `%{tag}` for tagged template variables,
+  instead of `%<tag>s`.
+
 ## 0.2.0
 
 - Per https://github.com/exercism/automated-mentoring-support/issues/53,
