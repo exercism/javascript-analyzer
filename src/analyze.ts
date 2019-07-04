@@ -16,6 +16,7 @@ const { exercise, options, input, logger } = Bootstrap.call()
 
 logger.log('=> DEBUG mode is on')
 logger.log(`=> exercise: ${exercise.slug}`)
+logger.log(`=> options: ${options.pretty ? 'pretty ' : ''}${options.noTemplates ? 'templates' : 'no-templates'} ${options.dry ? 'dry ' : ''}`)
 
 // The autoloader knows where an analyzer should live and tries to require it
 // so it can be instantiated here. This allows us to add new analyzers without

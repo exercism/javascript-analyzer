@@ -22,7 +22,7 @@ describe('AnalyzerOutput#toProcessable', () => {
       output.add(COMMENT_PARAMETERS(PARAMS))
       output.approve()
 
-      const result = await output.toProcessable({ noTemplates: true })
+      const result = await output.toProcessable({ noTemplates: true, pretty: false })
       expect(JSON.parse(result)).toEqual({
         status: 'approve',
         comments: [
@@ -43,7 +43,7 @@ describe('AnalyzerOutput#toProcessable', () => {
       output.add(COMMENT_PARAMETERS(PARAMS))
       output.approve()
 
-      const result = await output.toProcessable({ noTemplates: false })
+      const result = await output.toProcessable({ noTemplates: false, pretty: false })
       expect(JSON.parse(result)).toEqual({
         status: 'approve',
         comments: [
@@ -62,7 +62,7 @@ describe('AnalyzerOutput#toProcessable', () => {
       const output = new AnalyzerOutput()
       output.approve()
 
-      const result = await output.toProcessable({ noTemplates: false })
+      const result = await output.toProcessable({ noTemplates: false, pretty: false })
       expect(JSON.parse(result)).toMatchObject({ status: 'approve' })
 
     })
@@ -74,7 +74,7 @@ describe('AnalyzerOutput#toProcessable', () => {
       output.add(COMMENT_SIMPLE())
       output.approve()
 
-      const result = await output.toProcessable({ noTemplates: false })
+      const result = await output.toProcessable({ noTemplates: false, pretty: false })
       expect(JSON.parse(result)).toMatchObject({ status: 'approve' })
     })
   })
@@ -85,7 +85,7 @@ describe('AnalyzerOutput#toProcessable', () => {
       output.add(COMMENT_SIMPLE())
       output.disapprove()
 
-      const result = await output.toProcessable({ noTemplates: false })
+      const result = await output.toProcessable({ noTemplates: false, pretty: false })
       expect(JSON.parse(result)).toMatchObject({ status: 'disapprove' })
     })
   })
@@ -95,7 +95,7 @@ describe('AnalyzerOutput#toProcessable', () => {
       const output = new AnalyzerOutput()
       output.redirect()
 
-      const result = await output.toProcessable({ noTemplates: false })
+      const result = await output.toProcessable({ noTemplates: false, pretty: false })
       expect(JSON.parse(result)).toMatchObject({ status: 'refer_to_mentor' })
     })
   })
