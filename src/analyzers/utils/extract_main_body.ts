@@ -8,24 +8,29 @@ type MainBodyWithSimpleReturn = TSESTree.ReturnStatement
 
 export function extractMainBody(mainMethod: MainMethod): MainBody {
   switch(mainMethod.type) {
-    case AST_NODE_TYPES.FunctionDeclaration:
+    case AST_NODE_TYPES.FunctionDeclaration: {
       return extractBodyFromBlock(mainMethod.body)
+    }
 
-    case AST_NODE_TYPES.ArrowFunctionExpression:
+    case AST_NODE_TYPES.ArrowFunctionExpression: {
       if (mainMethod.body.type === AST_NODE_TYPES.BlockStatement) {
         return extractBodyFromBlock(mainMethod.body)
       }
 
       // Implicit return
-      return {
+      const result: MainBodyWithSimpleReturn = {
         type: AST_NODE_TYPES.ReturnStatement,
         argument: mainMethod.body,
         loc: mainMethod.body.loc,
         range: mainMethod.body.range
-      } as MainBodyWithSimpleReturn
+      }
 
-    case AST_NODE_TYPES.FunctionExpression:
+      return result
+    }
+
+    case AST_NODE_TYPES.FunctionExpression: {
       return extractBodyFromBlock(mainMethod.body)
+    }
   }
 }
 
@@ -40,10 +45,12 @@ function extractBodyFromBlock(block: BlockStatement | null | undefined): MainBod
   }
 
   // no block, simulate empty one
-  return {
+  const result: MainBodyWithBlock = {
     type: AST_NODE_TYPES.BlockStatement,
     body: [],
     loc: { start: { line: -1, column: -1 }, end: { line: -1, column: -1 } },
     range: [0, 0]
-  } as MainBodyWithBlock
+  }
+
+  return result
 }

@@ -13,7 +13,10 @@ type Identifier = TSESTree.Identifier
 
 export type Traverser = importedTraverser
 export type MainMethod<T extends string = string> =
-  { id: Identifier & { name: T }, parent: undefined | Node } &
+  {
+    id: Identifier & { name: T };
+    parent: undefined | Node;
+  } &
   (
     FunctionDeclaration
     | ArrowFunctionExpression
@@ -24,7 +27,7 @@ export function extractMainMethod<T extends string = string>(program: Program, n
   let result: MainMethod | undefined = undefined
 
   traverse(program, {
-    enter(node: Node) {
+    enter(node: Node): void {
       switch (node.type) {
 
         // function name() {}
@@ -41,7 +44,7 @@ export function extractMainMethod<T extends string = string>(program: Program, n
           this.skip()
 
           traverse(node, {
-            enter(innerNode: Node) {
+            enter(innerNode: Node): void {
               switch(innerNode.type) {
 
                 case AST_NODE_TYPES.VariableDeclarator: {

@@ -10,7 +10,7 @@ export class EarlyFinalization extends Error {
 
 export class IsolatedAnalyzerOutput extends AnalyzerOutput implements WritableOutput {
 
-/**
+  /**
    * Mark the solution as approved
    */
   public approve(comment?: Comment): never {
@@ -41,7 +41,7 @@ export class IsolatedAnalyzerOutput extends AnalyzerOutput implements WritableOu
     throw new EarlyFinalization()
   }
 
-  get hasCommentary(): boolean {
+  public get hasCommentary(): boolean {
     return this.comments.length > 0
   }
 }

@@ -25,7 +25,7 @@ export abstract class IsolatedAnalyzerImpl implements Analyzer {
   public async run(input: Input): Promise<Output> {
     const output = new IsolatedAnalyzerOutput()
     await this.execute(input, output)
-      .catch((err) => {
+      .catch((err): void | never => {
         if (err instanceof EarlyFinalization) {
           this.logger.log(`=> early finialization (${output.status})`)
         } else {

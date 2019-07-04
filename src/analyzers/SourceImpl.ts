@@ -6,17 +6,17 @@ type NodeWithLocation = TSESTree.Node & {
 }
 
 interface Source {
-  get(node: NodeWithLocation): string
+  get(node: NodeWithLocation): string;
 }
 
 class SourceImpl implements Source {
-  private readonly lines: ReadonlyArray<string>
+  private readonly lines: string[]
 
   constructor(source: string) {
     this.lines = source.split("\n")
   }
 
-  get(node: NodeWithLocation): string {
+  public get(node: NodeWithLocation): string {
     const start = this.lines[node.loc.start.line - 1]
     const end = this.lines[node.loc.end.line - 1]
     if (start === end) {
@@ -30,8 +30,7 @@ class SourceImpl implements Source {
     ].join("\n")
   }
 
-  getOuter(node: NodeWithLocation): string {
-    console.log(node.type)
+  public getOuter(node: NodeWithLocation): string {
     switch (node.type) {
       case AST_NODE_TYPES.ArrowFunctionExpression: {
         return this.get(node).replace(this.get(node.body), '...')

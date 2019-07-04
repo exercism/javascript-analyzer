@@ -38,8 +38,8 @@ export function findTopLevelConstants(root: Node, kinds: readonly VariableDeclar
   ) as VariableDeclaration[]
 
   return constants.reduce(
-    (declarations, declaration) => declarations.concat(
-      declaration.declarations.map(d => ({ ...d, kind: declaration.kind }))
+    (declarations, declaration): ProgramConstants => declarations.concat(
+      declaration.declarations.map((d): ProgramConstant => ({ ...d, kind: declaration.kind }))
     ),
     [] as ProgramConstants
   )
