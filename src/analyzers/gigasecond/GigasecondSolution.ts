@@ -34,92 +34,11 @@ type MainExport = ReturnType<typeof extractExport>
 const EXPECTED_METHOD = 'gigasecond'
 const EXPECTED_EXPORT = 'gigasecond'
 
-export class GigasecondSolution {
-  public readonly source: Source;
-
-  private mainMethod: Entry
-  private mainExport: [NonNullable<MainExport[0]>, MainExport[1]]
-  private fileConstants: ProgramConstants
-  private mainConstant: Constant | undefined
-  private largeNumberComprehension: LargeNumberComprehension | undefined;
-  private largeNumberLiteral: LargeNumberComprehension | undefined;
-
-  constructor(readonly program: Program, source: string) {
-    this.source = new Source(source)
-
-    this.mainMethod = ensureExists(extractMainMethod(program, EXPECTED_METHOD), this.source)
-    this.mainExport = ensureExported(extractExport(program, EXPECTED_EXPORT))
-
-    // All constants at the top level that are _not_ the main method
-    this.fileConstants = findTopLevelConstants(program, ['let', 'const', 'var'])
-      .filter((declaration) => isIdentifier(declaration.id) && declaration.id.name !== EXPECTED_METHOD)
-
-    this.mainConstant = this.fileConstants.length > 0 && new Constant(this.fileConstants[0]) || undefined
-    this.largeNumberComprehension = findNumberComprehension(program)
-    this.largeNumberLiteral = findNumberLiteral(program)
-  }
-
-  get entry(): Readonly<Entry> {
-    return this.mainMethod
-  }
-
-  get constant(): Readonly<Constant> | undefined {
-    return this.mainConstant
-  }
-
-  get numberComprehension(): Readonly<LargeNumberComprehension> | undefined {
-    return this.largeNumberComprehension
-  }
-
-  get numberLiteral(): Readonly<LargeNumberComprehension> | undefined {
-    return this.largeNumberLiteral
-  }
-
-  get hasOneConstant(): boolean  {
-    return this.fileConstants.length === 1
-  }
-
-  get hasOptimalConstant(): boolean  {
-    return this.hasOneConstant && this.constant!.isOptimal()
-  }
-
-  get hasOptimalEntry(): boolean {
-    return this.entry.isOptimal(this.constant)
-  }
-
-  get areFileConstantsConst(): boolean  {
-    // const foo;
-    // => kind: "const"
-    //
-    // let foo;
-    // => kind: "let"
-    //
-    // var foo;
-    // => kind: "var"
-    //
-    return this.fileConstants.every((declaration) => declaration.kind === 'const')
-  }
-
-  get hasInlineExport(): boolean {
-    // export function gigasecond
-    // => no specififers
-    //
-    // export { gigasecond }
-    // => yes specififers
-    //
-    return !this.mainExport[0].specifiers || this.mainExport[0].specifiers.length === 0
-  }
-
-  isOptimal(): boolean {
-    return this.hasOptimalEntry && this.hasOptimalConstant
-  }
-}
-
 class Entry {
   public readonly name: string
   public readonly signature: string
 
-  private readonly params: ReadonlyArray<Parameter>;
+  private readonly params: readonly Parameter[];
   private readonly body: MainBody;
 
   constructor(method: Readonly<NonNullable<MainMethod>>, source: Readonly<Source>) {
@@ -130,27 +49,27 @@ class Entry {
     this.signature = source.getOuter(method.parent || method)
   }
 
-  get hasAtLeastOneParameter(): boolean {
+  public get hasAtLeastOneParameter(): boolean {
     return this.params.length > 0
   }
 
-  get hasExactlyOneParameter(): boolean {
+  public get hasExactlyOneParameter(): boolean {
     return this.params.length === 1
   }
 
-  get hasSimpleParameter(): boolean {
+  public get hasSimpleParameter(): boolean {
     return isIdentifier(this.params[0])
   }
 
-  get parameterType(): Parameter['type'] {
+  public get parameterType(): Parameter['type'] {
     return this.params[0].type
   }
 
-  get parameterName(): string {
+  public get parameterName(): string {
     return parameterName(this.params[0])
   }
 
-  isOptimal(constant?: Readonly<Constant>): boolean {
+  public isOptimal(constant?: Readonly<Constant>): boolean {
     const logger = getProcessLogger()
 
     // If is not a simple return
@@ -226,15 +145,15 @@ class Constant {
     this._memoized = {}
   }
 
-  get kind(): ProgramConstant['kind'] {
+  public get kind(): ProgramConstant['kind'] {
     return this.constant.kind
   }
 
-  get isOfKindConst(): boolean {
+  public get isOfKindConst(): boolean {
     return this.kind === 'const'
   }
 
-  get isOptimisedExpression(): boolean {
+  public get isOptimisedExpression(): boolean {
     const { init } = this.constant
 
     if (!init) {
@@ -248,7 +167,7 @@ class Constant {
     return this._memoized['isOptimisedComprehension'] = isOptimisedComprehension(init)
   }
 
-  get isLargeNumberLiteral(): boolean {
+  public get isLargeNumberLiteral(): boolean {
     const { init } = this.constant
 
     if (!init) {
@@ -262,7 +181,7 @@ class Constant {
     return this._memoized['isLargeNumberLiteral'] = isLargeNumberLiteral(init)
   }
 
-  isOptimal(): boolean {
+  public isOptimal(): boolean {
     if ('isOptimal' in this._memoized) {
       return !!this._memoized['isOptimal']
     }
@@ -272,6 +191,87 @@ class Constant {
     return result
   }
 
+}
+
+export class GigasecondSolution {
+  public readonly source: Source;
+
+  private mainMethod: Entry
+  private mainExport: [NonNullable<MainExport[0]>, MainExport[1]]
+  private fileConstants: ProgramConstants
+  private mainConstant: Constant | undefined
+  private largeNumberComprehension: LargeNumberComprehension | undefined;
+  private largeNumberLiteral: LargeNumberComprehension | undefined;
+
+  constructor(public readonly program: Program, source: string) {
+    this.source = new Source(source)
+
+    this.mainMethod = ensureExists(extractMainMethod(program, EXPECTED_METHOD), this.source)
+    this.mainExport = ensureExported(extractExport(program, EXPECTED_EXPORT))
+
+    // All constants at the top level that are _not_ the main method
+    this.fileConstants = findTopLevelConstants(program, ['let', 'const', 'var'])
+      .filter((declaration): boolean => isIdentifier(declaration.id) && declaration.id.name !== EXPECTED_METHOD)
+
+    this.mainConstant = this.fileConstants.length > 0 && new Constant(this.fileConstants[0]) || undefined
+    this.largeNumberComprehension = findNumberComprehension(program)
+    this.largeNumberLiteral = findNumberLiteral(program)
+  }
+
+  public get entry(): Readonly<Entry> {
+    return this.mainMethod
+  }
+
+  public get constant(): Readonly<Constant> | undefined {
+    return this.mainConstant
+  }
+
+  public get numberComprehension(): Readonly<LargeNumberComprehension> | undefined {
+    return this.largeNumberComprehension
+  }
+
+  public get numberLiteral(): Readonly<LargeNumberComprehension> | undefined {
+    return this.largeNumberLiteral
+  }
+
+  public get hasOneConstant(): boolean  {
+    return this.fileConstants.length === 1
+  }
+
+  public get hasOptimalConstant(): boolean  {
+    return this.hasOneConstant && this.constant!.isOptimal()
+  }
+
+  public get hasOptimalEntry(): boolean {
+    return this.entry.isOptimal(this.constant)
+  }
+
+  public get areFileConstantsConst(): boolean  {
+    // const foo;
+    // => kind: "const"
+    //
+    // let foo;
+    // => kind: "let"
+    //
+    // var foo;
+    // => kind: "var"
+    //
+    return this.fileConstants.every((declaration): boolean => declaration.kind === 'const')
+  }
+
+  public get hasInlineExport(): boolean {
+    // export function gigasecond
+    // => no specififers
+    //
+    // export { gigasecond }
+    // => yes specififers
+    //
+    return !this.mainExport[0].specifiers || this.mainExport[0].specifiers.length === 0
+  }
+
+  public isOptimal(): boolean {
+    return this.hasOptimalEntry && this.hasOptimalConstant
+  }
 }
 
 function ensureExists(method: MainMethod<typeof EXPECTED_METHOD> | undefined, source: Source): Entry {
@@ -365,7 +365,7 @@ function isOptimisedComprehension(expression: Expression): boolean {
     // 1000 * ◼
     // 1e3 * ◼
     return isOptimisedGigasecondRight && (
-         isLiteral(expression.left, 1000)
+      isLiteral(expression.left, 1000)
       || isLiteral(expression.left, undefined, '1e3')
       || isLiteral(expression.left, undefined, '1E3')
     )
@@ -421,13 +421,13 @@ function isLargeNumberLiteral(node: TSESTree.Node): boolean {
   }
 
   if (isBinaryExpression(node, '*') && (
-      // 1000000000 * 1000
-      // 1000 * 1000000000
-      // 1000 * 1000 * 1000
-      (isLiteral(node.left, 1000000000) && isLiteral(node.right, undefined, '1000'))
+  // 1000000000 * 1000
+  // 1000 * 1000000000
+  // 1000 * 1000 * 1000
+    (isLiteral(node.left, 1000000000) && isLiteral(node.right, undefined, '1000'))
       || (isLiteral(node.left, undefined, '1000') && isLiteral(node.right, 1000000000))
       || (isBinaryExpression(node.left, '*') && isLiteral(node.right, undefined, '1000') && isLiteral(node.left.left, undefined, '1000') && isLiteral(node.left.right, undefined, '1000'))
-    )) {
+  )) {
     return true
   }
 

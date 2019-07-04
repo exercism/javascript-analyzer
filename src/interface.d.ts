@@ -62,12 +62,12 @@ interface Output {
 }
 
 interface WritableOutput extends Output {
-  approve(comment?: Comment): void
-  disapprove(comment?: Comment): void
-  redirect(comment?: Comment): void
-  add(comment: Comment): void
+  approve(comment?: Comment): never;
+  disapprove(comment?: Comment): never;
+  redirect(comment?: Comment): never;
+  add(comment: Comment): void;
 
-  hasCommentary: boolean
+  hasCommentary: boolean;
 }
 
 interface OutputProcessor {

@@ -75,7 +75,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     // The solution is automatically referred to the mentor if it reaches this
   }
 
-  private checkStructure(program: Readonly<Program>, source: Readonly<string>, output: WritableOutput) {
+  private checkStructure(program: Readonly<Program>, source: Readonly<string>, output: WritableOutput): GigasecondSolution | never {
     try {
       return new GigasecondSolution(program, source)
     } catch (error) {
@@ -91,7 +91,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 
-  private checkSignature({ entry }: GigasecondSolution, output: WritableOutput) {
+  private checkSignature({ entry }: GigasecondSolution, output: WritableOutput): void | never {
     // If there is no parameter then this solution won't pass the tests.
     //
     if (!entry.hasAtLeastOneParameter) {
@@ -121,7 +121,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 
-  private checkForOptimalSolutions(solution: GigasecondSolution, output: WritableOutput) {
+  private checkForOptimalSolutions(solution: GigasecondSolution, output: WritableOutput): void | never {
     // The optional solution looks like this:
     //
     // const GIGASECOND_IN_MS = 10 ** 12
@@ -145,9 +145,9 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     output.approve()
   }
 
-  private checkForApprovableSolutions(solution: GigasecondSolution, output: WritableOutput) {
+  private checkForApprovableSolutions(solution: GigasecondSolution, output: WritableOutput): void | never {
     if (solution.constant) {
-      console.log(`=> found a constant (${solution.constant.kind})`)
+      this.logger.log(`=> found a constant (${solution.constant.kind})`)
 
       if (solution.constant.kind !== 'const') {
         output.add(PREFER_CONST_OVER_LET_AND_VAR({
@@ -158,7 +158,6 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
         // If this is the only issue, approve
         if (solution.entry.isOptimal(solution.constant)) {
           output.approve()
-          return
         }
       }
 
@@ -166,7 +165,6 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
         output.disapprove(USE_NUMBER_COMPREHENSION({
           literal: solution.constant.name
         }))
-        return
       }
     } else {
       // This means there is no constant found. The approvable solution looks
@@ -187,7 +185,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
       const literal = solution.numberLiteral
 
       if (comprehension) {
-        console.log(`=> found a comprehension (${comprehension.type})`)
+        this.logger.log(`=> found a comprehension (${comprehension.type})`)
         switch (comprehension.type) {
           // Top case
           case AST_NODE_TYPES.BinaryExpression: {
@@ -226,7 +224,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
         // TODO: check if the _rest_ is optimal. If yes approve, otherwise
         // comment don't approve and have the rest of this analyzer disapprove
       } else if (literal) {
-        console.log(`=> found a literal (${literal.type})`)
+        this.logger.log(`=> found a literal (${literal.type})`)
         output.disapprove(USE_NUMBER_COMPREHENSION({
           literal: 'raw' in literal && literal.raw || literal.type
         }))
@@ -236,7 +234,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 
-  private checkForTips(solution: GigasecondSolution, output: WritableOutput) {
+  private checkForTips(solution: GigasecondSolution, output: WritableOutput): void | never {
     if (!solution.hasInlineExport) {
       // export { gigasecond }
       output.add(

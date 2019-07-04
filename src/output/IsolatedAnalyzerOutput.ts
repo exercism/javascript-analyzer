@@ -13,28 +13,30 @@ export class IsolatedAnalyzerOutput extends AnalyzerOutput implements WritableOu
 /**
    * Mark the solution as approved
    */
-  public approve(comment?: Comment) {
+  public approve(comment?: Comment): never {
     comment && this.add(comment)
     super.approve()
+    return this.freeze()
   }
 
   /**
    * Mark the solution as dissapproved
    */
-  public disapprove(comment?: Comment) {
+  public disapprove(comment?: Comment): never {
     comment && this.add(comment)
     super.disapprove()
+    return this.freeze()
   }
 
   /**
    * Mark the solution as refer to mentor
    */
-  public redirect(comment?: Comment) {
+  public redirect(comment?: Comment): never {
     comment && this.add(comment)
-    super.freeze()
+    return this.freeze()
   }
 
-  protected freeze() {
+  protected freeze(): never {
     super.freeze()
     throw new EarlyFinalization()
   }
