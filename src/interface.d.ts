@@ -11,8 +11,8 @@ interface ExecutionOptions {
   inputDir: string;
   /** The exercise slug */
   exercise: string;
-  /** If true, expects website-copy to provide the contents of the templates */
-  templates: boolean;
+  /** Unless true, expects website-copy to provide the contents of the templates */
+  noTemplates: boolean;
 }
 
 interface AstParser<T extends object> {
@@ -50,7 +50,7 @@ interface Comment {
 }
 
 interface Output {
-  status: 'refer_to_mentor' | 'approve_as_optimal' | 'approve_with_comment' | 'disapprove_with_comment';
+  status: 'refer_to_mentor' | 'approve' | 'disapprove';
   comments: Comment[];
 
   /**

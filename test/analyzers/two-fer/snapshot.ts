@@ -7,11 +7,10 @@ const snapshotTestsGenerator = makeTestGenerator(
 )
 
 describe('When running analysis on two-fer fixtures', () => {
-  snapshotTestsGenerator('approve_as_optimal', [
+  snapshotTestsGenerator('approve', [
     118, 129, 139, 313, 400, 493, 70
   ])
-  snapshotTestsGenerator('approve_with_comment', [])
-  snapshotTestsGenerator('disapprove_with_comment', [
+  snapshotTestsGenerator('disapprove', [
     1, 10, 100, 101, 102, 104, 105, 107, 109, 11,
     110, 111, 112, 114, 115, 116, 12, 121, 123, 124
   ])

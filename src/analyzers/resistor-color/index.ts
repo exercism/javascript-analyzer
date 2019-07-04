@@ -17,6 +17,14 @@ import { AstParser, ParsedSource } from "~src/parsers/AstParser";
 import { NoSourceError } from "~src/errors/NoSourceError";
 import { ParserError } from "~src/errors/ParserError";
 
+/**
+ * The factories here SHOULD be kept in sync with exercism/website-copy. Under
+ * normal use, they do NOT dictate the actual commentary output of the analyzer,
+ * as that is provided by the website-copy repo.
+ *
+ * https://github.com/exercism/website-copy/tree/master/automated-comments/javascript/resistor-color
+ */
+
 const TIP_EXPORT_INLINE = factory`
 Did you know that you can export functions, classes and constants directly
 inline?

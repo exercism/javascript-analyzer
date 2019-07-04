@@ -32,11 +32,10 @@ const snapshotTestsGenerator = makeTestGenerator(
 )
 
 describe('When running analysis on two-fer fixtures', () => {
-  snapshotTestsGenerator('approve_as_optimal', [
+  snapshotTestsGenerator('approve', [
     // <fixture numbers>
   ])
-  snapshotTestsGenerator('approve_with_comment', [])
-  snapshotTestsGenerator('disapprove_with_comment', [])
+  snapshotTestsGenerator('disapprove', [])
   snapshotTestsGenerator('refer_to_mentor', [])
 })
 

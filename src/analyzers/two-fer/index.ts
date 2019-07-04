@@ -21,6 +21,14 @@ import { AstParser, ParsedSource } from "~src/parsers/AstParser";
 import { NoSourceError } from "~src/errors/NoSourceError";
 import { ParserError } from "~src/errors/ParserError";
 
+/**
+ * The factories here SHOULD be kept in sync with exercism/website-copy. Under
+ * normal use, they do NOT dictate the actual commentary output of the analyzer,
+ * as that is provided by the website-copy repo.
+ *
+ * https://github.com/exercism/website-copy/tree/master/automated-comments/javascript/two-fer
+ */
+
 const OPTIMISE_DEFAULT_VALUE = factory<'parameter'>`
 You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)

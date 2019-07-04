@@ -1,55 +1,55 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`When running analysis on two-fer fixtures and expecting it to approve as optimal matches two-fer/70's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to approve matches two-fer/70's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [],
-  "status": "approve_as_optimal",
+  "status": "approve",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to approve as optimal matches two-fer/118's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to approve matches two-fer/118's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [],
-  "status": "approve_as_optimal",
+  "status": "approve",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to approve as optimal matches two-fer/129's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to approve matches two-fer/129's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [],
-  "status": "approve_as_optimal",
+  "status": "approve",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to approve as optimal matches two-fer/139's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to approve matches two-fer/139's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [],
-  "status": "approve_as_optimal",
+  "status": "approve",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to approve as optimal matches two-fer/313's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to approve matches two-fer/313's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [],
-  "status": "approve_as_optimal",
+  "status": "approve",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to approve as optimal matches two-fer/400's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to approve matches two-fer/400's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [],
-  "status": "approve_as_optimal",
+  "status": "approve",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to approve as optimal matches two-fer/493's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to approve matches two-fer/493's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [],
-  "status": "approve_as_optimal",
+  "status": "approve",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/1's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/1's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
@@ -65,11 +65,11 @@ of %<parameter>s to 'you' to avoid this conditional.",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/10's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/10's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
@@ -85,15 +85,15 @@ of %<parameter>s to 'you' to avoid this conditional.",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/11's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/11's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.generic.no_method",
+      "externalTemplate": "javascript.general.no_method",
       "message": "No method called \`twoFer\`. The tests won't pass without it.",
       "template": "No method called \`%<method.name>s\`. The tests won't pass without it.",
       "variables": Object {
@@ -101,7 +101,7 @@ AnalyzerOutput {
       },
     },
     CommentImpl {
-      "externalTemplate": "javascript.generic.no_named_export",
+      "externalTemplate": "javascript.general.no_named_export",
       "message": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`twoFer\`.
 The tests won't pass without it.
 
@@ -115,11 +115,11 @@ Did you forget adding: \`export %<export.name>s\`?",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/12's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/12's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
@@ -135,11 +135,11 @@ of %<parameter>s to 'you' to avoid this conditional.",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/100's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/100's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
@@ -155,15 +155,15 @@ of %<parameter>s to 'you' to avoid this conditional.",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/101's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/101's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.generic.prefer_strict_equality",
+      "externalTemplate": "javascript.general.prefer_strict_equality",
       "message": "In _JavaScript_, always prefer [strict (identity and non-identity) equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity)
 such as \`===\` and \`!==\` over the forms that use implicit type coercion,
 such as [\`==\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Equality)
@@ -195,15 +195,15 @@ of %<parameter>s to 'you' to avoid this conditional.",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/102's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/102's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.generic.prefer_strict_equality",
+      "externalTemplate": "javascript.general.prefer_strict_equality",
       "message": "In _JavaScript_, always prefer [strict (identity and non-identity) equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity)
 such as \`===\` and \`!==\` over the forms that use implicit type coercion,
 such as [\`==\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Equality)
@@ -235,11 +235,11 @@ of %<parameter>s to 'you' to avoid this conditional.",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/104's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/104's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
@@ -255,11 +255,11 @@ of %<parameter>s to 'you' to avoid this conditional.",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/105's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/105's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
@@ -276,11 +276,11 @@ no value is passed in, you could set the default value of '%<parameter>s' to
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/107's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/107's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
@@ -297,11 +297,11 @@ no value is passed in, you could set the default value of '%<parameter>s' to
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/109's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/109's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
@@ -317,15 +317,15 @@ of %<parameter>s to 'you' to avoid this conditional.",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/110's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/110's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.generic.prefer_strict_equality",
+      "externalTemplate": "javascript.general.prefer_strict_equality",
       "message": "In _JavaScript_, always prefer [strict (identity and non-identity) equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity)
 such as \`===\` and \`!==\` over the forms that use implicit type coercion,
 such as [\`==\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Equality)
@@ -357,11 +357,11 @@ of %<parameter>s to 'you' to avoid this conditional.",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/111's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/111's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
@@ -377,15 +377,15 @@ of %<parameter>s to 'you' to avoid this conditional.",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/112's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/112's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.generic.no_method",
+      "externalTemplate": "javascript.general.no_method",
       "message": "No method called \`twoFer\`. The tests won't pass without it.",
       "template": "No method called \`%<method.name>s\`. The tests won't pass without it.",
       "variables": Object {
@@ -393,7 +393,7 @@ AnalyzerOutput {
       },
     },
     CommentImpl {
-      "externalTemplate": "javascript.generic.no_named_export",
+      "externalTemplate": "javascript.general.no_named_export",
       "message": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`twoFer\`.
 The tests won't pass without it.
 
@@ -407,11 +407,11 @@ Did you forget adding: \`export %<export.name>s\`?",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/114's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/114's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
@@ -427,11 +427,11 @@ of %<parameter>s to 'you' to avoid this conditional.",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/115's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/115's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
@@ -447,11 +447,11 @@ of %<parameter>s to 'you' to avoid this conditional.",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/116's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/116's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
@@ -467,11 +467,11 @@ of %<parameter>s to 'you' to avoid this conditional.",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/121's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/121's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
@@ -487,11 +487,11 @@ of %<parameter>s to 'you' to avoid this conditional.",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/123's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/123's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
@@ -507,11 +507,11 @@ of %<parameter>s to 'you' to avoid this conditional.",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to disapprove with comment matches two-fer/124's output: output 1`] = `
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/124's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
@@ -527,7 +527,7 @@ of %<parameter>s to 'you' to avoid this conditional.",
       },
     },
   ],
-  "status": "disapprove_with_comment",
+  "status": "disapprove",
 }
 `;
 
