@@ -104,11 +104,11 @@ const analyzeProcess = spawn('node',
 )
 
 analyzeProcess.stderr.on('data', (data) => {
-  logger.error(data.toString())
+  logger.error(data.toString().trim())
 })
 
 analyzeProcess.stdout.on('data', (data) => {
-  logger.log(data.toString())
+  logger.log(data.toString().trim())
 })
 
 analyzeProcess.on('close', (code) => {
