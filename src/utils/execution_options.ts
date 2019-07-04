@@ -8,6 +8,7 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
   public exercise!: string
   public dry!: boolean
   public noTemplates!: boolean
+  public pretty!: boolean
 
   constructor(options: ExecutionOptions) {
     Object.assign(this, options);
@@ -24,25 +25,28 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
       .describe('c', 'If given, outputs to the console')
       .describe('o', 'Path relative to the input dir where the analyzis results are stored')
       .describe('noTemplates', 'Unless given, exports templates instead of messages (feature flag)')
+      .describe('pretty', 'If given, formats the JSON output using 2 space indentation')
       .describe('dry', 'If given, does not output anything to disk')
       .boolean(['d', 'c', 'dry', 'noTemplates'])
       .string('o')
       .default('d', process.env.NODE_ENV === 'development')
       .default('c', process.env.NODE_ENV === 'development')
       .default('noTemplates', false)
+      .default('pretty', false)
       .default('o', './analysis.json')
       .default('dry', false)
       .help('h')
       .alias('h', 'help')
       .argv
 
-    const { d, c, o, dry, noTemplates, _ } = args
+    const { d, c, o, dry, pretty, noTemplates, _ } = args
     return new ExecutionOptionsImpl({
       debug: d,
       console: c,
       output: o,
       dry,
       noTemplates,
+      pretty,
       exercise: _[0],
       inputDir: _[1]
     })
