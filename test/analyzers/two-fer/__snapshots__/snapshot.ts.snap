@@ -59,7 +59,7 @@ AnalyzerOutput {
 of name to 'you' to avoid this conditional.",
       "template": "You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-of %<parameter>s to 'you' to avoid this conditional.",
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
         "parameter": "name",
       },
@@ -79,7 +79,7 @@ AnalyzerOutput {
 of name to 'you' to avoid this conditional.",
       "template": "You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-of %<parameter>s to 'you' to avoid this conditional.",
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
         "parameter": "name",
       },
@@ -95,7 +95,7 @@ AnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
       "message": "No method called \`twoFer\`. The tests won't pass without it.",
-      "template": "No method called \`%<method.name>s\`. The tests won't pass without it.",
+      "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
         "method.name": "twoFer",
       },
@@ -106,10 +106,10 @@ AnalyzerOutput {
 The tests won't pass without it.
 
 Did you forget adding: \`export twoFer\`?",
-      "template": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`%<export.name>s\`.
+      "template": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`%{export.name}\`.
 The tests won't pass without it.
 
-Did you forget adding: \`export %<export.name>s\`?",
+Did you forget adding: \`export %{export.name}\`?",
       "variables": Object {
         "export.name": "twoFer",
       },
@@ -129,7 +129,7 @@ AnalyzerOutput {
 of name to 'you' to avoid this conditional.",
       "template": "You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-of %<parameter>s to 'you' to avoid this conditional.",
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
         "parameter": "name",
       },
@@ -149,7 +149,7 @@ AnalyzerOutput {
 of name to 'you' to avoid this conditional.",
       "template": "You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-of %<parameter>s to 'you' to avoid this conditional.",
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
         "parameter": "name",
       },
@@ -189,7 +189,7 @@ that's not the case in this exercise.",
 of name to 'you' to avoid this conditional.",
       "template": "You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-of %<parameter>s to 'you' to avoid this conditional.",
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
         "parameter": "name",
       },
@@ -229,7 +229,7 @@ that's not the case in this exercise.",
 of name to 'you' to avoid this conditional.",
       "template": "You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-of %<parameter>s to 'you' to avoid this conditional.",
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
         "parameter": "name",
       },
@@ -249,7 +249,7 @@ AnalyzerOutput {
 of X to 'you' to avoid this conditional.",
       "template": "You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-of %<parameter>s to 'you' to avoid this conditional.",
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
         "parameter": "X",
       },
@@ -264,11 +264,11 @@ AnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_explicity_default_value",
-      "message": "Instead of relying on %<maybe_undefined_expression>s being \\"undefined\\" when
+      "message": "Instead of relying on %{maybe_undefined_expression} being \\"undefined\\" when
 no value is passed in, you could set the default value of 'name' to
 'you'.",
-      "template": "Instead of relying on %<maybe_undefined_expression>s being \\"undefined\\" when
-no value is passed in, you could set the default value of '%<parameter>s' to
+      "template": "Instead of relying on %{maybe_undefined_expression} being \\"undefined\\" when
+no value is passed in, you could set the default value of '%{parameter}' to
 'you'.",
       "variables": Object {
         "maybe-undefined-expression": "name",
@@ -285,11 +285,11 @@ AnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_explicity_default_value",
-      "message": "Instead of relying on %<maybe_undefined_expression>s being \\"undefined\\" when
+      "message": "Instead of relying on %{maybe_undefined_expression} being \\"undefined\\" when
 no value is passed in, you could set the default value of 'name' to
 'you'.",
-      "template": "Instead of relying on %<maybe_undefined_expression>s being \\"undefined\\" when
-no value is passed in, you could set the default value of '%<parameter>s' to
+      "template": "Instead of relying on %{maybe_undefined_expression} being \\"undefined\\" when
+no value is passed in, you could set the default value of '%{parameter}' to
 'you'.",
       "variables": Object {
         "maybe-undefined-expression": "name",
@@ -311,7 +311,7 @@ AnalyzerOutput {
 of name to 'you' to avoid this conditional.",
       "template": "You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-of %<parameter>s to 'you' to avoid this conditional.",
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
         "parameter": "name",
       },
@@ -351,7 +351,7 @@ that's not the case in this exercise.",
 of name to 'you' to avoid this conditional.",
       "template": "You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-of %<parameter>s to 'you' to avoid this conditional.",
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
         "parameter": "name",
       },
@@ -371,7 +371,7 @@ AnalyzerOutput {
 of name to 'you' to avoid this conditional.",
       "template": "You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-of %<parameter>s to 'you' to avoid this conditional.",
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
         "parameter": "name",
       },
@@ -387,7 +387,7 @@ AnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
       "message": "No method called \`twoFer\`. The tests won't pass without it.",
-      "template": "No method called \`%<method.name>s\`. The tests won't pass without it.",
+      "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
         "method.name": "twoFer",
       },
@@ -398,10 +398,10 @@ AnalyzerOutput {
 The tests won't pass without it.
 
 Did you forget adding: \`export twoFer\`?",
-      "template": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`%<export.name>s\`.
+      "template": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`%{export.name}\`.
 The tests won't pass without it.
 
-Did you forget adding: \`export %<export.name>s\`?",
+Did you forget adding: \`export %{export.name}\`?",
       "variables": Object {
         "export.name": "twoFer",
       },
@@ -421,7 +421,7 @@ AnalyzerOutput {
 of name to 'you' to avoid this conditional.",
       "template": "You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-of %<parameter>s to 'you' to avoid this conditional.",
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
         "parameter": "name",
       },
@@ -441,7 +441,7 @@ AnalyzerOutput {
 of name to 'you' to avoid this conditional.",
       "template": "You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-of %<parameter>s to 'you' to avoid this conditional.",
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
         "parameter": "name",
       },
@@ -461,7 +461,7 @@ AnalyzerOutput {
 of name to 'you' to avoid this conditional.",
       "template": "You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-of %<parameter>s to 'you' to avoid this conditional.",
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
         "parameter": "name",
       },
@@ -481,7 +481,7 @@ AnalyzerOutput {
 of name to 'you' to avoid this conditional.",
       "template": "You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-of %<parameter>s to 'you' to avoid this conditional.",
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
         "parameter": "name",
       },
@@ -501,7 +501,7 @@ AnalyzerOutput {
 of name to 'you' to avoid this conditional.",
       "template": "You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-of %<parameter>s to 'you' to avoid this conditional.",
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
         "parameter": "name",
       },
@@ -521,7 +521,7 @@ AnalyzerOutput {
 of name to 'you' to avoid this conditional.",
       "template": "You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-of %<parameter>s to 'you' to avoid this conditional.",
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
         "parameter": "name",
       },

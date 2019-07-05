@@ -104,7 +104,7 @@ export function factory<R extends string = ''>(strings: TemplateStringsArray, ..
 function buildTemplateTag(tag: string | number): string {
   return typeof tag === 'number'
     ? `%${tag}$s`
-    : `%<${tag}>s`
+    : `%{${tag}}`
 }
 
 function separateValues<R extends string>(...values: FactoryResultParameter<R>): { dictionary: NamedTags<R>; positionalValues: string[] } {
