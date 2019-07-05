@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0
+
+- Add analyzer for `gigasecond`
+- Add `--pretty` output to pretty print the generated output, off by default.
+
 ## 0.2.1
 
 - Change `--noTemplates` output to use `%{tag}` for tagged template variables,
