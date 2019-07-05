@@ -1,53 +1,33 @@
-import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
-import { Identifier, Node, Program, VariableDeclarator } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
+import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree";
 
-import { Traverser } from "eslint/lib/util/traverser"
+import { isIdentifier } from "~src/analyzers/utils/is_identifier";
+import { factory } from "~src/comments/comment";
+import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, PREFER_CONST_OVER_LET_AND_VAR, UNEXPECTED_PARAMETER } from "~src/comments/shared";
+import { NoExportError } from "~src/errors/NoExportError";
+import { NoMethodError } from "~src/errors/NoMethodError";
+import { AstParser } from "~src/parsers/AstParser";
 
-import { AnalyzerImpl } from "../AnalyzerImpl"
-import { factory } from "../../comments/comment"
+import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl";
+import { GigasecondSolution } from "./GigasecondSolution";
 
-import { extractExport } from "../utils/extract_export"
-import { extractMainMethod, MainMethod } from "../utils/extract_main_method"
-import { parameterName } from '../utils/extract_parameter'
-import { findAll } from "../utils/find_all"
-import { findFirst } from "../utils/find_first"
-import { findFirstOfType } from "../utils/find_first_of_type"
-import { isNewExpression } from "../utils/find_new_expression"
-import { findRawLiteral } from "../utils/find_raw_literal"
-import { findTopLevelConstants } from "../utils/find_top_level_constants"
-import { isBinaryExpression } from "../utils/is_binary_expression"
-import { isCallExpression } from "../utils/is_call_expression"
-import { isIdentifier } from "../utils/is_identifier"
-import { isLiteral } from "../utils/is_literal"
-
-import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_PARAMETER } from "../../comments/shared";
-import { AstParser } from "../../parsers/AstParser";
-
-/**
- * The factories here SHOULD be kept in sync with exercism/website-copy. Under
- * normal use, they do NOT dictate the actual commentary output of the analyzer,
- * as that is provided by the website-copy repo.
- *
- * https://github.com/exercism/website-copy/tree/master/automated-comments/javascript/gigasecond
- */
-
-const TIP_EXPORT_INLINE = factory<'method-signature' | 'const.name'>`
+const TIP_EXPORT_INLINE = factory<'method.signature'>`
 Did you know that you can export functions, classes and constants directly
 inline?
 \`\`\`javascript
-export const ${'const.name'} = ...
-
-export ${'method-signature'}
+export ${'method.signature'}
 \`\`\`
 `('javascript.gigasecond.export_inline')
 
-const PREFER_NUMBER_COMPREHENSION = factory<'literal'>`
-You can rewrite the literal \`${'literal'}\` using \`Math.pow\` or \`10 ** n\`,
-which makes it more readable.
-`('javascript.gigasecond.prefer_number_comprehension')
+const USE_NUMBER_COMPREHENSION = factory<'literal'>`
+Large numbers like \`${'literal'}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`${'literal'}\` using \`Math.pow\` or
+\`10 ** n\` to make it more readable and lower the cognitive complexity.
+`('javascript.gigasecond.use_number_comprehension')
 
 const PREFER_TOP_LEVEL_CONSTANT = factory<'value' | 'name'>`
-Consider extracting the gigasecond number into a constant:
+Your solution current has a magic number, or rather a magic expression. Consider
+extracting the gigasecond number into a top-level constant, so that you may
+remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
 const ${'name'} = ${'value'}
@@ -56,115 +36,142 @@ export const gigasecond = (...)
 \`\`\`
 `('javascript.gigasecond.prefer_top_level_constant')
 
+const PREFER_EXTRACTED_TOP_LEVEL_CONSTANT =  factory<'value' | 'name'>`
+Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions and classes that are not \`export\`ed,
+are not accessible from outside the file.
 
-export class GigasecondAnalyzer extends AnalyzerImpl {
+\`\`\`javascript
+const ${'name'} = ${'value'}
 
-  private static Parser: AstParser = new AstParser(undefined, 1)
+export const gigasecond = (...)
+\`\`\`
+`('javascript.gigasecond.prefer_extracted_top_level_constant')
 
-  private program!: Program
-  private source!: string
+const SIGNATURE_NOT_OPTIMAL = factory`
+If you look at the tests, the function \`gigasecond\` only receives one
+parameter. Nothing more and nothing less.
 
-  private _mainMethod!: ReturnType<typeof extractMainMethod>
-  private _mainExport!: ReturnType<typeof extractExport>
+Remove the additional parameters from your function, as their value will always
+be \`undefined\` or whatever default you've assigned.
+`('javascript.gigasecond.signature_not_optimal')
 
-  // Typed as Identifier because that's the only expected type. When checking
-  // the signature, make sure it _does_ check if this is an identifier.
-  private _mainParameter!: Identifier
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private memoized: { [P: string]: any } = {};
+const DONT_USE_DATE_PARSE = factory<'parameter.name'>`
+Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime),
+as \`Date.parse(${'parameter.name'})\` is not a good candidate. It's supposed to
+work with strings only, and not _intended_ to be used like this.
+`('javascript.gigasecond.dont_use_date_parse')
 
-  private get mainMethod(): ReturnType<typeof extractMainMethod> {
-    if (!this._mainMethod) {
-      this._mainMethod = extractMainMethod(this.program, 'gigasecond')
-    }
-    return this._mainMethod
-  }
+const DONT_USE_DATE_VALUE = factory`
+Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)
+instead of [\`Date#valueOf\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/valueOf).
+They are functionally equivalent, but \`valueOf\` is marked as follows:
 
-  private get mainExport(): ReturnType<typeof extractExport> {
-    if (!this._mainExport) {
-      this._mainExport = extractExport(this.program, 'gigasecond')
-    }
-    return this._mainExport
-  }
+> This method is usually called internally by JavaScript and not explicitly in
+> code.
+`('javascript.gigasecond.dont_use_date_value')
 
-  public get mainParameter(): Identifier {
-    if (!this._mainParameter) {
-      this._mainParameter = this.mainMethod!.params[0] as Identifier
-    }
+const PREFER_SIDE_EFFECT_FREE_DATE = factory`
+Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)
+and [\`new Date(value)\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#Syntax),
+which takes a number of milliseconds as \`value\` and constructs a _new_ date.
 
-    return this._mainParameter
-  }
+This ensures the _input_ is not modified when calling \`gigasecond\`, which
+also means that there are no unintended side-effects. Futhermore, \`setSeconds\`
+only works because it _rolls over_, but it wasn't meant to be used like this.
+Its function is to set the \`seconds\` component of a \`Date\`.
+`('javascript.gigasecond.prefer_side_effect_free_date')
 
-  protected async execute(input: Input): Promise<void> {
-    const [parsed] = await GigasecondAnalyzer.Parser.parse(input)
+const DONT_USE_GET_SECONDS = factory`
+Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)
+to get the number of milliseconds the \`Date\` represents, instead of getting
+the \`seconds\` component of the \`Date\`. In general, [Unix/UTC time](https://en.wikipedia.org/wiki/Unix_time)
+is preferred when dealing with dates, as it is not affected by _interpretation_
+or locale (such as timezones).
+`('javascript.gigasecond.dont_use_get_seconds')
 
-    this.program = parsed.program
-    this.source = parsed.source
+type Program = TSESTree.Program
 
-    this.memoized = {}
+const Parser: AstParser = new AstParser(undefined, 1)
+
+export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
+
+  protected async execute(input: Input, output: WritableOutput): Promise<void> {
+    const [parsed] = await Parser.parse(input)
 
     // Firstly we want to check that the structure of this solution is correct
     // and that there is nothing structural stopping it from passing the tests
-    this.checkStructure()
+    const solution = this.checkStructure(parsed.program, parsed.source, output)
 
     // Now we want to ensure that the method signature is sane and that it has
-    // valid arguments
-    this.checkSignature()
+    // valid arguments.
+    this.checkSignature(solution, output)
 
     // There are a handful optimal solutions for gigasecond which needs no
     // comments and can just be approved. If we have it, then let's just
     // acknowledge it and get out of here.
-    this.checkForOptimalSolutions()
+    this.checkForOptimalSolutions(solution, output)
 
     // The solution might not be optimal but still be approvable. Check these
     // first and bail-out (with approval) if that's the case.
-    this.checkForApprovableSolutions()
+    this.checkForApprovableSolutions(solution, output)
 
     // Time to find sub-optimal code.
+    this.checkForDisapprovables(solution, output)
 
     // The solution is automatically referred to the mentor if it reaches this
   }
 
-  private checkStructure(): void | never {
-    const method = this.mainMethod
-    const [declaration,] = this.mainExport
+  private checkStructure(program: Readonly<Program>, source: Readonly<string>, output: WritableOutput): GigasecondSolution | never {
+    try {
+      return new GigasecondSolution(program, source)
+    } catch (error) {
+      if (error instanceof NoMethodError) {
+        output.disapprove(NO_METHOD({ 'method.name': error.method }))
+      }
 
-    // First we check that there is a gigasecond function and that this function
-    // is exported.
-    if (!method) {
-      this.comment(NO_METHOD({ 'method.name': 'gigasecond' }))
-    }
+      if (error instanceof NoExportError) {
+        output.disapprove(NO_NAMED_EXPORT({ 'export.name': error.namedExport }))
+      }
 
-    if (!declaration) {
-      this.comment(NO_NAMED_EXPORT({ 'export.name': 'gigasecond' }))
-    }
-
-    if (this.hasCommentary) {
-      this.disapprove()
+      throw error
     }
   }
 
-  private checkSignature(): void | never {
-    const method: MainMethod = this.mainMethod!
-
+  private checkSignature({ entry }: GigasecondSolution, output: WritableOutput): void | never {
     // If there is no parameter then this solution won't pass the tests.
-    if (method.params.length === 0) {
-      this.disapprove(NO_PARAMETER({ 'function.name': method.id!.name }))
+    //
+    if (!entry.hasAtLeastOneParameter) {
+      output.disapprove(NO_PARAMETER({ 'function.name': entry.name }))
     }
-
-    const firstParameter = this.mainParameter!
 
     // If this is not a simple parameter, but something else such as a splat,
     // or a parameter with a default argument, bail out and refer to mentor.
-    if (firstParameter.type !== AST_NODE_TYPES.Identifier) {
-      this.redirect(UNEXPECTED_PARAMETER({ type: firstParameter.type }))
+    //
+    if (!entry.hasSimpleParameter) {
+      output.redirect(UNEXPECTED_PARAMETER({ type: entry.parameterType }))
+    }
+
+    // If there is more than one parameter, something fishy is going on. Collect
+    // the comment for the student, to disapprove later on.
+    //
+    if (!entry.hasExactlyOneParameter) {
+      output.add(SIGNATURE_NOT_OPTIMAL())
+    }
+
+    // TODO: do we want to check more here?
+
+    //
+    //
+    if (output.hasCommentary) {
+      output.disapprove()
     }
   }
 
-  private checkForOptimalSolutions(): void | never {
+  private checkForOptimalSolutions(solution: GigasecondSolution, output: WritableOutput): void | never {
     // The optional solution looks like this:
     //
-    // const GIGASECOND_IN_MS = 10 ** 9
+    // const GIGASECOND_IN_MS = 10 ** 12
     //
     // export function gigasecond(input) {
     //   return new Date(input.getTime() + GIGASECOND_IN_MS)
@@ -175,242 +182,166 @@ export class GigasecondAnalyzer extends AnalyzerImpl {
     // number.
     //
 
-    if (
-      !this.isOneLineSolution()
-      || !this.isUsingGetTimeOnce()
-      || !this.isUsingNewDateOnce()
-      || !this.findExtractedNumberConstant()
-      || this.isUsingLargeNumberLiteral()
-      || this.isUsingIntermediateVariable()
-    ) {
+    if (!solution.isOptimal()) {
       // continue analyzing
-      this.logger.log('~> Solution is not optimal')
-      this.logger.log(JSON.stringify({
-        isOneLineSolution: this.isOneLineSolution(),
-        isUsingGetTimeOnce: !!this.isUsingGetTimeOnce(),
-        isUsingNewDateOnce: !!this.isUsingNewDateOnce(),
-        findExtractedNumberConstant: !!this.findExtractedNumberConstant(),
-        isUsingLargeNumberLiteral: !!this.isUsingLargeNumberLiteral(),
-        isUsingIntermediateVariable: !!this.isUsingIntermediateVariable()
-      }, null, 2))
+      this.logger.log('~> solution is not optimal')
       return
     }
 
-    this.checkForTips()
-    this.approve()
+    this.checkForTips(solution, output)
+    output.approve()
   }
 
-  private checkForTips(): void | never {
-    const optimizeLargeNumber = this.isUsingLargeNumberLiteral()
-    const _numberComprehension = this.findNumberComprehension()
-    const extracted = this.findExtractedNumberConstant()
+  private checkForApprovableSolutions(solution: GigasecondSolution, output: WritableOutput): void | never {
+    if (solution.constant) {
+      this.logger.log(`=> found a constant (${solution.constant.kind})`)
 
-    if (extracted === undefined) {
-      // Should extract into constant
-      this.comment(
-        PREFER_TOP_LEVEL_CONSTANT({
-          name: 'GIGASECOND_IN_MS',
-          value: '1000000000000',
+      if (solution.constant.kind !== 'const') {
+        output.add(PREFER_CONST_OVER_LET_AND_VAR({
+          kind: solution.constant.kind,
+          name: solution.constant.name
+        }))
+
+        // If this is the only issue, approve
+        if (solution.entry.isOptimal(solution.constant)) {
+          output.approve()
+        }
+      }
+
+      if (solution.constant.isLargeNumberLiteral) {
+        output.disapprove(USE_NUMBER_COMPREHENSION({
+          literal: solution.constant.name
+        }))
+      }
+    } else {
+      // This means there is no constant found. The approvable solution looks
+      // like this
+      //
+      // export function gigasecond(input) {
+      //   return new Date(input.getTime() + 10 ** 12)
+      // }
+      //
+      // Or this
+      //
+      // export function gigasecond(input) {
+      //   const GIGASECOND_IN_MS = 10 ** 12
+      //   return new Date(input.getTime() + GIGASECOND_IN_MS)
+      // }
+
+      const comprehension = solution.numberComprehension
+      const literal = solution.numberLiteral
+
+      if (comprehension) {
+        this.logger.log(`=> found a comprehension (${comprehension.type})`)
+        switch (comprehension.type) {
+          // ... + 10 ** 12
+          case AST_NODE_TYPES.BinaryExpression: {
+            output.add(PREFER_TOP_LEVEL_CONSTANT({
+              'name': 'GIGASECOND_IN_MS',
+              'value': solution.source.get(comprehension)
+            }))
+            break;
+          }
+
+          // Math.pow(10, 12)
+          case AST_NODE_TYPES.CallExpression: {
+            output.add(PREFER_TOP_LEVEL_CONSTANT({
+              'name': 'GIGASECOND_IN_MS',
+              'value': solution.source.get(comprehension)
+            }))
+            break;
+          }
+
+          // 1e12
+          case AST_NODE_TYPES.Literal: {
+            output.add(PREFER_TOP_LEVEL_CONSTANT({
+              'name': 'GIGASECOND_IN_MS',
+              'value': solution.source.get(comprehension)
+            }))
+            break;
+          }
+
+          // const name = ... (one of the comprehensions above)
+          case AST_NODE_TYPES.VariableDeclarator: {
+            // Extract into const to top-level
+            output.add(PREFER_EXTRACTED_TOP_LEVEL_CONSTANT({
+              'name': 'id' in comprehension && isIdentifier(comprehension.id) && comprehension.id.name || 'GIGASECOND_IN_MS',
+              'value': comprehension.init && solution.source.get(comprehension.init) || '...'
+            }))
+            break;
+          }
+        }
+
+        if (solution.entry.isOptimal(undefined, comprehension)) {
+          this.checkForTips(solution, output)
+
+          // Everything else is optimal, so approve!
+          output.approve()
+        }
+
+        return
+      } else if (literal) {
+        this.logger.log(`=> found a literal (${literal.type})`)
+        output.disapprove(USE_NUMBER_COMPREHENSION({
+          literal: 'raw' in literal && literal.raw || literal.type
+        }))
+      }
+
+      return
+    }
+  }
+
+  private checkForDisapprovables(solution: GigasecondSolution, output: WritableOutput): void | never {
+    const numberOfComments = output.comments.length
+
+    if (solution.entry.hasDateParse) {
+      output.add(
+        DONT_USE_DATE_PARSE({
+          'parameter.name': solution.entry.parameterName
         })
       )
     }
 
-    if (optimizeLargeNumber) {
-      // Should use Math.pow(10, 12) or 10 ** 12
-      this.comment(
-        PREFER_NUMBER_COMPREHENSION({
-          literal: '1000000000000'
-        })
-      )
+    if (solution.entry.hasDateValueOnInput) {
+      output.add(DONT_USE_DATE_VALUE())
     }
 
-    if (!this.hasInlineExport()) {
+    if (solution.entry.hasSetSecondsOnInput) {
+      output.add(PREFER_SIDE_EFFECT_FREE_DATE())
+    } else if (solution.entry.hasGetSecondsOnInput) {
+      output.add(DONT_USE_GET_SECONDS())
+    }
+
+    if (numberOfComments < output.commentCount) {
+      output.disapprove()
+    }
+  }
+
+  private checkForTips(solution: GigasecondSolution, output: WritableOutput): void | never {
+    if (!solution.hasInlineExport) {
       // export { gigasecond }
-      const gigasecondConstant = this.findExtractedNumberConstant()
-      this.comment(
+      output.add(
         TIP_EXPORT_INLINE({
-          'method-signature': 'function gigasecond(...) { ... }',
-          'const.name': gigasecondConstant && parameterName(gigasecondConstant) || 'MY_CONST'
+          'method.signature': solution.entry.signature,
         })
       )
     }
-  }
 
-  private checkForApprovableSolutions(): void | never {
-    if (!this.isOneLineSolution()) {
-      return
-    }
-
-    if (!this.isUsingGetTimeOnce() || !this.isUsingNewDateOnce()) {
-      return
-    }
-
-    this.checkForTips()
-    this.approve()
-  }
-
-  private isOneLineSolution(): boolean {
-    // Maximum body count may be 2 (3 - 1)
+    // For the optimal solution, this may be anything
     //
-    // 1: export function gigasecond(input) {
-    // 2:  return ...
-    // 3: }
-    //
-    // but can also be less:
-    //
-    // 1: export const gigasecond = (input) => ...
-    //
-    const body = this.mainMethod!.body!
+    if (solution.hasOneConstant && !solution.areFileConstantsConst) {
+      const { constant } = solution
 
-    // This trick actually looks to the inner exppresion instead of the entire
-    // function in order to allow for comments inside the body.
-    const { loc: { start: { line: lineStart }, end: { line: lineEnd } } } =
-         body.type === AST_NODE_TYPES.BlockStatement
-      && body.body.length === 1
-      && body.body[0].type === AST_NODE_TYPES.ReturnStatement
-           ? body.body[0]
-           : this.mainMethod!
-
-    return (lineEnd - lineStart) <= 2
-  }
-
-  private hasInlineExport(): boolean {
-    // Additionally make sure the export is inline by checking if it doesn't
-    // have any specifiers:
-    //
-    // export function gigasecond
-    // => no specififers
-    //
-    // export { gigasecond }
-    // => yes specififers
-    //
-    return this.mainExport[0]!.specifiers && this.mainExport[0]!.specifiers.length === 0
-  }
-
-  private isUsingGetTimeOnce(): boolean {
-    const { name } = this.mainParameter
-    return findAll(this.mainMethod!, (node): boolean => isCallExpression(node, name, 'getTime')).length === 1
-  }
-
-  private isUsingNewDateOnce(): boolean {
-    return findAll(this.mainMethod!, (node): boolean => isNewExpression(node) && isIdentifier(node.callee, 'Date')).length === 1
-  }
-
-  private findExtractedNumberConstant(): VariableDeclarator | undefined {
-    // Remove the main method (which could be a top-level constant)
-    const found = findTopLevelConstants(this.program)
-      .flatMap((constant): VariableDeclarator[] => constant.declarations)
-      .filter((declaration): boolean => declaration.init !== this.mainMethod)
-
-    if (found.length === 0) {
-      return undefined
-    }
-
-    const numberComprehension = this.findNumberComprehension()
-    return found.find((f): boolean => f.init === numberComprehension)
-  }
-
-  private isUsingLargeNumberLiteral(): boolean {
-    return findRawLiteral(this.mainMethod!, '1000000000000') === undefined
-      && findRawLiteral(this.mainMethod!, '1000000000') === undefined
-  }
-
-  private isUsingIntermediateVariable(): VariableDeclarator | undefined {
-    return findFirstOfType(this.mainMethod!, AST_NODE_TYPES.VariableDeclaration)
-  }
-
-  private findNumberComprehension(): Node | undefined {
-    if (this.memoized['number-comprehension']) {
-      return this.memoized['number-comprehension']
-    }
-    const self = this
-    return this.memoized['number-comprehension'] =
-      findFirst(this.mainMethod!, function(node): boolean {
-        return self.isNumberComprehension.call(this, self, node)
-      })
-  }
-
-  private isNumberComprehension(this: Traverser, self: this, node: Node): boolean {
-    // Math.pow(10, 12)
-    if (isCallExpression(node, 'Math', 'pow')) {
-      this.skip()
-
-      if (node.arguments.length === 2) {
-        if (isLiteral(node.arguments[0], 10)) {
-          return isLiteral(node.arguments[1], 12)
-        }
-      }
-
-      return false
-    }
-
-    // 1e12
-    if (isLiteral(node, undefined, '1e12')) {
-      return true
-    }
-
-    // (a ** b) and (a * b)
-    if (isBinaryExpression(node)) {
-      // 1e9 * 1e3
-      // (10 ** 9) * 1000
-      // Math.pow(10, 9) * 1000
-      if (isBinaryExpression(node, '*')) {
-
-        // ... * 1000
-        // ... * 1e3
-        const rightIsLiteral = isLiteral(node.right, 1000)
-        if (rightIsLiteral) {
-          return self.isSmallerNumberComprehension.call(this, node.left)
-        }
-
-        // 1000 * ...
-        // 1e3  * ...
-        const leftIsLiteral = isLiteral(node.left, 1000)
-        if (leftIsLiteral) {
-          return self.isSmallerNumberComprehension.call(this, node.right)
-        }
-
-        // Don't return here, because of the type guard being too tight, it
-        // will think that `node` now must be "never"
-        //
-        // return false
-      }
-
-      if (isBinaryExpression(node, '**')) {
-        // 10 ** 12
-        return isLiteral(node.left, 10) && isLiteral(node.right, 12)
-      }
-
-      return false
-    }
-
-    // 1e12
-    if (isLiteral(node, undefined, '1e12')) {
-      return true
-    }
-
-    return false
-  }
-
-  private isSmallerNumberComprehension(this: Traverser, node: Node): boolean {
-    // 1e9
-    // 1000000000
-    if (isLiteral(node, 1e9)) {
-      return true
-    }
-
-    // Math.pow(10, 9)
-    if (isCallExpression(node, 'Math', 'pow')) {
-      this.skip()
-
-      if (node.arguments.length === 2) {
-        if (isLiteral(node.arguments[0], 10)) {
-          return isLiteral(node.arguments[1], 9)
-        }
+      if (constant) {
+        // let GIGASECOND_IN_MS =
+        // var GIGASECOND_IN_MS =
+        output.add(
+          PREFER_CONST_OVER_LET_AND_VAR({
+            kind: constant.kind,
+            name: constant.name
+          })
+        )
       }
     }
-
-    return false
   }
 }
-

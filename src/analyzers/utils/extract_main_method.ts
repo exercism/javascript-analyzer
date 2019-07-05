@@ -1,22 +1,40 @@
-import { Program, Node, FunctionDeclaration, ArrowFunctionExpression, FunctionExpression, ObjectExpression, Property } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
-import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
+import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree"
 
-import traverser from 'eslint/lib/util/traverser'
+import { traverse, Traverser as importedTraverser } from 'eslint/lib/util/traverser'
+import { isIdentifier } from "./is_identifier";
 
-export type Traverser = traverser.Traverser
-export type MainMethod = FunctionDeclaration | ArrowFunctionExpression | FunctionExpression
+type Program = TSESTree.Program
+type Node = TSESTree.Node
 
-export function extractMainMethod(program: Program, name: string): MainMethod | undefined {
+type ArrowFunctionExpression = TSESTree.ArrowFunctionExpression
+type FunctionDeclaration = TSESTree.FunctionDeclaration
+type FunctionExpression = TSESTree.FunctionExpression
+type Identifier = TSESTree.Identifier
+
+export type Traverser = importedTraverser
+export type MainMethod<T extends string = string> =
+  {
+    id: Identifier & { name: T };
+    parent: undefined | Node;
+  } &
+  (
+    FunctionDeclaration
+    | ArrowFunctionExpression
+    | FunctionExpression
+  )
+
+export function extractMainMethod<T extends string = string>(program: Program, name: T): MainMethod<T> | undefined {
   let result: MainMethod | undefined = undefined
 
-  traverser.traverse(program, {
+  traverse(program, {
     enter(node: Node): void {
       switch (node.type) {
 
         // function name() {}
         case AST_NODE_TYPES.FunctionDeclaration: {
-          if (node.id && node.id.name === name) {
-            result = node
+          const { id } = node
+          if (id && isIdentifier(id, name)) {
+            result = Object.assign(node, { id, parent: undefined })
             this.break()
           }
           break;
@@ -25,26 +43,24 @@ export function extractMainMethod(program: Program, name: string): MainMethod | 
         case AST_NODE_TYPES.VariableDeclaration: {
           this.skip()
 
-          traverser.traverse(node, {
+          traverse(node, {
             enter(innerNode: Node): void {
               switch(innerNode.type) {
 
                 case AST_NODE_TYPES.VariableDeclarator: {
-                  if (innerNode.id.type === AST_NODE_TYPES.Identifier) {
-                    if (
-                      innerNode.id.name === name
-                      && innerNode.init
-                    ) {
-                      // const name = () => {}
-                      if (innerNode.init.type === AST_NODE_TYPES.ArrowFunctionExpression) {
-                        result = innerNode.init
-                        this.break()
-                      }
-                      // const name = function() {}
-                      else if (innerNode.init.type === AST_NODE_TYPES.FunctionExpression) {
-                        result = innerNode.init
-                        this.break()
-                      }
+                  const { id } = innerNode
+                  if (isIdentifier(id, name) && innerNode.init) {
+
+                    // const name = () => {}
+                    if (innerNode.init.type === AST_NODE_TYPES.ArrowFunctionExpression) {
+                      result = Object.assign(innerNode.init, { id, parent: node })
+                      this.break()
+                    }
+
+                    // const name = function() {}
+                    else if (innerNode.init.type === AST_NODE_TYPES.FunctionExpression) {
+                      result = Object.assign(innerNode.init, { id, parent: node })
+                      this.break()
                     }
                   }
                   break
@@ -64,14 +80,12 @@ export function extractMainMethod(program: Program, name: string): MainMethod | 
         // }
         case AST_NODE_TYPES.MethodDefinition: {
           this.skip()
-          if (
-            node.static
-            && node.key.type === AST_NODE_TYPES.Identifier
-            && node.key.name === name
-          ) {
+
+          const { key: methodKey } = node
+          if (isIdentifier(methodKey, name)) {
             switch(node.value.type) {
               case AST_NODE_TYPES.FunctionExpression:
-                result = node.value
+                result = Object.assign(node.value, { id: methodKey, parent: node })
                 this.break()
                 break;
             }
@@ -95,7 +109,7 @@ export function extractMainMethod(program: Program, name: string): MainMethod | 
             switch(node.value.type) {
               case AST_NODE_TYPES.ArrowFunctionExpression:
               case AST_NODE_TYPES.FunctionExpression:
-                result = node.value
+                result =  Object.assign(node.value, { id: node.key, parent: node })
                 this.break()
                 break;
             }
@@ -107,31 +121,32 @@ export function extractMainMethod(program: Program, name: string): MainMethod | 
         //   name: () => {}
         // }
         case AST_NODE_TYPES.ExportDefaultDeclaration: {
+          const declaration = node.declaration
           // This was necessary because type incorrectly did not include this
-          if (node.declaration.type as string === AST_NODE_TYPES.ObjectExpression) {
+          if (declaration.type === AST_NODE_TYPES.ObjectExpression) {
             this.skip()
 
-            const objectNode = node.declaration as unknown as ObjectExpression
-            const property = objectNode.properties.find(
-              (property): boolean =>
-                property.type === AST_NODE_TYPES.Property
-              && property.key.type === AST_NODE_TYPES.Identifier
-              && property.key.name === name
-            ) as Property | undefined
-
-            if (property) {
-              if (
-                property.value.type === AST_NODE_TYPES.ArrowFunctionExpression
-                || property.value.type === AST_NODE_TYPES.FunctionExpression
-              ) {
-                result = property.value
-                this.break()
+            for (const property of declaration.properties) {
+              switch(property.type) {
+                case AST_NODE_TYPES.Property: {
+                  const { key: propertyKey } = property
+                  if (isIdentifier(propertyKey, name)) {
+                    switch(property.value.type) {
+                      case AST_NODE_TYPES.ArrowFunctionExpression:
+                      case AST_NODE_TYPES.FunctionExpression:
+                        result = Object.assign(property.value, { id: propertyKey, parent: property })
+                        this.break()
+                        break;
+                    }
+                  }
+                  break;
+                }
               }
             }
           }
+          break;
         }
       }
-
     },
   })
 

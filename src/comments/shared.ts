@@ -84,4 +84,11 @@ Message: "${'error'}"
 \`\`\`
 ${'details'}
 \`\`\`
-`('javascript.general.parse_error')
+`('javascript.generic.parse_error')
+
+export const PREFER_CONST_OVER_LET_AND_VAR = factory<'kind' | 'name'>`
+Instead of \`${'kind'} ${'name'}\`, consider using \`const\`.
+
+\`const\` is a signal that the identifier won't be reassigned, which SHOULD be
+true for this top-level constant. (Not to be confused with _immutable values_).
+`('javascript.generic.prefer_const_over_let_and_var')

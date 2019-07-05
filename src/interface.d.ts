@@ -13,6 +13,8 @@ interface ExecutionOptions {
   exercise: string;
   /** Unless true, expects website-copy to provide the contents of the templates */
   noTemplates: boolean;
+  /** If true, outputs the JSON using 2 space-indentation (pretty-print) */
+  pretty: boolean;
 }
 
 interface AstParser<T extends object> {
@@ -59,6 +61,16 @@ interface Output {
    * @returns the output as string
    */
   toProcessable(options: Readonly<ExecutionOptions>): Promise<string>;
+}
+
+interface WritableOutput extends Output {
+  approve(comment?: Comment): never;
+  disapprove(comment?: Comment): never;
+  redirect(comment?: Comment): never;
+  add(comment: Comment): void;
+
+  hasCommentary: boolean;
+  commentCount: number;
 }
 
 interface OutputProcessor {

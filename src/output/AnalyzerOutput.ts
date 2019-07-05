@@ -65,7 +65,7 @@ export class AnalyzerOutput implements Output {
     return this
   }
 
-  private freeze(): void {
+  protected freeze(): void {
     Object.freeze(this)
     Object.freeze(this.comments)
   }
@@ -80,12 +80,12 @@ export class AnalyzerOutput implements Output {
    * @param {ExecutionOptions} options
    * @returns {Promise<string>}
    */
-  public toProcessable({ noTemplates }: Pick<ExecutionOptions, 'noTemplates'>): Promise<string> {
+  public toProcessable({ noTemplates, pretty }: Pick<ExecutionOptions, 'noTemplates' | 'pretty'>): Promise<string> {
     return Promise.resolve(
       JSON.stringify({
         status: this.status,
         comments: this.comments.map(noTemplates ? makeIsolatedComment : makeExternalComment)
-      })
+      }, null, pretty ? 2 : 0)
     )
   }
 }
