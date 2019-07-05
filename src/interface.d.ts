@@ -70,6 +70,7 @@ interface WritableOutput extends Output {
   add(comment: Comment): void;
 
   hasCommentary: boolean;
+  commentCount: number;
 }
 
 interface OutputProcessor {

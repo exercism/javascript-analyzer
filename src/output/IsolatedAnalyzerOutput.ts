@@ -41,7 +41,11 @@ export class IsolatedAnalyzerOutput extends AnalyzerOutput implements WritableOu
     throw new EarlyFinalization()
   }
 
+  public get commentCount(): number {
+    return this.comments.length
+  }
+
   public get hasCommentary(): boolean {
-    return this.comments.length > 0
+    return this.commentCount > 0
   }
 }

@@ -56,6 +56,38 @@ Remove the additional parameters from your function, as their value will always
 be \`undefined\` or whatever default you've assigned.
 `('javascript.gigasecond.signature_not_optimal')
 
+const DONT_USE_DATE_PARSE = factory<'parameter.name'>`
+Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime),
+as \`Date.parse(${'parameter.name'})\` is not a good candidate. It's supposed to
+work with strings only, and not _intended_ to be used like this.
+`('javascript.gigasecond.dont_use_date_parse')
+const DONT_USE_DATE_VALUE = factory`
+Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)
+instead of [\`Date#valueOf\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/valueOf).
+They are functionally equivalent, but \`valueOf\` is marked as follows:
+
+> This method is usually called internally by JavaScript and not explicitly in
+> code.
+`('javascript.gigasecond.dont_use_date_value')
+const PREFER_SIDE_EFFECT_FREE_DATE = factory`
+Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)
+and [\`new Date(value)\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#Syntax),
+which takes a number of milliseconds as \`value\` and constructs a _new_ date.
+
+This ensures the _input_ is not modified when calling \`gigasecond\`, which
+also means that there are no unintended side-effects. Futhermore, \`setSeconds\`
+only works because it _rolls over_, but it wasn't meant to be used like this.
+Its function is to set the \`seconds\` component of a \`Date\`.
+`('javascript.gigasecond.prefer_side_effect_free_date')
+
+const DONT_USE_GET_SECONDS = factory`
+Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)
+to get the number of milliseconds the \`Date\` represents, instead of getting
+the \`seconds\` component of the \`Date\`. In general, [Unix/UTC time](https://en.wikipedia.org/wiki/Unix_time)
+is preferred when dealing with dates, as it is not affected by _interpretation_
+or locale (such as timezones).
+`('javascript.gigasecond.dont_use_get_seconds')
+
 type Program = TSESTree.Program
 
 const Parser: AstParser = new AstParser(undefined, 1)
@@ -83,6 +115,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     this.checkForApprovableSolutions(solution, output)
 
     // Time to find sub-optimal code.
+    this.checkForDisapprovables(solution, output)
 
     // The solution is automatically referred to the mentor if it reaches this
   }
@@ -235,11 +268,11 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
             }))
             break;
           }
-          default: {
-          }
         }
 
         if (solution.entry.isOptimal(undefined, comprehension)) {
+          this.checkForTips(solution, output)
+
           // Everything else is optimal, so approve!
           output.approve()
         }
@@ -253,6 +286,32 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
       }
 
       return
+    }
+  }
+
+  private checkForDisapprovables(solution: GigasecondSolution, output: WritableOutput): void | never {
+    const numberOfComments = output.comments.length
+
+    if (solution.entry.hasDateParse) {
+      output.add(
+        DONT_USE_DATE_PARSE({
+          'parameter.name': solution.entry.parameterName
+        })
+      )
+    }
+
+    if (solution.entry.hasDateValueOnInput) {
+      output.add(DONT_USE_DATE_VALUE())
+    }
+
+    if (solution.entry.hasSetSecondsOnInput) {
+      output.add(PREFER_SIDE_EFFECT_FREE_DATE())
+    } else if (solution.entry.hasGetSecondsOnInput) {
+      output.add(DONT_USE_GET_SECONDS())
+    }
+
+    if (numberOfComments < output.commentCount) {
+      output.disapprove()
     }
   }
 

@@ -1,10 +1,12 @@
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree";
+import { Statement } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
 
 import { extractExport } from "~src/analyzers/utils/extract_export";
 import { extractMainBody, MainBody } from "~src/analyzers/utils/extract_main_body";
 import { extractMainMethod, MainMethod } from "~src/analyzers/utils/extract_main_method";
 import { parameterName } from "~src/analyzers/utils/extract_parameter";
 import { findFirst } from "~src/analyzers/utils/find_first";
+import { findMemberCall } from "~src/analyzers/utils/find_member_call";
 import { isNewExpression } from "~src/analyzers/utils/find_new_expression";
 import { findTopLevelConstants, ProgramConstant, ProgramConstants } from "~src/analyzers/utils/find_top_level_constants";
 import { isBinaryExpression } from "~src/analyzers/utils/is_binary_expression";
@@ -15,8 +17,6 @@ import { NoExportError } from "~src/errors/NoExportError";
 import { NoMethodError } from "~src/errors/NoMethodError";
 import { getProcessLogger } from "~src/utils/logger";
 import { Source } from "../SourceImpl";
-import { ReturnStatement, Statement } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
-
 
 type Program = TSESTree.Program
 type Parameter = TSESTree.Parameter
@@ -34,6 +34,63 @@ type MainExport = ReturnType<typeof extractExport>
 
 const EXPECTED_METHOD = 'gigasecond'
 const EXPECTED_EXPORT = 'gigasecond'
+
+class Constant {
+  public readonly name: string
+  private _memoized: { [key: string]: string | number | boolean }
+
+  constructor(private readonly constant: Readonly<ProgramConstant>) {
+    this.name = (isIdentifier(constant.id) && constant.id.name) || '<NO-CONSTANT-NAME>'
+    this._memoized = {}
+  }
+
+  public get kind(): ProgramConstant['kind'] {
+    return this.constant.kind
+  }
+
+  public get isOfKindConst(): boolean {
+    return this.kind === 'const'
+  }
+
+  public get isOptimisedExpression(): boolean {
+    const { init } = this.constant
+
+    if (!init) {
+      return false
+    }
+
+    if ('isOptimisedExpression' in this._memoized) {
+      return !!this._memoized['isOptimisedComprehension']
+    }
+
+    return this._memoized['isOptimisedComprehension'] = isOptimisedComprehension(init)
+  }
+
+  public get isLargeNumberLiteral(): boolean {
+    const { init } = this.constant
+
+    if (!init) {
+      return false
+    }
+
+    if ('isLargeNumberLiteral' in this._memoized) {
+      return !!this._memoized['isLargeNumberLiteral']
+    }
+
+    return this._memoized['isLargeNumberLiteral'] = isLargeNumberLiteral(init)
+  }
+
+  public isOptimal(): boolean {
+    if ('isOptimal' in this._memoized) {
+      return !!this._memoized['isOptimal']
+    }
+
+    const result = this.isOfKindConst && this.isOptimisedExpression
+    this._memoized['isOptimal'] = result
+    return result
+  }
+
+}
 
 class Entry {
   public readonly name: string
@@ -60,6 +117,22 @@ class Entry {
 
   public get hasSimpleParameter(): boolean {
     return isIdentifier(this.params[0])
+  }
+
+  public get hasDateParse(): boolean {
+    return !!findMemberCall(this.body, 'Date', 'parse')
+  }
+
+  public get hasDateValueOnInput(): boolean {
+    return !!findMemberCall(this.body, this.parameterName, 'valueOf')
+  }
+
+  public get hasGetSecondsOnInput(): boolean {
+    return !!findMemberCall(this.body, this.parameterName, 'getSeconds')
+  }
+
+  public get hasSetSecondsOnInput(): boolean {
+    return !!findMemberCall(this.body, this.parameterName, 'setSeconds')
   }
 
   public get parameterType(): Parameter['type'] {
@@ -164,67 +237,6 @@ class Entry {
 
     return !!(callExpression && comprehensionInExpression)
   }
-
-  public get hasMinimalAndOptimalCalls(): boolean {
-    return false
-  }
-}
-
-class Constant {
-  public readonly name: string
-  private _memoized: { [key: string]: string | number | boolean }
-
-  constructor(private readonly constant: Readonly<ProgramConstant>) {
-    this.name = (isIdentifier(constant.id) && constant.id.name) || '<NO-CONSTANT-NAME>'
-    this._memoized = {}
-  }
-
-  public get kind(): ProgramConstant['kind'] {
-    return this.constant.kind
-  }
-
-  public get isOfKindConst(): boolean {
-    return this.kind === 'const'
-  }
-
-  public get isOptimisedExpression(): boolean {
-    const { init } = this.constant
-
-    if (!init) {
-      return false
-    }
-
-    if ('isOptimisedExpression' in this._memoized) {
-      return !!this._memoized['isOptimisedComprehension']
-    }
-
-    return this._memoized['isOptimisedComprehension'] = isOptimisedComprehension(init)
-  }
-
-  public get isLargeNumberLiteral(): boolean {
-    const { init } = this.constant
-
-    if (!init) {
-      return false
-    }
-
-    if ('isLargeNumberLiteral' in this._memoized) {
-      return !!this._memoized['isLargeNumberLiteral']
-    }
-
-    return this._memoized['isLargeNumberLiteral'] = isLargeNumberLiteral(init)
-  }
-
-  public isOptimal(): boolean {
-    if ('isOptimal' in this._memoized) {
-      return !!this._memoized['isOptimal']
-    }
-
-    const result = this.isOfKindConst && this.isOptimisedExpression
-    this._memoized['isOptimal'] = result
-    return result
-  }
-
 }
 
 export class GigasecondSolution {
