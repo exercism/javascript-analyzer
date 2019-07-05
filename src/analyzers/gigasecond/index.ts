@@ -61,6 +61,7 @@ Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/R
 as \`Date.parse(${'parameter.name'})\` is not a good candidate. It's supposed to
 work with strings only, and not _intended_ to be used like this.
 `('javascript.gigasecond.dont_use_date_parse')
+
 const DONT_USE_DATE_VALUE = factory`
 Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)
 instead of [\`Date#valueOf\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/valueOf).
@@ -69,6 +70,7 @@ They are functionally equivalent, but \`valueOf\` is marked as follows:
 > This method is usually called internally by JavaScript and not explicitly in
 > code.
 `('javascript.gigasecond.dont_use_date_value')
+
 const PREFER_SIDE_EFFECT_FREE_DATE = factory`
 Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)
 and [\`new Date(value)\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#Syntax),
