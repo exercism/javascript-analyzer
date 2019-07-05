@@ -28,7 +28,7 @@ describe('AnalyzerOutput#toProcessable', () => {
         comments: [
           'simple comment without parameters',
           {
-            comment: '%<foo>s is foo, given also %<bar>s',
+            comment: '%{foo} is foo, given also %{bar}',
             params: PARAMS
           }
         ]

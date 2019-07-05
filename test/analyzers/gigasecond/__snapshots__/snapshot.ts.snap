@@ -19,7 +19,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -38,7 +38,7 @@ export function gigasecond(entryDate) ...
       "template": "Did you know that you can export functions, classes and constants directly
 inline?
 \`\`\`javascript
-export %<method.signature>s
+export %{method.signature}
 \`\`\`",
       "variables": Object {
         "method.signature": "function gigasecond(entryDate) ...",
@@ -68,7 +68,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -87,7 +87,7 @@ export const gigasecond = date => ...;
       "template": "Did you know that you can export functions, classes and constants directly
 inline?
 \`\`\`javascript
-export %<method.signature>s
+export %{method.signature}
 \`\`\`",
       "variables": Object {
         "method.signature": "const gigasecond = date => ...;",
@@ -117,7 +117,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -157,7 +157,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -190,7 +190,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -223,7 +223,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -246,7 +246,7 @@ IsolatedAnalyzerOutput {
 
 \`const\` is a signal that the identifier won't be reassigned, which SHOULD be
 true for this top-level constant. (Not to be confused with _immutable values_).",
-      "template": "Instead of \`%<kind>s %<name>s\`, consider using \`const\`.
+      "template": "Instead of \`%{kind} %{name}\`, consider using \`const\`.
 
 \`const\` is a signal that the identifier won't be reassigned, which SHOULD be
 true for this top-level constant. (Not to be confused with _immutable values_).",
@@ -279,7 +279,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -312,7 +312,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -345,7 +345,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -378,7 +378,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -411,7 +411,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -444,7 +444,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -463,7 +463,7 @@ export let gigasecond = (date) => ...
       "template": "Did you know that you can export functions, classes and constants directly
 inline?
 \`\`\`javascript
-export %<method.signature>s
+export %{method.signature}
 \`\`\`",
       "variables": Object {
         "method.signature": "let gigasecond = (date) => ...",
@@ -493,7 +493,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -526,7 +526,7 @@ to the top-level. Constants, functions and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -559,7 +559,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -592,7 +592,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -625,7 +625,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -658,7 +658,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -691,7 +691,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -724,7 +724,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -757,7 +757,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -790,7 +790,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -823,7 +823,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -856,7 +856,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -889,7 +889,7 @@ to the top-level. Constants, functions and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -922,7 +922,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -955,7 +955,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -988,7 +988,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1021,7 +1021,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1054,7 +1054,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1087,7 +1087,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1120,7 +1120,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1139,7 +1139,7 @@ export function gigasecond(bornDate) ...
       "template": "Did you know that you can export functions, classes and constants directly
 inline?
 \`\`\`javascript
-export %<method.signature>s
+export %{method.signature}
 \`\`\`",
       "variables": Object {
         "method.signature": "function gigasecond(bornDate) ...",
@@ -1169,7 +1169,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1202,7 +1202,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1235,7 +1235,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1268,7 +1268,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1301,7 +1301,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1334,7 +1334,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1367,7 +1367,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1400,7 +1400,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1433,7 +1433,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1466,7 +1466,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1499,7 +1499,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1532,7 +1532,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1551,7 +1551,7 @@ export const gigasecond = birth => ...;
       "template": "Did you know that you can export functions, classes and constants directly
 inline?
 \`\`\`javascript
-export %<method.signature>s
+export %{method.signature}
 \`\`\`",
       "variables": Object {
         "method.signature": "const gigasecond = birth => ...;",
@@ -1581,7 +1581,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1614,7 +1614,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1647,7 +1647,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1687,7 +1687,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1720,7 +1720,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1753,7 +1753,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1786,7 +1786,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1819,7 +1819,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1852,7 +1852,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1885,7 +1885,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1918,7 +1918,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1951,7 +1951,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -1984,7 +1984,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2017,7 +2017,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2050,7 +2050,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2090,7 +2090,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2123,7 +2123,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2163,7 +2163,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2196,7 +2196,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2229,7 +2229,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2262,7 +2262,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2295,7 +2295,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2328,7 +2328,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2361,7 +2361,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2380,7 +2380,7 @@ export const gigasecond = (birthdate) => ...
       "template": "Did you know that you can export functions, classes and constants directly
 inline?
 \`\`\`javascript
-export %<method.signature>s
+export %{method.signature}
 \`\`\`",
       "variables": Object {
         "method.signature": "const gigasecond = (birthdate) => ...",
@@ -2410,7 +2410,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2443,7 +2443,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2476,7 +2476,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2509,7 +2509,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2542,7 +2542,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2575,7 +2575,7 @@ to the top-level. Constants, functions and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2608,7 +2608,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2658,8 +2658,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`VariableDeclarator\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`VariableDeclarator\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "VariableDeclarator",
@@ -2676,7 +2676,7 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
       "message": "No method called \`gigasecond\`. The tests won't pass without it.",
-      "template": "No method called \`%<method.name>s\`. The tests won't pass without it.",
+      "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
         "method.name": "gigasecond",
       },
@@ -2705,7 +2705,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2720,7 +2720,7 @@ export const gigasecond = (...)
 as \`Date.parse(date)\` is not a good candidate. It's supposed to
 work with strings only, and not _intended_ to be used like this.",
       "template": "Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime),
-as \`Date.parse(%<parameter.name>s)\` is not a good candidate. It's supposed to
+as \`Date.parse(%{parameter.name})\` is not a good candidate. It's supposed to
 work with strings only, and not _intended_ to be used like this.",
       "variables": Object {
         "parameter.name": "date",
@@ -2739,8 +2739,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -2759,8 +2759,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "BinaryExpression",
@@ -2779,8 +2779,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -2799,8 +2799,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "BinaryExpression",
@@ -2858,7 +2858,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -2896,8 +2896,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -2916,8 +2916,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -2936,8 +2936,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -2978,7 +2978,7 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
       "message": "No method called \`gigasecond\`. The tests won't pass without it.",
-      "template": "No method called \`%<method.name>s\`. The tests won't pass without it.",
+      "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
         "method.name": "gigasecond",
       },
@@ -2996,8 +2996,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3016,8 +3016,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3036,8 +3036,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "BinaryExpression",
@@ -3054,7 +3054,7 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
       "message": "No method called \`gigasecond\`. The tests won't pass without it.",
-      "template": "No method called \`%<method.name>s\`. The tests won't pass without it.",
+      "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
         "method.name": "gigasecond",
       },
@@ -3072,8 +3072,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3103,7 +3103,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -3118,7 +3118,7 @@ export const gigasecond = (...)
 as \`Date.parse(date)\` is not a good candidate. It's supposed to
 work with strings only, and not _intended_ to be used like this.",
       "template": "Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime),
-as \`Date.parse(%<parameter.name>s)\` is not a good candidate. It's supposed to
+as \`Date.parse(%{parameter.name})\` is not a good candidate. It's supposed to
 work with strings only, and not _intended_ to be used like this.",
       "variables": Object {
         "parameter.name": "date",
@@ -3137,8 +3137,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3196,7 +3196,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -3211,7 +3211,7 @@ export const gigasecond = (...)
 as \`Date.parse(time)\` is not a good candidate. It's supposed to
 work with strings only, and not _intended_ to be used like this.",
       "template": "Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime),
-as \`Date.parse(%<parameter.name>s)\` is not a good candidate. It's supposed to
+as \`Date.parse(%{parameter.name})\` is not a good candidate. It's supposed to
 work with strings only, and not _intended_ to be used like this.",
       "variables": Object {
         "parameter.name": "time",
@@ -3230,8 +3230,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3289,7 +3289,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -3327,8 +3327,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3373,7 +3373,7 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
       "message": "No method called \`gigasecond\`. The tests won't pass without it.",
-      "template": "No method called \`%<method.name>s\`. The tests won't pass without it.",
+      "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
         "method.name": "gigasecond",
       },
@@ -3391,8 +3391,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3435,8 +3435,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "BinaryExpression",
@@ -3455,8 +3455,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3475,8 +3475,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3496,10 +3496,10 @@ IsolatedAnalyzerOutput {
 The tests won't pass without it.
 
 Did you forget adding: \`export gigasecond\`?",
-      "template": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`%<export.name>s\`.
+      "template": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`%{export.name}\`.
 The tests won't pass without it.
 
-Did you forget adding: \`export %<export.name>s\`?",
+Did you forget adding: \`export %{export.name}\`?",
       "variables": Object {
         "export.name": "gigasecond",
       },
@@ -3517,8 +3517,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3537,8 +3537,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3585,8 +3585,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "BinaryExpression",
@@ -3633,8 +3633,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3653,8 +3653,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`VariableDeclarator\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`VariableDeclarator\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "VariableDeclarator",
@@ -3673,8 +3673,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3721,8 +3721,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3741,8 +3741,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3761,8 +3761,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3780,7 +3780,7 @@ IsolatedAnalyzerOutput {
       "externalTemplate": "javascript.general.no_parameter",
       "message": "Your function \`gigasecond\` does not have a parameter.
 The tests won't pass without it.",
-      "template": "Your function \`%<function.name>s\` does not have a parameter.
+      "template": "Your function \`%{function.name}\` does not have a parameter.
 The tests won't pass without it.",
       "variables": Object {
         "function.name": "gigasecond",
@@ -3827,8 +3827,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3869,7 +3869,7 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
       "message": "No method called \`gigasecond\`. The tests won't pass without it.",
-      "template": "No method called \`%<method.name>s\`. The tests won't pass without it.",
+      "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
         "method.name": "gigasecond",
       },
@@ -3887,8 +3887,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3935,8 +3935,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3955,8 +3955,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -3986,7 +3986,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -4024,8 +4024,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -4094,8 +4094,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -4140,7 +4140,7 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
       "message": "No method called \`gigasecond\`. The tests won't pass without it.",
-      "template": "No method called \`%<method.name>s\`. The tests won't pass without it.",
+      "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
         "method.name": "gigasecond",
       },
@@ -4186,8 +4186,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -4207,7 +4207,7 @@ IsolatedAnalyzerOutput {
 
 \`const\` is a signal that the identifier won't be reassigned, which SHOULD be
 true for this top-level constant. (Not to be confused with _immutable values_).",
-      "template": "Instead of \`%<kind>s %<name>s\`, consider using \`const\`.
+      "template": "Instead of \`%{kind} %{name}\`, consider using \`const\`.
 
 \`const\` is a signal that the identifier won't be reassigned, which SHOULD be
 true for this top-level constant. (Not to be confused with _immutable values_).",
@@ -4273,8 +4273,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -4332,7 +4332,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -4398,8 +4398,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -4418,8 +4418,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -4482,8 +4482,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "BinaryExpression",
@@ -4541,7 +4541,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -4556,7 +4556,7 @@ export const gigasecond = (...)
 as \`Date.parse(date)\` is not a good candidate. It's supposed to
 work with strings only, and not _intended_ to be used like this.",
       "template": "Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime),
-as \`Date.parse(%<parameter.name>s)\` is not a good candidate. It's supposed to
+as \`Date.parse(%{parameter.name})\` is not a good candidate. It's supposed to
 work with strings only, and not _intended_ to be used like this.",
       "variables": Object {
         "parameter.name": "date",
@@ -4575,8 +4575,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "BinaryExpression",
@@ -4595,8 +4595,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "BinaryExpression",
@@ -4615,8 +4615,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -4633,7 +4633,7 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
       "message": "No method called \`gigasecond\`. The tests won't pass without it.",
-      "template": "No method called \`%<method.name>s\`. The tests won't pass without it.",
+      "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
         "method.name": "gigasecond",
       },
@@ -4679,8 +4679,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "BinaryExpression",
@@ -4699,8 +4699,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -4719,8 +4719,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -4750,7 +4750,7 @@ extracting the gigasecond number into a top-level constant, so that you may
 remember what it represents if you ever come back to this code.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -4765,7 +4765,7 @@ export const gigasecond = (...)
 as \`Date.parse(birthdate)\` is not a good candidate. It's supposed to
 work with strings only, and not _intended_ to be used like this.",
       "template": "Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime),
-as \`Date.parse(%<parameter.name>s)\` is not a good candidate. It's supposed to
+as \`Date.parse(%{parameter.name})\` is not a good candidate. It's supposed to
 work with strings only, and not _intended_ to be used like this.",
       "variables": Object {
         "parameter.name": "birthdate",
@@ -4782,7 +4782,7 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
       "message": "No method called \`gigasecond\`. The tests won't pass without it.",
-      "template": "No method called \`%<method.name>s\`. The tests won't pass without it.",
+      "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
         "method.name": "gigasecond",
       },
@@ -4850,8 +4850,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -4871,10 +4871,10 @@ IsolatedAnalyzerOutput {
 The tests won't pass without it.
 
 Did you forget adding: \`export gigasecond\`?",
-      "template": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`%<export.name>s\`.
+      "template": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`%{export.name}\`.
 The tests won't pass without it.
 
-Did you forget adding: \`export %<export.name>s\`?",
+Did you forget adding: \`export %{export.name}\`?",
       "variables": Object {
         "export.name": "gigasecond",
       },
@@ -4890,7 +4890,7 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
       "message": "No method called \`gigasecond\`. The tests won't pass without it.",
-      "template": "No method called \`%<method.name>s\`. The tests won't pass without it.",
+      "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
         "method.name": "gigasecond",
       },
@@ -4909,7 +4909,7 @@ IsolatedAnalyzerOutput {
 as \`Date.parse(utcDate)\` is not a good candidate. It's supposed to
 work with strings only, and not _intended_ to be used like this.",
       "template": "Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime),
-as \`Date.parse(%<parameter.name>s)\` is not a good candidate. It's supposed to
+as \`Date.parse(%{parameter.name})\` is not a good candidate. It's supposed to
 work with strings only, and not _intended_ to be used like this.",
       "variables": Object {
         "parameter.name": "utcDate",
@@ -4956,8 +4956,8 @@ IsolatedAnalyzerOutput {
       "message": "Large numbers like \`1000000000000\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
-      "template": "Large numbers like \`%<literal>s\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`%<literal>s\` using \`Math.pow\` or
+      "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
         "literal": "1000000000000",
@@ -5015,7 +5015,7 @@ to the top-level. Constants, functions and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
-const %<name>s = %<value>s
+const %{name} = %{value}
 
 export const gigasecond = (...)
 \`\`\`",
@@ -5030,7 +5030,7 @@ export const gigasecond = (...)
 as \`Date.parse(input)\` is not a good candidate. It's supposed to
 work with strings only, and not _intended_ to be used like this.",
       "template": "Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime),
-as \`Date.parse(%<parameter.name>s)\` is not a good candidate. It's supposed to
+as \`Date.parse(%{parameter.name})\` is not a good candidate. It's supposed to
 work with strings only, and not _intended_ to be used like this.",
       "variables": Object {
         "parameter.name": "input",

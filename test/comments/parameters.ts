@@ -32,10 +32,10 @@ with some indentation
           expect(comment.message).toBe([
             'This is a message with parameters:',
             '---',
-            'foo => %<foo>s.',
+            'foo => %{foo}.',
             '  positional => [%0$s, %1$s, %2$s]',
-            '    bar => %<bar>s',
-            '  foo (again) => %<foo>s',
+            '    bar => %{bar}',
+            '  foo (again) => %{foo}',
             'with some indentation'
           ].join('\n'))
         })
@@ -48,10 +48,10 @@ with some indentation
           expect(comment.template).toBe([
             'This is a message with parameters:',
             '---',
-            'foo => %<foo>s.',
+            'foo => %{foo}.',
             '  positional => [%0$s, %1$s, %2$s]',
-            '    bar => %<bar>s',
-            '  foo (again) => %<foo>s',
+            '    bar => %{bar}',
+            '  foo (again) => %{foo}',
             'with some indentation'
           ].join('\n'))
         })
@@ -84,10 +84,10 @@ with some indentation
           expect(comment.template).toBe([
             'This is a message with parameters:',
             '---',
-            'foo => %<foo>s.',
+            'foo => %{foo}.',
             '  positional => [%0$s, %1$s, %2$s]',
-            '    bar => %<bar>s',
-            '  foo (again) => %<foo>s',
+            '    bar => %{bar}',
+            '  foo (again) => %{foo}',
             'with some indentation'
           ].join('\n'))
         })
@@ -107,10 +107,10 @@ with some indentation
           expect(comment.message).toBe([
             'This is a message with parameters:',
             '---',
-            'foo => %<foo>s.',
+            'foo => %{foo}.',
             '  positional => [actual-foo, actual-bar, %2$s]',
-            '    bar => %<bar>s',
-            '  foo (again) => %<foo>s',
+            '    bar => %{bar}',
+            '  foo (again) => %{foo}',
             'with some indentation'
           ].join('\n'))
         })
@@ -123,10 +123,10 @@ with some indentation
           expect(comment.template).toBe([
             'This is a message with parameters:',
             '---',
-            'foo => %<foo>s.',
+            'foo => %{foo}.',
             '  positional => [%0$s, %1$s, %2$s]',
-            '    bar => %<bar>s',
-            '  foo (again) => %<foo>s',
+            '    bar => %{bar}',
+            '  foo (again) => %{foo}',
             'with some indentation'
           ].join('\n'))
         })
@@ -165,10 +165,10 @@ with some indentation
           expect(comment.template).toBe([
             'This is a message with parameters:',
             '---',
-            'foo => %<foo>s.',
+            'foo => %{foo}.',
             '  positional => [%0$s, %1$s, %2$s]',
-            '    bar => %<bar>s',
-            '  foo (again) => %<foo>s',
+            '    bar => %{bar}',
+            '  foo (again) => %{foo}',
             'with some indentation'
           ].join('\n'))
         })

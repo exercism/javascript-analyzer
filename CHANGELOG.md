@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1
+
+- Update snapshots
+- Fix `comments/parameters.ts` test
+- Fix `output/toProcessable.ts` test
+
 ## 0.3.0
 
 - Add analyzer for `gigasecond`
