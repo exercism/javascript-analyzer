@@ -1,5 +1,6 @@
-import { TSESTree, AST_NODE_TYPES } from "@typescript-eslint/typescript-estree";
+import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree";
 
+import { isIdentifier } from "~src/analyzers/utils/is_identifier";
 import { factory } from "~src/comments/comment";
 import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, PREFER_CONST_OVER_LET_AND_VAR, UNEXPECTED_PARAMETER } from "~src/comments/shared";
 import { NoExportError } from "~src/errors/NoExportError";
@@ -8,7 +9,6 @@ import { AstParser } from "~src/parsers/AstParser";
 
 import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl";
 import { GigasecondSolution } from "./GigasecondSolution";
-import { isIdentifier } from "../utils/is_identifier";
 
 const TIP_EXPORT_INLINE = factory<'method.signature'>`
 Did you know that you can export functions, classes and constants directly
@@ -35,6 +35,18 @@ const ${'name'} = ${'value'}
 export const gigasecond = (...)
 \`\`\`
 `('javascript.gigasecond.prefer_top_level_constant')
+
+const PREFER_EXTRACTED_TOP_LEVEL_CONSTANT =  factory<'value' | 'name'>`
+Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const ${'name'} = ${'value'}
+
+export const gigasecond = (...)
+\`\`\`
+`('javascript.gigasecond.prefer_extracted_top_level_constant')
 
 const SIGNATURE_NOT_OPTIMAL = factory`
 If you look at the tests, the function \`gigasecond\` only receives one
@@ -187,7 +199,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
       if (comprehension) {
         this.logger.log(`=> found a comprehension (${comprehension.type})`)
         switch (comprehension.type) {
-          // Top case
+          // ... + 10 ** 12
           case AST_NODE_TYPES.BinaryExpression: {
             output.add(PREFER_TOP_LEVEL_CONSTANT({
               'name': 'GIGASECOND_IN_MS',
@@ -195,6 +207,8 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
             }))
             break;
           }
+
+          // Math.pow(10, 12)
           case AST_NODE_TYPES.CallExpression: {
             output.add(PREFER_TOP_LEVEL_CONSTANT({
               'name': 'GIGASECOND_IN_MS',
@@ -202,6 +216,8 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
             }))
             break;
           }
+
+          // 1e12
           case AST_NODE_TYPES.Literal: {
             output.add(PREFER_TOP_LEVEL_CONSTANT({
               'name': 'GIGASECOND_IN_MS',
@@ -209,20 +225,26 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
             }))
             break;
           }
+
+          // const name = ... (one of the comprehensions above)
           case AST_NODE_TYPES.VariableDeclarator: {
-            output.add(PREFER_TOP_LEVEL_CONSTANT({
+            // Extract into const to top-level
+            output.add(PREFER_EXTRACTED_TOP_LEVEL_CONSTANT({
               'name': 'id' in comprehension && isIdentifier(comprehension.id) && comprehension.id.name || 'GIGASECOND_IN_MS',
               'value': comprehension.init && solution.source.get(comprehension.init) || '...'
             }))
             break;
           }
           default: {
-            // TODO: extract into const to top-level
           }
         }
 
-        // TODO: check if the _rest_ is optimal. If yes approve, otherwise
-        // comment don't approve and have the rest of this analyzer disapprove
+        if (solution.entry.isOptimal(undefined, comprehension)) {
+          // Everything else is optimal, so approve!
+          output.approve()
+        }
+
+        return
       } else if (literal) {
         this.logger.log(`=> found a literal (${literal.type})`)
         output.disapprove(USE_NUMBER_COMPREHENSION({

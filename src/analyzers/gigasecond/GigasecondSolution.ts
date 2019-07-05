@@ -15,6 +15,7 @@ import { NoExportError } from "~src/errors/NoExportError";
 import { NoMethodError } from "~src/errors/NoMethodError";
 import { getProcessLogger } from "~src/utils/logger";
 import { Source } from "../SourceImpl";
+import { ReturnStatement, Statement } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
 
 
 type Program = TSESTree.Program
@@ -69,14 +70,26 @@ class Entry {
     return parameterName(this.params[0])
   }
 
-  public isOptimal(constant?: Readonly<Constant>): boolean {
+  public isOptimal(constant?: Readonly<Constant>, comprehension?: Readonly<LargeNumberComprehension>): boolean {
     const logger = getProcessLogger()
+    const mainBody: MainBody & { argument?: Statement | Expression | null } = { ...this.body }
 
     // If is not a simple return
     //
-    if(this.body.type !== AST_NODE_TYPES.ReturnStatement) {
-      logger.log(`~> body type is: ${this.body.type}`)
-      return false
+    if(mainBody.type !== AST_NODE_TYPES.ReturnStatement) {
+      if (comprehension === undefined || mainBody.type !== AST_NODE_TYPES.BlockStatement) {
+        logger.log(`~> body type is: ${mainBody.type}`)
+        return false
+      }
+
+      const finalStatement = mainBody.body.reverse()[0]
+
+      if (finalStatement.type !== AST_NODE_TYPES.ReturnStatement) {
+        logger.log(`~> body type is a block with the final statement type: ${finalStatement.type}`)
+        return false
+      }
+
+      mainBody.argument = finalStatement.argument
     }
 
     // If we got here, it knows it's a return statement
@@ -84,9 +97,9 @@ class Entry {
     // return ...
     //
 
-    const { argument } = this.body
+    const { argument } = mainBody
     if (!argument || !isNewExpression(argument, 'Date')) {
-      logger.log(`~> argument is not new XXX: ${argument}`)
+      logger.log(`~> argument is not new XXX: ${JSON.stringify(argument, null, 2)}`)
       return false
     }
 
@@ -109,8 +122,8 @@ class Entry {
       return false
     }
 
-    if (!constant) {
-      logger.log(`~> doesn't have a top-level constant`)
+    if (!constant && !comprehension) {
+      logger.log(`~> doesn't have a top-level constant and no comprehension`)
       return false
     }
 
@@ -119,11 +132,13 @@ class Entry {
     // return new Date(a + b)
     //
 
-    // One of the two sides needs to be the top-level constant
-    //
-    const identifier = isIdentifier(expression.left, constant.name)
-      ? expression.left
-      : isIdentifier(expression.right, constant.name) && expression.right
+    if (comprehension && comprehension.type == AST_NODE_TYPES.VariableDeclarator) {
+      // Don't care about the kind because _there is no constant_. In that sense
+      // it will not take into account the kind of the constant here.
+      constant = new Constant({ ...comprehension, kind: 'const' })
+
+      logger.log(`~> the comprehension is a constant`)
+    }
 
     // One of the two sides needs to be the argument.getTime call
     //
@@ -131,8 +146,27 @@ class Entry {
       ? expression.left
       : isCallExpression(expression.right, this.parameterName, 'getTime') && expression.right
 
-    logger.log(`=> identifier: ${!!identifier}, expression: ${!!callExpression}`)
-    return !!(identifier && callExpression)
+    // One of the two sides needs to be the top-level constant or comprehension
+    //
+    if (constant) {
+      const identifier = isIdentifier(expression.left, constant.name)
+        ? expression.left
+        : isIdentifier(expression.right, constant.name) && expression.right
+
+      logger.log(`=> identifier: ${!!identifier}, expression: ${!!callExpression}`)
+      return !!(callExpression && identifier)
+    }
+
+    // In this case the constant is just not extracted into the top-level, but
+    // there is a comprehension.
+    const comprehensionInExpression = expression.left === comprehension ||
+      expression.right === comprehension
+
+    return !!(callExpression && comprehensionInExpression)
+  }
+
+  public get hasMinimalAndOptimalCalls(): boolean {
+    return false
   }
 }
 
