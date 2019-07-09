@@ -25,7 +25,7 @@ export abstract class AnalyzerImpl implements Analyzer {
    * Runs the analyzer
    *
    * This is defined as a property instead of a method, so that it can not be
-   * overriddden in a subclass. Subclasses should override @see execute instead.
+   * overridden in a subclass. Subclasses should override @see execute instead.
    *
    * @returns The promise that resolves the analyzer output.
    *

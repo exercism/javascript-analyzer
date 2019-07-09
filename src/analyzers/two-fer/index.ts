@@ -440,7 +440,7 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     //
     const body = this.mainMethod!.body!
 
-    // This trick actually looks to the inner exppresion instead of the entire
+    // This trick actually looks to the inner expression instead of the entire
     // function in order to allow for comments inside the body.
     const { loc: { start: { line: lineStart }, end: { line: lineEnd } } } =
          body.type === AST_NODE_TYPES.BlockStatement
