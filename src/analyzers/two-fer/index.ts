@@ -191,15 +191,16 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
   }
 
   private checkForOptimalSolutions(): void | never {
-    // The optional solution looks like this:
+    // The optimal solution looks like this:
     //
     // export function twoFer(name = 'you') {
     //   return "One for #{name}, one for me."
     // }
     //
     // The default argument must be 'you', and it must just be a single
-    // statement using interpolation. Other solutions might be approved but this
-    // is the only one that we would approve without comment.
+    // statement using interpolation, without any if statements or ternary
+    // operators. Other solutions might be approved but this is the only
+    // one that we would approve without comment.
     //
     // NOTE: the current tests are incorrect and want you to do name || 'you'
 
@@ -231,7 +232,7 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
 
   private checkForApprovableSolutions(): void | never {
     // If we don't have a correct default argument or a one line
-    // solution then let's just get out of here.
+    // solution, then let's just get out of here.
     if (!this.isOneLineSolution()) {
       return
     }
@@ -428,6 +429,15 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
   }
 
   private isOneLineSolution(): boolean {
+    // A one-line solution will never have any conditional expressions
+    // (ternary operators) or if statements.
+    const conditionalExpressions = extractAll<ConditionalExpression>(this.mainMethod!, AST_NODE_TYPES.ConditionalExpression)
+    const ifStatements = extractAll<IfStatement>(this.mainMethod!, AST_NODE_TYPES.IfStatement)
+
+    if (conditionalExpressions.length !== 0 || ifStatements.length !== 0) {
+      return false
+    }
+
     // Maximum body count may be 2 (3 - 1)
     //
     // 1: export function twoFer(name = 'you') {
