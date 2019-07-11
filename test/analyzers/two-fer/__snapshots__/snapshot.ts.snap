@@ -7,13 +7,6 @@ AnalyzerOutput {
 }
 `;
 
-exports[`When running analysis on two-fer fixtures and expecting it to approve matches two-fer/118's output: output 1`] = `
-AnalyzerOutput {
-  "comments": Array [],
-  "status": "approve",
-}
-`;
-
 exports[`When running analysis on two-fer fixtures and expecting it to approve matches two-fer/129's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [],
@@ -22,13 +15,6 @@ AnalyzerOutput {
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting it to approve matches two-fer/139's output: output 1`] = `
-AnalyzerOutput {
-  "comments": Array [],
-  "status": "approve",
-}
-`;
-
-exports[`When running analysis on two-fer fixtures and expecting it to approve matches two-fer/313's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [],
   "status": "approve",
@@ -263,15 +249,14 @@ exports[`When running analysis on two-fer fixtures and expecting it to disapprov
 AnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.two-fer.optimise_explicity_default_value",
-      "message": "Instead of relying on %{maybe_undefined_expression} being \\"undefined\\" when
-no value is passed in, you could set the default value of 'name' to
-'you'.",
-      "template": "Instead of relying on %{maybe_undefined_expression} being \\"undefined\\" when
-no value is passed in, you could set the default value of '%{parameter}' to
-'you'.",
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %{parameter} to 'you' to avoid this conditional.",
       "variables": Object {
-        "maybe-undefined-expression": "name",
         "parameter": "name",
       },
     },
@@ -471,6 +456,46 @@ of %{parameter} to 'you' to avoid this conditional.",
 }
 `;
 
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/118's output: output 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %{parameter} to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove",
+}
+`;
+
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/120's output: output 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %{parameter} to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove",
+}
+`;
+
 exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/121's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [
@@ -531,6 +556,26 @@ of %{parameter} to 'you' to avoid this conditional.",
 }
 `;
 
+exports[`When running analysis on two-fer fixtures and expecting it to disapprove matches two-fer/313's output: output 1`] = `
+AnalyzerOutput {
+  "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.two-fer.optimise_default_value",
+      "message": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of name to 'you' to avoid this conditional.",
+      "template": "You currently use a conditional to branch in case there is no value passed into
+\`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+of %{parameter} to 'you' to avoid this conditional.",
+      "variables": Object {
+        "parameter": "name",
+      },
+    },
+  ],
+  "status": "disapprove",
+}
+`;
+
 exports[`When running analysis on two-fer fixtures and expecting it to refer to mentor matches two-fer/0's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [],
@@ -569,20 +614,6 @@ AnalyzerOutput {
 exports[`When running analysis on two-fer fixtures and expecting it to refer to mentor matches two-fer/119's output: output 1`] = `
 AnalyzerOutput {
   "comments": Array [],
-  "status": "refer_to_mentor",
-}
-`;
-
-exports[`When running analysis on two-fer fixtures and expecting it to refer to mentor matches two-fer/120's output: output 1`] = `
-AnalyzerOutput {
-  "comments": Array [
-    CommentImpl {
-      "externalTemplate": "javascript.two-fer.redirect_incorrect_string_template",
-      "message": "The string template looks incorrect. Expected a template with 3 components.",
-      "template": "The string template looks incorrect. Expected a template with 3 components.",
-      "variables": Object {},
-    },
-  ],
   "status": "refer_to_mentor",
 }
 `;
