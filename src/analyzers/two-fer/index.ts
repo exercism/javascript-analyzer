@@ -35,7 +35,7 @@ You currently use a conditional to branch in case there is no value passed into
 of ${'parameter'} to 'you' to avoid this conditional.
 `('javascript.two-fer.optimise_default_value')
 
-const OPTIMISE_EXPLICIT_DEFAULT_VALUE = factory<'parameter' | 'maybe-undefined-expression'>`
+const OPTIMISE_EXPLICIT_DEFAULT_VALUE = factory<'parameter' | 'maybe_undefined_expression'>`
 Instead of relying on ${'maybe_undefined_expression'} being "undefined" when
 no value is passed in, you could set the default value of '${'parameter'}' to
 'you'.
@@ -290,7 +290,7 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
 
         this.comment(OPTIMISE_EXPLICIT_DEFAULT_VALUE({
           parameter,
-          'maybe-undefined-expression': expression.left.name
+          'maybe_undefined_expression': expression.left.name
         }))
       }
 
@@ -317,7 +317,7 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
 
         this.comment(OPTIMISE_EXPLICIT_DEFAULT_VALUE({
           parameter,
-          'maybe-undefined-expression': conditionalExpression.consequent.name
+          'maybe_undefined_expression': conditionalExpression.consequent.name
         }))
       }
     }

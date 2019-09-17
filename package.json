@@ -38,11 +38,11 @@
     "typescript": "^3.5.1"
   },
   "dependencies": {
-    "@typescript-eslint/parser": "^1.10.2",
-    "@typescript-eslint/typescript-estree": "^1.10.2",
+    "@typescript-eslint/parser": "^1.13.0",
+    "@typescript-eslint/typescript-estree": "^1.13.0",
     "esm": "^3.2.25",
     "module-alias": "^2.2.0",
-    "yargs": "^13.2.4"
+    "yargs": "^13.3.0"
   },
   "_moduleAliases": {
     "~src": "dist",

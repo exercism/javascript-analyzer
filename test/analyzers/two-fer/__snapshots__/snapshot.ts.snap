@@ -277,7 +277,7 @@ no value is passed in, you could set the default value of 'name' to
 no value is passed in, you could set the default value of '%{parameter}' to
 'you'.",
       "variables": Object {
-        "maybe-undefined-expression": "name",
+        "maybe_undefined_expression": "name",
         "parameter": "name",
       },
     },
