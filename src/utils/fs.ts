@@ -7,16 +7,16 @@ import fs from 'fs'
  * @returns the promise
  */
 export async function readFile(filePath: string): Promise<Buffer> {
-  return new Promise<Buffer>((resolve, reject) => {
-    fs.readFile(filePath, (err, data) => {
+  return new Promise<Buffer>((resolve, reject): void => {
+    fs.readFile(filePath, (err, data): void => {
       err ? reject(err) : resolve(data)
     })
   })
 }
 
 export async function readDir(dirPath: string): Promise<string[]> {
-  return new Promise<string[]>((resolve, reject) => {
-    fs.readdir(dirPath, (err, files) => {
+  return new Promise<string[]>((resolve, reject): void => {
+    fs.readdir(dirPath, (err, files): void => {
       if (err) {
         return reject(err)
       }
@@ -27,16 +27,16 @@ export async function readDir(dirPath: string): Promise<string[]> {
 }
 
 export async function exists(path: string): Promise<boolean> {
-  return new Promise<boolean>((resolve) => {
-    fs.exists(path, (exists) => {
+  return new Promise<boolean>((resolve): void => {
+    fs.exists(path, (exists): void => {
       resolve(exists)
     })
   })
 }
 
 export async function writeFile<T>(filePath: string, data: T): Promise<T> {
-  return new Promise((resolve, reject) => {
-    fs.writeFile(filePath, data, (err) => {
+  return new Promise((resolve, reject): void => {
+    fs.writeFile(filePath, data, (err): void => {
       err ? reject(err) : resolve(data)
     })
   })

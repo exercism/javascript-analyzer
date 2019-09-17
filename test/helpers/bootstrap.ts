@@ -10,7 +10,8 @@ export function bootstrap({ exercise, ...overrides }: { exercise: string } & Par
     output: '__fake__',
     inputDir: '__fake__',
     dry: true,
-    templates: true,
+    noTemplates: false,
+    pretty: false,
     exercise,
     ...overrides
   })

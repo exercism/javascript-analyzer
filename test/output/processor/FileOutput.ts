@@ -4,19 +4,33 @@ import path from 'path'
 
 jest.mock('fs');
 
-function mockFiles(files: { [path: string]: string }) {
-  (fs as any).__setMockFiles(files)
+const mockedFs = fs as unknown as MockedFs
+
+function mockFiles(files: { [path: string]: string }): void {
+  mockedFs.__setMockFiles(files)
 }
 
 function getWrittenFiles(): { [dir: string]: { [file: string]: string }} {
-  return (fs as any).__getWrittenFiles()
+  return mockedFs.__getWrittenFiles()
 }
 
 const CONTENTS = `My Fine Output`
+const DEFAULT_OPTIONS: Omit<ExecutionOptions, 'inputDir' | 'output'> = {
+  debug: false,
+  dry: false,
+  console: false,
+  exercise: '<no-exercise>',
+  noTemplates: false,
+  pretty: false
+}
 
 describe('FileOutput', () => {
   describe('when the output path is writable', () => {
-    const OUT_OPTIONS = { inputDir: '/path/to/input', output: 'analysis.out' } as ExecutionOptions
+    const OUT_OPTIONS: ExecutionOptions = {
+      inputDir: '/path/to/input',
+      output: 'analysis.out',
+      ...DEFAULT_OPTIONS
+    }
 
     beforeEach(() => {
       mockFiles({})
@@ -39,7 +53,11 @@ describe('FileOutput', () => {
   })
 
   describe('when the output path is not writable', () => {
-    const OUT_OPTIONS = { inputDir: '/path/to/input', output: 'analysis.out' } as ExecutionOptions
+    const OUT_OPTIONS: ExecutionOptions = {
+      ...DEFAULT_OPTIONS,
+      inputDir: '/path/to/input',
+      output: 'analysis.out'
+    }
 
     beforeEach(() => {
       mockFiles({ [path.join(OUT_OPTIONS.inputDir, OUT_OPTIONS.output)]: 'Already Written' })
@@ -54,7 +72,11 @@ describe('FileOutput', () => {
   })
 
   describe('when the output is absolute', () => {
-    const OUT_OPTIONS = { inputDir: '/not', output: '/path/to/output/analysis.out' } as ExecutionOptions
+    const OUT_OPTIONS: ExecutionOptions = {
+      ...DEFAULT_OPTIONS,
+      inputDir: '/not',
+      output: '/path/to/output/analysis.out'
+    }
 
     beforeEach(() => {
       mockFiles({})
@@ -90,7 +112,11 @@ describe('FileOutput', () => {
   })
 
   describe('when the output is relative', () => {
-    const OUT_OPTIONS = { inputDir: '/path/to/input', output: 'analysis.out' } as ExecutionOptions
+    const OUT_OPTIONS: ExecutionOptions = {
+      ...DEFAULT_OPTIONS,
+      inputDir: '/path/to/input',
+      output: 'analysis.out'
+    }
 
     beforeEach(() => {
       mockFiles({})

@@ -8,7 +8,7 @@ export function isAssignmentPattern(node: Node, value?: string): node is Assignm
     && (value === undefined
       || (node.right !== undefined
         && (
-             isLiteral(node.right, value)
+          isLiteral(node.right, value)
           || isIdentifier(node.right, value)
         )
       )

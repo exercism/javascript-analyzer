@@ -5,7 +5,7 @@ export type LoggerInput = StreamBuffer | (() => StreamBuffer)
  * Log the buffer to the output
  * @param buffer
  */
-function log(buffer: LoggerInput) {
+function log(buffer: LoggerInput): void {
   process.stdout.write(buffer instanceof Function ? buffer() : buffer)
 }
 
@@ -13,7 +13,7 @@ function log(buffer: LoggerInput) {
  * Log the buffer to the error output
  * @param buffer
  */
-function error(buffer: LoggerInput) {
+function error(buffer: LoggerInput): void {
   process.stderr.write(buffer instanceof Function ? buffer() : buffer)
 }
 
@@ -27,12 +27,12 @@ function fatal(this: Logger, buffer: LoggerInput, status = 1): never {
   return process.exit(status)
 }
 
-function noop(_: LoggerInput) {}
+function noop(_: LoggerInput): void {}
 
 export interface Logger {
-  error: typeof error
-  fatal: typeof fatal
-  log: typeof log
+  error: typeof error;
+  fatal: typeof fatal;
+  log: typeof log;
 }
 
 export class Logger {
@@ -54,7 +54,7 @@ const LIVE_BINDING: { current: Logger | null } = { current: NOOP_LOGGER }
  * @param logger
  * @returns the global logger
  */
-export function setProcessLogger(logger: Readonly<Logger>) {
+export function setProcessLogger(logger: Readonly<Logger>): Readonly<Logger> {
   return LIVE_BINDING.current = logger
 }
 

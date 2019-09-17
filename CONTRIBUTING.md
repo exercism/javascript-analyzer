@@ -51,11 +51,11 @@ from the track anatomy project deem to be the set of reasonable solutions.
 
 #### Abstract Syntax Approach
 
-These solutions will be your baseline for `approve_as_optimal`, one of the
-expected outputs. If your analyzer will be based on Abstract Syntax Tree
-parsing, you can run these analyzers through the included ASTParser, or use
-[AST explorer][ast-explorer] and make sure it's set to the correct parser (at
- moment of writing this is `@typescript/eslint-parser`).
+These solutions will be your baseline for `approve`, one of the expected
+outputs. If your analyzer will be based on Abstract Syntax Tree parsing, you can
+run these analyzers through the included ASTParser, or use [AST explorer][ast-explorer]
+and make sure it's set to the correct parser (at moment of writing this is
+`@typescript/eslint-parser`).
 
  **Note**: You may write a different style analyzer, that is _not_ using ASTs.
 

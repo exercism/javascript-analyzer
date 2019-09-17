@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "../.eslintrc",
+    "plugin:jest/recommended"
+  ],
+  "env": {
+    "jest": true
+  },
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": [
+      "warn", {
+        "allowExpressions": true,
+        "allowTypedFunctionExpressions": true,
+        "allowHigherOrderFunctions": true
+      }
+    ]
+  }
+}

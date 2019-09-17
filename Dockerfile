@@ -20,6 +20,7 @@ RUN yarn install --production --modules-folder './production_node_modules'
 FROM node:lts-alpine
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /etc/passwd /etc/passwd
+COPY --from=builder /javascript-analyzer/package.json /opt/analyzer/package.json
 COPY --from=builder /javascript-analyzer/bin /opt/analyzer/bin
 COPY --from=builder /javascript-analyzer/dist /opt/analyzer/dist
 COPY --from=builder /javascript-analyzer/production_node_modules /opt/analyzer/node_modules

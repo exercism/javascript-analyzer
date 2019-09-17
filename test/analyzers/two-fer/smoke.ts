@@ -14,7 +14,7 @@ describe('When running analysis on two-fer', () => {
 
     const output = await analyze(solutionContent)
 
-    expect(output.status).toBe('approve_as_optimal');
+    expect(output.status).toBe('approve');
     expect(output.comments.length).toBe(0);
   })
 
@@ -30,7 +30,7 @@ describe('When running analysis on two-fer', () => {
 
     const output = await analyze(solutionContent)
 
-    expect(output.status).toBe('approve_with_comment');
+    expect(output.status).toBe('approve');
     expect(output.comments.length).toBeGreaterThanOrEqual(1);
   })
 
@@ -44,7 +44,7 @@ describe('When running analysis on two-fer', () => {
 
     const output = await analyze(solutionContent)
 
-    expect(output.status).toBe('disapprove_with_comment');
+    expect(output.status).toBe('disapprove');
     expect(output.comments.length).toBeGreaterThanOrEqual(1);
   })
 

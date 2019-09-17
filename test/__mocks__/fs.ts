@@ -3,14 +3,20 @@ import path from 'path'
 import { PathLike } from 'fs';
 
 const fs = jest.genMockFromModule('fs') as Omit<typeof import('fs'), 'readFile' | 'readdir' | 'exists' | 'writeFile'> & {
-  __setMockFiles: typeof __setMockFiles
-  __getWrittenFiles: typeof __getWrittenFiles
+  __setMockFiles: typeof __setMockFiles;
+  __getWrittenFiles: typeof __getWrittenFiles;
 
-  readdir(path: PathLike, callback: (err: NodeJS.ErrnoException | null, files: string[]) => void): void
-  readFile(path: PathLike | number, callback: (err: NodeJS.ErrnoException | null, data: Buffer) => void): void
-  writeFile(path: PathLike | number, data: any, callback: (err: NodeJS.ErrnoException | null) => void): void
-  exists(path: PathLike, callback: (exists: boolean) => void): void
+  readdir(path: PathLike, callback: (err: NodeJS.ErrnoException | null, files: string[]) => void): void;
+  readFile(path: PathLike | number, callback: (err: NodeJS.ErrnoException | null, data: Buffer) => void): void;
+  writeFile(path: PathLike | number, data: unknown, callback: (err: NodeJS.ErrnoException | null) => void): void;
+  exists(path: PathLike, callback: (exists: boolean) => void): void;
 };
+
+// This is a custom function that our tests can use during setup to specify
+// what the files on the "mock" filesystem should look like when any of the
+// `fs` APIs are used.
+let mockFiles: { [dir: string]: { [file: string]: string } } = Object.create(null)
+let writtenFiles: { [dir: string]: { [file: string]: string } } = Object.create(null)
 
 class NotMocked extends Error {
   public readonly code: string;
@@ -45,13 +51,7 @@ class CanOnlyWriteUnmockedFiles extends Error {
   }
 }
 
-// This is a custom function that our tests can use during setup to specify
-// what the files on the "mock" filesystem should look like when any of the
-// `fs` APIs are used.
-let mockFiles: { [dir: string]: { [file: string]: string } } = Object.create(null)
-let writtenFiles: { [dir: string]: { [file: string]: string } } = Object.create(null)
-
-function __setMockFiles(newMockFiles: { [path: string]: string }) {
+function __setMockFiles(newMockFiles: { [path: string]: string }): void {
   mockFiles = Object.create(null)
   writtenFiles = Object.create(null)
 
@@ -92,7 +92,7 @@ function readFile(filePath: PathLike | number, callback: (err: NodeJS.ErrnoExcep
   return callback(new NotMocked(key), Buffer.from([]))
 }
 
-function writeFile(filePath: PathLike | number, data: any, callback: (err: NodeJS.ErrnoException | null) => void): void {
+function writeFile(filePath: PathLike | number, data: unknown, callback: (err: NodeJS.ErrnoException | null) => void): void {
   const key = path.normalize(filePath.toString())
   const dir = path.dirname(key)
   const file = path.basename(key)
@@ -105,7 +105,7 @@ function writeFile(filePath: PathLike | number, data: any, callback: (err: NodeJ
     writtenFiles[dir] = {};
   }
 
-  writtenFiles[dir][file] = data
+  writtenFiles[dir][file] = String(data)
 
   return callback(null)
 }

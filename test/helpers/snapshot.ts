@@ -4,7 +4,7 @@ type AnalyzerFactory = () => Analyzer
 type generateAll = (status: Output['status'], fixtures: readonly number[]) => void
 
 export function makeTestGenerator(slug: string, AnalyzerFactory: AnalyzerFactory): generateAll {
-  function analyze(fixture: number) {
+  function analyze(fixture: number): Promise<Output> {
     const analyzer = AnalyzerFactory()
     const input = new FixtureInput(slug, fixture)
 

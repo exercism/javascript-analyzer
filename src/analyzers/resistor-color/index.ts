@@ -12,8 +12,18 @@ import { isCallExpression } from "~src/analyzers/utils/is_call_expression";
 import { isIdentifier } from "~src/analyzers/utils/is_identifier";
 import { annotateType } from "~src/analyzers/utils/type_annotations";
 import { factory } from "~src/comments/comment";
-import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_SPLAT_ARGS } from "~src/comments/shared";
-import { AstParser } from "~src/parsers/AstParser";
+import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_SPLAT_ARGS, PARSE_ERROR } from "~src/comments/shared";
+import { AstParser, ParsedSource } from "~src/parsers/AstParser";
+import { NoSourceError } from "~src/errors/NoSourceError";
+import { ParserError } from "~src/errors/ParserError";
+
+/**
+ * The factories here SHOULD be kept in sync with exercism/website-copy. Under
+ * normal use, they do NOT dictate the actual commentary output of the analyzer,
+ * as that is provided by the website-copy repo.
+ *
+ * https://github.com/exercism/website-copy/tree/master/automated-comments/javascript/resistor-color
+ */
 
 const TIP_EXPORT_INLINE = factory`
 Did you know that you can export functions, classes and constants directly
@@ -31,16 +41,16 @@ export class ResistorColorAnalyzer extends AnalyzerImpl {
 
   private _mainMethod!: ReturnType<typeof extractMainMethod>
   private _mainConstant!: ReturnType<typeof findTopLevelConstants>[0] | typeof NOT_FOUND
-  private _mainExports!: { function: ReturnType<typeof extractExport>, constant: ReturnType<typeof extractExport> }
+  private _mainExports!: { function: ReturnType<typeof extractExport>; constant: ReturnType<typeof extractExport> }
 
-  get mainMethod() {
+  private get mainMethod(): ReturnType<typeof extractMainMethod> {
     if (!this._mainMethod) {
       this._mainMethod = extractMainMethod(this.program, 'colorCode')
     }
     return this._mainMethod
   }
 
-  get mainExports() {
+  private get mainExports(): { function: ReturnType<typeof extractExport>; constant: ReturnType<typeof extractExport> } {
     if (!this._mainExports) {
       this._mainExports = {
         function: extractExport(this.program, 'colorCode'),
@@ -50,12 +60,10 @@ export class ResistorColorAnalyzer extends AnalyzerImpl {
     return this._mainExports
   }
 
-  get mainConstant() {
+  private get mainConstant(): ReturnType<typeof findTopLevelConstants>[0] | typeof NOT_FOUND {
     if (!this._mainConstant) {
       this._mainConstant = findTopLevelConstants(this.program, ['let', 'const', 'var']).find(
-        ({ declarations }) => !!declarations.find((declaration) => {
-          return isIdentifier(declaration.id, 'COLORS')
-        })
+        (declaration): boolean => isIdentifier(declaration.id, 'COLORS')
       ) || NOT_FOUND
     }
 
@@ -63,7 +71,7 @@ export class ResistorColorAnalyzer extends AnalyzerImpl {
   }
 
   public async execute(input: Input): Promise<void> {
-    const [parsed] = await Parser.parse(input)
+    const [parsed] = await this.parse(input)
 
     this.program = parsed.program
     this.source = parsed.source
@@ -84,22 +92,41 @@ export class ResistorColorAnalyzer extends AnalyzerImpl {
     // The solution is automatically referred to the mentor if it reaches this
   }
 
-  private checkStructure() {
+  private async parse(input: Input): never | Promise<ParsedSource[]> {
+    try {
+      return await Parser.parse(input)
+    } catch (err) {
+      if (err instanceof NoSourceError) {
+        this.logger.error(`=> [NoSourceError] ${err.message}`)
+        this.redirect()
+      }
+
+      if (err instanceof ParserError) {
+        this.logger.error(`=> [ParserError] ${err.message}`)
+        const { message, ...details } = err.original
+        this.disapprove(PARSE_ERROR({ error: message, details: JSON.stringify(details) }))
+      }
+
+      throw err
+    }
+  }
+
+  private checkStructure(): void | never {
     const method = this.mainMethod
     const { function: [functionDeclaration,], constant: [constantDeclaration, ] } = this.mainExports
 
     // First we check that there is a two-fer function and that this function
     // is exported.
     if (!method) {
-      this.comment(NO_METHOD({ method_name: 'colorCode' }))
+      this.comment(NO_METHOD({ 'method.name': 'colorCode' }))
     }
 
     if (!functionDeclaration) {
-      this.comment(NO_NAMED_EXPORT({ export_name: 'colorCode' }))
+      this.comment(NO_NAMED_EXPORT({ 'export.name': 'colorCode' }))
     }
 
     if (!constantDeclaration) {
-      this.comment(NO_NAMED_EXPORT({ export_name: 'COLORS' }))
+      this.comment(NO_NAMED_EXPORT({ 'export.name': 'COLORS' }))
     }
 
     if (this.hasCommentary) {
@@ -107,13 +134,13 @@ export class ResistorColorAnalyzer extends AnalyzerImpl {
     }
   }
 
-  private checkSignature() {
+  private checkSignature(): void | never {
     const method: MainMethod = this.mainMethod!
 
     // If there is no parameter
     // then this solution won't pass the tests.
     if (method.params.length === 0) {
-      this.disapprove(NO_PARAMETER({ function_name: method.id!.name }))
+      this.disapprove(NO_PARAMETER({ 'function.name': method.id!.name }))
     }
 
     const firstParameter = method.params[0]
@@ -124,11 +151,14 @@ export class ResistorColorAnalyzer extends AnalyzerImpl {
       const splatArgName = parameterName(firstParameter)
       const splatArgType = annotateType(firstParameter.typeAnnotation)
 
-      this.disapprove(UNEXPECTED_SPLAT_ARGS({ 'splat_arg_name': splatArgName, parameter_type: splatArgType }))
+      this.disapprove(UNEXPECTED_SPLAT_ARGS({
+        'splat-arg.name': splatArgName,
+        'parameter.type': splatArgType
+      }))
     }
   }
 
-  private checkForOptimalSolutions() {
+  private checkForOptimalSolutions(): void | never {
     // The optional solution looks like this:
     //
     // export const COLORS = ['...', '...']
@@ -145,7 +175,7 @@ export class ResistorColorAnalyzer extends AnalyzerImpl {
     //
 
     if (
-         // !this.isArgumentOptimal()
+    // !this.isArgumentOptimal()
       !this.isOneCallSolution()
       // || !this.isUsingArrayColors()
       // || !this.isUsingIndexOf()
@@ -159,13 +189,13 @@ export class ResistorColorAnalyzer extends AnalyzerImpl {
     this.approve()
   }
 
-  private checkForTips() {
+  private checkForTips(): void | never {
     if (!this.hasInlineExport()) {
       this.comment(TIP_EXPORT_INLINE())
     }
   }
 
-  private isOneCallSolution() {
+  private isOneCallSolution(): boolean | never {
     // Maximum body count may be 3 (3 - 1 + 1)
     //
     // 1: export function colorCode(color) {
@@ -183,8 +213,8 @@ export class ResistorColorAnalyzer extends AnalyzerImpl {
     // function in order to allow for comments inside the body.
     const { loc: { start: { line: lineStart }, end: { line: lineEnd } } } =
       isReturnBlockStatement(body)
-      ? body.body[0]
-      : method
+        ? body.body[0]
+        : method
 
     this.logger.log(`=> Body consists of ${lineEnd - lineStart + 1} lines and is a ${method.type}.`)
 
@@ -212,9 +242,11 @@ export class ResistorColorAnalyzer extends AnalyzerImpl {
         && isCallExpression(method.body.body[0].argument, 'COLORS', 'indexOf')
         && method.body.body[0].argument
 
-      return isIdentifier(functionParameter)
+      return !!(
+        isIdentifier(functionParameter)
         && callExpression
         && isIdentifier(callExpression.arguments[0], functionParameter.name)
+      )
     }
 
     // const colorCode = (color) => COLORS.indexOf(color)
@@ -269,10 +301,10 @@ export class ResistorColorAnalyzer extends AnalyzerImpl {
     // Should _never_ happen
     this.logger.log(`=> The body failed all the stuctural tests. It's a ${method!.type}.`)
     // Bail out
-    this.redirect()
+    return this.redirect()
   }
 
-  private hasInlineExport() {
+  private hasInlineExport(): boolean  {
     // Additionally make sure the export is inline by checking if it doesn't
     // have any specifiers:
     //

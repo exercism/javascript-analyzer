@@ -20,7 +20,7 @@ export function findFirst(root: Node, predicate: (this: Traverser , node: Node) 
   let result: Node | undefined = undefined
 
   traverse(root, {
-    enter(node: Node) {
+    enter(node: Node): void {
       if (predicate.call(this, node)) {
         result = node
         this.break()

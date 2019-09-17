@@ -1,10 +1,16 @@
 import { parse as parseToTree, TSESTree, TSESTreeOptions } from "@typescript-eslint/typescript-estree";
+import { NoSourceError } from '~src/errors/NoSourceError';
+import { ParserError } from "~src/errors/ParserError";
 import { getProcessLogger } from "~src/utils/logger";
 
 type Program = TSESTree.Program
 
+export class ParsedSource {
+  constructor(public readonly program: Program, public readonly source: string) {}
+}
+
 export class AstParser {
-  public constructor(private readonly options?: TSESTreeOptions, private readonly n = 1) {
+  constructor(private readonly options?: TSESTreeOptions, private readonly n = 1) {
   }
 
   /**
@@ -13,18 +19,22 @@ export class AstParser {
    * @param solution
    * @returns n programs
    */
-  async parse(input: Input): Promise<{ program: Program, source: string }[]> {
+  public async parse(input: Input): Promise<ParsedSource[]> {
     const sources = await input.read(this.n)
 
     const logger = getProcessLogger()
 
     logger.log(`=> inputs: ${sources.length}`)
-    sources.forEach(source => logger.log(`\n${source}\n`))
+    sources.forEach((source): void => logger.log(`\n${source}\n`))
 
-    return sources.map(source => new ParsedSource(parseToTree(source, this.options), source))
+    if (sources.length === 0) {
+      throw new NoSourceError()
+    }
+
+    try {
+      return sources.map((source): ParsedSource => new ParsedSource(parseToTree(source, this.options), source))
+    } catch(error) {
+      throw new ParserError(error)
+    }
   }
-}
-
-export class ParsedSource {
-  public constructor(public readonly program: Program, public readonly source: string) {}
 }

@@ -27,7 +27,7 @@ export function findAll(root: Node, predicate: (this: Traverser, node: Node) => 
   const results: Node[] = []
 
   traverse(root, {
-    enter(node: Node) {
+    enter(node: Node): void {
       if (predicate.call(this, node)) {
         results.push(node)
       }
