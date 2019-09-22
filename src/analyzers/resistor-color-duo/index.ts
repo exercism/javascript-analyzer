@@ -1,201 +1,157 @@
-import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree";
-import { Program } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
+import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree";
 
-import { isReturnBlockStatement } from "~src/analyzers//utils/is_return_block_statement";
-import { isReturnStatementWithValue } from "~src/analyzers//utils/is_return_statement_with_value";
-import { AnalyzerImpl } from "~src/analyzers/AnalyzerImpl";
-import { extractExport } from "~src/analyzers/utils/extract_export";
-import { extractMainMethod, MainMethod } from "~src/analyzers/utils/extract_main_method";
-import { parameterName } from '~src/analyzers/utils/extract_parameter';
-import { findTopLevelConstants } from "~src/analyzers/utils/find_top_level_constants";
-import { isCallExpression } from "~src/analyzers/utils/is_call_expression";
 import { isIdentifier } from "~src/analyzers/utils/is_identifier";
-import { annotateType } from "~src/analyzers/utils/type_annotations";
 import { factory } from "~src/comments/comment";
-import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_SPLAT_ARGS } from "~src/comments/shared";
+import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, PREFER_CONST_OVER_LET_AND_VAR, UNEXPECTED_PARAMETER } from "~src/comments/shared";
+import { NoExportError } from "~src/errors/NoExportError";
+import { NoMethodError } from "~src/errors/NoMethodError";
 import { AstParser } from "~src/parsers/AstParser";
 
-const TIP_EXPORT_INLINE = factory`
+import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl";
+import { ResistorColorDuoSolution } from "./ResistorColorDuoSolution";
+
+const TIP_EXPORT_INLINE = factory<'method.signature'>`
 Did you know that you can export functions, classes and constants directly
 inline?
+\`\`\`javascript
+export ${'method.signature'}
+\`\`\`
 `('javascript.resistor-color-duo.export_inline')
+
+const SIGNATURE_NOT_OPTIMAL = factory`
+If you look at the tests, the function \`value\` only receives one
+parameter. Nothing more and nothing less.
+
+Remove the additional parameters from your function, as their value will always
+be \`undefined\` or whatever default you've assigned.
+`('javascript.resistor-color-duo.signature_not_optimal')
+
+type Program = TSESTree.Program
 
 const Parser: AstParser = new AstParser(undefined, 1)
 
-const NOT_FOUND = {} as const
+export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
 
-export class ResistorColorDuoAnalyzer extends AnalyzerImpl {
-
-  private program!: Program
-  private source!: string
-
-  private _mainMethod!: ReturnType<typeof extractMainMethod>
-  private _mainExport!: ReturnType<typeof extractExport>
-
-  get mainMethod() {
-    if (!this._mainMethod) {
-      this._mainMethod = extractMainMethod(this.program, 'value')
-    }
-    return this._mainMethod
-  }
-
-  get mainExport() {
-    if (!this._mainExport) {
-      this._mainExport = extractExport(this.program, 'value')
-    }
-    return this._mainExport
-  }
-
-  public async execute(input: Input): Promise<void> {
+  protected async execute(input: Input, output: WritableOutput): Promise<void> {
     const [parsed] = await Parser.parse(input)
-
-    this.program = parsed.program
-    this.source = parsed.source
 
     // Firstly we want to check that the structure of this solution is correct
     // and that there is nothing structural stopping it from passing the tests
-    this.checkStructure()
+    const solution = this.checkStructure(parsed.program, parsed.source, output)
 
     // Now we want to ensure that the method signature is sane and that it has
-    // valid arguments
-    this.checkSignature()
+    // valid arguments.
+    this.checkSignature(solution, output)
 
-    // There are a handful optimal solutions for resistor-color-duo which needs
-    // no comments and can just be approved. If we have it, then let's just
+    // There are a handful optimal solutions for gigasecond which needs no
+    // comments and can just be approved. If we have it, then let's just
     // acknowledge it and get out of here.
-    this.checkForOptimalSolutions()
+    this.checkForOptimalSolutions(solution, output)
+
+    // The solution might not be optimal but still be approvable. Check these
+    // first and bail-out (with approval) if that's the case.
+    this.checkForApprovableSolutions(solution, output)
+
+    // Time to find sub-optimal code.
+    this.checkForDisapprovables(solution, output)
 
     // The solution is automatically referred to the mentor if it reaches this
   }
 
-  private checkStructure() {
-    const method = this.mainMethod
-    const [functionDeclaration,] = this.mainExport
+  private checkStructure(program: Readonly<Program>, source: Readonly<string>, output: WritableOutput): ResistorColorDuoSolution | never {
+    try {
+      return new ResistorColorDuoSolution(program, source)
+    } catch (error) {
+      if (error instanceof NoMethodError) {
+        output.disapprove(NO_METHOD({ 'method.name': error.method }))
+      }
 
-    // First we check that there is a value function and that this function
-    // is exported.
-    if (!method) {
-      this.comment(NO_METHOD({ method_name: 'value' }))
-    }
+      if (error instanceof NoExportError) {
+        output.disapprove(NO_NAMED_EXPORT({ 'export.name': error.namedExport }))
+      }
 
-    if (!functionDeclaration) {
-      this.comment(NO_NAMED_EXPORT({ export_name: 'value' }))
-    }
-
-    if (this.hasCommentary) {
-      this.disapprove()
+      throw error
     }
   }
 
-  private checkSignature() {
-    const method: MainMethod = this.mainMethod!
-
-    // If there is no parameter
-    // then this solution won't pass the tests.
-    if (method.params.length === 0) {
-      this.disapprove(NO_PARAMETER({ function_name: method.id!.name }))
+  private checkSignature({ entry }: ResistorColorDuoSolution, output: WritableOutput): void | never {
+    // If there is no parameter then this solution won't pass the tests.
+    //
+    if (!entry.hasAtLeastOneParameter) {
+      output.disapprove(NO_PARAMETER({ 'function.name': entry.name }))
     }
 
-    const firstParameter = method.params[0]
+    // If this is not a simple parameter, but something else such as a splat,
+    // or a parameter with a default argument, bail out and refer to mentor.
+    //
+    if (!entry.hasSimpleParameter && !entry.hasOptimalParameter) {
+      output.redirect(UNEXPECTED_PARAMETER({ type: entry.parameterType }))
+    }
 
-    // If they provide a splat, the tests can pass but we should suggest they
-    // use a real parameter.
-    if (firstParameter.type === AST_NODE_TYPES.RestElement) {
-      const splatArgName = parameterName(firstParameter)
-      const splatArgType = annotateType(firstParameter.typeAnnotation)
+    // If there is more than one parameter, something fishy is going on. Collect
+    // the comment for the student, to disapprove later on.
+    //
+    if (!entry.hasExactlyOneParameter) {
+      output.add(SIGNATURE_NOT_OPTIMAL())
+    }
 
-      this.disapprove(UNEXPECTED_SPLAT_ARGS({ 'splat_arg_name': splatArgName, parameter_type: splatArgType }))
+    // TODO: do we want to check more here?
+
+    //
+    //
+    if (output.hasCommentary) {
+      output.disapprove()
     }
   }
 
-  private checkForOptimalSolutions() {
-    // There are two optional solutions, either a map-join or a reduce.
+  private checkForOptimalSolutions(solution: ResistorColorDuoSolution, output: WritableOutput): void | never {
+    // The optional solution looks like this:
     //
-    // The map-join solution looks like this:
+    // const COLORS = [...]
     //
-    // const COLORS = ['...', '...']
-    // function colorCode(color) {
-    //   return COLORS.indexOf(color)
+    // function colorCode(...) { ... }
+    //
+    // export function value([tens, ones]) {
+    //   return colorCode(ones) + colorCode(tens) * 10
     // }
-    //
-    // export function value(colors) {
-    //   return Number(colors.map(colorCode).join(''))
-    // }
-    //
-    // The COLORS constant must be an Array and there must be a single call to
-    // indexOf. Additionally, the colorCode function can not have a default
-    // argument, or any other syntax, such as conditionals, re-assignment, and
-    // so forth.
-    //
-    // The value function uses Number for conversion (not parseXXX), calls map
-    // with a single argument (a function that calls `COLORS.indexOf`) and then
-    // joins the values.
-    //
-    //
-    // The reduce variant looks like this, with the second argument to reduce
-    // being optional.
-    //
-    // export function value(colors) {
-    //   return colors
-    //     .reverse()
-    //     .reduce((value, color, i) => {
-    //       return colorCode(color) * (10 ** i) + value
-    //     }, 0)
-    // }
-    //
-    //
-    // Other solutions might be approved but this is the only one that we would
-    // approve without comment.
     //
 
-    if (
-         // !this.isArgumentOptimal()
-      !this.isOptimalMapJoinImplementation() && !this.isOptimalReduceImplementation()
-      // || !this.isUsingArrayColors()
-      // || !this.isUsingIndexOf()
-    ) {
+    if (!solution.isOptimal()) {
       // continue analyzing
-      this.logger.log('~> Solution is not optimal')
+      this.logger.log('~> solution is not optimal')
       return
     }
 
-    this.checkForTips()
-    this.approve()
+    this.checkForTips(solution, output)
+    output.approve()
   }
 
-  private checkForTips() {
-    if (!this.hasInlineExport()) {
-      this.comment(TIP_EXPORT_INLINE())
+  private checkForApprovableSolutions(solution: ResistorColorDuoSolution, output: WritableOutput): void | never {
+    if (solution || output) {
+      return
     }
   }
 
-  private isOptimalMapJoinImplementation() {
-    // return Number(colors.map(colorCode).join(''))
+  private checkForDisapprovables(solution: ResistorColorDuoSolution, output: WritableOutput): void | never {
+    const numberOfComments = output.comments.length
 
-    return false
+    if (numberOfComments < output.commentCount) {
+      output.disapprove()
+    }
 
-    // Should _never_ happen
-    this.logger.log(`=> The body failed all the stuctural tests. It's a ${''}`)//method!.type}.`)
-    // Bail out
-    this.redirect()
+    if (solution || output) {
+      return
+    }
   }
 
-  private isOptimalReduceImplementation() {
-    return false
-  }
-
-  private hasInlineExport() {
-    // Additionally make sure the export is inline by checking if it doesn't
-    // have any specifiers:
-    //
-    // export function value
-    // => no specififers
-    //
-    // export { value }
-    // => yes specififers
-    //
-    return this.mainExport[0]!.specifiers
-      && this.mainExport[0]!.specifiers.length === 0
+  private checkForTips(solution: ResistorColorDuoSolution, output: WritableOutput): void | never {
+    if (!solution.hasInlineExport) {
+      // export { gigasecond }
+      output.add(
+        TIP_EXPORT_INLINE({
+          'method.signature': solution.entry.signature,
+        })
+      )
+    }
   }
 }
-
