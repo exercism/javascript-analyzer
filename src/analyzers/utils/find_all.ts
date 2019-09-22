@@ -1,5 +1,5 @@
 import { Node } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
-import { traverse, Traverser } from 'eslint/lib/util/traverser'
+import { traverse, Traverser } from 'eslint/lib/shared/traverser'
 
 /**
  * Find all nodes, traversing from root, that match the given predicate

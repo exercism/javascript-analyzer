@@ -152,7 +152,10 @@ function annotate(typeNode?: TypeNode, fallback: string = 'any'): string {
       return '<...>' // TODO
     }
     case AST_NODE_TYPES.TSTypeOperator: {
-      return `${typeNode.operator} ${annotateType(typeNode.typeAnnotation, fallback)}`
+      if (!typeNode.typeAnnotation) {
+        return `${typeNode.operator}`
+      }
+      return `${typeNode.operator} ${annotate(typeNode.typeAnnotation, fallback)}`
     }
     case AST_NODE_TYPES.TSTypePredicate: {
       return `${typeNode.parameterName} is ${annotateType(typeNode.typeAnnotation, fallback)}`

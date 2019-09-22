@@ -1,5 +1,5 @@
 import { findAll } from "./find_all";
-import { Traverser } from "eslint/lib/util/traverser";
+import { Traverser } from "eslint/lib/shared/traverser";
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree";
 import { isVariableDeclarationOfKind } from "./is_variable_declaration_of_kind";
 

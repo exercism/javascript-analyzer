@@ -24,25 +24,25 @@
     "posttest": "yarn lint"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
-    "@babel/preset-typescript": "^7.3.3",
-    "@types/jest": "^24.0.13",
-    "@types/node": "^12.0.4",
-    "@types/yargs": "^13.0.0",
-    "@typescript-eslint/eslint-plugin": "^1.10.2",
-    "babel-jest": "^24.8.0",
-    "eslint": "^5.16.0",
-    "eslint-plugin-jest": "^22.6.4",
-    "jest": "^24.8.0",
-    "typescript": "^3.5.1"
+    "@babel/core": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
+    "@babel/preset-typescript": "^7.6.0",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.5",
+    "@types/yargs": "^13.0.2",
+    "@typescript-eslint/eslint-plugin": "^2.3.0",
+    "babel-jest": "^24.9.0",
+    "eslint": "^6.4.0",
+    "eslint-plugin-jest": "^22.17.0",
+    "jest": "^24.9.0",
+    "typescript": "^3.6.3"
   },
   "dependencies": {
-    "@typescript-eslint/parser": "^1.13.0",
-    "@typescript-eslint/typescript-estree": "^1.13.0",
+    "@typescript-eslint/parser": "^2.3.0",
+    "@typescript-eslint/typescript-estree": "^2.3.0",
     "esm": "^3.2.25",
-    "module-alias": "^2.2.0",
-    "yargs": "^13.3.0"
+    "module-alias": "^2.2.1",
+    "yargs": "^14.0.0"
   },
   "_moduleAliases": {
     "~src": "dist",

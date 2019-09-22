@@ -118,7 +118,7 @@ readDir(FIXTURES_ROOT)
       groups[status].fixtures.push(fixture)
 
       return groups
-    // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     }, {} as { [K in Output['status']]: { runtimes: bigint[]; count: number; comments: Comment[]; fixtures: string[] } })
   })
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -151,7 +151,7 @@ readDir(FIXTURES_ROOT)
           fixtures
         }
       }
-    // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     }, {} as { [K in Output['status']]: { count: number; fixtures: string[]; comments: { unique: string[]; uniqueTemplates: string[] }; runtimes: { total: bigint; average: bigint; median: bigint }}})
 
     const groupKeys = (Object.keys(aggregatedGroups) as Output['status'][])

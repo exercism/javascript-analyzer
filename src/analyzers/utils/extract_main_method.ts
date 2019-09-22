@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree"
 
-import { traverse, Traverser as importedTraverser } from 'eslint/lib/util/traverser'
+import { traverse, Traverser as importedTraverser } from 'eslint/lib/shared/traverser'
 import { isIdentifier } from "./is_identifier";
 
 type Program = TSESTree.Program

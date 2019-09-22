@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-triple-slash-reference */
+/* eslint-disable @typescript-eslint/triple-slash-reference */
 /// <reference path="../src/interface.d.ts" />
 /// <reference path="../src/declarations.d.ts" />
 

@@ -270,7 +270,7 @@ AnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_explicity_default_value",
-      "message": "Instead of relying on %{maybe_undefined_expression} being \\"undefined\\" when
+      "message": "Instead of relying on name being \\"undefined\\" when
 no value is passed in, you could set the default value of 'name' to
 'you'.",
       "template": "Instead of relying on %{maybe_undefined_expression} being \\"undefined\\" when

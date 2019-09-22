@@ -1,6 +1,6 @@
 import { Program, Node, ExportDefaultDeclaration, ExportNamedDeclaration, ClassDeclaration, VariableDeclaration, ExportDeclaration, ExportSpecifier, AssignmentExpression } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
 import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
-import { traverse } from 'eslint/lib/util/traverser'
+import { traverse } from 'eslint/lib/shared/traverser'
 
 export type ExportDeclarationNode = ExportDefaultDeclaration | ExportNamedDeclaration | AssignmentExpression | undefined
 export type ExportedNode = ClassDeclaration | VariableDeclaration | ExportDeclaration | ExportSpecifier | undefined
