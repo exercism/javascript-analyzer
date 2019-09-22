@@ -1,5 +1,5 @@
 
-declare module "eslint/lib/util/traverser" {
+declare module "eslint/lib/shared/traverser" {
   import { Node } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree"
 
   interface Traverser {

@@ -27,7 +27,9 @@ function fatal(this: Logger, buffer: LoggerInput, status = 1): never {
   return process.exit(status)
 }
 
-function noop(_: LoggerInput): void {}
+function noop(_: LoggerInput): void {
+  /* noop */
+}
 
 export interface Logger {
   error: typeof error;

@@ -64,7 +64,7 @@ describe('FileOutput', () => {
     })
 
     it('bubbles the unwritable error', async () => {
-      expect(FileOutput(Promise.resolve(CONTENTS), OUT_OPTIONS)).rejects.toMatchObject({
+      return expect(FileOutput(Promise.resolve(CONTENTS), OUT_OPTIONS)).rejects.toMatchObject({
         'errno': 47,
         'code': 'EEXIST'
       })

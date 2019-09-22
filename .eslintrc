@@ -39,6 +39,11 @@
       }
     ],
     "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/no-inferrable-types": [
+      "error", {
+        "ignoreParameters": true
+      }
+    ],
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-parameter-properties": [
       "warn", {

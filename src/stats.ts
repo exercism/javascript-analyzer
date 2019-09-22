@@ -86,7 +86,7 @@ readDir(FIXTURES_ROOT)
         realTrees.reduce((counts, tree) => {
           counts[tree] = (counts[tree] || 0) + 1
           return counts
-        // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         }, {} as { [tree: string]: number })
       ).length
     }
