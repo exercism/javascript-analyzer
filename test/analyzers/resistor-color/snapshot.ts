@@ -5,7 +5,7 @@ const snapshotTestsGenerator = makeTestGenerator(
   'resistor-color', () => new ResistorColorAnalyzer()
 )
 
-describe('When running analysis on two-fer fixtures', () => {
+describe('When running analysis on resistor-color fixtures', () => {
   snapshotTestsGenerator('approve', [
     0, 1, 100, 101, 102, 105, 106, 107, 110, 113,
     115, 117, 12, 122, 123, 127, 13, 131, 132, 134,
