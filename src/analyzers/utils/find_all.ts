@@ -23,13 +23,13 @@ import { traverse, Traverser } from 'eslint/lib/shared/traverser'
  * @param predicate predicate function that gets the traverse as bound this
  * @returns the nodes that return true for the predicate
  */
-export function findAll(root: Node, predicate: (this: Traverser, node: Node) => boolean): Node[] {
-  const results: Node[] = []
+export function findAll<T extends Node>(root: Node, predicate: (this: Traverser, node: Node) => boolean): T[] {
+  const results: T[] = []
 
   traverse(root, {
     enter(node: Node): void {
       if (predicate.call(this, node)) {
-        results.push(node)
+        results.push(node as T)
       }
     }
   })
