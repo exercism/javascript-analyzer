@@ -92,3 +92,19 @@ Instead of \`${'kind'} ${'name'}\`, consider using \`const\`.
 \`const\` is a signal that the identifier won't be reassigned, which SHOULD be
 true for this top-level constant. (Not to be confused with _immutable values_).
 `('javascript.generic.prefer_const_over_let_and_var')
+
+export const BETA_COMMENTARY_PREFIX = factory`
+🧪 This solution's output contains a new format of comments that is currently
+in Beta. Instead of providing copyable commentary, this analyzer will give
+helpful content for mentoring this soluton.
+
+- \`💬\` indicates **copyable content**. This can be changed to match your
+tone but the overal message matches the mentoring guidelines for this track.
+- \`⚡\` indicates **danger**. The analyzer could not do its job properly. You
+MUST double check if it did not make a mistake. If it DID make a mistake,
+please open an issue [here](https://github.com/exercism/javascript-analyzer/issues/new?assignees=&labels=%3Abug%3A+bug&template=incorrect-analysis.md&title=Incorrect+Analysis%3A+) so the analyzer can be updated.
+- \`📕\` indicates **information for _you_**, the mentor. You SHOULD NOT relay
+this to the student directly. Use it to determine what you want to say.
+- If there is no icon, the commentary has not been updated to the latest
+standard. Proceed with caution.
+`('javascript.generic.beta_disapprove_commentary_prefix')

@@ -1,14 +1,13 @@
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree";
 
-import { isIdentifier } from "~src/analyzers/utils/is_identifier";
 import { factory } from "~src/comments/comment";
-import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, PREFER_CONST_OVER_LET_AND_VAR, UNEXPECTED_PARAMETER } from "~src/comments/shared";
+import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, BETA_COMMENTARY_PREFIX, UNEXPECTED_PARAMETER } from "~src/comments/shared";
 import { NoExportError } from "~src/errors/NoExportError";
 import { NoMethodError } from "~src/errors/NoMethodError";
 import { AstParser } from "~src/parsers/AstParser";
 
 import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl";
-import { ResistorColorDuoSolution } from "./ResistorColorDuoSolution";
+import { ResistorColorDuoSolution, HelperNotOptimal, HelperCallNotFound, MethodNotFound, MissingExpectedCall } from "./ResistorColorDuoSolution";
 
 const TIP_EXPORT_INLINE = factory<'method.signature'>`
 Did you know that you can export functions, classes and constants directly
@@ -18,13 +17,74 @@ export ${'method.signature'}
 \`\`\`
 `('javascript.resistor-color-duo.export_inline')
 
+const TIP_DESTRUCTURING_IN_PARAMETER = factory<'parameter'>`
+You can destructure an array directly in the parameter \`${'parameter'}\`.
+This allows you to give a name to the items inside, limit how many values come
+in and replace the more cryptic numeric indexers with the named items.
+`('javascript.resistor-color-duo.destructuring_in_parameter')
+
 const SIGNATURE_NOT_OPTIMAL = factory`
-If you look at the tests, the function \`value\` only receives one
+📕 If you look at the tests, the function \`value\` only receives one
 parameter. Nothing more and nothing less.
 
-Remove the additional parameters from your function, as their value will always
-be \`undefined\` or whatever default you've assigned.
+📕 Remove the additional parameters from your function, as their value will
+always be \`undefined\` or whatever default you've assigned.
 `('javascript.resistor-color-duo.signature_not_optimal')
+
+const USE_ARRAY_COMPREHENSIONS = factory<'current'>`
+💬 Replace \`${'current'}\` with a comprehension such as \`map\`.
+`('javascript.resistor-color-duo.use_array_comprehensions')
+
+const LIMIT_NUMBER_OF_COLORS = factory`
+💬 Limit the number of input colors that are processed. If more than two colors
+are passed in, only the first two colors should be used to calculate the total
+\`colorCode\` value.
+
+📕 (At least) one test case inputs three colors instead of two. If the student
+has not accounted for this, they might need to update their solution. Help them
+find the button to update. The tests won't pass without limiting the number of
+colors.
+`('javascript.resistor-color-duo.limit_number_of_colors')
+
+const PREFER_NUMBER_OVER_PARSE = factory`
+💬 Use \`Number(...)\` when the input is expected to be a number. It's more
+strict than the \`parseXXX\` family and applies in this exercise.
+`('javascript.resistor-color-duo.prefer_number_over_parse')
+
+const USE_MATH_INSTEAD_OF_TYPE_JUGGLING = factory`
+📕 The final value is currently "constructed" by placing digits in a string and
+then intepreting that string as a number. This form of type-juggling is not
+needed. Instead, a solution using one multiplication and one addition, has
+lower cognitive complexity.
+`('javascript.resistor-color-duo.use_math_instead_of_type_juggling')
+
+const ISSUE_OPTIMISE_HELPER = factory<'method.name'>`
+⚡ The helper method \`${'method.name'}\` is not optimal. The helper can
+probably be the same as the solution to \`resistor-color\`. Mentor the student
+to retrieve their solution and/or optimise their helper.
+`('javascript.resistor-color-duo.must_optimise_helper')
+
+const ISSUE_USE_A_HELPER = factory`
+📕 Mentor the student to add helper function and DRY-up this solution. The
+solution to \`resistor-color\` can be used as helper method here. When using an
+\`Array\` as colors source, in a years time, will the student recall why it's
+the _index_ in that array? When using an \`Object\`, what does the value mean?
+Re-using \`colorCode\` explains this in both cases.
+
+💬 Using a helper method is good practice, because it replaces a cryptic "member
+call" with a named call, that can be documented individually.
+`('javascript.resistor-color-duo.must_use_a_helper')
+
+const ISSUE_METHOD_NOT_FOUND = factory<'method.name'>`
+⚡ Ensure the method \`${'method/name'}\` exists. It was not found when
+analysing this solution. If it does not exist, point this out to the student.
+
+`('javascript.resistor-color-duo.must_declare_function')
+
+const ISSUE_EXPECTED_CALL = factory<'method.name' | 'expected.reason'>`
+📕 In order to ${'expected.reason'}, expected a \`${'method.name'}\` call. If
+that reasoning applies, mentor the student to add this call.
+`('javascript.resistor-color-duo.must_add_missing_call')
 
 type Program = TSESTree.Program
 
@@ -119,11 +179,37 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     if (!solution.isOptimal()) {
       // continue analyzing
       this.logger.log('~> solution is not optimal')
+      this.processLastIssue(solution, output)
       return
     }
 
     this.checkForTips(solution, output)
     output.approve()
+  }
+
+  private processLastIssue(solution: ResistorColorDuoSolution, output: WritableOutput): void | never {
+    const lastIssue = solution.entry.lastIssue
+    if (!lastIssue) {
+      this.logger.log('~> no entry issue found')
+      return
+    }
+
+    if (lastIssue instanceof HelperNotOptimal) {
+      output.add(BETA_COMMENTARY_PREFIX())
+      output.disapprove(ISSUE_OPTIMISE_HELPER({ 'method.name': lastIssue.helperName }))
+    } else if (lastIssue instanceof HelperCallNotFound) {
+      output.add(BETA_COMMENTARY_PREFIX())
+      output.disapprove(ISSUE_USE_A_HELPER())
+    } else if (lastIssue instanceof MethodNotFound) {
+      output.add(BETA_COMMENTARY_PREFIX())
+      output.disapprove(ISSUE_METHOD_NOT_FOUND({ 'method.name': lastIssue.methodName }))
+    } else if (lastIssue instanceof MissingExpectedCall) {
+      output.add(BETA_COMMENTARY_PREFIX())
+      output.disapprove(ISSUE_EXPECTED_CALL({ 'method.name': lastIssue.methodName, 'expected.reason': lastIssue.reason }))
+    } else {
+      this.logger.error('The analyzer did not handle the issue: ' + JSON.stringify(lastIssue))
+      output.redirect()
+    }
   }
 
   private checkForApprovableSolutions(solution: ResistorColorDuoSolution, output: WritableOutput): void | never {
@@ -135,7 +221,33 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
   private checkForDisapprovables(solution: ResistorColorDuoSolution, output: WritableOutput): void | never {
     const numberOfComments = output.comments.length
 
+    // Reduce is currently not supported
+    if (solution.entry.hasOneReduce) {
+      this.logger.error('=> reduce is not handled right now, bailing out.')
+      output.redirect()
+      return
+    }
+
+    if (solution.entry.hasForEach) {
+      output.add(USE_ARRAY_COMPREHENSIONS({ current: '.forEach(...)' }))
+    } else if (solution.entry.hasFor) {
+      output.add(USE_ARRAY_COMPREHENSIONS({ current: 'for(...) { }' }))
+    }
+
+    if (solution.entry.hasParseInt) {
+      output.add(PREFER_NUMBER_OVER_PARSE())
+    }
+
+    if (solution.entry.hasOneMap || solution.entry.hasOneSlice) {
+      if (!solution.entry.hasOneSlice) {
+        output.add(LIMIT_NUMBER_OF_COLORS())
+      }
+    } else if ((solution.entry.hasOneOptimalConversion || solution.entry.hasParseInt) && solution.entry.hasDigitsString) {
+      output.add(USE_MATH_INSTEAD_OF_TYPE_JUGGLING())
+    }
+
     if (numberOfComments < output.commentCount) {
+      output.comments.unshift(BETA_COMMENTARY_PREFIX())
       output.disapprove()
     }
 
@@ -146,6 +258,10 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
 
   private checkForTips(solution: ResistorColorDuoSolution, output: WritableOutput): void | never {
     if (!solution.hasInlineExport) {
+      if (!output.hasCommentary) {
+        output.add(BETA_COMMENTARY_PREFIX())
+      }
+
       // export { gigasecond }
       output.add(
         TIP_EXPORT_INLINE({
@@ -153,5 +269,20 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
         })
       )
     }
+
+    if (solution.entry.hasSimpleParameter) {
+      if (!output.hasCommentary) {
+        output.add(BETA_COMMENTARY_PREFIX())
+      }
+
+      output.add(
+        TIP_DESTRUCTURING_IN_PARAMETER({
+          'parameter': solution.entry.parameterName
+        })
+      )
+    }
+
+    // TODO optimize param
+    // TODO use helper method
   }
 }

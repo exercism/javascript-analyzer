@@ -16,13 +16,13 @@ import { traverse, Traverser } from 'eslint/lib/shared/traverser'
  * @param predicate predicate function that gets the traverse as bound this
  * @returns the node that returns true for the predicate or undefined
  */
-export function findFirst(root: Node, predicate: (this: Traverser , node: Node) => boolean): Node | undefined {
+export function findFirst<T extends Node>(root: Node, predicate: (this: Traverser , node: Node) => boolean): T | undefined {
   let result: Node | undefined = undefined
 
   traverse(root, {
     enter(node: Node): void {
       if (predicate.call(this, node)) {
-        result = node
+        result = node as T
         this.break()
       }
     }
