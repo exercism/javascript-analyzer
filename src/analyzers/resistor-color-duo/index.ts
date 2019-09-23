@@ -195,16 +195,16 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     }
 
     if (lastIssue instanceof HelperNotOptimal) {
-      output.add(BETA_COMMENTARY_PREFIX())
+      // output.add(BETA_COMMENTARY_PREFIX())
       output.disapprove(ISSUE_OPTIMISE_HELPER({ 'method.name': lastIssue.helperName }))
     } else if (lastIssue instanceof HelperCallNotFound) {
-      output.add(BETA_COMMENTARY_PREFIX())
+      // output.add(BETA_COMMENTARY_PREFIX())
       output.disapprove(ISSUE_USE_A_HELPER())
     } else if (lastIssue instanceof MethodNotFound) {
-      output.add(BETA_COMMENTARY_PREFIX())
+      // output.add(BETA_COMMENTARY_PREFIX())
       output.disapprove(ISSUE_METHOD_NOT_FOUND({ 'method.name': lastIssue.methodName }))
     } else if (lastIssue instanceof MissingExpectedCall) {
-      output.add(BETA_COMMENTARY_PREFIX())
+      // output.add(BETA_COMMENTARY_PREFIX())
       output.disapprove(ISSUE_EXPECTED_CALL({ 'method.name': lastIssue.methodName, 'expected.reason': lastIssue.reason }))
     } else {
       this.logger.error('The analyzer did not handle the issue: ' + JSON.stringify(lastIssue))
@@ -247,7 +247,7 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     }
 
     if (numberOfComments < output.commentCount) {
-      output.comments.unshift(BETA_COMMENTARY_PREFIX())
+      // output.comments.unshift(BETA_COMMENTARY_PREFIX())
       output.disapprove()
     }
 
@@ -259,7 +259,7 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
   private checkForTips(solution: ResistorColorDuoSolution, output: WritableOutput): void | never {
     if (!solution.hasInlineExport) {
       if (!output.hasCommentary) {
-        output.add(BETA_COMMENTARY_PREFIX())
+        // output.add(BETA_COMMENTARY_PREFIX())
       }
 
       // export { gigasecond }
@@ -272,7 +272,7 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
 
     if (solution.entry.hasSimpleParameter) {
       if (!output.hasCommentary) {
-        output.add(BETA_COMMENTARY_PREFIX())
+        // output.add(BETA_COMMENTARY_PREFIX())
       }
 
       output.add(
