@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0
+
+- Add analyzer for `resistor-color-duo`
+- Fix snapshot name for `resistor-color`
+
 ## 0.3.1
 
 - Update snapshots
