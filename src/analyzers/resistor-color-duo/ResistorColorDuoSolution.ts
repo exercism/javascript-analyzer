@@ -492,7 +492,7 @@ class Entry {
       logger.log('~> missing .slice()')
       this.lastIssue_ = new MissingExpectedCall(
         '.slice(0, 2)',
-        'limit the number of colors processed to 2'
+        'limit the number of colors processed to two'
       )
       return false
     }
@@ -501,7 +501,7 @@ class Entry {
       logger.log('~> missing Number()')
       this.lastIssue_ = new MissingExpectedCall(
         'Number(...)',
-        'convert the number-string back to an actual number'
+        'convert the number-string back into an actual number'
       )
       return false
     }
