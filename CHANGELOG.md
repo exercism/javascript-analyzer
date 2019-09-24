@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.1
+
+- Add message (fix) to `reduce` solutions without `slice`
+- Add `limit_number_of_colors` extra message when `slice` is an `must_add_missing_call`.
+
 ## 0.4.0
 
 - Add analyzer for `resistor-color-duo`

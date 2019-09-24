@@ -205,7 +205,16 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
       output.disapprove(ISSUE_METHOD_NOT_FOUND({ 'method.name': lastIssue.methodName }))
     } else if (lastIssue instanceof MissingExpectedCall) {
       // output.add(BETA_COMMENTARY_PREFIX())
-      output.disapprove(ISSUE_EXPECTED_CALL({ 'method.name': lastIssue.methodName, 'expected.reason': lastIssue.reason }))
+      output.add(ISSUE_EXPECTED_CALL({ 'method.name': lastIssue.methodName, 'expected.reason': lastIssue.reason }))
+
+      // Add extra information for limit number
+      if (solution.entry.hasOneMap || solution.entry.hasOneReduce) {
+        if (!solution.entry.hasOneSlice) {
+          output.add(LIMIT_NUMBER_OF_COLORS())
+        }
+      }
+
+      output.disapprove()
     } else {
       this.logger.error('The analyzer did not handle the issue: ' + JSON.stringify(lastIssue))
       output.redirect()
@@ -238,7 +247,7 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
       output.add(PREFER_NUMBER_OVER_PARSE())
     }
 
-    if (solution.entry.hasOneMap || solution.entry.hasOneSlice) {
+    if (solution.entry.hasOneMap || solution.entry.hasOneReduce) {
       if (!solution.entry.hasOneSlice) {
         output.add(LIMIT_NUMBER_OF_COLORS())
       }

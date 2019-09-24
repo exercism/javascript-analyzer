@@ -244,14 +244,34 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.must_add_missing_call",
-      "message": "📕 In order to limit the number of colors processed to 2, expected a \`.slice(0, 2)\` call. If
+      "message": "📕 In order to limit the number of colors processed to two, expected a \`.slice(0, 2)\` call. If
 that reasoning applies, mentor the student to add this call.",
       "template": "📕 In order to %{expected.reason}, expected a \`%{method.name}\` call. If
 that reasoning applies, mentor the student to add this call.",
       "variables": Object {
-        "expected.reason": "limit the number of colors processed to 2",
+        "expected.reason": "limit the number of colors processed to two",
         "method.name": ".slice(0, 2)",
       },
+    },
+    CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.limit_number_of_colors",
+      "message": "💬 Limit the number of input colors that are processed. If more than two colors
+are passed in, only the first two colors should be used to calculate the total
+\`colorCode\` value.
+
+📕 (At least) one test case inputs three colors instead of two. If the student
+has not accounted for this, they might need to update their solution. Help them
+find the button to update. The tests won't pass without limiting the number of
+colors.",
+      "template": "💬 Limit the number of input colors that are processed. If more than two colors
+are passed in, only the first two colors should be used to calculate the total
+\`colorCode\` value.
+
+📕 (At least) one test case inputs three colors instead of two. If the student
+has not accounted for this, they might need to update their solution. Help them
+find the button to update. The tests won't pass without limiting the number of
+colors.",
+      "variables": Object {},
     },
   ],
   "status": "disapprove",
@@ -487,14 +507,34 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.must_add_missing_call",
-      "message": "📕 In order to limit the number of colors processed to 2, expected a \`.slice(0, 2)\` call. If
+      "message": "📕 In order to limit the number of colors processed to two, expected a \`.slice(0, 2)\` call. If
 that reasoning applies, mentor the student to add this call.",
       "template": "📕 In order to %{expected.reason}, expected a \`%{method.name}\` call. If
 that reasoning applies, mentor the student to add this call.",
       "variables": Object {
-        "expected.reason": "limit the number of colors processed to 2",
+        "expected.reason": "limit the number of colors processed to two",
         "method.name": ".slice(0, 2)",
       },
+    },
+    CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.limit_number_of_colors",
+      "message": "💬 Limit the number of input colors that are processed. If more than two colors
+are passed in, only the first two colors should be used to calculate the total
+\`colorCode\` value.
+
+📕 (At least) one test case inputs three colors instead of two. If the student
+has not accounted for this, they might need to update their solution. Help them
+find the button to update. The tests won't pass without limiting the number of
+colors.",
+      "template": "💬 Limit the number of input colors that are processed. If more than two colors
+are passed in, only the first two colors should be used to calculate the total
+\`colorCode\` value.
+
+📕 (At least) one test case inputs three colors instead of two. If the student
+has not accounted for this, they might need to update their solution. Help them
+find the button to update. The tests won't pass without limiting the number of
+colors.",
+      "variables": Object {},
     },
   ],
   "status": "disapprove",
