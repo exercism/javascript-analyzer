@@ -34,15 +34,15 @@
     "babel-jest": "^24.9.0",
     "eslint": "^6.4.0",
     "eslint-plugin-jest": "^22.17.0",
-    "jest": "^24.9.0",
-    "typescript": "^3.6.3"
+    "jest": "^24.9.0"
   },
   "dependencies": {
-    "@typescript-eslint/parser": "^2.3.0",
-    "@typescript-eslint/typescript-estree": "^2.3.0",
+    "@typescript-eslint/parser": "^2.3.1",
+    "@typescript-eslint/typescript-estree": "^2.3.1",
     "esm": "^3.2.25",
     "module-alias": "^2.2.1",
-    "yargs": "^14.0.0"
+    "yargs": "^14.0.0",
+    "typescript": "^3.6.3"
   },
   "_moduleAliases": {
     "~src": "dist",

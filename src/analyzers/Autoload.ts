@@ -30,7 +30,7 @@ function autoload(exercise: Readonly<Exercise>): ReturnType<NodeRequire> {
   } catch(err) {
     const logger = getProcessLogger()
     logger.error(`
-Could not find the index.js analyzer in "${modulePath}"
+Whilst loading the index.js analyzer in "${modulePath}", something went wrong.
 
 Make sure that:
 - the slug "${exercise.slug}" is valid (hint: use dashes, not underscores)
