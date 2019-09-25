@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.2
+
+- Add `typescript` as `dependency` because of https://github.com/typescript-eslint/typescript-eslint/issues/828
+
 ## 0.4.1
 
 - Add message (fix) to `reduce` solutions without `slice`
