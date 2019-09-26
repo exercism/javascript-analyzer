@@ -130,3 +130,5 @@ If you wish to _preview_ the actual messages, pass in `--noTemplates` to use
 the analyzer `Comment`Factories to generate actual messages. If the comment
 factories are kept in-sync with `website-copy`, it will be the exact same
 output as on the site.
+
+[cli]: https://github.com/exercism/cli
