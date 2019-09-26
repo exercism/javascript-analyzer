@@ -108,8 +108,8 @@ like.
 Find all _technical_ details in [the doc about 📝 Comments][docs-comments].
 
 
-[issue-discussion]: https://github.com/exercism/javascript-analyzer/issues?q=is%3Aopen+is%3Aissue+label%3A%22%3Aspeech_balloon%3A+discussion%22
-[issue-new-exercise]: https://github.com/exercism/javascript-analyzer/issues?q=is%3Aopen+is%3Aissue+label%3A%22%3Asparkles%3A+new+exercise%22
+[issue-discussion]: https://github.com/exercism/javascript-analyzer/issues?q=is%3Aopen+is%3Aissue+label%3A%22discussion%22%3Aspeech_balloon%3A
+[issue-new-exercise]: https://github.com/exercism/javascript-analyzer/labels/new%20exercise%20%3Asparkles%3A
 [sample-resistor-color]: https://github.com/exercism/javascript-analyzer/issues/13
 [contributing-javascript]: https://github.com/exercism/javascript/blob/master/CONTRIBUTING.md
 [contributing-typescript]: https://github.com/exercism/typescript/
