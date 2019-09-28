@@ -284,11 +284,15 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
         // output.add(BETA_COMMENTARY_PREFIX())
       }
 
-      output.add(
-        TIP_DESTRUCTURING_IN_PARAMETER({
-          'parameter': solution.entry.parameterName
-        })
-      )
+      if (solution.entry.hasOneMap || solution.entry.hasOneReduce) {
+        // TODO: comment to guide them to the math-y way
+      } else {
+        output.add(
+          TIP_DESTRUCTURING_IN_PARAMETER({
+            'parameter': solution.entry.parameterName
+          })
+        )
+      }
     }
 
     // TODO optimize param
