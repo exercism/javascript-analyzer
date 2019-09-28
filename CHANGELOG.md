@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.1
+
+- Fix `resistor-color-duo` helper code (with `resistor-color` rewrite changed)
+
 ## 0.5.0
 
 - Rewrite analyzer for `resistor-color` to match `resistor-color-duo`
