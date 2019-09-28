@@ -10,6 +10,7 @@ export type ProgramConstant = VariableDeclarator & { kind: VariableDeclaration['
 export type ProgramConstants = ProgramConstant[]
 
 const CONSTANT_MODIFIERS = [
+  AST_NODE_TYPES.Program,
   AST_NODE_TYPES.ExportNamedDeclaration
 ]
 
@@ -18,7 +19,7 @@ function isTopLevelConstant(this: Traverser, node: Node, kinds: readonly Variabl
     return true
   }
 
-  if (!CONSTANT_MODIFIERS.indexOf(node.type)) {
+  if (CONSTANT_MODIFIERS.indexOf(node.type) === -1) {
     this.skip() // doesn't traverse this node any further
   }
 

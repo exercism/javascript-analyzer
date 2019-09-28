@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0
+
+- Rewrite analyzer for `resistor-color` to match `resistor-color-duo`
+- Fix `findTopLevelConstants` (which fixes a snapshot for `gigasecond` as well)
+
 ## 0.4.2
 
 - Add `typescript` as `dependency` because of https://github.com/typescript-eslint/typescript-eslint/issues/828
