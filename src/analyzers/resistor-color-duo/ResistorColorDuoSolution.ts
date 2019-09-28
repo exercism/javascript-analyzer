@@ -29,6 +29,7 @@ type MainExport = ReturnType<typeof extractExport>
 
 const EXPECTED_METHOD = 'value'
 const EXPECTED_EXPORT = 'value'
+const PROBABLE_CONSTANT = 'COLORS'
 
 export class MissingExpectedCall {
   constructor(public readonly methodName: string, public readonly reason: string) {}
@@ -54,9 +55,11 @@ type Issue = undefined
 
 class Constant {
   public readonly name: string
+  public readonly signature: string;
 
-  constructor(private readonly constant: Readonly<ProgramConstant>) {
+  constructor(private readonly constant: Readonly<ProgramConstant>, source: Source) {
     this.name = (constant && isIdentifier(constant.id) && constant.id.name) || '<NO-CONSTANT-NAME>'
+    this.signature = source.getOuter(constant.parent || constant)
   }
 
   public get kind(): ProgramConstant['kind'] {
@@ -652,38 +655,96 @@ class Entry {
     return false
   }
 
-  public isOptimalHelper(func: ArrowFunctionExpression | FunctionExpression | MainMethod<string>, constant: Readonly<Constant>): boolean {
-    if (func.body && func.body.type === AST_NODE_TYPES.BlockStatement && func.body.body && func.body.body[0].type === AST_NODE_TYPES.ReturnStatement) {
-      func.body = func.body.body[0].argument
+  public isOptimalHelper(func: Node, constant: Readonly<Constant>): boolean {
+    const logger = getProcessLogger()
+
+    let body: Node | null
+    let params: Parameter[] | null
+
+    switch(func.type) {
+      case AST_NODE_TYPES.BlockStatement: {
+        body = func.body[0]
+        params = null
+        break;
+      }
+      case AST_NODE_TYPES.ReturnStatement: {
+        body = func.argument
+        params = null
+        break;
+      }
+      case AST_NODE_TYPES.CallExpression: {
+        body = func
+        params = null
+        break;
+      }
+      case AST_NODE_TYPES.MemberExpression: {
+        body = func
+        params = null
+        break;
+      }
+      case AST_NODE_TYPES.FunctionDeclaration: {
+        body = func.body || null
+        params = func.params
+        break;
+      }
+      case AST_NODE_TYPES.ArrowFunctionExpression: {
+        body = func.body || null
+        params = func.params
+        break;
+      }
+      case AST_NODE_TYPES.FunctionExpression: {
+        body = func.body || null
+        params = func.params
+        break;
+      }
+      default: {
+        logger.log(`~> the helper type ${func.type} is not processable`)
+        return false
+      }
+    }
+
+    if (!params) {
+      logger.log('~> could not get function parameters')
+      return false
+    }
+
+    if (body && body.type === AST_NODE_TYPES.BlockStatement && body.body && body.body[0].type === AST_NODE_TYPES.ReturnStatement) {
+      body = body.body[0].argument
+    }
+
+    if (!body) {
+      return false
     }
 
     if (constant.isOptimalArray) {
+      logger.log('=> constant is optimal array')
+
       // Only looking for:
       //
       // COLORS.indexOf(param)
-      const { body } = func
-      return body
-        && isCallExpression(body, constant.name, 'indexOf')
-        && func.params.length === 1
-        && isIdentifier(func.params[0])
+      return isCallExpression(body, constant.name, 'indexOf')
+        && params.length === 1
+        && isIdentifier(params[0])
         && body.arguments.length === 1
-        && isIdentifier(body.arguments[0], func.params[0].name)
+        && isIdentifier(body.arguments[0], params[0].name)
         || false
     }
 
     if (constant.isOptimalObject) {
+      logger.log('=> constant is optimal object')
+
       // Only looking for:
       //
-      // COLORS[param]
-      const { body } = func
-      return body
-        && func.params.length === 1
-        && isIdentifier(func.params[0])
-        && isCallExpression(body, constant.name, func.params[0].name)
-        && body.callee.computed
+      // REF_COLORS[param]
+      return params.length === 1
+        && isIdentifier(params[0])
+        && constant.referencedSourceObjectName
+        && isMemberExpression(body, constant.referencedSourceObjectName, params[0].name)
+        && body.computed
         || false
     }
 
+    logger.log(`~> constant is not optimal`)
     return false
   }
 }
@@ -694,6 +755,7 @@ export class ResistorColorDuoSolution {
   private mainMethod: Entry
   private mainExport: [NonNullable<MainExport[0]>, MainExport[1]]
   private fileConstants: ProgramConstants
+  private mainConstant: Constant | undefined;
 
   constructor(public readonly program: Program, source: string) {
     this.source = new Source(source)
@@ -704,6 +766,12 @@ export class ResistorColorDuoSolution {
     // All constants at the top level that are _not_ the main method
     this.fileConstants = findTopLevelConstants(program, ['let', 'const', 'var'])
       .filter((declaration): boolean => declaration && isIdentifier(declaration.id) && declaration.id.name !== EXPECTED_METHOD)
+
+    const expectedConstant = this.fileConstants.find((constant) => isIdentifier(constant.id, PROBABLE_CONSTANT)) ||
+      // Or find the first array or object assignment
+      this.fileConstants.find((constant) => constant.init && [AST_NODE_TYPES.ArrayExpression, AST_NODE_TYPES.ObjectExpression].indexOf(constant.init.type))
+
+    this.mainConstant = expectedConstant && new Constant(expectedConstant, this.source) || undefined
   }
 
   public get entry(): Readonly<Entry> {
@@ -715,7 +783,7 @@ export class ResistorColorDuoSolution {
   }
 
   public get hasOptimalEntry(): boolean {
-    return this.entry.isOptimal(new Constant(this.fileConstants[0]), this.program)
+    return this.entry.isOptimal(this.mainConstant, this.program)
   }
 
   public get areFileConstantsConst(): boolean  {
