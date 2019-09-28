@@ -4202,18 +4202,28 @@ exports[`When running analysis on gigasecond fixtures and expecting it to disapp
 IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.generic.prefer_const_over_let_and_var",
-      "message": "Instead of \`let gigasecondAnniversary\`, consider using \`const\`.
+      "externalTemplate": "javascript.gigasecond.prefer_top_level_constant",
+      "message": "Your solution current has a magic number, or rather a magic expression. Consider
+extracting the gigasecond number into a top-level constant, so that you may
+remember what it represents if you ever come back to this code.
 
-\`const\` is a signal that the identifier won't be reassigned, which SHOULD be
-true for this top-level constant. (Not to be confused with _immutable values_).",
-      "template": "Instead of \`%{kind} %{name}\`, consider using \`const\`.
+\`\`\`javascript
+const GIGASECOND_IN_MS = 1e12
 
-\`const\` is a signal that the identifier won't be reassigned, which SHOULD be
-true for this top-level constant. (Not to be confused with _immutable values_).",
+export const gigasecond = (...)
+\`\`\`",
+      "template": "Your solution current has a magic number, or rather a magic expression. Consider
+extracting the gigasecond number into a top-level constant, so that you may
+remember what it represents if you ever come back to this code.
+
+\`\`\`javascript
+const %{name} = %{value}
+
+export const gigasecond = (...)
+\`\`\`",
       "variables": Object {
-        "kind": "let",
-        "name": "gigasecondAnniversary",
+        "name": "GIGASECOND_IN_MS",
+        "value": "1e12",
       },
     },
     CommentImpl {
