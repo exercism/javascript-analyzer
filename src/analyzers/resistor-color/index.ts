@@ -1,13 +1,11 @@
-import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree";
-
+import { TSESTree } from "@typescript-eslint/typescript-estree";
 import { factory } from "~src/comments/comment";
-import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, BETA_COMMENTARY_PREFIX, UNEXPECTED_PARAMETER } from "~src/comments/shared";
+import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_PARAMETER } from "~src/comments/shared";
 import { NoExportError } from "~src/errors/NoExportError";
 import { NoMethodError } from "~src/errors/NoMethodError";
 import { AstParser } from "~src/parsers/AstParser";
-
 import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl";
-import { ResistorColorSolution, HelperNotOptimal, HelperCallNotFound, MethodNotFound, MissingExpectedCall } from "./ResistorColorSolution";
+import { ResistorColorSolution } from "./ResistorColorSolution";
 
 const TIP_EXPORT_INLINE = factory<'method.signature' | 'constant.signature'>`
 Did you know that you can export functions, classes and constants directly
@@ -21,62 +19,49 @@ export ${'method.signature'}
 
 const SIGNATURE_NOT_OPTIMAL = factory`
 📕 If you look at the tests, the function \`colorCode\` only receives one
-parameter. Nothing more and nothing less.
-
-📕 Remove the additional parameters from your function, as their value will
-always be \`undefined\` or whatever default you've assigned.
+parameter. Nothing more and nothing less. Suggest that the student 
+removes the additional parameters from your function, as their value will
+always be \`undefined\` or whatever default they've assigned.
 `('javascript.resistor-color.signature_not_optimal')
 
 const USE_INDEX_OF = factory<'current'>`
+📕 The analyzer expected \`indexOf\`, instead of  \`${'current'}\`.
+
 💬 Replace \`${'current'}\` with a different built-in function, a function
 which does exactly what is now explicitly programmed in: finding the index
 of a given value in an \`Array\`.
 `('javascript.resistor-color.use_index_of')
 
-const USE_IMPLICIT_INCLUDES = factory<'current'>`
-💬 Remove the explicit existence check \`.includes\`. When the color-code
-is received, there is a special value that is returned if the color is not
-present. Use that special value instead.
-`('javascript.resistor-color.use_implicit_includes')
-
-const DONT_NORMALISE_INPUTS = factory`
-💬 Remove the call to \`.toLowerCase\`. The tests only provide the inputs
-in lower case, and the colors should be defined in lower case. There is
-no need to manually normalise the inputs.
-`('javascript.resistor-color.dont_normalise_inputs')
-
 const USE_ARRAY_COMPREHENSIONS = factory<'current'>`
+📕 The analyzer expected \`indexOf\`, instead of  \`${'current'}\`.
+
 💬 Replace \`${'current'}\` with a single function call that _directly_
 finds the index of a given input value.
 `('javascript.resistor-color.use_array_comprehensions')
 
-const ISSUE_OPTIMISE_HELPER = factory<'method.name'>`
-⚡ The helper method \`${'method.name'}\` is not optimal. The helper can
-probably be the same as the solution to \`resistor-color\`. Mentor the student
-to retrieve their solution and/or optimise their helper.
-`('javascript.resistor-color.must_optimise_helper')
+const USE_IMPLICIT_INCLUDES = factory<'current'>`
+📕 Using \`includes\` iterates _twice_ over the array. Performance is not
+an issue in this exercise, but the logic is unnecessary. **Please note**:
+throwing an \`Error\`, when a color does not exist, is perfectly fine and
+should not be discouraged.
 
-const ISSUE_USE_A_HELPER = factory`
-📕 Mentor the student to add helper function and DRY-up this solution. The
-solution to \`resistor-color\` can be used as helper method here. When using an
-\`Array\` as colors source, in a years time, will the student recall why it's
-the _index_ in that array? When using an \`Object\`, what does the value mean?
-Re-using \`colorCode\` explains this in both cases.
+💬 Remove the explicit existence check \`.includes\`. When the color
+string is converted to a color code (number), there is already a special
+value which is returned if the color is not present. Look for and use
+that value instead.
+`('javascript.resistor-color.use_implicit_includes')
 
-💬 Using a helper method is good practice, because it replaces a cryptic "member
-call" with a named call, that can be documented individually.
-`('javascript.resistor-color.must_use_a_helper')
+const DONT_NORMALISE_INPUTS = factory`
+📕 It's always fine to be defensive about inputs, so that a program will
+run correctly under more circumstances. However, arbitary input
+normalisation is discouraged on Exercism. Later exercises will have
+defined inputs that are denormalised where we'll expect sanitizing and
+normalising the input. Keep it simple for now.
 
-const ISSUE_METHOD_NOT_FOUND = factory<'method.name'>`
-⚡ Ensure the method \`${'method/name'}\` exists. It was not found when
-analysing this solution. If it does not exist, point this out to the student.
-
-`('javascript.resistor-color.must_declare_function')
-
-const ISSUE_EXPECTED_CALL = factory<'method.name' | 'expected.reason'>`
-📕 In order to ${'expected.reason'}, expected a \`${'method.name'}\` call. If
-that reasoning applies, mentor the student to add this call.
-`('javascript.resistor-color.must_add_missing_call')
+💬 Remove the call to \`.toLowerCase\`. The tests only provide the inputs
+in lower case, and the colors should be defined in lower case. There is
+no need to manually normalise the inputs.
+`('javascript.resistor-color.dont_normalise_inputs')
 
 type Program = TSESTree.Program
 
@@ -171,39 +156,11 @@ export class ResistorColorAnalyzer extends IsolatedAnalyzerImpl {
     if (!solution.isOptimal()) {
       // continue analyzing
       this.logger.log('~> solution is not optimal')
-      this.processLastIssue(solution, output)
       return
     }
 
     this.checkForTips(solution, output)
     output.approve()
-  }
-
-  private processLastIssue(solution: ResistorColorSolution, output: WritableOutput): void | never {
-    const lastIssue = solution.entry.lastIssue
-    if (!lastIssue) {
-      this.logger.log('~> no entry issue found')
-      return
-    }
-
-    if (lastIssue instanceof HelperNotOptimal) {
-      // output.add(BETA_COMMENTARY_PREFIX())
-      output.disapprove(ISSUE_OPTIMISE_HELPER({ 'method.name': lastIssue.helperName }))
-    } else if (lastIssue instanceof HelperCallNotFound) {
-      // output.add(BETA_COMMENTARY_PREFIX())
-      output.disapprove(ISSUE_USE_A_HELPER())
-    } else if (lastIssue instanceof MethodNotFound) {
-      // output.add(BETA_COMMENTARY_PREFIX())
-      output.disapprove(ISSUE_METHOD_NOT_FOUND({ 'method.name': lastIssue.methodName }))
-    } else if (lastIssue instanceof MissingExpectedCall) {
-      // output.add(BETA_COMMENTARY_PREFIX())
-      output.add(ISSUE_EXPECTED_CALL({ 'method.name': lastIssue.methodName, 'expected.reason': lastIssue.reason }))
-
-      output.disapprove()
-    } else {
-      this.logger.error('The analyzer did not handle the issue: ' + JSON.stringify(lastIssue))
-      output.redirect()
-    }
   }
 
   private checkForApprovableSolutions(solution: ResistorColorSolution, output: WritableOutput): void | never {

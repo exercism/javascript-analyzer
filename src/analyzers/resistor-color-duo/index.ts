@@ -1,13 +1,11 @@
-import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree";
-
+import { TSESTree } from "@typescript-eslint/typescript-estree";
 import { factory } from "~src/comments/comment";
-import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, BETA_COMMENTARY_PREFIX, UNEXPECTED_PARAMETER } from "~src/comments/shared";
+import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_PARAMETER } from "~src/comments/shared";
 import { NoExportError } from "~src/errors/NoExportError";
 import { NoMethodError } from "~src/errors/NoMethodError";
 import { AstParser } from "~src/parsers/AstParser";
-
 import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl";
-import { ResistorColorDuoSolution, HelperNotOptimal, HelperCallNotFound, MethodNotFound, MissingExpectedCall } from "./ResistorColorDuoSolution";
+import { HelperCallNotFound, HelperNotOptimal, MethodNotFound, MissingExpectedCall, ResistorColorDuoSolution } from "./ResistorColorDuoSolution";
 
 const TIP_EXPORT_INLINE = factory<'method.signature'>`
 Did you know that you can export functions, classes and constants directly

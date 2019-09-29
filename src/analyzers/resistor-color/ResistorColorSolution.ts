@@ -1,5 +1,5 @@
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree";
-import { ArrowFunctionExpression, FunctionExpression, Statement, CallExpression, BlockStatement, ReturnStatement, Node } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
+import { Node, Statement } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
 import { extractExport } from "~src/analyzers/utils/extract_export";
 import { extractMainBody, MainBody } from "~src/analyzers/utils/extract_main_body";
 import { extractMainMethod, MainMethod } from "~src/analyzers/utils/extract_main_method";
@@ -26,28 +26,6 @@ const EXPECTED_METHOD = 'colorCode'
 const EXPECTED_EXPORT_METHOD = 'colorCode'
 const EXPECTED_CONSTANT = 'COLORS'
 const EXPECTED_EXPORT_CONSTANT = 'COLORS'
-
-export class MissingExpectedCall {
-  constructor(public readonly methodName: string, public readonly reason: string) {}
-}
-
-export class HelperNotOptimal {
-  constructor(public readonly helperName: string, public readonly declaration: MainMethod<string>) {}
-}
-
-export class MethodNotFound {
-  constructor(public readonly methodName: string) {}
-}
-
-export class HelperCallNotFound {
-  constructor(public readonly callRoot: Expression | undefined) {}
-}
-
-type Issue = undefined
-| MissingExpectedCall
-| HelperNotOptimal
-| MethodNotFound
-| HelperCallNotFound
 
 class Constant {
   public readonly name: string
@@ -184,7 +162,6 @@ class Entry {
 
   private readonly params: readonly Parameter[];
   private readonly body: MainBody;
-  private lastIssue_: Issue;
 
   constructor(method: Readonly<NonNullable<MainMethod>>, source: Readonly<Source>) {
     this.name = (method && method.id && method.id.name) || EXPECTED_METHOD
@@ -192,10 +169,6 @@ class Entry {
     this.body = extractMainBody(method)
 
     this.signature = source.getOuter(method.parent || method)
-  }
-
-  public get lastIssue(): Issue {
-    return this.lastIssue_
   }
 
   public get hasAtLeastOneParameter(): boolean {
