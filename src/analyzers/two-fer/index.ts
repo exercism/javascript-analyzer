@@ -20,6 +20,8 @@ import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, PREFER_STRICT_EQUALITY, PREFE
 import { AstParser, ParsedSource } from "~src/parsers/AstParser";
 import { NoSourceError } from "~src/errors/NoSourceError";
 import { ParserError } from "~src/errors/ParserError";
+import { makeParseErrorOutput } from "~src/output/makeParseErrorOutput";
+import { makeNoSourceOutput } from "~src/output/makeNoSourceOutput";
 
 /**
  * The factories here SHOULD be kept in sync with exercism/website-copy. Under
@@ -132,15 +134,17 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     try {
       return await Parser.parse(input)
     } catch (err) {
-      if (err instanceof NoSourceError) {
-        this.logger.error(`=> [NoSourceError] ${err.message}`)
-        this.redirect()
-      }
 
-      if (err instanceof ParserError) {
-        this.logger.error(`=> [ParserError] ${err.message}`)
-        const { message, ...details } = err.original
-        this.disapprove(PARSE_ERROR({ error: message, details: JSON.stringify(details) }))
+      // Here we handle errors that blew up the analyzer but we don't want to
+      // report as blown up. This converts these errors to the commentary.
+      if (err instanceof NoSourceError) {
+        const output = makeNoSourceOutput(err)
+        output.comments.forEach((comment) => this.comment(comment))
+        this.redirect()
+      } else if (err instanceof ParserError) {
+        const output = makeParseErrorOutput(err)
+        output.comments.forEach((comment) => this.comment(comment))
+        this.redirect()
       }
 
       throw err

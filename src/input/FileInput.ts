@@ -7,4 +7,8 @@ export class FileInput implements Input {
     const buffer = await readFile(this.path)
     return [buffer.toString("utf8")]
   }
+
+  public async informativeBail(): Promise<never> {
+    return Promise.reject(new Error(`Could not read file "${this.path}"`))
+  }
 }

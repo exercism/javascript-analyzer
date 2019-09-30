@@ -108,3 +108,7 @@ this to the student directly. Use it to determine what you want to say.
 - If there is no icon, the commentary has not been updated to the latest
 standard. Proceed with caution.
 `('javascript.generic.beta_disapprove_commentary_prefix')
+
+export const ERROR_CAPTURED_NO_SOURCE = factory<'expected' | 'available'>`
+Expected source file "${'expected'}", found: ${'available'}.
+`('javascript.generic.error_captured_no_source')
