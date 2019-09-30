@@ -5,7 +5,7 @@ import { NoExportError } from "~src/errors/NoExportError";
 import { NoMethodError } from "~src/errors/NoMethodError";
 import { AstParser } from "~src/parsers/AstParser";
 import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl";
-import { HelperCallNotFound, HelperNotOptimal, MethodNotFound, MissingExpectedCall, ResistorColorDuoSolution } from "./ResistorColorDuoSolution";
+import { HelperCallNotFound, HelperNotOptimal, MethodNotFound, MissingExpectedCall, UnexpectedCallFound, ResistorColorDuoSolution } from "./ResistorColorDuoSolution";
 
 const TIP_EXPORT_INLINE = factory<'method.signature'>`
 Did you know that you can export functions, classes and constants directly
@@ -83,6 +83,10 @@ const ISSUE_EXPECTED_CALL = factory<'method.name' | 'expected.reason'>`
 📕 In order to ${'expected.reason'}, expected a \`${'method.name'}\` call. If
 that reasoning applies, mentor the student to add this call.
 `('javascript.resistor-color-duo.must_add_missing_call')
+
+const ISSUE_UNEXPECTED_CALL = factory<'unexpected' | 'expected'>`
+📕 Found \`${'unexpected'}\`, expected \`${'expected'}\`.
+`('javascript.resistor-color-duo.expected_different_call')
 
 type Program = TSESTree.Program
 
@@ -201,6 +205,9 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     } else if (lastIssue instanceof MethodNotFound) {
       // output.add(BETA_COMMENTARY_PREFIX())
       output.disapprove(ISSUE_METHOD_NOT_FOUND({ 'method.name': lastIssue.methodName }))
+    } else if (lastIssue instanceof UnexpectedCallFound) {
+      output.add(ISSUE_UNEXPECTED_CALL({ 'unexpected': lastIssue.unexpected, 'expected': lastIssue.expected }))
+
     } else if (lastIssue instanceof MissingExpectedCall) {
       // output.add(BETA_COMMENTARY_PREFIX())
       output.add(ISSUE_EXPECTED_CALL({ 'method.name': lastIssue.methodName, 'expected.reason': lastIssue.reason }))

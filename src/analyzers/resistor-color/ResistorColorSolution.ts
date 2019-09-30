@@ -345,7 +345,7 @@ export class ResistorColorSolution {
     // Find expected name
     const expectedConstant = this.fileConstants.find((constant) => isIdentifier(constant.id, EXPECTED_CONSTANT)) ||
       // Or find the first array or object assignment
-      this.fileConstants.find((constant) => constant.init && [AST_NODE_TYPES.ArrayExpression, AST_NODE_TYPES.ObjectExpression].indexOf(constant.init.type))
+      this.fileConstants.find((constant) => constant.init && [AST_NODE_TYPES.ArrayExpression, AST_NODE_TYPES.ObjectExpression].indexOf(constant.init.type) === -1)
 
     this.mainConstant = expectedConstant && new Constant(expectedConstant, this.source) || undefined
   }

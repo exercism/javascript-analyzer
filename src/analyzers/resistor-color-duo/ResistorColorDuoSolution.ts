@@ -47,11 +47,16 @@ export class HelperCallNotFound {
   constructor(public readonly callRoot: Expression | undefined) {}
 }
 
+export class UnexpectedCallFound {
+  constructor(public readonly unexpected: string, public readonly expected: string) {}
+}
+
 type Issue = undefined
 | MissingExpectedCall
 | HelperNotOptimal
 | MethodNotFound
 | HelperCallNotFound
+| UnexpectedCallFound
 
 class Constant {
   public readonly name: string
@@ -651,6 +656,12 @@ class Entry {
         && isLiteral(innerLeft, 10)
     }
 
+    if (findFirst(argument, (node) => isIdentifier(param) && isCallExpression(node, param.name, 'shift'))) {
+      logger.log('~> should not be shifting')
+      this.lastIssue_ = new UnexpectedCallFound('.shift()', `${parameterName(param)}[<index>]\` or \`[destruc, turing]`)
+      return false
+    }
+
     logger.log('~> body of expected math solution is not math')
     return false
   }
@@ -769,7 +780,7 @@ export class ResistorColorDuoSolution {
 
     const expectedConstant = this.fileConstants.find((constant) => isIdentifier(constant.id, PROBABLE_CONSTANT)) ||
       // Or find the first array or object assignment
-      this.fileConstants.find((constant) => constant.init && [AST_NODE_TYPES.ArrayExpression, AST_NODE_TYPES.ObjectExpression].indexOf(constant.init.type))
+      this.fileConstants.find((constant) => constant.init && [AST_NODE_TYPES.ArrayExpression, AST_NODE_TYPES.ObjectExpression].indexOf(constant.init.type) !== -1)
 
     this.mainConstant = expectedConstant && new Constant(expectedConstant, this.source) || undefined
   }

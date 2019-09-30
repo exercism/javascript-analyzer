@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.3
+
+- Fix `resistor-color` constant lookup, when name doesn't match "probably"
+- Fix `resistor-color-duo` constant lookup, when name doesn't match "probably"
+- Add message to `resistor-color-duo` for `param.shift()`
+
+## 0.5.2
+
+- Cleanup imports and exports
+
 ## 0.5.1
 
 - Fix `resistor-color-duo` helper code (with `resistor-color` rewrite changed)
