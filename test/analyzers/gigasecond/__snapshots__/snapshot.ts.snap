@@ -241,7 +241,7 @@ exports[`When running analysis on gigasecond fixtures and expecting it to approv
 IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.generic.prefer_const_over_let_and_var",
+      "externalTemplate": "javascript.general.prefer_const_over_let_and_var",
       "message": "Instead of \`var GIGASECOND\`, consider using \`const\`.
 
 \`const\` is a signal that the identifier won't be reassigned, which SHOULD be

@@ -2,6 +2,7 @@ import { readDir } from "~src/utils/fs";
 import { FileInput } from "./FileInput";
 
 import nodePath from 'path'
+import { NoSourceError } from "~src/errors/NoSourceError";
 
 const EXTENSIONS = /\.(jsx?|tsx?|mjs)$/
 const TEST_FILES = /\.spec|test\./
@@ -12,8 +13,8 @@ export class DirectoryInput implements Input {
 
   public async read(n = 1): Promise<string[]> {
     const files = await readDir(this.path)
-
     const candidates = findCandidates(files, n, `${this.exerciseSlug}.js`)
+
     const fileSources = await Promise.all(
       candidates.map((candidate): Promise<string> => {
         return new FileInput(nodePath.join(this.path, candidate))
@@ -23,6 +24,13 @@ export class DirectoryInput implements Input {
     )
 
     return fileSources
+  }
+
+  public async informativeBail(): Promise<never> {
+    const expected = `${this.exerciseSlug}.js`
+    const available = await readDir(this.path)
+
+    return Promise.reject(new NoSourceError(expected, available))
   }
 }
 

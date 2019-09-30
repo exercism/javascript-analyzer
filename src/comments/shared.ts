@@ -74,7 +74,7 @@ Instead, in Javascript, prefixing a parameter with an underscore will stop
 most IDEs from highlighting that parameter if it's unused, which is actually a
 tool you probably want to keep in this case. Remove the underscore \`_\` from
 ${'parameter.name'} in order to fix this.
-`('javascript.generic.prefer_unprefixed_underscore_parameters')
+`('javascript.general.prefer_unprefixed_underscore_parameters')
 
 export const PARSE_ERROR = factory<'error' | 'details'>`
 There is something wrong with your submission, most likely a Syntax Error:
@@ -84,14 +84,14 @@ Message: "${'error'}"
 \`\`\`
 ${'details'}
 \`\`\`
-`('javascript.generic.parse_error')
+`('javascript.general.parse_error')
 
 export const PREFER_CONST_OVER_LET_AND_VAR = factory<'kind' | 'name'>`
 Instead of \`${'kind'} ${'name'}\`, consider using \`const\`.
 
 \`const\` is a signal that the identifier won't be reassigned, which SHOULD be
 true for this top-level constant. (Not to be confused with _immutable values_).
-`('javascript.generic.prefer_const_over_let_and_var')
+`('javascript.general.prefer_const_over_let_and_var')
 
 export const BETA_COMMENTARY_PREFIX = factory`
 🧪 This solution's output contains a new format of comments that is currently
@@ -107,4 +107,8 @@ please open an issue [here](https://github.com/exercism/javascript-analyzer/issu
 this to the student directly. Use it to determine what you want to say.
 - If there is no icon, the commentary has not been updated to the latest
 standard. Proceed with caution.
-`('javascript.generic.beta_disapprove_commentary_prefix')
+`('javascript.general.beta_disapprove_commentary_prefix')
+
+export const ERROR_CAPTURED_NO_SOURCE = factory<'expected' | 'available'>`
+Expected source file "${'expected'}", found: ${'available'}.
+`('javascript.general.error_captured_no_source')

@@ -33,6 +33,8 @@ interface Input {
    * @returns at most `n` strings
    */
   read(n?: number): Promise<string[]>;
+
+  informativeBail(): Promise<never>;
 }
 
 

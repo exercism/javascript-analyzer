@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.0
+
+- Fix various `shared` comments which had `generic` instead of `general` in their name.
+- Fix a bug with the parser that caused some solutions to blow up
+- Add `makeParseErrorOutput` and `makeNoSourceOutput` to redirect to a mentor with helpful information
+
 ## 0.5.3
 
 - Fix `resistor-color` constant lookup, when name doesn't match "probably"
