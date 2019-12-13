@@ -11,6 +11,6 @@ const COLOR_VALUES = {
   white: 9
 };
 
-export const value = colorArray => {
+export const decodedValue = colorArray => {
   return parseInt(colorArray.map(color => COLOR_VALUES[color]).join(""));
 };

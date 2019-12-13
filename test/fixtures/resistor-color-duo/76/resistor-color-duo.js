@@ -2,6 +2,6 @@ export const COLORS = ["black","brown","red","orange","yellow","green","blue","v
 
 export const colorCode = ( color ) => COLORS.indexOf(color);
 
-export function value(input) {
+export function decodedValue(input) {
   return parseInt(input.map(el => colorCode(el)).join(''), 10);
 }

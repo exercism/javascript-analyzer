@@ -11,9 +11,9 @@ export const COLORS = [
   'white'
 ]
 
-export const value = (inputColors) => {
+export const decodedValue = (inputColors) => {
   return Number(
-          COLORS.indexOf(inputColors[0]) 
+          COLORS.indexOf(inputColors[0])
           + '' +
           COLORS.indexOf(inputColors[1]));
 }

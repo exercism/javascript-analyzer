@@ -10,7 +10,7 @@ COLORS[7] = 'violet';
 COLORS[8] = 'grey';
 COLORS[9] = 'white';
 
-export const value = (colorArray) => {
+export const decodedValue = (colorArray) => {
 
     return parseInt(COLORS.indexOf(colorArray[0]).toString() + COLORS.indexOf(colorArray[1]).toString());
 }

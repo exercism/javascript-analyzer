@@ -4,6 +4,6 @@ export const colorCode = (color) => {
   return COLORS.indexOf(color);
 }
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
   return Number(`${colorCode(colors[0])}${colorCode(colors[1])}`)
 }

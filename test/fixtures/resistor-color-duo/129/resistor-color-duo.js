@@ -1,4 +1,4 @@
-export function value(colorsParams) {
+export function decodedValue(colorsParams) {
    const COLORS = ["black", "brown", "red", "orange", "yellow", "green", "blue", "violet", "grey", "white"];
 
    const [COLOR1, COLOR2] = COLORS.reduce((colorsArray, currentColor, index) => {

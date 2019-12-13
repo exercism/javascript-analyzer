@@ -12,6 +12,6 @@ export const COLORS = [
 ];
 
 export const colorCode = (color) => COLORS.indexOf(color)
-export const value = (colors) => {
+export const decodedValue = (colors) => {
     return parseInt(String(colorCode(colors[0])).concat(colorCode(colors[1])))
 }

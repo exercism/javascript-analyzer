@@ -12,4 +12,4 @@ const colorCodes =
     white: 9,
 }
 
-export const value = colors => Number(colors.map(color => colorCodes[color]).join(''));
+export const decodedValue = colors => Number(colors.map(color => colorCodes[color]).join(''));

@@ -11,7 +11,7 @@ export const colors = [
     'white'
   ];
 
-export function value(boje){
+export function decodedValue(boje){
     let a="";
     for(let i =0;i<boje.length;i++){
         a+= colors.indexOf(boje[i]);

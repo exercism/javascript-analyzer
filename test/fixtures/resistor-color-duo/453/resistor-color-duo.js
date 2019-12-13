@@ -11,7 +11,7 @@ export const COLORS = [
     "white",
 ]
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
     let val = '';
     colors.forEach(element => {
         val += COLORS.indexOf(element);

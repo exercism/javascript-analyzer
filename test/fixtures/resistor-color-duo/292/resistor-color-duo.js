@@ -1,4 +1,4 @@
-export const value = (arr) => {
+export const decodedValue = (arr) => {
   const num_one = arr[0].toLowerCase()
   const num_two = arr[1].toLowerCase()
   let key = {

@@ -13,5 +13,5 @@ const COLORS = [
 
 const colorCode = color => COLORS.indexOf(color);
 
-export const value = colors =>
+export const decodedValue = colors =>
   colors.reduce((sum, color) => sum * 10 + colorCode(color), 0);

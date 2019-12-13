@@ -11,6 +11,6 @@ const COLORS = {
   white: 9
 };
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
   return COLORS[colors[0]] * 10 + COLORS[colors[1]];
 }

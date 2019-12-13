@@ -15,12 +15,12 @@ function colorCode(color) {
   return COLORS.findIndex(resistor => resistor === color.toLowerCase());
 }
 
-export function value(colors) {
-  let value = "";
+export function decodedValue(colors) {
+  let decodedValue = "";
 
   colors.forEach(color => {
-    value += `${colorCode(color)}`;
+    decodedValue += `${colorCode(color)}`;
   });
 
-  return parseInt(value);
+  return parseInt(decodedValue);
 }

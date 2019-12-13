@@ -7,4 +7,4 @@ export const COLORS = [
 
 const reducer = (accumulator, color, iValue) => accumulator + COLORS.indexOf(color) * (10 ** iValue)
 
-export const value = colors => colors.reverse().reduce(reducer, 0)
+export const decodedValue = colors => colors.reverse().reduce(reducer, 0)

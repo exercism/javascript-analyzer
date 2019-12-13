@@ -1,4 +1,4 @@
-export const value = (values) => {
+export const decodedValue = (values) => {
     return values.reduce((acc, curr, index, arr) => {
         return acc + (COLORS.indexOf(curr) * Math.pow(10, arr.length - 1 - index));
     },0);

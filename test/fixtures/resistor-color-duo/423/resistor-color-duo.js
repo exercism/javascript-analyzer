@@ -10,6 +10,6 @@ const COLORS = {
   'grey' : 8,
   'white' : 9
 }
-export const value = ([color1, color2]) => {
+export const decodedValue = ([color1, color2]) => {
   return(Number(String(COLORS[color1]) + String(COLORS[color2])))
 }

@@ -13,7 +13,7 @@ export const COLORS = [
 
 export const colorCode = color => COLORS.indexOf(color);
 
-export const value = values =>
+export const decodedValue = values =>
   Number(
     values.reduce(
       (accumulator, currentValue) => `${accumulator}${colorCode(currentValue)}`,

@@ -11,7 +11,7 @@ const COLORS = [
   "white"
 ];
 
-export const value = array => {
+export const decodedValue = array => {
   return (
     COLORS.indexOf(array[0]).toString() + COLORS.indexOf(array[1]).toString()
   );

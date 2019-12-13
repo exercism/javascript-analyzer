@@ -11,6 +11,6 @@ const VALUES = {
   white: 9,
 }
 
-export const value = valuesArray => {
+export const decodedValue = valuesArray => {
   return parseInt(`${VALUES[valuesArray[0]]}${VALUES[valuesArray[1]]}`);
 }

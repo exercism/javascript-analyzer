@@ -9,7 +9,7 @@ function colorCode(color) {
   }
 }
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
   const array = new Array;
   colors.forEach(element => {
     array.push(colorCode(element));

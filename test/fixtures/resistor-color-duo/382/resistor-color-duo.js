@@ -1,6 +1,6 @@
 
 
-// export const value = (color1, color2) =>{
+// export const decodedValue = (color1, color2) =>{
 //     var COLORS = [
 //         "black"
 //         , "brown"
@@ -12,7 +12,7 @@
 //         , "violet"
 //         , "grey"
 //         , "white"
-//     ] 
+//     ]
 //return COLORS.indexOf(color1);
 
 
@@ -20,7 +20,7 @@
 //The following conole logs the correct answers,
 //but does not pass the tests.  The tests return -1
 //in each instance.  I'm wondering if it has to do with
-//the expected value being in an array?
+//the expected decodedValue being in an array?
 //plus they are testing color and color, not just color, color
 
 // const c1 = COLORS.indexOf(color1)
@@ -45,12 +45,12 @@
 
 
 //}
-//console.log(value("brown", "black"))
-// console.log(value("blue", "grey"))
-// console.log(value("yellow", "violet"))
-// console.log(value("orange", "orange"))
+//console.log(decodedValue("brown", "black"))
+// console.log(decodedValue("blue", "grey"))
+// console.log(decodedValue("yellow", "violet"))
+// console.log(decodedValue("orange", "orange"))
 
-export const value = (Colorandcolor) => {
+export const decodedValue = (Colorandcolor) => {
     var COLORS = [
         "black"
         , "brown"
@@ -79,12 +79,12 @@ export const value = (Colorandcolor) => {
     //const array1 = lwrcase.split(' ')
     //let color1 = Colorandcolor[0]
     //let color2 = Colorandcolor[1]
-    
+
     // const array2 = array1.filter(function (el) {
     //     return el != 'and'
     // })
     //return array2
-    
+
 
         // const c1 = COLORS.indexOf(color1)
         // const c2 = COLORS.indexOf(color2)
@@ -93,27 +93,27 @@ export const value = (Colorandcolor) => {
         // const intnumber = parseInt(trimmed)
         // return intnumber
 
-    
 
-   
+
+
 
 
     //so now I have an equivelent array, now I gotta
     //get that array to equal the number they are looking for
     //from the original array, I've done something similar in a different
     //exercism.  which one?
-    //if value in 2nd array = value of first array then return index
-    //of that value in first array
+    //if decodedValue in 2nd array = decodedValue of first array then return index
+    //of that decodedValue in first array
 
 }
 
 
 
 
-// console.log(value(['brown', 'black']))
-// console.log(value("Blue and grey"))
-// console.log(value("Yellow and violet"))
-// console.log(value("Orange and orange"))
+// console.log(decodedValue(['brown', 'black']))
+// console.log(decodedValue("Blue and grey"))
+// console.log(decodedValue("Yellow and violet"))
+// console.log(decodedValue("Orange and orange"))
 
 // var COLORS = [
 //     "black"

@@ -11,5 +11,5 @@ const Colors = [
   "white"
 ];
 
-export const value = ([c1, c2]) =>
+export const decodedValue = ([c1, c2]) =>
   Colors.findIndex(d => d === c1) * 10 + Colors.findIndex(d => d === c2);

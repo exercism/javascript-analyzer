@@ -12,7 +12,7 @@ const COLOR_VALUE = {
 }
 
 
-export function value(colors) {
+export function decodedValue(colors) {
   const values = colors.map((color) => COLOR_VALUE[color]).join('');
 
   return Number(values);

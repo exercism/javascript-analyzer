@@ -2,7 +2,7 @@
 export const COLORS = ["black","brown","red","orange","yellow","green","blue","violet","grey","white"]
 
 
-export const value = (colors)=>{
+export const decodedValue = (colors)=>{
     let val=0;
     let decimalPart=1;
     for(let i=colors.length-1;i>=0;i--){

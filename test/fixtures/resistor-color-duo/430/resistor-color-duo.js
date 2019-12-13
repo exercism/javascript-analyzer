@@ -1,6 +1,6 @@
 var COLORS = ["black","brown","red","orange","yellow","green","blue","violet","grey","white"] ;
 
-export function value(colorArr) {
+export function decodedValue(colorArr) {
     var val = "";
 
     colorArr.forEach(function(element) {

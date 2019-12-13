@@ -1,4 +1,4 @@
-export function value([first, second]) {
+export function decodedValue([first, second]) {
   const colorMap = {
     black: 0,
     brown: 1,

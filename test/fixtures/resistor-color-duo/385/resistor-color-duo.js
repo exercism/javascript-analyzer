@@ -11,5 +11,5 @@ const colors = {
   'white': 9,
 };
 
-export const value = (bandColors) => bandColors.reduce((total, color, i) =>
+export const decodedValue = (bandColors) => bandColors.reduce((total, color, i) =>
   total += colors[color] * 10 ** (Object.keys(bandColors).length - i - 1), 0);

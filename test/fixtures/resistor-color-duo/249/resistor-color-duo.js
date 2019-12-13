@@ -11,7 +11,7 @@ const COLORS = {
   white: 9
 }
 
-export function value(colors) {
+export function decodedValue(colors) {
   return colors.reduce((n, color) => {
     return Number(`${n}${COLORS[color]}`)
   }, 0);

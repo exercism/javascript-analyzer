@@ -1,14 +1,14 @@
-// Convert Resistor Color input sequence to numeric value.
-// Note:  this function supports an arbitrary number of input colors. 
+// Convert Resistor Color input sequence to numeric decodedValue.
+// Note:  this function supports an arbitrary number of input colors.
 // input:  list with one or more colors, as strings.
-// output:  single integer value representing the colors 
+// output:  single integer decodedValue representing the colors
 //     specified in the input string.
-// example:  value(['red', 'blue']), yields:  26
+// example:  decodedValue(['red', 'blue']), yields:  26
 
-const colors = 
+const colors =
    ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'blue', 'violet', 'grey', 'white']
 
-export const value = (input_colors) => {
+export const decodedValue = (input_colors) => {
   if (! input_colors || input_colors.length == 0) {
      throw Error("Invalid input: minimum number of colors is one.");
   }

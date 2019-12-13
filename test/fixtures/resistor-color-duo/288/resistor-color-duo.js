@@ -1,4 +1,4 @@
-export const value = (values) => {
+export const decodedValue = (values) => {
 
     var sum = "";
 

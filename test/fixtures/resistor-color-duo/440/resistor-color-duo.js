@@ -11,7 +11,7 @@ const RESISTOR_KEY = {
   white: '9',
 }
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
   const formatColor = colors.map(color => color.toLowerCase());
   const resistorColor = parseInt(RESISTOR_KEY[`${formatColor[0]}`] + RESISTOR_KEY[`${formatColor[1]}`]);
   return resistorColor

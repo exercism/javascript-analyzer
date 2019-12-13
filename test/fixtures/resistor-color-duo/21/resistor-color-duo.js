@@ -11,7 +11,7 @@ const lookup = {
   white: 9,
 }
 
-export const value = (bands = []) => {
+export const decodedValue = (bands = []) => {
   return bands.reduce((number, band) => {
     const nextDigit = lookup[band];
     return Number('' + number + nextDigit);

@@ -1,4 +1,4 @@
-export { value, COLORS };
+export { decodedValue, COLORS };
 
 const COLORS = [
   "black",
@@ -13,7 +13,7 @@ const COLORS = [
   "white"
 ];
 
-const value = aColors => {
+const decodedValue = aColors => {
   let sOutput = ``;
   aColors.forEach(el => (sOutput = sOutput + COLORS.indexOf(el)));
   return parseInt(sOutput);

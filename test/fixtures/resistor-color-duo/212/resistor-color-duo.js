@@ -1,4 +1,4 @@
-export const value = (array) => {
+export const decodedValue = (array) => {
   return Number(String(colors.indexOf(array[0])) + String(colors.indexOf(array[1])));
 }
 

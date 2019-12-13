@@ -1,4 +1,4 @@
-export const value = (colors) => {
+export const decodedValue = (colors) => {
 	const values = [
 		'black',
 		'brown',

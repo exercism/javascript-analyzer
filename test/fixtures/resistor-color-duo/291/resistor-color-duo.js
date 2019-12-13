@@ -11,6 +11,6 @@ const colorMap = {
     "white": 9
 }
 
-export const value = (...args)=>{
-        return  parseInt(`${colorMap[args[0]]}${colorMap[args[1]]}`) 
+export const decodedValue = (...args)=>{
+        return  parseInt(`${colorMap[args[0]]}${colorMap[args[1]]}`)
 }

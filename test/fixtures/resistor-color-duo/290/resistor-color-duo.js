@@ -1,6 +1,6 @@
 export const COLORS = ["black","brown","red","orange","yellow","green","blue","violet","grey","white"];
 
-export const value =(name) =>{
+export const decodedValue =(name) =>{
     name = "";
     for (var i=0; i<2; i++){
         name = name+COLORS.indexOf(name);

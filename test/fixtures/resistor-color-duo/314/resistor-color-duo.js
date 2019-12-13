@@ -15,8 +15,8 @@ const colorCode = color => {
   return COLORS.indexOf(color);
 };
 
-export const value = colorCode.reduce((value, currentColor) =>
-value + currentColor.colorCode, // reducer function
-  0 // initial accumulator value
+export const decodedValue = colorCode.reduce((decodedValue, currentColor) =>
+decodedValue + currentColor.colorCode, // reducer function
+  0 // initial accumulator decodedValue
 );
 

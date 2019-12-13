@@ -15,7 +15,7 @@ export const colorCode = color => {
   return COLORS.findIndex(element => element === color);
 };
 
-export const value = (colsArr) => {
+export const decodedValue = (colsArr) => {
   let code = '';
   colsArr.forEach(element => {
     code += colorCode(element);

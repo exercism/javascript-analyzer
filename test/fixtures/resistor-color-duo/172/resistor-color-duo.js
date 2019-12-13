@@ -10,7 +10,7 @@ const COLORS = {
     "grey": 8,
     "white": 9}
 
-export const value = function (colors) {
+export const decodedValue = function (colors) {
 	let color1 = colors[0];
 	let color2 = colors[1];
 

@@ -11,6 +11,6 @@ export const COLORS = [
   'white',
 ];
 
-export function value(color) {
+export function decodedValue(color) {
   return COLORS.indexOf(color[0]) * 10 + COLORS.indexOf(color[1]);
 }

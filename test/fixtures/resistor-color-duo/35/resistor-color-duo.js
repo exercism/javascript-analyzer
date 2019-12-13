@@ -11,7 +11,7 @@ const COLORS = [
   "white"
 ];
 
-export const value = colors => {
+export const decodedValue = colors => {
   return Number(
     colors.reduce(
       (accumulator, color) => accumulator + COLORS.indexOf(color),

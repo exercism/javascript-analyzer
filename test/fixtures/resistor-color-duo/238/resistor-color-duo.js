@@ -1,6 +1,6 @@
 const COLORS = ["black", "brown", "red", "orange", "yellow", "green", "blue", "violet", "grey", "white"];
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
   let resistorNumber = '';
 
   colors.forEach(color => {

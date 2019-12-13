@@ -1,4 +1,4 @@
-export function value (colors) {
+export function decodedValue (colors) {
   const bandColors = {
     black: '0',
     brown: '1',

@@ -1,4 +1,4 @@
-function value(color){
+function decodedValue(color){
     var [color1,color2]=color
     const colors={
       black: 0,
@@ -12,8 +12,8 @@ function value(color){
       grey: 8,
       white: 9
       }
-    
+
     return parseInt(colors[color1].toString() + colors[color2].toString())
     }
 
-export {value} 
+export {decodedValue}

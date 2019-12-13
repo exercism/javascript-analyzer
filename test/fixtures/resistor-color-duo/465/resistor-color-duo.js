@@ -1,7 +1,7 @@
 
 
-export function value(color1,color2){
-    var resistionary = 
+export function decodedValue(color1,color2){
+    var resistionary =
     {'black': 0,
      'brown': 1,
      'red': 2,

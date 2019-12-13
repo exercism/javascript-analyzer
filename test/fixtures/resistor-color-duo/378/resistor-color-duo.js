@@ -1,4 +1,4 @@
-export const value = ([colorOne,colorTwo]) => {
+export const decodedValue = ([colorOne,colorTwo]) => {
 
     const COLORS = ["black","brown","red","orange","yellow","green","blue","violet","grey","white"];
     const resistorValue = (bandColor) => {

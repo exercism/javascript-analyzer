@@ -4,6 +4,6 @@ function digit(color) {
     return COLORS.indexOf(color);
 }
 
-export function value(colors) {
+export function decodedValue(colors) {
     return digit(colors[0]) * 10 + digit(colors[1]);
 }

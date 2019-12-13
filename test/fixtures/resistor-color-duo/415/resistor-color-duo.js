@@ -1,4 +1,4 @@
-export function value(color_array){
+export function decodedValue(color_array){
     let sum = ''
     for (let count =0; count < color_array.length; count++){
         sum = sum + COLORS.indexOf(color_array[count])

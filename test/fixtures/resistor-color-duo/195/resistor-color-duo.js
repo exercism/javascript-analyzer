@@ -9,7 +9,7 @@ const COLORS = ["black",
                 "grey",
                 "white"];
 
-export const value = (bands) => {
+export const decodedValue = (bands) => {
     let result = '';
     for (let i = 0; i < bands.length; i++) {
         result = result + COLORS.indexOf(bands[i]);

@@ -1,4 +1,4 @@
-export const value = (input) => {
+export const decodedValue = (input) => {
   if (!Array.isArray(input)) {
     throw new Error('inpout has to be array')
   }

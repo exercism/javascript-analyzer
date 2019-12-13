@@ -15,6 +15,6 @@ const COLORS = [
 const colorCode = input => COLORS.indexOf(input).toString();
 
 // Join the string, and convert to number
-export const value = input => {
+export const decodedValue = input => {
   return Number(input.map(resistor => colorCode(resistor)).join(""));
 };

@@ -1,7 +1,7 @@
 const COLORS=[
-    "black", 
-    "brown", 
-    "red", 
+    "black",
+    "brown",
+    "red",
     "orange",
     "yellow",
     "green",
@@ -10,5 +10,5 @@ const COLORS=[
     "grey",
     "white"];
 
-export const value = (color) =>  parseInt(COLORS.indexOf(color[0]) 
+export const decodedValue = (color) =>  parseInt(COLORS.indexOf(color[0])
     + "" + COLORS.indexOf(color[1]));

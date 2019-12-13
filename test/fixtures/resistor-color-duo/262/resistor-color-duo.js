@@ -11,10 +11,10 @@ const COLORS_OBJ = {
   white: 9,
 };
 
-const value = colors => parseInt(colors.reduce((acc, color) => (
+const decodedValue = colors => parseInt(colors.reduce((acc, color) => (
     acc + COLORS_OBJ[color]
   ), ''), 10);
 
 module.exports = {
-  value,
+  decodedValue,
 };

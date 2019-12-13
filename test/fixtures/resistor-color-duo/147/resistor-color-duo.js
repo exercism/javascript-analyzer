@@ -11,7 +11,7 @@ export let COLORS = [
   "white"
 ]
 
-export const value = (a,b) => {
+export const decodedValue = (a,b) => {
   const val1 = COLORS.indexOf(a);
   const val2 = COLORS.indexOf(b);
 

@@ -13,10 +13,10 @@ const colorConverter = {
 }
 
 /**
- * 
- * @param {Array<string>} colors 
+ *
+ * @param {Array<string>} colors
  * @returns {number}
  */
-export function value(colors) {
+export function decodedValue(colors) {
     return colorConverter[colors[0]] * 10 + colorConverter[colors[1]];
 }

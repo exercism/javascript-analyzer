@@ -6,6 +6,6 @@ const colorCode = (color) => {
   return COLORS.indexOf(color);
 };
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
   return parseInt(colors.map(colorCode).join(""));
 };

@@ -11,6 +11,6 @@ const values = {
   white: 9,
 }
 
-export const value = ( [color1, color2] ) => {
+export const decodedValue = ( [color1, color2] ) => {
   return Number(`${values[color1]}${values[color2]}`);
 }

@@ -1,4 +1,4 @@
-export const value = (inputArr) => {
+export const decodedValue = (inputArr) => {
     var colormapping = {
         black: 0,
         brown: 1,
@@ -16,6 +16,6 @@ export const value = (inputArr) => {
     inputArr.forEach(color => {
         mappedColor += colormapping[color];
     });
-   
+
     return parseInt(mappedColor);
 };

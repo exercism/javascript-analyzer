@@ -11,9 +11,9 @@ const COLORS = {
     white: 9
 }
 
-function value(duo) {
-    const value = duo.map(color => COLORS[color]).join('')
-    return parseInt(value)
+function decodedValue(duo) {
+    const decodedValue = duo.map(color => COLORS[color]).join('')
+    return parseInt(decodedValue)
 }
 
-export { value }
+export { decodedValue }

@@ -12,7 +12,7 @@ const COLORS = [
 ];
 
 
-export function value(colorDuo) {
+export function decodedValue(colorDuo) {
   // console.log(colorDuo.forEach(function(color) {
   //   COLORS.indexOf(color);
   // })

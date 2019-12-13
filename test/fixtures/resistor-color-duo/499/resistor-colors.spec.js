@@ -1,4 +1,4 @@
-import { value } from './resistor-colors.js';
+import { decodedValue } from './resistor-colors.js';
 
 const ColorArray = ["Black", "Brown", "Red", "Orange", "Yellow",
 "Green", "Blue", "Violet", "Grey", "White"]

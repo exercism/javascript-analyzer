@@ -1,5 +1,5 @@
 
-export const value = (arr) => {
+export const decodedValue = (arr) => {
 
   const colors = ["black","brown","red","orange","yellow","green","blue","violet","grey","white"];
   let code = '';

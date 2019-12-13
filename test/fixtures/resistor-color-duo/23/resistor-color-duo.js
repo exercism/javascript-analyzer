@@ -15,10 +15,10 @@ function colorCode(color) {
   return COLORS.indexOf(color);
 }
 
-function value(resistors) {
+function decodedValue(resistors) {
   return Number (resistors.map( resistor => {
     return colorCode(resistor);
  }).join(''));
 }
 
-export {value};
+export {decodedValue};

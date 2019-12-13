@@ -11,4 +11,4 @@ const MAPPING = {
     white: '9'
 };
 
-export const value = ([first, second]) => parseInt(MAPPING[first] + MAPPING[second]);
+export const decodedValue = ([first, second]) => parseInt(MAPPING[first] + MAPPING[second]);

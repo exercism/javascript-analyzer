@@ -16,15 +16,15 @@ const COLORS = [
 ];
 
 /**
- * Calculate the value of the band from two resistor colors
+ * Calculate the decodedValue of the band from two resistor colors
  *
  * @param {string[]} colors - A list of resistor colors
- * @returns {number} The value of the band
+ * @returns {number} The decodedValue of the band
  *
  * @example
- *  value(["brown", "black"]) #=> 10
+ *  decodedValue(["brown", "black"]) #=> 10
  */
-export function value(colors) {
+export function decodedValue(colors) {
   return Number.parseInt(
     colors.reduce((result, color) => result + COLORS.indexOf(color), ""),
     10

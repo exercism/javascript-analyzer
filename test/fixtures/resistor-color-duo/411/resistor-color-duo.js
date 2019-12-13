@@ -1,8 +1,8 @@
-export const value = () => {
+export const decodedValue = () => {
 
 var cores = valorCores();
 
-var value = retornaValores(cores, cores.brown, cores.black);
+var decodedValue = retornaValores(cores, cores.brown, cores.black);
 
 function valorCores() {
 
@@ -24,11 +24,11 @@ function valorCores() {
 
 function retornaValores(cores, cor1, cor2) {
 
-  var value = "" + cor1 + cor2;
+  var decodedValue = "" + cor1 + cor2;
 
-  return value;
+  return decodedValue;
 }
 
-return parseInt(value);
+return parseInt(decodedValue);
 
 }

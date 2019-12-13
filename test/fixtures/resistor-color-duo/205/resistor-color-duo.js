@@ -1,4 +1,4 @@
-export const value = (arr) => {
+export const decodedValue = (arr) => {
     const COLORS = ["black","brown","red","orange","yellow","green","blue","violet","grey","white"];
     var sum = 0;
 	for (var color in arr) {

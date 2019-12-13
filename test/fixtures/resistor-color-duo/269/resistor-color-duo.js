@@ -6,7 +6,7 @@ export const colorCode = (color) => {
   };
 
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
     let numbers_array = colors.map(colorCode);
     let sum = "";
     for (const item of numbers_array) {

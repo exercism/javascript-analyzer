@@ -4,8 +4,8 @@ function colorCode (color) {
   return COLORS.indexOf(color)
 }
 
-export function value (colors) {
+export function decodedValue (colors) {
   const values = colors.map(color => colorCode(color))
-  const value = values.reduce((acc, value) => acc + String(value))
-  return Number(value)
+  const decodedValue = values.reduce((acc, decodedValue) => acc + String(decodedValue))
+  return Number(decodedValue)
 }

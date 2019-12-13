@@ -10,8 +10,8 @@ const COLORS = [
     "grey",
     "white"
   ];
-  
-  export const value = (colors) => {
+
+  export const decodedValue = (colors) => {
     return colors
             .map(i => COLORS.indexOf(i))
             .join('') * 1;

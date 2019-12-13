@@ -11,12 +11,12 @@ const colorEncoding = new Map([
   ["white", "9"]
 ])
 
-function value(colors) {
+function decodedValue(colors) {
   var color1, color2;
   [color1, color2] = colors;
 
   return Number(colorEncoding.get(color1) + colorEncoding.get(color2))
 }
 
-export { value }
+export { decodedValue }
 

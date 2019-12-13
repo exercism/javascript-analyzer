@@ -11,6 +11,6 @@ const mapping = {
   'white': 9,
 }
 
-export function value(colors) {
+export function decodedValue(colors) {
   return parseInt(colors.reduce((acc, color) => acc + mapping[color], ''), 10);
 }

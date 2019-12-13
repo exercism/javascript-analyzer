@@ -11,6 +11,6 @@ const COLORS = [
   "white"
 ];
 
-export function value(colors) {
+export function decodedValue(colors) {
   return +colors.reduce((acc, c) => acc + COLORS.indexOf(c), "");
 }

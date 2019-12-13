@@ -3,7 +3,7 @@ export var COLORS = ["black","brown","red","orange","yellow","green","blue","vio
 export function colorCode(theColor){
     return COLORS.indexOf(theColor);
 }
-    
-export function value(colors){
+
+export function decodedValue(colors){
     return colorCode(colors[0]) * 10 + colorCode(colors[1]);
 }

@@ -12,7 +12,7 @@ export const COLORS = [
 ];
 
 /**
- * Returns the value of the given `color` on the resister color code.
+ * Returns the decodedValue of the given `color` on the resister color code.
  *
  * @param {string} color
  *
@@ -21,10 +21,10 @@ export const COLORS = [
 export const colorCode = color => COLORS.indexOf(color.toLowerCase());
 
 /**
- * Returns the resistance value of a resistor with the given `colors`.
+ * Returns the resistance decodedValue of a resistor with the given `colors`.
  *
  * @param {Array<string>} colors
  *
  * @return {number}
  */
-export const value = colors => +colors.map(colorCode).join('');
+export const decodedValue = colors => +colors.map(colorCode).join('');

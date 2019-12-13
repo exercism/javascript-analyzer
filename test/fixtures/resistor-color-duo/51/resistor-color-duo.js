@@ -23,7 +23,7 @@ const colors = [
 const colorToIndex = flip(indexOf)(colors)
 const toNumber = x => +x
 
-export const value = pipe(
+export const decodedValue = pipe(
   map(colorToIndex),
   map(toString),
   join(''),

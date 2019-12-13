@@ -1,4 +1,4 @@
-export const value = (array) => {
+export const decodedValue = (array) => {
     let total = ''
     for (let color of array) {
         total = total + COLORS.indexOf(color).toString()

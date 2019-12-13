@@ -1,4 +1,4 @@
-export function value(arr) {
+export function decodedValue(arr) {
   const resistors = {
     'black': '0',
     'brown': '1',

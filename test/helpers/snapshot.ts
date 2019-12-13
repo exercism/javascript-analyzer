@@ -3,6 +3,7 @@ import { FixtureInput } from "~test/helpers/input/FixtureInput";
 type AnalyzerFactory = () => Analyzer
 type generateAll = (status: Output['status'], fixtures: readonly number[]) => void
 
+// eslint-disable-next-line jest/no-export
 export function makeTestGenerator(slug: string, AnalyzerFactory: AnalyzerFactory): generateAll {
   function analyze(fixture: number): Promise<Output> {
     const analyzer = AnalyzerFactory()

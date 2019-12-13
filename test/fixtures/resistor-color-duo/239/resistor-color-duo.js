@@ -3,7 +3,7 @@ export const colorCode = (color) => {
     return COLORS.indexOf(color)
 }
 
-export const value = (code) => {
+export const decodedValue = (code) => {
     return Number(colorCode(code[0]).toString() + colorCode(code[1]).toString())
 }
 

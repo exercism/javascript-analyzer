@@ -11,4 +11,4 @@ const values = {
     "white": 9,
 }
 
-export let value = ([c1, c2]) => Number(`${values[c1]}${values[c2]}`);
+export let decodedValue = ([c1, c2]) => Number(`${values[c1]}${values[c2]}`);

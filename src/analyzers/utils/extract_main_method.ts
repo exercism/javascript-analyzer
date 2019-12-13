@@ -105,11 +105,12 @@ export function extractMainMethod<T extends string = string>(program: Program, n
             node.static
             && node.key.type === AST_NODE_TYPES.Identifier
             && node.key.name === name
+            && node.value !== null
           ) {
             switch(node.value.type) {
               case AST_NODE_TYPES.ArrowFunctionExpression:
               case AST_NODE_TYPES.FunctionExpression:
-                result =  Object.assign(node.value, { id: node.key, parent: node })
+                result = Object.assign(node.value, { id: node.key, parent: node })
                 this.break()
                 break;
             }

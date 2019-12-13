@@ -1,4 +1,4 @@
-export const value = colors => {
+export const decodedValue = colors => {
   const digits = colors.map(color => COLORS.indexOf(color));
   return digits[0] * 10 + digits[1];
 };

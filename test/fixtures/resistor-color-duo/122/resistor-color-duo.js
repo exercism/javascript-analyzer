@@ -20,7 +20,7 @@ export const colorCode = (color) => {
   return CODES[color];
 };
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
   return parseInt(colors.map(colorCode).join(""), 10);
 };
 

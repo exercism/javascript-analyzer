@@ -11,6 +11,6 @@ export const COLORS = {
   white: 9
 };
 
-export const value = input => {
+export const decodedValue = input => {
   return +input.map(x => COLORS[x]).join("");
 };

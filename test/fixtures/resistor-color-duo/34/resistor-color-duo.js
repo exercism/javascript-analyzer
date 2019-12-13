@@ -4,11 +4,11 @@ const colorCode = function (color){
     return COLORS.indexOf(color)
 }
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
     let val = 0;
 
     colors.forEach((element,index) =>{
-        //shift over the previous value and add the current color code value
+        //shift over the previous decodedValue and add the current color code decodedValue
         val =  (val * Math.pow(10,index)) + colorCode(element)
     })
     return val;

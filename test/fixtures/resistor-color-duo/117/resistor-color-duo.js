@@ -12,7 +12,7 @@ const colors = {
     "white": 9
 }
 
-const value = (array) => {
+const decodedValue = (array) => {
     let string = '';
     array.forEach(element => {
         string += colors[element];
@@ -23,5 +23,5 @@ const value = (array) => {
 
 
 export {
-    value
+    decodedValue
 };

@@ -11,7 +11,7 @@ const COLORS = [
     "white"
 ];
 
-export const value = colors =>
+export const decodedValue = colors =>
     colors.reduce((prev, curr) => {
         return parseInt(COLORS.indexOf(prev) + "" + COLORS.indexOf(curr));
     });

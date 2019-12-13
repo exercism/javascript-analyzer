@@ -23,8 +23,8 @@ const codesValue = codes => Number(codes.join(""))
 
 // Transform colors into a number that represents the colors.
 // Example:
-// value(["brown", "red", "orange", "yellow"]) // returns 1234
-export const value = colors => {
+// decodedValue(["brown", "red", "orange", "yellow"]) // returns 1234
+export const decodedValue = colors => {
   const colorCodes = colors.map(colorCode)
   return codesValue(colorCodes)
 }

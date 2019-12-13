@@ -16,4 +16,4 @@ const getColorValue = colors => colorNames =>
         colors[colorName.toLowerCase()]).join('')
 
 
-export const value = (colorNames) => Number(getColorValue(colorMap)(colorNames))
+export const decodedValue = (colorNames) => Number(getColorValue(colorMap)(colorNames))

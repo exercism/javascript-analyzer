@@ -11,8 +11,8 @@ const resistorObj = {
   white: '9'
 };
 
-/* 
-const value = colors => {
+/*
+const decodedValue = colors => {
   const resistanceValue = colors
         .map(x => resistorObj[x])
         .reduce((total, current) => total + current);
@@ -20,6 +20,6 @@ const value = colors => {
 }
 */
 
-const value = colors => parseInt(resistorObj[colors[0]] + resistorObj[colors[1]]);
+const decodedValue = colors => parseInt(resistorObj[colors[0]] + resistorObj[colors[1]]);
 
-export { value };
+export { decodedValue };

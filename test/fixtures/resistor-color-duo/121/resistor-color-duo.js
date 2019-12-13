@@ -1,6 +1,6 @@
 const COLORS = ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'blue', 'violet', 'grey', 'white']
 
-export const value = colors => {
+export const decodedValue = colors => {
     return 10 * colorDigit(colors[0]) + colorDigit(colors[1])
 }
 

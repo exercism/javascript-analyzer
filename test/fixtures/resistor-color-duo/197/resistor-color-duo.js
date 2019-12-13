@@ -1,6 +1,6 @@
 const COLORS = ["black", "brown", "red", "orange", "yellow", "green", "blue", "violet", "grey", "white"]
 
-export const value = (selectedColors) => {
+export const decodedValue = (selectedColors) => {
   let result = ''
 
   for (let i = 0; i < selectedColors.length; i++) {

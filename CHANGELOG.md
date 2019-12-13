@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.1
+
+- Update dependencies
+- Change `resistor-color-duo` expected export name to `decodedValue`
+
 ## 0.6.0
 
 - Fix various `shared` comments which had `generic` instead of `general` in their name.

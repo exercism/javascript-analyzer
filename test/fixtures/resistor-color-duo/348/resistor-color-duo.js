@@ -1,3 +1,3 @@
-export const value = {
-    
+export const decodedValue = {
+
 }

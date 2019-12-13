@@ -15,6 +15,6 @@ function colorToValue(color) {
   return COLORS.indexOf(color);
 }
 
-export function value(band_colors) {
+export function decodedValue(band_colors) {
   return Number(band_colors.map(colorToValue).join(""));
 }

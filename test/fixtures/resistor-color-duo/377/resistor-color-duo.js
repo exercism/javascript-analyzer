@@ -11,7 +11,7 @@ const allColors = [
   "white"
 ];
 
-export function value(resistorColors) {
+export function decodedValue(resistorColors) {
   let total = "";
   resistorColors.forEach(color => {
     total = total.concat(allColors.indexOf(color));

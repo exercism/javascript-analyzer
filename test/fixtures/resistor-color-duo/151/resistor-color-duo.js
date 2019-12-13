@@ -1,5 +1,5 @@
 export const COLORS = ["black", "brown", "red", "orange", "yellow", "green", "blue", "violet", "grey", "white"]
-export const value = (colors) => {
+export const decodedValue = (colors) => {
   colors.reverse();
   // let endValue = 0;
   // for (let i = 0; i < colors.length; i++) {

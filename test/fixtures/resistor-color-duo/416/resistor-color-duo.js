@@ -4,7 +4,7 @@ export const colorCode = (color) => {
     return COLORS.indexOf(color);
 };
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
     let output = '';
     for (let color of colors) {
         output = output + COLORS.indexOf(color);

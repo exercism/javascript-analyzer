@@ -1,9 +1,9 @@
-export const value = (bands) => {
+export const decodedValue = (bands) => {
     var colors = ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'blue', 'violet', 'grey', 'white'];
-    var value = 0;
+    var decodedValue = 0;
 
-    value += colors.indexOf(bands[0]) * 10;
-    value += colors.indexOf(bands[1]);
+    decodedValue += colors.indexOf(bands[0]) * 10;
+    decodedValue += colors.indexOf(bands[1]);
 
-    return value;
+    return decodedValue;
 };

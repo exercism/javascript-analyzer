@@ -1,4 +1,4 @@
-export const value = function(colorNames) {
+export const decodedValue = function(colorNames) {
 
         if(!(colorNames instanceof Array) || colorNames.length === 0) {
           return -1;
@@ -21,10 +21,10 @@ export const value = function(colorNames) {
 
 
         var bandNumber = colorNames.reduce( function(bandNumber, elem) {
-            return bandNumber + codes[elem];  
+            return bandNumber + codes[elem];
         },
         '');
-        
+
         return Number(bandNumber);
 
 }

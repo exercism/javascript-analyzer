@@ -1,4 +1,4 @@
-const value = ([colorOne, colorTwo]) => {
+const decodedValue = ([colorOne, colorTwo]) => {
    const colors = [
       "black",
       "brown",
@@ -15,5 +15,5 @@ const value = ([colorOne, colorTwo]) => {
    return parseInt(val);
 };
 
-export {value};
+export {decodedValue};
 

@@ -9,11 +9,11 @@ const COLORS = {
 	"green": 5,
 	"blue": 6,
 	"violet": 7,
-	"grey": 8, 
+	"grey": 8,
 	"white": 9,
 }
 
-export const value = (arrOfColors) => {
+export const decodedValue = (arrOfColors) => {
 	const i = arrOfColors
 							.map(x => COLORS[x])
 							.map(i => i.toString())

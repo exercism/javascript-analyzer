@@ -1,6 +1,6 @@
-export { value };
+export { decodedValue };
 
-const value = colors => {
+const decodedValue = colors => {
   const COLORS = {
     black: 0,
     brown: 1,
@@ -18,4 +18,4 @@ const value = colors => {
   return parseInt(`${c1}` + `${c2}`);
 };
 
-console.log(value(["Brown", "Black"]));
+console.log(decodedValue(["Brown", "Black"]));

@@ -1,3 +1,3 @@
 import { colorCode } from './resistor-color.js';
 
-export const value = (colors) => parseInt(colors.map(color => colorCode(color)).join(''), 10);
+export const decodedValue = (colors) => parseInt(colors.map(color => colorCode(color)).join(''), 10);

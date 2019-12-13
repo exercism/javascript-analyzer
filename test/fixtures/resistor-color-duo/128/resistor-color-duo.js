@@ -13,4 +13,4 @@ const COLORS = [
 
 const colorCode = (color) => COLORS.indexOf(color);
 
-export const value = color => ((colorCode(color[0]) * 10) + colorCode(color[1]));
+export const decodedValue = color => ((colorCode(color[0]) * 10) + colorCode(color[1]));

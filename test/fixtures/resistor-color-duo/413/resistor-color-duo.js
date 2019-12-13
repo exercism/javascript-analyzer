@@ -1,6 +1,6 @@
 const COLORS = ["black","brown","red","orange","yellow","green","blue","violet","grey","white"];
 
-export const value = ([col1 , col2]) => {
+export const decodedValue = ([col1 , col2]) => {
     let color1 = col1.toLowerCase();
     let color2 = col2.toLowerCase();
 

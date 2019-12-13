@@ -1,6 +1,6 @@
 export const COLORS = ["black","brown","red","orange","yellow","green","blue","violet","grey","white"]
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
   let code = "";
   for (var color of colors ) {
     code += COLORS.indexOf(color);
@@ -8,4 +8,4 @@ export const value = (colors) => {
   return parseInt(code);
 }
 
-value(["black", "blue", "orange"]);
+decodedValue(["black", "blue", "orange"]);

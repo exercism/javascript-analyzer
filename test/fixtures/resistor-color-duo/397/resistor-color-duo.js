@@ -15,11 +15,11 @@ function colorCode(color) {
     return COLORS.indexOf(color);
 }
 
-function value(colors) {
+function decodedValue(colors) {
     var result = "";
     for (var i in colors ) {
         result += colorCode(colors[i]);
     }
     return parseInt(result);
 }
-export { value }
+export { decodedValue }

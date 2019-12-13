@@ -1,9 +1,9 @@
 export const COLORS = ["black","brown","red","orange","yellow","green","blue","violet","grey","white"];
 
-export function value(colors){
-  let value = '';
+export function decodedValue(colors){
+  let decodedValue = '';
   colors.forEach(element => {
-    value += (COLORS.indexOf(element));
+    decodedValue += (COLORS.indexOf(element));
   });
-  return Number(value);
+  return Number(decodedValue);
 }

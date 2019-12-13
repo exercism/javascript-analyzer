@@ -11,7 +11,7 @@ export const COLORS = {
   White: '9'
 }
 
-export function value(color1, color2) {
+export function decodedValue(color1, color2) {
   let colorsSum = COLORS[color1] + COLORS[color2];
   return Number.parseInt(colorsSum);
 }

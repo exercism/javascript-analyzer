@@ -11,4 +11,4 @@ const resistors = {
     white: 9
 }
 
-export const value = ([key, key2]) => Number(`${resistors[key]}${resistors[key2]}`)
+export const decodedValue = ([key, key2]) => Number(`${resistors[key]}${resistors[key2]}`)

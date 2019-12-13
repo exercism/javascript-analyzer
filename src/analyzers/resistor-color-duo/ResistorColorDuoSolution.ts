@@ -1,13 +1,10 @@
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree";
-import { Statement, Node, MemberExpression, CallExpression, ArrowFunctionExpression, FunctionExpression, TemplateLiteral } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
-
+import { ArrowFunctionExpression, CallExpression, FunctionExpression, Node, Statement, TemplateLiteral } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
 import { extractExport } from "~src/analyzers/utils/extract_export";
 import { extractMainBody, MainBody } from "~src/analyzers/utils/extract_main_body";
 import { extractMainMethod, MainMethod } from "~src/analyzers/utils/extract_main_method";
 import { parameterName } from "~src/analyzers/utils/extract_parameter";
 import { findFirst } from "~src/analyzers/utils/find_first";
-import { findMemberCall } from "~src/analyzers/utils/find_member_call";
-import { isNewExpression } from "~src/analyzers/utils/find_new_expression";
 import { findTopLevelConstants, ProgramConstant, ProgramConstants } from "~src/analyzers/utils/find_top_level_constants";
 import { isBinaryExpression } from "~src/analyzers/utils/is_binary_expression";
 import { isCallExpression } from "~src/analyzers/utils/is_call_expression";
@@ -27,8 +24,8 @@ type Expression = TSESTree.Expression
 
 type MainExport = ReturnType<typeof extractExport>
 
-const EXPECTED_METHOD = 'value'
-const EXPECTED_EXPORT = 'value'
+const EXPECTED_METHOD = 'decodedValue'
+const EXPECTED_EXPORT = 'decodedValue'
 const PROBABLE_CONSTANT = 'COLORS'
 
 export class MissingExpectedCall {
@@ -811,10 +808,10 @@ export class ResistorColorDuoSolution {
   }
 
   public get hasInlineExport(): boolean {
-    // export function value
+    // export function decodedValue
     // => no specififers
     //
-    // export { value }
+    // export { decodedValue }
     // => yes specififers
     //
     return !this.mainExport[0].specifiers || this.mainExport[0].specifiers.length === 0

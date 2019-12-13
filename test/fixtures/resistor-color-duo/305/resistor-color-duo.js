@@ -11,7 +11,7 @@ const COLORS = [
   "white"
 ];
 
-export const value = arr => {
+export const decodedValue = arr => {
   let total = "";
   arr.forEach(function(color) {
     total += COLORS.indexOf(color);

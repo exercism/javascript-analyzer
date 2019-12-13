@@ -11,7 +11,7 @@ const COLORS = [
 	"white"
 ];
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
     let result = 0;
     while (colors.length > 0) {
         let color = colors.shift();

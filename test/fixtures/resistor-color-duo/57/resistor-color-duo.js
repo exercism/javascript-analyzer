@@ -2,4 +2,4 @@ const ENCODED_COLORS = ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'b
 
 const resistanceCalculator = (resistanceValue, color, index) => resistanceValue + ENCODED_COLORS.indexOf(color)*Math.pow(10, index);
 
-export const value = (colors) => colors.reverse().reduce(resistanceCalculator, 0);
+export const decodedValue = (colors) => colors.reverse().reduce(resistanceCalculator, 0);

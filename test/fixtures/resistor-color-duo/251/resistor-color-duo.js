@@ -1,4 +1,4 @@
-const colors = 
+const colors =
   {
     'black' : '0',
     'brown': '1',
@@ -12,6 +12,6 @@ const colors =
     'white': '9'
   };
 
-export function value (arr) {
+export function decodedValue (arr) {
   return parseInt(colors[arr[0]] + colors[arr[1]]);
 }
