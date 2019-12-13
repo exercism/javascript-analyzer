@@ -11,7 +11,7 @@ export const COLORS = {
   "white": 9
 }
 
-export const value = (resistors) => {
+export const decodedValue = (resistors) => {
   let sum = ''
   resistors.forEach(resistor => {
     sum += COLORS[resistor].toString()

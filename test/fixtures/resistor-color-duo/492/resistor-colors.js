@@ -10,7 +10,7 @@ export const COLORS = [
   "grey",
   "white"
 ];
-export function value(asd) {
+export function decodedValue(asd) {
   var num = "";
   asd.forEach(function(ele) {
     num += (COLORS.indexOf(ele)).toString();

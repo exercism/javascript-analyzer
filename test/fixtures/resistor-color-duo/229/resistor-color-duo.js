@@ -15,8 +15,8 @@ function code(name) {
     return COLORS.indexOf(name);
 }
 
-function value(bands) {
+function decodedValue(bands) {
     return code(bands[0]) * 10 + code(bands[1]);
 }
 
-export { value };
+export { decodedValue };

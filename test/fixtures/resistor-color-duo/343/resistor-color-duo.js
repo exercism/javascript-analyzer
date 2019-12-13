@@ -1,4 +1,4 @@
-export const value = function(colors) {
+export const decodedValue = function(colors) {
   const colorArray = Array.from(colors);
   const resultAsString = colorArray.reduce((previous, current) => {
     if (previous) {

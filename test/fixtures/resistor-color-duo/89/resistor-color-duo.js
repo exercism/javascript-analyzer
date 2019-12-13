@@ -1,5 +1,5 @@
 
-export const value = (param) => {
+export const decodedValue = (param) => {
     const colorsArray = [];
     for(let i =0; i<param.length; i++){
         switch(param[i]){

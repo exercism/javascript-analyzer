@@ -1,4 +1,4 @@
-export function value([color1, color2]) {
+export function decodedValue([color1, color2]) {
   let COLORS = [
     "black",
     "brown",

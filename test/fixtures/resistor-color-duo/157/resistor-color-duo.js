@@ -11,14 +11,14 @@ export const COLORS = {
     "white": "9"
 }
 
-export function value(colors = []) {
+export function decodedValue(colors = []) {
 
-    let bandsValue = ""; 
+    let bandsValue = "";
 
     colors.forEach(element => {
         bandsValue += COLORS[element];
     });
 
-    return parseInt(bandsValue); 
+    return parseInt(bandsValue);
 
 }

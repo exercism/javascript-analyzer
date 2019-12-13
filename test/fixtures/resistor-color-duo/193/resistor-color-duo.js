@@ -17,4 +17,4 @@ const reduceToDecimal = (acc, cur, idx) => acc + cur * Math.pow(10, idx)
 
 const arrayToDecimal = (array) => array.reverse().reduceRight(reduceToDecimal, 0)
 
-export const value = (colors) => arrayToDecimal(colors.map(colorCode))
+export const decodedValue = (colors) => arrayToDecimal(colors.map(colorCode))

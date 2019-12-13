@@ -4,7 +4,7 @@ const colorCode = color => {
   return COLORS.indexOf(color.toLowerCase());
 };
 
-const value = (colorString) => {
+const decodedValue = (colorString) => {
   const color1 = colorString.split(' ')[0].toLowerCase();
   const color2 = colorString.split(' ')[2].toLowerCase();
   const value1 = colorCode(color1);

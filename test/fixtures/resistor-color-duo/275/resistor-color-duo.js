@@ -11,7 +11,7 @@ var colorMap = {
     white: 9
 };
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
     var result = ''
     colors.forEach(color => result += colorMap[color]);
     return Number(result);

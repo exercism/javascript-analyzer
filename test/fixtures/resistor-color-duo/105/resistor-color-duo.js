@@ -1,4 +1,4 @@
-export const value = (resistorColors) => {
+export const decodedValue = (resistorColors) => {
 
     const COLORS = {
         'black': 0,

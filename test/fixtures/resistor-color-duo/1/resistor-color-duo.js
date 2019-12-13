@@ -13,4 +13,4 @@ const COLORS = [
 
 const colorCode = color => COLORS.indexOf(color);
 
-export const value = colors => new Number(colors.map(colorCode).join(""));
+export const decodedValue = colors => new Number(colors.map(colorCode).join(""));

@@ -11,5 +11,5 @@ const colorCode = {
     white: 9,
 };
 
-export const value = ([color1, color2]) =>
+export const decodedValue = ([color1, color2]) =>
     Number(colorCode[color1].toString() + colorCode[color2].toString());

@@ -1,4 +1,4 @@
-export const value = ([bandColorOne, bandColorTwo]) => {
+export const decodedValue = ([bandColorOne, bandColorTwo]) => {
   const COLORS = ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'blue', 'violet', 'grey', 'white'];
 
   const resistanceValue = calcResistance();

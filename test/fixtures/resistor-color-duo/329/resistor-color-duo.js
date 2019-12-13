@@ -10,13 +10,13 @@ const COLORS = [
     'grey',
     'white'
   ];
-  
-  export function value() {
+
+  export function decodedValue() {
     var s = "";
     var colors = arguments[0];
     for (var i = 0; i < colors.length; i++){
         s += COLORS.indexOf(colors[i].toLowerCase());
-        
-    }  
+
+    }
     return parseInt(s);
   }

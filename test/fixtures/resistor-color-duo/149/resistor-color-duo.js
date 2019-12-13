@@ -10,9 +10,9 @@ const COLORS = [
          'grey',
          'white'
 ];
- 
-function value([color1, color2]) {
+
+function decodedValue([color1, color2]) {
         return Number(COLORS.indexOf(color1.toLowerCase()).toString() + COLORS.indexOf(color2.toLowerCase()).toString());
 }
- 
-export { COLORS, value};
+
+export { COLORS, decodedValue};

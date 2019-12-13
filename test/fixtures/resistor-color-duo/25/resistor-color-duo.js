@@ -15,7 +15,7 @@ export const codeGolf = colors => {
   return Number(colors.map(c => COLORS.indexOf(c).toString()).join(""));
 };
 
-export function value(colors) {
+export function decodedValue(colors) {
   const result = Array(colors.length);
 
   for (const name of colors) {

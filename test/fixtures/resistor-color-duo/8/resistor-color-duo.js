@@ -11,7 +11,7 @@ const RESISTOR_MAP = new Map([
   ["white", 9]
 ]);
 
-export const value = arr => {
+export const decodedValue = arr => {
   let str = "";
   arr.forEach(element => {
     str += RESISTOR_MAP.get(element);

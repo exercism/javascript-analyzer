@@ -11,7 +11,7 @@ const colorMap = {
   white: 9,
 };
 
-function value(colorNameList) {
+function decodedValue(colorNameList) {
   const accNumbers = colorNameList
     .map((colorName) => {
       return colorMap[colorName];
@@ -20,4 +20,4 @@ function value(colorNameList) {
   return parseInt(accNumbers);
 }
 
-export { value };
+export { decodedValue };

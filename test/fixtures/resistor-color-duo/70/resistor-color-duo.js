@@ -1,4 +1,4 @@
-export const value = (arr) => {
+export const decodedValue = (arr) => {
     if (arr.length !== 2) {
         return -1;
     }

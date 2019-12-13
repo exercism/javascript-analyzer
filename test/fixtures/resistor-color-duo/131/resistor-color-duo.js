@@ -11,5 +11,5 @@ const resistorColors = [
   "white"
 ];
 
-export let value = ([one, two]) =>
+export let decodedValue = ([one, two]) =>
   Number("" + resistorColors.indexOf(one) + resistorColors.indexOf(two));

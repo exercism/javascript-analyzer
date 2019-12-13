@@ -12,6 +12,6 @@ grey: '8',
 white: '9'
 }
 
-export function value(arrayofTwo) {
-    return parseInt((colorObj[arrayofTwo[0]] + colorObj[arrayofTwo[1]])) 
+export function decodedValue(arrayofTwo) {
+    return parseInt((colorObj[arrayofTwo[0]] + colorObj[arrayofTwo[1]]))
 }

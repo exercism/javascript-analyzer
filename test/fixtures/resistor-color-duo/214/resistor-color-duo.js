@@ -11,8 +11,8 @@ const COLORS = [
   "white"
 ];
 
-const value = ([firstItem, secondItem]) => {
+const decodedValue = ([firstItem, secondItem]) => {
   return Number(String(COLORS.indexOf(firstItem)) + String(COLORS.indexOf(secondItem)));
 }
 
-export { value };
+export { decodedValue };

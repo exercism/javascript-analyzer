@@ -11,7 +11,7 @@ export const COLORS = [
     "white"
 ];
 
-export const value = (bands) => {
+export const decodedValue = (bands) => {
     let output = '';
     bands.forEach((color) => {
         output += COLORS.indexOf(color);

@@ -11,12 +11,12 @@ const COLORS = {
   'Grey': 8,
   'White': 9
 }
-export const value = (acids) => {
+export const decodedValue = (acids) => {
   let number = '';
   acids.map((acidColor) => {
     let color = acidColor
       .charAt(0)
-      .toUpperCase() 
+      .toUpperCase()
       + acidColor.slice(1);
     number = number + '' + COLORS[color];
   });

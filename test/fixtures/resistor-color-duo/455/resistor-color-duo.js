@@ -11,7 +11,7 @@ export const COLORS = [
   'white',
 ];
 
-export const value = array => Number(array
+export const decodedValue = array => Number(array
   .map(color => COLORS.indexOf(color.toLowerCase()))
   .join('')
 );

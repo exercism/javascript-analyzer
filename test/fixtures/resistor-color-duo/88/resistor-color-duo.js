@@ -11,8 +11,8 @@ const COLORS = {
   white:  '9'
 };
 
-const value = ([digit1, digit2]) => {
+const decodedValue = ([digit1, digit2]) => {
   return Number(`${COLORS[digit1]}${COLORS[digit2]}`)
 };
 
-export { COLORS, value };
+export { COLORS, decodedValue };

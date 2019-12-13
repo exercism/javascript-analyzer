@@ -14,7 +14,7 @@ const Colors = {
 };
 
 
-export function value(arr) {
+export function decodedValue(arr) {
 	let result = '';
 
   arr.map(color => {

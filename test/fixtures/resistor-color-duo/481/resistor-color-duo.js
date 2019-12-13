@@ -11,7 +11,7 @@ const colourNumberMap = {
   white: 9
 }
 
-export const value = (colours)=> {
+export const decodedValue = (colours)=> {
   let result = '';
 
   colours.forEach(colour => {

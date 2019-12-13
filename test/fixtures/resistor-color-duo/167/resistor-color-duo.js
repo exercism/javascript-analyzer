@@ -4,6 +4,6 @@ function colorCode(color) {
     return COLORS.indexOf(color)
 }
 
-export function value(colors) {
+export function decodedValue(colors) {
     return colors.reduce((a, b) => a * 10 + colorCode(b), 0)
 }

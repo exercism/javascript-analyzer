@@ -11,7 +11,7 @@ const COLORS = [
   'white'
 ]
 
-function value(colors) {
+function decodedValue(colors) {
   return parseInt(
     colors
       .map(function mapColorToValue(color) {
@@ -21,4 +21,4 @@ function value(colors) {
   )
 }
 
-export { value }
+export { decodedValue }

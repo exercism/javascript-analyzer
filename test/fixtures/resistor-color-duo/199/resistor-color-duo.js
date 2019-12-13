@@ -1,4 +1,4 @@
-export const value = arr => {
+export const decodedValue = arr => {
   return parseInt(
     arr
       .map(color => {

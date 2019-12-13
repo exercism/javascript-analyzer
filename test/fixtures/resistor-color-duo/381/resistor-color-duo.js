@@ -2,4 +2,4 @@ export const COLORS = ["black", "brown", "red", "orange", "yellow", "green", "bl
 
 export const colorCode = (color) => COLORS.indexOf(color)
 
-export const value = (color_array) => 10 * colorCode(color_array[0]) + colorCode(color_array[1])
+export const decodedValue = (color_array) => 10 * colorCode(color_array[0]) + colorCode(color_array[1])

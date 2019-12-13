@@ -1,4 +1,4 @@
-export const value = (bands) => {
+export const decodedValue = (bands) => {
     let numbers = [];
     bands.forEach((band) => {
         numbers.push(COLORS.indexOf(band));

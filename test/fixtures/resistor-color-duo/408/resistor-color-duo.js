@@ -1,6 +1,6 @@
 import { colorCode } from '../resistor-color/resistor-color';
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
   var colorValues = colorValue(colors[0]) + colorValue(colors[1]);
   return parseInt(colorValues);
 }

@@ -11,9 +11,9 @@ const COLOR = [
   "white"
 ];
 
-const value = ([name1, name2]) => {
+const decodedValue = ([name1, name2]) => {
   COLOR.indexOf(name1) + COLOR.indexOf(name2);
 };
 
-console.log(value(["red", "blue"]));
-export { value };
+console.log(decodedValue(["red", "blue"]));
+export { decodedValue };

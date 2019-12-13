@@ -1,12 +1,12 @@
 const COLORS = ["black","brown","red","orange","yellow","green","blue","violet","grey","white"];
 
-const colorCode = (value) =>{
-    
-    return COLORS.indexOf(value);
+const colorCode = (decodedValue) =>{
+
+    return COLORS.indexOf(decodedValue);
 
 }
 
-const value =(arr)=>{
+const decodedValue =(arr)=>{
     var sol='';
     for(var elem in arr){
         sol=sol+colorCode(arr[elem]);
@@ -15,4 +15,4 @@ const value =(arr)=>{
 
 }
 
-export {COLORS , colorCode, value};
+export {COLORS , colorCode, decodedValue};

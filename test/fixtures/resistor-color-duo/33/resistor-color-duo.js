@@ -11,8 +11,8 @@ const COLORS = [
   "white"
 ];
 
-function value([colorA, colorB]) {
+function decodedValue([colorA, colorB]) {
   return COLORS.indexOf(colorA) * 10 + COLORS.indexOf(colorB);
 }
 
-module.exports = { value };
+module.exports = { decodedValue };

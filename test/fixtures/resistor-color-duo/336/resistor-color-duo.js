@@ -24,4 +24,4 @@ const totalResistance = colors =>
     0
   );
 
-export const value = totalResistance;
+export const decodedValue = totalResistance;

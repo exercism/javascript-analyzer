@@ -15,7 +15,7 @@ export const COLORS = [
   'white',
 ];
 
-export const value = colors => {
+export const decodedValue = colors => {
   return colors.reduce((acc, color) => {
     return 10 * acc + colorCode(color);
   }, 0);

@@ -1,6 +1,6 @@
 const colors = ["black", "brown", "red", "orange", "yellow", "green", "blue", "violet", "grey", "white"];
 
-const value = (colorArray) => {
+const decodedValue = (colorArray) => {
     if (colorArray.length === 0) return 0;
 
     let output = "";
@@ -11,4 +11,4 @@ const value = (colorArray) => {
     return parseInt(output);
 }
 
-export {value};
+export {decodedValue};

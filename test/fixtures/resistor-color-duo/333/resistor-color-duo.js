@@ -10,7 +10,7 @@ const resistorColors = [
   'grey',
   'white'
 ]
-let value = ([color1, color2]) => {
+let decodedValue = ([color1, color2]) => {
   let colorIndex1 = resistorColors.indexOf(color1)
   let colorIndex2 = resistorColors.indexOf(color2)
   // concatenates the array indices as a string
@@ -19,4 +19,4 @@ let value = ([color1, color2]) => {
   return Number(resistorCodes)
 }
 
-export { value, resistorColors }
+export { decodedValue, resistorColors }

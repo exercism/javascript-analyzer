@@ -14,7 +14,7 @@ const colorMap = new Map([
     ["white", 9],
 ]);
 
-export const value = colorPair => {
+export const decodedValue = colorPair => {
     const [firstColor, secondColor] = colorPair;
     return 10 * colorMap.get(firstColor.toLowerCase()) + colorMap.get(secondColor.toLowerCase());
 }

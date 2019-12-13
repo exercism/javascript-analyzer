@@ -1,4 +1,4 @@
-export const value = cols => {
+export const decodedValue = cols => {
     const [first, second] = cols;
 
     const COLORS = {

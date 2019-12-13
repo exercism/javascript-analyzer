@@ -1,4 +1,4 @@
-export let value = (array) => {
+export let decodedValue = (array) => {
 
     const COLORS = [
         "black",

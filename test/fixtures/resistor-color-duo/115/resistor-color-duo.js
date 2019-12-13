@@ -11,5 +11,5 @@ export const COLORS = [
   "white"
 ]
 
-export const value = (colors) =>
+export const decodedValue = (colors) =>
   COLORS.indexOf(colors[0]) * 10 + COLORS.indexOf(colors[1])

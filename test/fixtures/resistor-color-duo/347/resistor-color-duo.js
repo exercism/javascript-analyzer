@@ -11,4 +11,4 @@ const COLORS = {
   white: 9,
 };
 
-export const value = resistors => COLORS[resistors[0]] * 10 + COLORS[resistors[1]];
+export const decodedValue = resistors => COLORS[resistors[0]] * 10 + COLORS[resistors[1]];

@@ -9,7 +9,7 @@ function getColorValue(color) {
   return -1;
 }
 
-function value(colorNames) {
+function decodedValue(colorNames) {
   const firstColorValue = getColorValue(colorNames[0]);
   const secondColorValue = getColorValue(colorNames[1]);
   return parseInt(`${firstColorValue}${secondColorValue}`, 10);
@@ -17,5 +17,5 @@ function value(colorNames) {
 
 
 module.exports = {
-  value
+  decodedValue
 };

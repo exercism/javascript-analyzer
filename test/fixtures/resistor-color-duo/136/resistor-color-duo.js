@@ -4,17 +4,17 @@
 /* jshint esversion: 6 */
 const resistors = [
     'black',
-    'brown', 
-    'red', 
+    'brown',
+    'red',
     'orange',
-    'yellow' , 
+    'yellow' ,
     'green',
     'blue',
     'violet',
     'grey',
     'white'];
 
-export function value(group,obj=resistors) {
+export function decodedValue(group,obj=resistors) {
     const ids = group.map(color => obj.indexOf(color) );
     return parseInt(ids.join(''));
 }

@@ -10,4 +10,4 @@ const COLOR_MAP = {
   'grey': '8',
   'white': '9'
 }
-export const value = (colors) => parseInt(colors.map(color => COLOR_MAP[color]).join(''), 10)
+export const decodedValue = (colors) => parseInt(colors.map(color => COLOR_MAP[color]).join(''), 10)

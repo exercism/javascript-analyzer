@@ -16,5 +16,5 @@ const colorMap = color.reduce((map, color, index) => {
 	return map;
 }, {});
 
-export const value = (colors) => colors
+export const decodedValue = (colors) => colors
 	.reduce((result, color) => result * 10 + colorMap[color], 0);

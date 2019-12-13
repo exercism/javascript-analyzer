@@ -1,4 +1,4 @@
-export function value(colors) {
+export function decodedValue(colors) {
   return COLORS.indexOf(colors[0]) * 10 + COLORS.indexOf(colors[1]);
 }
 

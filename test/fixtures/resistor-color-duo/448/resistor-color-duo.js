@@ -1,4 +1,4 @@
-const value = colors => {
+const decodedValue = colors => {
   const [decimalColor, unitColor] = colors
   const decimal = getColorNumber(decimalColor)
   const unit = getColorNumber(unitColor)
@@ -21,4 +21,4 @@ const bandColors = [
   'white'
 ]
 
-export { value }
+export { decodedValue }

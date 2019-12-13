@@ -1,11 +1,11 @@
-export {value};
+export {decodedValue};
 
 // solution for any number of colors
-// const value = (arr) => Number(arr.reduce((a,c) => a + bands[c], ''));
+// const decodedValue = (arr) => Number(arr.reduce((a,c) => a + bands[c], ''));
 
 
 // faster solution with just 2 colors
-const value = (arr) => {
+const decodedValue = (arr) => {
     const bands = {
         black: '0',
         brown: '1',

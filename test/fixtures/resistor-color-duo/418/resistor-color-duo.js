@@ -11,7 +11,7 @@ const COLORS = [
   "white"
 ];
 
-export const value = colors =>
+export const decodedValue = colors =>
   colors
     .reverse()
     .reduce((acc, color, i) => acc + COLORS.indexOf(color) * 10 ** i, 0);

@@ -13,7 +13,7 @@ const COLORS = [
 
 const colorValue = color => COLORS.indexOf(color);
 
-export const value = colors => {
+export const decodedValue = colors => {
   const allDigits = colors.reduce(
     (digits, color) => digits + colorValue(color),
     ""

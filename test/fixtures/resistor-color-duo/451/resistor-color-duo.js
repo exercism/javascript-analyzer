@@ -1,4 +1,4 @@
-export const value = (colorsArray = []) => {
+export const decodedValue = (colorsArray = []) => {
     return +colorsArray.reduce((prev, next) => {
         return prev + COLORS.indexOf(next);
     }, '');

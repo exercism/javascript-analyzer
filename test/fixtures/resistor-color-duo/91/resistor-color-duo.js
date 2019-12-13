@@ -11,4 +11,4 @@ const COLORS = [
     'white',
 ];
 
-export const value = colors => parseInt(colors.map(color => COLORS.indexOf(color)).join(''), 10);
+export const decodedValue = colors => parseInt(colors.map(color => COLORS.indexOf(color)).join(''), 10);

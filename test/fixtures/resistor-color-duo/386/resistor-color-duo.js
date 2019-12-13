@@ -15,7 +15,7 @@ export const colorCode = (color) => {
     return color_map.get(color.toLowerCase());
 }
 
-export const value = (code) => {
+export const decodedValue = (code) => {
     return colorCode(code[0])*10 + colorCode(code[1]);
 }
 

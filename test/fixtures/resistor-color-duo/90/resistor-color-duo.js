@@ -4,7 +4,7 @@ const colorCode = (color) => {
     return COLORS.indexOf(color);
 }
 
-export const value = (array) => {
+export const decodedValue = (array) => {
     const concatenate = "" + colorCode(array[0]) + colorCode(array[1])
     return parseInt(concatenate, 10)
 }

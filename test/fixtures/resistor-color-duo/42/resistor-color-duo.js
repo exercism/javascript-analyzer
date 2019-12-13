@@ -1,9 +1,9 @@
-export function value ( colorCode ) {
+export function decodedValue ( colorCode ) {
 	const colors = [ "black", "brown", "red", "orange", "yellow", "green", "blue", "violet", "grey", "white" ];
-	let value = '';
+	let decodedValue = '';
 	for ( const color of colorCode ) {
-		value += ( colors.indexOf( color ));
+		decodedValue += ( colors.indexOf( color ));
 	}
-	return parseInt( value );
+	return parseInt( decodedValue );
 }
 

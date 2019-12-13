@@ -11,9 +11,9 @@ const COLORS = [
   'white'
 ]
 
-const value = ([first, second]) => {
+const decodedValue = ([first, second]) => {
   const response = `${COLORS.indexOf(first)}${COLORS.indexOf(second)}`
   return Number(response)
 }
 
-module.exports = {value};
+module.exports = {decodedValue};

@@ -2,4 +2,4 @@ const COLORS = ["black", "brown", "red", "orange", "yellow", "green", "blue", "v
 
 const colorCode = (code) => COLORS.indexOf(code);
 
-export const value = (codeList) => codeList.reduce((acc, code) => acc * 10 + colorCode(code), 0);
+export const decodedValue = (codeList) => codeList.reduce((acc, code) => acc * 10 + colorCode(code), 0);

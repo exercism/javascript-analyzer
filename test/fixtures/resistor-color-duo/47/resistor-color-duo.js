@@ -11,5 +11,5 @@ const COLORS = [
   "white"
 ];
 
-export const value = colors =>
+export const decodedValue = colors =>
   parseInt(`${COLORS.indexOf(colors[0])}${COLORS.indexOf(colors[1])}`);

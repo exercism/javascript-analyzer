@@ -1,5 +1,5 @@
 
-export const value = (values) => {
+export const decodedValue = (values) => {
     var v = '';
     var colors = ["black", "brown", "red", "orange", "yellow", "green", "blue", "violet", "grey", "white"];
     for (let i = 0; i <= colors.length; i++) {
@@ -12,9 +12,9 @@ export const value = (values) => {
             v += colors.indexOf(colors[i]);
 
         }
-        
+
     }
-    
+
    if( parseInt(v) <= 9 ){
     return parseInt(v) *11;
    }

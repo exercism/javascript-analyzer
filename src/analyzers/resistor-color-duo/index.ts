@@ -22,7 +22,7 @@ in and replace the more cryptic numeric indexers with the named items.
 `('javascript.resistor-color-duo.destructuring_in_parameter')
 
 const SIGNATURE_NOT_OPTIMAL = factory`
-📕 If you look at the tests, the function \`value\` only receives one
+📕 If you look at the tests, the function \`decodedValue\` only receives one
 parameter. Nothing more and nothing less.
 
 📕 Remove the additional parameters from your function, as their value will
@@ -173,7 +173,7 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     //
     // function colorCode(...) { ... }
     //
-    // export function value([tens, ones]) {
+    // export function decodedValue([tens, ones]) {
     //   return colorCode(ones) + colorCode(tens) * 10
     // }
     //

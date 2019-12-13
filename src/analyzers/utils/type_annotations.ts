@@ -27,8 +27,8 @@ export function parameterType(parameter: Parameter, fallback: string = 'any'): s
   }
 }
 
-export function annotateType(typeAnnotation?: TSTypeAnnotation, fallback: string = 'any'): string {
-  if (typeAnnotation === undefined) {
+export function annotateType(typeAnnotation?: TSTypeAnnotation | null, fallback: string = 'any'): string {
+  if (typeAnnotation === undefined || typeAnnotation === null) {
     return fallback
   }
 

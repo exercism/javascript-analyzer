@@ -2,7 +2,7 @@ var COLORS = ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'blue', 'vio
 
 const colorCode = (color) => COLORS.indexOf(color);
 
-function value(color1, color2) {
+function decodedValue(color1, color2) {
 
   var firstValue = colorCode(color1).toString;
   var secondValue = colorCode(color2).toString;
@@ -10,4 +10,4 @@ function value(color1, color2) {
   return truth;
 }
 
-export { COLORS, value };
+export { COLORS, decodedValue };

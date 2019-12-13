@@ -11,6 +11,6 @@ const COLORS = {
   white: 9
 }
 
-export const value = ([color1, color2]) => {
+export const decodedValue = ([color1, color2]) => {
   return parseInt(`${COLORS[color1]}${COLORS[color2]}`);
 }

@@ -36,16 +36,16 @@ class ResistorDuo {
   }
 
   static getResistorColorValue(resistorColor) {
-    const value = RESISTOR_COLOR_VALUE_MAPPING[resistorColor]
+    const decodedValue = RESISTOR_COLOR_VALUE_MAPPING[resistorColor]
 
-    if (value === undefined) {
+    if (decodedValue === undefined) {
       throw new Error(`invalid resistor color ${resistorColor} does not exist`)
     }
 
-    return value
+    return decodedValue
   }
 }
 
-export function value(resistorColorPair) {
+export function decodedValue(resistorColorPair) {
   return new ResistorDuo(resistorColorPair).calculateResistance()
 }

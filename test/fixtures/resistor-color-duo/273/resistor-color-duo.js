@@ -1,4 +1,4 @@
-export const value = (colors) => {
+export const decodedValue = (colors) => {
     let resistorValueAsString = "";
     colors.forEach(color => {
         resistorValueAsString += COLORS.indexOf(color).toString();

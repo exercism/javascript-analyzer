@@ -14,7 +14,7 @@ const COLORS = {
 const capitalizeFirstLetter = string =>
   string.slice(0, 1).toUpperCase() + string.slice(1).toLowerCase();
 
-export const value = colors => {
+export const decodedValue = colors => {
   return Number(
     colors.reduce((resistanceValue, color) => {
       const colorValue = COLORS[capitalizeFirstLetter(color)];
@@ -31,7 +31,7 @@ export const value = colors => {
 // Shorter version
 // Does not work if there are ever more than 2 colors
 // Does not handle case where an invalid color is passed in
-// export const value = colors => {
+// export const decodedValue = colors => {
 //   return Number(
 //     `${COLORS[capitalizeFirstLetter(colors[0])]}${
 //       COLORS[capitalizeFirstLetter(colors[1])]

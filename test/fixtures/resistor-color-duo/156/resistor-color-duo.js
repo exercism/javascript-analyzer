@@ -1,4 +1,4 @@
-export function value(resistorColors) {
+export function decodedValue(resistorColors) {
     let ret = "";
     resistorColors.forEach(function(color) {
         ret += COLORS.indexOf(color);

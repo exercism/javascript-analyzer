@@ -11,7 +11,7 @@ export const COLORS = [
   'white'
 ];
 
-export const value = (arrayOfColors) => {
+export const decodedValue = (arrayOfColors) => {
   let sum = '';
   arrayOfColors.forEach(color => {
     sum += String(COLORS.indexOf(color));

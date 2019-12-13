@@ -1,6 +1,6 @@
 export const COLORS = ["black", "brown", "red", "orange", "yellow", "green", "blue", "violet", "grey", "white"]
 
-export function value(colors) {
+export function decodedValue(colors) {
   return parseInt(colors.reduce((acc, color) => {
     return acc.concat(COLORS.findIndex(el => color === el).toString());
   }, ''));

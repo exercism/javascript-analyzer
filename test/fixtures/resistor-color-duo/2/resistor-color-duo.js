@@ -11,5 +11,5 @@ export const COLORS = [
   "white"
 ];
 
-export const value = ([color1, color2]) =>
+export const decodedValue = ([color1, color2]) =>
   Number(`${COLORS.indexOf(color1)}${COLORS.indexOf(color2)}`);

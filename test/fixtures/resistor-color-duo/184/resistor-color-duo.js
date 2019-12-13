@@ -1,5 +1,5 @@
-export const value = (arrOfcolours) => {
-  
+export const decodedValue = (arrOfcolours) => {
+
   const colourValues = {
     black: '0',
     brown: '1',

@@ -12,7 +12,7 @@ const mappingColors = {
 }
 
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
   let color1 = mappingColors[colors[0]];
   let color2 = mappingColors[colors[1]];
   const result = `${color1}${color2}`;

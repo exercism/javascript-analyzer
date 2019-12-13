@@ -10,7 +10,7 @@ const colorCode = (color) => {
   return colorObject[color];
 }
 
-export const value = (colors) => {
+export const decodedValue = (colors) => {
   const value1 = colorCode(colors[0]);
   const value2 = colorCode(colors[1]);
 

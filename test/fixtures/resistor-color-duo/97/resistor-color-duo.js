@@ -11,10 +11,10 @@ const COLORS = [
   "white"
 ];
 
-const value = colors =>
+const decodedValue = colors =>
   parseInt(
     colors.reduce((acc, curr) => acc + COLORS.indexOf(curr).toString(10), ""),
     10
   );
 
-export { value };
+export { decodedValue };

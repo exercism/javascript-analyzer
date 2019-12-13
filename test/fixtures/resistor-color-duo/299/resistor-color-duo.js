@@ -11,7 +11,7 @@ const COLORS = [
   'white',
 ]
 
-export const value = colors => Number(
+export const decodedValue = colors => Number(
   colors
     .map(color => COLORS.indexOf(color))
     .join('')

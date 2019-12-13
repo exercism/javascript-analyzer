@@ -11,8 +11,8 @@ const bandColorsValues = {
   white: 9
 };
 
-const value = arr => {
+const decodedValue = arr => {
   return Number(`${bandColorsValues[arr[0]]}${bandColorsValues[arr[1]]}`);
 };
 
-export { value };
+export { decodedValue };

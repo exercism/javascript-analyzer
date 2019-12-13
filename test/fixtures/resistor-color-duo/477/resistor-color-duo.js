@@ -11,5 +11,5 @@ const BANDS = {
   white: '9',
 }
 
-export const value = resistors => parseInt(BANDS[resistors[0]] + BANDS[resistors[1]]);
+export const decodedValue = resistors => parseInt(BANDS[resistors[0]] + BANDS[resistors[1]]);
 

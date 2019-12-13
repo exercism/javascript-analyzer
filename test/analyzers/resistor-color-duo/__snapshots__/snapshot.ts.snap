@@ -115,7 +115,7 @@ IsolatedAnalyzerOutput {
       "message": "Did you know that you can export functions, classes and constants directly
 inline?
 \`\`\`javascript
-export const value = colors => ...;
+export const decodedValue = colors => ...;
 \`\`\`",
       "template": "Did you know that you can export functions, classes and constants directly
 inline?
@@ -123,7 +123,7 @@ inline?
 export %{method.signature}
 \`\`\`",
       "variables": Object {
-        "method.signature": "const value = colors => ...;",
+        "method.signature": "const decodedValue = colors => ...;",
       },
     },
     CommentImpl {
@@ -191,7 +191,7 @@ IsolatedAnalyzerOutput {
       "message": "Did you know that you can export functions, classes and constants directly
 inline?
 \`\`\`javascript
-export function value(bands) ...
+export function decodedValue(bands) ...
 \`\`\`",
       "template": "Did you know that you can export functions, classes and constants directly
 inline?
@@ -199,7 +199,7 @@ inline?
 export %{method.signature}
 \`\`\`",
       "variables": Object {
-        "method.signature": "function value(bands) ...",
+        "method.signature": "function decodedValue(bands) ...",
       },
     },
     CommentImpl {
@@ -371,10 +371,10 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
-      "message": "No method called \`value\`. The tests won't pass without it.",
+      "message": "No method called \`decodedValue\`. The tests won't pass without it.",
       "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
-        "method.name": "value",
+        "method.name": "decodedValue",
       },
     },
   ],
@@ -1098,12 +1098,12 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.signature_not_optimal",
-      "message": "📕 If you look at the tests, the function \`value\` only receives one
+      "message": "📕 If you look at the tests, the function \`decodedValue\` only receives one
 parameter. Nothing more and nothing less.
 
 📕 Remove the additional parameters from your function, as their value will
 always be \`undefined\` or whatever default you've assigned.",
-      "template": "📕 If you look at the tests, the function \`value\` only receives one
+      "template": "📕 If you look at the tests, the function \`decodedValue\` only receives one
 parameter. Nothing more and nothing less.
 
 📕 Remove the additional parameters from your function, as their value will
@@ -1292,12 +1292,12 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.signature_not_optimal",
-      "message": "📕 If you look at the tests, the function \`value\` only receives one
+      "message": "📕 If you look at the tests, the function \`decodedValue\` only receives one
 parameter. Nothing more and nothing less.
 
 📕 Remove the additional parameters from your function, as their value will
 always be \`undefined\` or whatever default you've assigned.",
-      "template": "📕 If you look at the tests, the function \`value\` only receives one
+      "template": "📕 If you look at the tests, the function \`decodedValue\` only receives one
 parameter. Nothing more and nothing less.
 
 📕 Remove the additional parameters from your function, as their value will
@@ -1330,12 +1330,12 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.general.no_parameter",
-      "message": "Your function \`value\` does not have a parameter.
+      "message": "Your function \`decodedValue\` does not have a parameter.
 The tests won't pass without it.",
       "template": "Your function \`%{function.name}\` does not have a parameter.
 The tests won't pass without it.",
       "variables": Object {
-        "function.name": "value",
+        "function.name": "decodedValue",
       },
     },
   ],
@@ -1428,12 +1428,12 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.signature_not_optimal",
-      "message": "📕 If you look at the tests, the function \`value\` only receives one
+      "message": "📕 If you look at the tests, the function \`decodedValue\` only receives one
 parameter. Nothing more and nothing less.
 
 📕 Remove the additional parameters from your function, as their value will
 always be \`undefined\` or whatever default you've assigned.",
-      "template": "📕 If you look at the tests, the function \`value\` only receives one
+      "template": "📕 If you look at the tests, the function \`decodedValue\` only receives one
 parameter. Nothing more and nothing less.
 
 📕 Remove the additional parameters from your function, as their value will
@@ -1450,10 +1450,10 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
-      "message": "No method called \`value\`. The tests won't pass without it.",
+      "message": "No method called \`decodedValue\`. The tests won't pass without it.",
       "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
-        "method.name": "value",
+        "method.name": "decodedValue",
       },
     },
   ],
@@ -1638,10 +1638,10 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
-      "message": "No method called \`value\`. The tests won't pass without it.",
+      "message": "No method called \`decodedValue\`. The tests won't pass without it.",
       "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
-        "method.name": "value",
+        "method.name": "decodedValue",
       },
     },
   ],
@@ -2510,12 +2510,12 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.signature_not_optimal",
-      "message": "📕 If you look at the tests, the function \`value\` only receives one
+      "message": "📕 If you look at the tests, the function \`decodedValue\` only receives one
 parameter. Nothing more and nothing less.
 
 📕 Remove the additional parameters from your function, as their value will
 always be \`undefined\` or whatever default you've assigned.",
-      "template": "📕 If you look at the tests, the function \`value\` only receives one
+      "template": "📕 If you look at the tests, the function \`decodedValue\` only receives one
 parameter. Nothing more and nothing less.
 
 📕 Remove the additional parameters from your function, as their value will
@@ -2604,10 +2604,10 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
-      "message": "No method called \`value\`. The tests won't pass without it.",
+      "message": "No method called \`decodedValue\`. The tests won't pass without it.",
       "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
-        "method.name": "value",
+        "method.name": "decodedValue",
       },
     },
   ],
@@ -2932,12 +2932,12 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.signature_not_optimal",
-      "message": "📕 If you look at the tests, the function \`value\` only receives one
+      "message": "📕 If you look at the tests, the function \`decodedValue\` only receives one
 parameter. Nothing more and nothing less.
 
 📕 Remove the additional parameters from your function, as their value will
 always be \`undefined\` or whatever default you've assigned.",
-      "template": "📕 If you look at the tests, the function \`value\` only receives one
+      "template": "📕 If you look at the tests, the function \`decodedValue\` only receives one
 parameter. Nothing more and nothing less.
 
 📕 Remove the additional parameters from your function, as their value will
@@ -3054,10 +3054,10 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
-      "message": "No method called \`value\`. The tests won't pass without it.",
+      "message": "No method called \`decodedValue\`. The tests won't pass without it.",
       "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
-        "method.name": "value",
+        "method.name": "decodedValue",
       },
     },
   ],
@@ -3530,10 +3530,10 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
-      "message": "No method called \`value\`. The tests won't pass without it.",
+      "message": "No method called \`decodedValue\`. The tests won't pass without it.",
       "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
-        "method.name": "value",
+        "method.name": "decodedValue",
       },
     },
   ],

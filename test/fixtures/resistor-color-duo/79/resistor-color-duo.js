@@ -22,6 +22,6 @@ const COLORS = new Map()
  * @param {string[]} inputColors - Array of band colors to be input
  * @return {number} The concatenation of string numbers representing resistor band values
  **/
-export const value = (inputColors) => {
+export const decodedValue = (inputColors) => {
     return parseInt(inputColors.reduce((colorA, colorB) => COLORS.get(colorA.toLowerCase()) + COLORS.get(colorB.toLowerCase())));
 };

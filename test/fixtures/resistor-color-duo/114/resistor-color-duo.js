@@ -11,10 +11,10 @@ const COLORS = {
   white: 9
 }
 
-function value ([val1, val2]) {
+function decodedValue ([val1, val2]) {
   return Number.parseInt(
     `${COLORS[val1.toLowerCase()]}${COLORS[val2.toLowerCase()]}`
   )
 }
 
-export { value }
+export { decodedValue }

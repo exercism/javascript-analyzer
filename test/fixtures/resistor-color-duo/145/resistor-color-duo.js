@@ -13,6 +13,6 @@ const COLORS = [
 
 const colorCode = color => COLORS.indexOf(color);
 
-const value = colors => colorCode(colors[0]) * 10 + colorCode(colors[1]);
+const decodedValue = colors => colorCode(colors[0]) * 10 + colorCode(colors[1]);
 
-export { COLORS, value };
+export { COLORS, decodedValue };

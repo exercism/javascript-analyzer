@@ -11,12 +11,12 @@ const COLORS = [
   "white"
 ];
 
-function value(colors) {
+function decodedValue(colors) {
   return parseInt(colors.reduce((acc, color) => {
     return acc + COLORS.indexOf(color);
   }, ''), 10);
 }
 
 export {
-  value
+  decodedValue
 };

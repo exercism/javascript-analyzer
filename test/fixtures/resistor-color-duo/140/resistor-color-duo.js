@@ -11,7 +11,7 @@ const COLORS = [
   "white"
 ];
 
-export const value = colors =>
+export const decodedValue = colors =>
   colors
     .reverse()
     .reduce(

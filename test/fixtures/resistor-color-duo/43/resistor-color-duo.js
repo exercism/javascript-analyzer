@@ -11,7 +11,7 @@ const colorMap = {
   white: 9,
 };
 
-export const value = input => {
+export const decodedValue = input => {
   const resistance = input.reduce((total, color) => total + String(colorMap[color]), '');
   return Number(resistance);
 };

@@ -1,4 +1,4 @@
-export const value = (colorsArr) => {
+export const decodedValue = (colorsArr) => {
   const resistor = [];
   colorsArr.forEach(color => {
     switch (color) {
@@ -22,7 +22,7 @@ export const value = (colorsArr) => {
         return resistor.push(8);
       default:
         return resistor.push(9)
-    }  
+    }
   })
   return parseInt(resistor.join(''));
 }

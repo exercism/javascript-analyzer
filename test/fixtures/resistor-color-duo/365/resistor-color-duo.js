@@ -20,18 +20,18 @@ let colorToDigit = (inputColor) => {
     return resultDigit;
 }
 
-let value = (duoColors = []) => {
+let decodedValue = (duoColors = []) => {
     if (duoColors.length != 2)
         throw "must supply exactly two colors";
 
     return duoColors
         .map(colorToDigit)
         .reduce(
-            (sum, colorDigit, index) =>  
+            (sum, colorDigit, index) =>
                 sum +
                 Math.pow(10, (duoColors.length - index - 1)) *
                 colorDigit,
             0);
 }
 
-export {value};
+export {decodedValue};

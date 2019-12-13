@@ -1,4 +1,4 @@
-export const value = (array) => {
+export const decodedValue = (array) => {
   let firstNumber = null;
   let secondNumber = null;
 

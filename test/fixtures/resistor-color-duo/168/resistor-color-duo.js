@@ -1,12 +1,12 @@
 const COLORS = ["black","brown","red","orange","yellow","green","blue","violet","grey","white"];
 
-export const value = colors => {
-  let value = '';
+export const decodedValue = colors => {
+  let decodedValue = '';
   colors.forEach(val => {
     if (COLORS.includes(val)) {
-      value += COLORS.indexOf(val);
+      decodedValue += COLORS.indexOf(val);
     }
   });
 
-  return Number(value);
+  return Number(decodedValue);
 };

@@ -24,7 +24,7 @@ describe('When running analysis on resistor-color-duo', () => {
       return COLORS.indexOf(color)
     }
 
-    export function value([tens, ones]) {
+    export function decodedValue([tens, ones]) {
       return colorCode(tens) * 10 + colorCode(ones)
     }
     `.trim()

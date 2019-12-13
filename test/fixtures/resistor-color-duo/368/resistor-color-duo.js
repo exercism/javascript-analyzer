@@ -1,13 +1,13 @@
 const COLORS = [ "black","brown","red","orange","yellow",
 "green","blue","violet","grey","white" ]
 
-const value = (colors) => {
-  let value = ''
-  colors.forEach((color) => value += COLORS.indexOf(color))
-  return Number(value)
+const decodedValue = (colors) => {
+  let decodedValue = ''
+  colors.forEach((color) => decodedValue += COLORS.indexOf(color))
+  return Number(decodedValue)
 }
 
 module.exports = {
-  value,
+  decodedValue,
   COLORS
 }

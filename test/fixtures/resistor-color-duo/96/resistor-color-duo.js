@@ -11,7 +11,7 @@ const m = {
     white: 9
 }
 
-function value(arr){
+function decodedValue(arr){
     return +arr.map(v=>m[v]).join('');
 }
-export {value}
+export {decodedValue}

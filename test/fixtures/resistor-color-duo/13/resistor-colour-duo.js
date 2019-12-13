@@ -25,5 +25,5 @@ let combinedColourValue = (arrayOfColours) => {
 };
 
 module.exports = {
-    value: combinedColourValue,
+    decodedValue: combinedColourValue,
 };

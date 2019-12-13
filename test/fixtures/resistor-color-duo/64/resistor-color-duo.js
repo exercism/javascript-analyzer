@@ -11,6 +11,6 @@ const numberByColor = {
     "white": 9
 }
 
-export function value(colors) {
+export function decodedValue(colors) {
     return Number(numberByColor[colors[0]].toString() + numberByColor[colors[1]].toString())
 }

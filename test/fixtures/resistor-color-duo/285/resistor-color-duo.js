@@ -11,7 +11,7 @@ const COLOR_CODES = {
     white: 9,
 };
 
-export function value(colors)
+export function decodedValue(colors)
 {
     return colors.map(color => COLOR_CODES[color]).reduce((acc, digit) => acc * 10 + digit);
 }

@@ -2,4 +2,4 @@ export const COLORS = ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'bl
 
 export const colorCode = color => COLORS.indexOf(color) ;
 
-export const value = colors => Number(colors.map(color => colorCode(color)).join(''));
+export const decodedValue = colors => Number(colors.map(color => colorCode(color)).join(''));

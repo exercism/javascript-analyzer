@@ -9,10 +9,10 @@ const COLORS = [
   'violet',
   'grey',
   'white'
-] 
+]
 
-export const value = (arr) => {
-  
+export const decodedValue = (arr) => {
+
   let valueArr = []
 
   arr.forEach(el => {

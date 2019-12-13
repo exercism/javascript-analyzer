@@ -5,7 +5,7 @@ function colorCode(wantedColor) {
   return COLORS.indexOf(wantedColor);
 }
 
-function value(colorsArr) {
+function decodedValue(colorsArr) {
   const valueStr = colorsArr
     .map(colorCode)
     .join('');
@@ -14,4 +14,4 @@ function value(colorsArr) {
 }
 
 
-module.exports = { value };
+module.exports = { decodedValue };

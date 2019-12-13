@@ -1,4 +1,4 @@
-export const value = arr => {
+export const decodedValue = arr => {
     const COLORS = ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'blue', 'violet', 'grey', 'white'];
     const indexVals = arr.map(color => COLORS.indexOf(color.toLowerCase()));
     const placeVals = indexVals.map((e, i, arr) => {
@@ -14,7 +14,7 @@ export const value = arr => {
 // **** ALTERNATE **** //
 // it passes and is simpler, but less mathematical
 
-// export const value = arr => {
+// export const decodedValue = arr => {
 //     const COLORS = ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'blue', 'violet', 'grey', 'white'];
 //     const indexVals = arr.map(color => COLORS.indexOf(color.toLowerCase()));
 //     return parseInt(indexVals.join(''));
