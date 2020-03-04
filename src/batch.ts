@@ -95,7 +95,7 @@ readDir(FIXTURES_ROOT)
       if (options.dry) {
         await processable
       } else {
-        await FileOutput(processable, { ...options, inputDir, output: './analysis.json' })
+        await FileOutput(processable, { ...options, inputDir, outputDir: inputDir, output: './analysis.json' })
       }
 
       return { result: analysis, runtime, fixture }

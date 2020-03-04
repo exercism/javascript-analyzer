@@ -5,6 +5,7 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
   public console!: boolean
   public output!: string
   public inputDir!: string
+  public outputDir!: string
   public exercise!: string
   public dry!: boolean
   public noTemplates!: boolean
@@ -16,7 +17,7 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
 
   public static create(): ExecutionOptions {
     const args = yargs
-      .usage('Usage: $0 <exercise> <input-directory> [options]')
+      .usage('Usage: $0 <exercise> <input-directory> [<output-directory>] [options]')
       .example('$0 two-fer ~/javascript/two-fer/128/', 'Analyze the input directory "128" against the two-fer analyzer')
       .alias('d', 'debug')
       .alias('c', 'console')
@@ -24,7 +25,7 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
       .alias('p', 'pretty')
       .describe('d', 'Unless given, only outputs warnings and errors')
       .describe('c', 'If given, outputs to the console')
-      .describe('o', 'Path relative to the input dir where the analyzis results are stored')
+      .describe('o', 'Path relative to the output dir where the analyzis results are stored')
       .describe('noTemplates', 'Unless given, exports templates instead of messages (feature flag)')
       .describe('p', 'If given, formats the JSON output using 2 space indentation')
       .describe('dry', 'If given, does not output anything to disk')
@@ -49,7 +50,8 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
       dry,
       noTemplates,
       exercise: _[0],
-      inputDir: _[1]
+      inputDir: _[1],
+      outputDir: _[2] || _[1]
     })
   }
 }

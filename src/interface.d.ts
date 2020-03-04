@@ -9,6 +9,8 @@ interface ExecutionOptions {
   output: string;
   /** The input directory path */
   inputDir: string;
+  /** The output directory path */
+  outputDir: string;
   /** The exercise slug */
   exercise: string;
   /** Unless true, expects website-copy to provide the contents of the templates */
