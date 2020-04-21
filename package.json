@@ -20,7 +20,7 @@
     "analyze:dev": "yarn build && yarn analyze",
     "analyze:dev:bat": "yarn build && yarn analyze:bat",
     "build": "yarn tsc --build src",
-    "postbuild": "cp src/*.d.ts dist/ && tspath",
+    "postbuild": "cp src/*.d.ts dist/",
     "prepublish": "yarn test",
     "lint": "yarn eslint . --ext ts,js,tsx,jsx,mjs",
     "test": "yarn build && jest",
