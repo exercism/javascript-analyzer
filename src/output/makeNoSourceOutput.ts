@@ -1,6 +1,7 @@
 import { NoSourceError } from "~src/errors/NoSourceError"
 import { AnalyzerOutput } from "./AnalyzerOutput"
 import { ERROR_CAPTURED_NO_SOURCE } from "~src/comments/shared"
+import { Output } from "~src/interface"
 
 /**
  * Makes a generic output based on a NoSourceError

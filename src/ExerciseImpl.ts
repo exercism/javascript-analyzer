@@ -1,3 +1,5 @@
+import { Exercise } from './interface'
+
 export class ExerciseImpl implements Exercise {
   constructor(public readonly slug: string) {
     if (!slug) {

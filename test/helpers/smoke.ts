@@ -1,4 +1,5 @@
-import { InlineInput } from "~test/helpers/input/InlineInput";
+import { InlineInput } from "~src/input/InlineInput";
+import { Analyzer, Output } from "~src/interface";
 
 type AnalyzerFactory = () => Analyzer
 type analyze = (solutionContent: string) => Promise<Output>

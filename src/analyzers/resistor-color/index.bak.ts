@@ -16,6 +16,7 @@ import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_SPLAT_ARGS, PARSE_
 import { AstParser, ParsedSource } from "~src/parsers/AstParser";
 import { NoSourceError } from "~src/errors/NoSourceError";
 import { ParserError } from "~src/errors/ParserError";
+import { Input } from "~src/interface";
 
 /**
  * The factories here SHOULD be kept in sync with exercism/website-copy. Under

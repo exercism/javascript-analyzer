@@ -1,6 +1,7 @@
 import { LogOutput } from '../output/processor/LogOutput'
 import { FileOutput } from '../output/processor/FileOutput'
 import { PassThroughOutput } from '../output/processor/PassThroughOutput'
+import { Analyzer, Input, ExecutionOptions, Output, OutputProcessor } from '~src/interface'
 
 /**
  * Run a specific analyzer, given a set of execution options

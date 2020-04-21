@@ -22,6 +22,7 @@ import { NoSourceError } from "~src/errors/NoSourceError";
 import { ParserError } from "~src/errors/ParserError";
 import { makeParseErrorOutput } from "~src/output/makeParseErrorOutput";
 import { makeNoSourceOutput } from "~src/output/makeNoSourceOutput";
+import { Input } from "~src/interface";
 
 /**
  * The factories here SHOULD be kept in sync with exercism/website-copy. Under
@@ -53,7 +54,6 @@ inline?
 `('javascript.two-fer.export_inline')
 
 const Parser: AstParser = new AstParser(undefined, 1)
-
 
 export class TwoFerAnalyzer extends AnalyzerImpl {
   private program!: Program

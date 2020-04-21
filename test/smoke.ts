@@ -1,9 +1,9 @@
 import { TwoFerAnalyzer } from '~src/analyzers/two-fer'
 import { run } from '~src/utils/runner'
 import { find } from '~src/analyzers/Autoload'
+import { InlineInput } from '~src/input/InlineInput'
 
 import { bootstrap } from '~test/helpers/bootstrap'
-import { InlineInput } from '~test/helpers/input/InlineInput'
 
 const { options, exercise } = bootstrap({ exercise: 'two-fer' })
 

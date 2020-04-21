@@ -1,3 +1,5 @@
+import { Output, Comment, ExecutionOptions } from "~src/interface"
+
 enum SolutionStatus {
   /** This is the default situation and should be used when there is any
    *  uncertainty. */

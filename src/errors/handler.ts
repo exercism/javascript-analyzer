@@ -4,8 +4,8 @@ export function registerExceptionHandler(): void {
   process.on('uncaughtException', reportException)
 }
 
-function reportException<T extends Error & { message: string; code?: number }>(err: T): void
-function reportException<T extends Error & { message: string; code?: number }>(err: T | string): void {
+export function reportException<T extends Error & { message: string; code?: number }>(err: T): never
+export function reportException<T extends Error & { message: string; code?: number }>(err: T | string): never {
 
   if (typeof err === 'string') {
     return reportException({ message: err, code: GENERIC_FAILURE, stack: undefined, name: 'UnknownError' })
@@ -24,9 +24,15 @@ ${err.stack ? err.stack : '<no stack>'}
   // eslint-disable-next-line no-console
   console.error(errorMessage)
 
-  // Write error to stderr as well
-  process.stderr.write(errorMessage)
+  if (typeof process !== 'undefined') {
+    // Write error to stderr as well
+    process.stderr && process.stderr.write(errorMessage)
+  }
 
-  // Exit with non-zero status
-  process.exit('code' in err ? err.code : GENERIC_FAILURE)
+  if (process.exit) {
+    // Exit with non-zero status
+    process.exit('code' in err ? err.code : GENERIC_FAILURE)
+  }
+
+  throw err
 }

@@ -3,6 +3,7 @@ import { ExerciseImpl } from '~src/ExerciseImpl';
 import { DirectoryInput } from '~src/input/DirectoryInput';
 import { Logger, setProcessLogger as setGlobalLogger } from '~src/utils/logger';
 import { ExecutionOptionsImpl } from './execution_options';
+import { Exercise, ExecutionOptions } from '~src/interface';
 
 export interface BootstrapResult {
   exercise: Exercise;

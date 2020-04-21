@@ -6,6 +6,7 @@ import { NoMethodError } from "~src/errors/NoMethodError";
 import { AstParser } from "~src/parsers/AstParser";
 import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl";
 import { HelperCallNotFound, HelperNotOptimal, MethodNotFound, MissingExpectedCall, UnexpectedCallFound, ResistorColorDuoSolution } from "./ResistorColorDuoSolution";
+import { Input, WritableOutput } from "~src/interface";
 
 const TIP_EXPORT_INLINE = factory<'method.signature'>`
 Did you know that you can export functions, classes and constants directly

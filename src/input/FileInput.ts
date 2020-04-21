@@ -1,4 +1,5 @@
 import { readFile } from "~src/utils/fs";
+import { Input } from "~src/interface";
 
 export class FileInput implements Input {
   constructor(private readonly path: string) {}

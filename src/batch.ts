@@ -6,6 +6,7 @@ import { DirectoryInput } from '~src/input/DirectoryInput';
 import { FileOutput } from '~src/output/processor/FileOutput';
 import { Bootstrap } from '~src/utils/bootstrap';
 import { readDir } from '~src/utils/fs';
+import { Comment, Output } from './interface';
 
 // The bootstrap call uses the arguments passed to the process to figure out
 // which exercise to target, where the input lives (directory input) and what

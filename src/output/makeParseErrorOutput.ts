@@ -3,6 +3,7 @@ import { ParserError } from "~src/errors/ParserError"
 import { Source } from "~src/analyzers/SourceImpl"
 import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
 import { PARSE_ERROR } from "~src/comments/shared"
+import { Output } from "~src/interface"
 
 /**
  * Makes a generic output, based on a ParserError

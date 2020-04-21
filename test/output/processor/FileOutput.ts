@@ -1,6 +1,7 @@
 import { FileOutput } from '~src/output/processor/FileOutput'
 import fs from 'fs'
 import path from 'path'
+import { ExecutionOptions } from '~src/interface';
 
 jest.mock('fs');
 

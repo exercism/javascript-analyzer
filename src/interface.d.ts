@@ -1,4 +1,4 @@
-interface ExecutionOptions {
+export interface ExecutionOptions {
   /** If true, logger.debug messages are displayed */
   debug: boolean;
   /** If true, logger messages are sent to the console */
@@ -17,7 +17,7 @@ interface ExecutionOptions {
   pretty: boolean;
 }
 
-interface AstParser<T extends object> {
+export interface AstParser<T extends object> {
   /**
    * Parse an input to an Abstract Syntax Tree
    * @param input the input
@@ -26,7 +26,7 @@ interface AstParser<T extends object> {
   parse(input: Input): Promise<T>;
 }
 
-interface Input {
+export interface Input {
   /**
    * Read in a number of strings
    * @param n the number
@@ -38,11 +38,11 @@ interface Input {
 }
 
 
-interface Exercise {
+export interface Exercise {
   readonly slug: string;
 }
 
-interface Comment {
+export interface Comment {
   /** The constructed message with all the template variables applied */
   message: string;
   /** The message with the template variables in there */
@@ -53,7 +53,7 @@ interface Comment {
   externalTemplate: string;
 }
 
-interface Output {
+export interface Output {
   status: 'refer_to_mentor' | 'approve' | 'disapprove';
   comments: Comment[];
 
@@ -65,7 +65,7 @@ interface Output {
   toProcessable(options: Readonly<ExecutionOptions>): Promise<string>;
 }
 
-interface WritableOutput extends Output {
+export interface WritableOutput extends Output {
   approve(comment?: Comment): never;
   disapprove(comment?: Comment): never;
   redirect(comment?: Comment): never;
@@ -75,14 +75,14 @@ interface WritableOutput extends Output {
   commentCount: number;
 }
 
-interface OutputProcessor {
+export interface OutputProcessor {
   (previous: Promise<string>, options: Readonly<ExecutionOptions>): Promise<string>;
 }
 
-interface Analyzer {
+export interface Analyzer {
   run(input: Input): Promise<Output>;
 }
 
-interface Runner {
+export interface Runner {
   call(analyzer: Analyzer, input: Input, options: Readonly<ExecutionOptions>): Promise<Output>;
 }

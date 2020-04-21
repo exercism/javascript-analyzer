@@ -9,6 +9,7 @@ import { AstParser } from "~src/parsers/AstParser";
 
 import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl";
 import { GigasecondSolution } from "./GigasecondSolution";
+import { Input, WritableOutput } from "~src/interface";
 
 const TIP_EXPORT_INLINE = factory<'method.signature'>`
 Did you know that you can export functions, classes and constants directly

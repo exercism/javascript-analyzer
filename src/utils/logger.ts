@@ -1,3 +1,5 @@
+import { ExecutionOptions } from "~src/interface"
+
 type StreamBuffer = string | Buffer | Uint8Array
 export type LoggerInput = StreamBuffer | (() => StreamBuffer)
 
@@ -6,7 +8,11 @@ export type LoggerInput = StreamBuffer | (() => StreamBuffer)
  * @param buffer
  */
 function log(buffer: LoggerInput): void {
-  process.stdout.write(buffer instanceof Function ? buffer() : buffer)
+  if (typeof process !== 'undefined' && process.stdout) {
+    process.stdout.write(buffer instanceof Function ? buffer() : buffer)
+  } else {
+    console.log(buffer instanceof Function ? buffer() : buffer)
+  }
 }
 
 /**
@@ -14,7 +20,11 @@ function log(buffer: LoggerInput): void {
  * @param buffer
  */
 function error(buffer: LoggerInput): void {
-  process.stderr.write(buffer instanceof Function ? buffer() : buffer)
+  if (typeof process !== 'undefined' && process.stdout) {
+    process.stderr.write(buffer instanceof Function ? buffer() : buffer)
+  } else {
+    console.error(buffer instanceof Function ? buffer() : buffer)
+  }
 }
 
 /**
@@ -24,7 +34,12 @@ function error(buffer: LoggerInput): void {
  */
 function fatal(this: Logger, buffer: LoggerInput, status = 1): never {
   this.error(buffer)
-  return process.exit(status)
+
+  if (typeof process !== 'undefined') {
+    return process.exit(status)
+  }
+
+  throw new Error("Fatal error")
 }
 
 function noop(_: LoggerInput): void {

@@ -1,6 +1,7 @@
 import { getProcessLogger as getLogger, Logger } from '~src/utils/logger'
 
 import { AnalyzerOutput } from '~src/output/AnalyzerOutput';
+import { Analyzer, Input, Output, Comment } from '~src/interface';
 
 class EarlyFinalization extends Error {
   constructor() {

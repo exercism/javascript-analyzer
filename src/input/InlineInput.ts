@@ -1,3 +1,4 @@
+import { Input } from "~src/interface";
 
 export class InlineInput implements Input {
   /**
@@ -15,9 +16,17 @@ export class InlineInput implements Input {
    * @returns promise that resolves all the files at once
    */
   public async read(n = 1): Promise<string[]> {
+    if (this.solutionFiles.length === 0) {
+      return this.informativeBail()
+    }
+
     return Promise.all(
       this.solutionFiles
         .slice(0, n)
     )
+  }
+
+  public async informativeBail(): Promise<never> {
+    return Promise.reject(new Error('No source files gives'))
   }
 }

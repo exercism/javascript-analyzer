@@ -218,10 +218,10 @@ class Entry {
 
   public get hasOptimalParameter(): boolean {
     const [param] = this.params
-    return param.type === AST_NODE_TYPES.ArrayPattern
+    return !!param && param.type === AST_NODE_TYPES.ArrayPattern
       && param.elements.length === 2
-      && isIdentifier(param.elements[0])
-      && isIdentifier(param.elements[1])
+      && !!param.elements[0] && isIdentifier(param.elements[0])
+      && !!param.elements[1] && isIdentifier(param.elements[1])
   }
 
   public get hasOneMap(): boolean {
@@ -549,8 +549,8 @@ class Entry {
     if (param.type === AST_NODE_TYPES.ArrayPattern && param.elements.length === 2) {
       const [tens, ones] = param.elements
 
-      const tensName = isIdentifier(tens) && tens.name || undefined
-      const onesName = isIdentifier(ones) && ones.name || undefined
+      const tensName = tens && isIdentifier(tens) && tens.name || undefined
+      const onesName = ones && isIdentifier(ones) && ones.name || undefined
 
       isTensValue = tensName && ((node): boolean => isIdentifier(node, tensName)) || undefined
       isOnesValue = onesName && ((node): boolean => isIdentifier(node, onesName)) || undefined

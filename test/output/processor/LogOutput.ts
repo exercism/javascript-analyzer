@@ -1,5 +1,6 @@
 import { LogOutput } from '~src/output/processor/LogOutput'
 import { setProcessLogger, Logger, LoggerInput } from '~src/utils/logger'
+import { ExecutionOptions } from '~src/interface'
 
 const CONTENTS = `My Fine Output`
 

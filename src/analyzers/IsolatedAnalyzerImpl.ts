@@ -4,6 +4,7 @@ import { EarlyFinalization, IsolatedAnalyzerOutput } from '~src/output/IsolatedA
 import { getProcessLogger as getLogger, Logger } from '~src/utils/logger';
 import { makeNoSourceOutput } from '~src/output/makeNoSourceOutput';
 import { makeParseErrorOutput } from '~src/output/makeParseErrorOutput';
+import { Analyzer, Output, Input, WritableOutput } from '~src/interface';
 
 export abstract class IsolatedAnalyzerImpl implements Analyzer {
   protected readonly logger: Logger

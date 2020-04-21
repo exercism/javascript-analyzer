@@ -1,4 +1,5 @@
 import { AnalyzerOutput } from "./AnalyzerOutput";
+import { WritableOutput, Comment } from "~src/interface";
 
 export class EarlyFinalization extends Error {
   constructor() {

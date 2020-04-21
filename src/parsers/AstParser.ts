@@ -1,6 +1,7 @@
 import { parse as parseToTree, TSESTree, TSESTreeOptions } from "@typescript-eslint/typescript-estree";
 import { ParserError } from "~src/errors/ParserError";
 import { getProcessLogger } from "~src/utils/logger";
+import { Input } from "~src/interface";
 
 type Program = TSESTree.Program
 
@@ -9,7 +10,8 @@ export class ParsedSource {
 }
 
 export class AstParser {
-  constructor(private readonly options?: TSESTreeOptions, private readonly n = 1) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(private readonly options?: any, private readonly n = 1) {
   }
 
   /**

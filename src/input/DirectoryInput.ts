@@ -3,6 +3,7 @@ import { FileInput } from "./FileInput";
 
 import nodePath from 'path'
 import { NoSourceError } from "~src/errors/NoSourceError";
+import { Input } from "~src/interface";
 
 const EXTENSIONS = /\.(jsx?|tsx?|mjs)$/
 const TEST_FILES = /\.spec|test\./

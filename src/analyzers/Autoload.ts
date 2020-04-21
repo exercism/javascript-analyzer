@@ -1,6 +1,7 @@
 import path from 'path'
 
 import { getProcessLogger } from '~src/utils/logger'
+import { Exercise, Analyzer } from '~src/interface'
 
 type AnalyzerConstructor = new () => Analyzer
 

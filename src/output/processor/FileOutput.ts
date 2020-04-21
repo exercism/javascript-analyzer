@@ -2,6 +2,7 @@ import { writeFile } from '~src/utils/fs'
 import path from 'path'
 
 import { getProcessLogger } from '~src/utils/logger'
+import { ExecutionOptions, OutputProcessor } from '~src/interface'
 
 type FileOutputOptions = Pick<ExecutionOptions, 'output' | 'inputDir'>
 

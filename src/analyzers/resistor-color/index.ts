@@ -6,6 +6,7 @@ import { NoMethodError } from "~src/errors/NoMethodError";
 import { AstParser } from "~src/parsers/AstParser";
 import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl";
 import { ResistorColorSolution } from "./ResistorColorSolution";
+import { Input, WritableOutput } from "~src/interface";
 
 const TIP_EXPORT_INLINE = factory<'method.signature' | 'constant.signature'>`
 Did you know that you can export functions, classes and constants directly
@@ -19,7 +20,7 @@ export ${'method.signature'}
 
 const SIGNATURE_NOT_OPTIMAL = factory`
 📕 If you look at the tests, the function \`colorCode\` only receives one
-parameter. Nothing more and nothing less. Suggest that the student 
+parameter. Nothing more and nothing less. Suggest that the student
 removes the additional parameters from your function, as their value will
 always be \`undefined\` or whatever default they've assigned.
 `('javascript.resistor-color.signature_not_optimal')
