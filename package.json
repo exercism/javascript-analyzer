@@ -5,6 +5,7 @@
   "repository": "https://github.com/exercism/javascript-analyzer",
   "author": "Derk-Jan Karrenbeld <derk-jan+github@karrenbeld.info>",
   "license": "MIT",
+  "main": "dist/analyze.js",
   "directories": {
     "lib": "./dist",
     "bin": "./bin",
