@@ -16,7 +16,7 @@ other parts of the Exercism ecosystem.
 
 * [The JavaScript track][contributing-javascript]
 * [The TypeScript track][contributing-typescript]
-* [Project Automated Mentoring Support][contributing-automated-mentoring-support]
+* [Project Automated Analysis][contributing-automated-analysis]
 * [The TypeScript Analyzer][contributing-typescript-analyzer]
 
 ## Code of Conduct
@@ -193,13 +193,13 @@ output as on the site.
 [contributing-javascript]: https://github.com/exercism/javascript/blob/master/CONTRIBUTING.md
 [contributing-typescript]: https://github.com/exercism/typescript/
 [contributing-typescript-analyzer]: https://github.com/exercism/typescript-analyzer/blob/master/CONTRIBUTING.md
-[contributing-automated-mentoring-support]: https://github.com/exercism/automated-mentoring-support/
+[contributing-automated-analysis]: https://github.com/exercism/automated-analysis/
 [coc]: https://exercism.io/code-of-conduct
 [docs-smoke-tests]: /docs/smoke-tests.md
 [docs-snapshot-tests]: /docs/snapshot-tests.md
 [docs-comments]: /docs/comments.md
-[docs-interface]: https://github.com/exercism/automated-mentoring-support/blob/master/docs/interface.md
-[docs-guidelines]: https://github.com/exercism/automated-mentoring-support/blob/master/docs/guidelines.md
+[docs-interface]: https://github.com/exercism/automated-analysis/blob/master/docs/analyzers/interface.md
+[docs-guidelines]: https://github.com/exercism/automated-analysis/blob/master/docs/analyzers/guidelines.md
 [file-bin]: https://github.com/exercism/javascript-analyzer/tree/master/bin
 [file-execution-options]: https://github.com/exercism/javascript-analyzer/blob/master/src/utils/execution_options.ts
 [issue-discussion]: https://github.com/exercism/javascript-analyzer/issues?q=is%3Aopen+is%3Aissue+label%3A%22discussion%22%3Aspeech_balloon%3A
