@@ -3492,14 +3492,22 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.general.no_named_export",
-      "message": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`gigasecond\`.
-The tests won't pass without it.
+      "message": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export)
+called \`gigasecond\`. The tests won't pass without it.
 
-Did you forget adding: \`export gigasecond\`?",
-      "template": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`%{export.name}\`.
-The tests won't pass without it.
+Make sure \`gigasecond\` exists and add \`export\` in front of it:
 
-Did you forget adding: \`export %{export.name}\`?",
+\`\`\`javascript
+export \`gigasecond\`
+\`\`\`",
+      "template": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export)
+called \`%{export.name}\`. The tests won't pass without it.
+
+Make sure \`%{export.name}\` exists and add \`export\` in front of it:
+
+\`\`\`javascript
+export \`%{export.name}\`
+\`\`\`",
       "variables": Object {
         "export.name": "gigasecond",
       },
@@ -4877,14 +4885,22 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.general.no_named_export",
-      "message": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`gigasecond\`.
-The tests won't pass without it.
+      "message": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export)
+called \`gigasecond\`. The tests won't pass without it.
 
-Did you forget adding: \`export gigasecond\`?",
-      "template": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`%{export.name}\`.
-The tests won't pass without it.
+Make sure \`gigasecond\` exists and add \`export\` in front of it:
 
-Did you forget adding: \`export %{export.name}\`?",
+\`\`\`javascript
+export \`gigasecond\`
+\`\`\`",
+      "template": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export)
+called \`%{export.name}\`. The tests won't pass without it.
+
+Make sure \`%{export.name}\` exists and add \`export\` in front of it:
+
+\`\`\`javascript
+export \`%{export.name}\`
+\`\`\`",
       "variables": Object {
         "export.name": "gigasecond",
       },
