@@ -98,15 +98,10 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     // and get out of here.
     this.checkForOptimalSolutions()
 
-    // We often see solutions that are correct but use different string
-    // concatenation options (e.g. String#+, Array#join, etc). We'll approve
-    // these but want to leave a comment that introduces them to string
-    // templates in case they don't know about it.
-    //
-    // Additionally there are correct solutions which don't use the default
-    // argument but instead rely of the falsy nature of undefined. We'll approve
-    // these but want to leave a comment that introduces them to string
-    // templates in case they don't know about it.
+    // There are correct solutions which don't use the default argument but
+    // instead rely of the falsy nature of undefined. We'll approve these but
+    // want to leave a comment that introduces them to string templates in case
+    // they don't know about it.
     this.checkForApprovableSolutions()
 
     // The most common error in twofer is people using conditionals to check
