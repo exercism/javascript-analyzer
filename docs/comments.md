@@ -37,7 +37,10 @@ discouraged, because it requires a lot of 🔫 shotgun 🔪 surgery if you chang
 something, but sometimes they do make sense:
 
 ```javascript
-const USING_POSITIONALS = factory<'named'>`
+const USING_POSITIONALS =
+  factory <
+  'named' >
+  `
 You can also use positional ${0} arguments ${1}. Or even combine it with
 ${`named`} arguments. However, TypeScript will not warn you if you forget to
 pass a positional argument, yet.

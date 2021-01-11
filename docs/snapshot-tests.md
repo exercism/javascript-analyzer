@@ -38,7 +38,6 @@ describe('When running analysis on two-fer fixtures', () => {
   snapshotTestsGenerator('disapprove', [])
   snapshotTestsGenerator('refer_to_mentor', [])
 })
-
 ```
 
 **Note**: This is not the place to add an exhaustive test of inputs to outputs.
