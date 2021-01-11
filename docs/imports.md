@@ -39,5 +39,3 @@ For example:
 `~src/comments/shared.ts` defines shared comment factories. It loads the factory
 from its sibling `./comment.ts`. This is fine, because it's likely that they'll
 be moved in unison if they ever are.
-
-

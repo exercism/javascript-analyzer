@@ -1,12 +1,27 @@
-import { TSESTree } from "@typescript-eslint/typescript-estree";
-import { factory } from "~src/comments/comment";
-import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_PARAMETER } from "~src/comments/shared";
-import { NoExportError } from "~src/errors/NoExportError";
-import { NoMethodError } from "~src/errors/NoMethodError";
-import { AstParser } from "~src/parsers/AstParser";
-import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl";
-import { HelperCallNotFound, HelperNotOptimal, MethodNotFound, MissingExpectedCall, UnexpectedCallFound, ResistorColorDuoSolution } from "./ResistorColorDuoSolution";
-import { Input, WritableOutput } from "~src/interface";
+import {
+  AstParser,
+  Input,
+  NoExportError,
+  NoMethodError,
+} from '@exercism/static-analysis'
+import { TSESTree } from '@typescript-eslint/typescript-estree'
+import { factory } from '../../comments/comment'
+import {
+  NO_METHOD,
+  NO_NAMED_EXPORT,
+  NO_PARAMETER,
+  UNEXPECTED_PARAMETER,
+} from '../../comments/shared'
+import { WritableOutput } from '../../interface'
+import { IsolatedAnalyzerImpl } from '../IsolatedAnalyzerImpl'
+import {
+  HelperCallNotFound,
+  HelperNotOptimal,
+  MethodNotFound,
+  MissingExpectedCall,
+  ResistorColorDuoSolution,
+  UnexpectedCallFound,
+} from './ResistorColorDuoSolution'
 
 const TIP_EXPORT_INLINE = factory<'method.signature'>`
 Did you know that you can export functions, classes and constants directly
@@ -91,12 +106,9 @@ const ISSUE_UNEXPECTED_CALL = factory<'unexpected' | 'expected'>`
 
 type Program = TSESTree.Program
 
-const Parser: AstParser = new AstParser(undefined, 1)
-
 export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
-
   protected async execute(input: Input, output: WritableOutput): Promise<void> {
-    const [parsed] = await Parser.parse(input)
+    const [parsed] = await AstParser.ANALYZER.parse(input)
 
     // Firstly we want to check that the structure of this solution is correct
     // and that there is nothing structural stopping it from passing the tests
@@ -121,7 +133,11 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     // The solution is automatically referred to the mentor if it reaches this
   }
 
-  private checkStructure(program: Readonly<Program>, source: Readonly<string>, output: WritableOutput): ResistorColorDuoSolution | never {
+  private checkStructure(
+    program: Readonly<Program>,
+    source: Readonly<string>,
+    output: WritableOutput
+  ): ResistorColorDuoSolution | never {
     try {
       return new ResistorColorDuoSolution(program, source)
     } catch (error) {
@@ -137,7 +153,10 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 
-  private checkSignature({ entry }: ResistorColorDuoSolution, output: WritableOutput): void | never {
+  private checkSignature(
+    { entry }: ResistorColorDuoSolution,
+    output: WritableOutput
+  ): void | never {
     // If there is no parameter then this solution won't pass the tests.
     //
     if (!entry.hasAtLeastOneParameter) {
@@ -167,7 +186,10 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 
-  private checkForOptimalSolutions(solution: ResistorColorDuoSolution, output: WritableOutput): void | never {
+  private checkForOptimalSolutions(
+    solution: ResistorColorDuoSolution,
+    output: WritableOutput
+  ): void | never {
     // The optional solution looks like this:
     //
     // const COLORS = [...]
@@ -190,7 +212,10 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     output.approve()
   }
 
-  private processLastIssue(solution: ResistorColorDuoSolution, output: WritableOutput): void | never {
+  private processLastIssue(
+    solution: ResistorColorDuoSolution,
+    output: WritableOutput
+  ): void | never {
     const lastIssue = solution.entry.lastIssue
     if (!lastIssue) {
       this.logger.log('~> no entry issue found')
@@ -199,19 +224,32 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
 
     if (lastIssue instanceof HelperNotOptimal) {
       // output.add(BETA_COMMENTARY_PREFIX())
-      output.disapprove(ISSUE_OPTIMISE_HELPER({ 'method.name': lastIssue.helperName }))
+      output.disapprove(
+        ISSUE_OPTIMISE_HELPER({ 'method.name': lastIssue.helperName })
+      )
     } else if (lastIssue instanceof HelperCallNotFound) {
       // output.add(BETA_COMMENTARY_PREFIX())
       output.disapprove(ISSUE_USE_A_HELPER())
     } else if (lastIssue instanceof MethodNotFound) {
       // output.add(BETA_COMMENTARY_PREFIX())
-      output.disapprove(ISSUE_METHOD_NOT_FOUND({ 'method.name': lastIssue.methodName }))
+      output.disapprove(
+        ISSUE_METHOD_NOT_FOUND({ 'method.name': lastIssue.methodName })
+      )
     } else if (lastIssue instanceof UnexpectedCallFound) {
-      output.add(ISSUE_UNEXPECTED_CALL({ 'unexpected': lastIssue.unexpected, 'expected': lastIssue.expected }))
-
+      output.add(
+        ISSUE_UNEXPECTED_CALL({
+          unexpected: lastIssue.unexpected,
+          expected: lastIssue.expected,
+        })
+      )
     } else if (lastIssue instanceof MissingExpectedCall) {
       // output.add(BETA_COMMENTARY_PREFIX())
-      output.add(ISSUE_EXPECTED_CALL({ 'method.name': lastIssue.methodName, 'expected.reason': lastIssue.reason }))
+      output.add(
+        ISSUE_EXPECTED_CALL({
+          'method.name': lastIssue.methodName,
+          'expected.reason': lastIssue.reason,
+        })
+      )
 
       // Add extra information for limit number
       if (solution.entry.hasOneMap || solution.entry.hasOneReduce) {
@@ -222,18 +260,26 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
 
       output.disapprove()
     } else {
-      this.logger.error('The analyzer did not handle the issue: ' + JSON.stringify(lastIssue))
+      this.logger.error(
+        'The analyzer did not handle the issue: ' + JSON.stringify(lastIssue)
+      )
       output.redirect()
     }
   }
 
-  private checkForApprovableSolutions(solution: ResistorColorDuoSolution, output: WritableOutput): void | never {
+  private checkForApprovableSolutions(
+    solution: ResistorColorDuoSolution,
+    output: WritableOutput
+  ): void | never {
     if (solution || output) {
       return
     }
   }
 
-  private checkForDisapprovables(solution: ResistorColorDuoSolution, output: WritableOutput): void | never {
+  private checkForDisapprovables(
+    solution: ResistorColorDuoSolution,
+    output: WritableOutput
+  ): void | never {
     const numberOfComments = output.comments.length
 
     // Reduce is currently not supported
@@ -257,7 +303,10 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
       if (!solution.entry.hasOneSlice) {
         output.add(LIMIT_NUMBER_OF_COLORS())
       }
-    } else if ((solution.entry.hasOneOptimalConversion || solution.entry.hasParseInt) && solution.entry.hasDigitsString) {
+    } else if (
+      (solution.entry.hasOneOptimalConversion || solution.entry.hasParseInt) &&
+      solution.entry.hasDigitsString
+    ) {
       output.add(USE_MATH_INSTEAD_OF_TYPE_JUGGLING())
     }
 
@@ -271,7 +320,10 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 
-  private checkForTips(solution: ResistorColorDuoSolution, output: WritableOutput): void | never {
+  private checkForTips(
+    solution: ResistorColorDuoSolution,
+    output: WritableOutput
+  ): void | never {
     if (!solution.hasInlineExport) {
       if (!output.hasCommentary) {
         // output.add(BETA_COMMENTARY_PREFIX())
@@ -295,7 +347,7 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
       } else {
         output.add(
           TIP_DESTRUCTURING_IN_PARAMETER({
-            'parameter': solution.entry.parameterName
+            parameter: solution.entry.parameterName,
           })
         )
       }

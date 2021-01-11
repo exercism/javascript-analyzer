@@ -8,16 +8,16 @@ errors, logical errors and develop new analysers.
 We welcome contributions of all sorts and sizes, from reporting issues to
 submitting patches, as well as joining the current [💬 discussions][issue-discussion].
 
------
+---
 
 This guide covers several common scenarios pertaining to **improving the
 JavaScript analyzer**. There are several other guides about contributing to
 other parts of the Exercism ecosystem.
 
-* [The JavaScript track][contributing-javascript]
-* [The TypeScript track][contributing-typescript]
-* [Project Automated Analysis][contributing-automated-analysis]
-* [The TypeScript Analyzer][contributing-typescript-analyzer]
+- [The JavaScript track][contributing-javascript]
+- [The TypeScript track][contributing-typescript]
+- [Project Automated Analysis][contributing-automated-analysis]
+- [The TypeScript Analyzer][contributing-typescript-analyzer]
 
 ## Code of Conduct
 
@@ -57,7 +57,7 @@ run these analyzers through the included ASTParser, or use [AST explorer][ast-ex
 and make sure it's set to the correct parser (at moment of writing this is
 `@typescript/eslint-parser`).
 
- **Note**: You may write a different style analyzer, that is _not_ using ASTs.
+**Note**: You may write a different style analyzer, that is _not_ using ASTs.
 
 #### Discussion 💬 and Samples
 
@@ -79,6 +79,7 @@ a guide on its own: read more about [📝 Comments][docs-comments].
 #### Tests
 
 Before you submit your PR, make sure that you follow the following docs:
+
 - [🌫 Smoke tests][docs-smoke-tests]
 - [📸 Snapshot tests][docs-snapshot-tests]
 
@@ -130,8 +131,8 @@ Run with the `-h` / `--help` flag to get a list of flags and their description.
 ./bin/analyze.sh --help
 ```
 
-You'll most likely want `-dcp` (`--debug`,`--console` and `--pretty`) during 
-development, which enables console output (instead of `stdout`/`stderr`) and 
+You'll most likely want `-dcp` (`--debug`,`--console` and `--pretty`) during
+development, which enables console output (instead of `stdout`/`stderr`) and
 shows `logger.log` as well as `logger.error` and `logger.fatal`. It will also
 format the output JSON with 2 space indentation, both in the output file and
 the console.
@@ -151,8 +152,8 @@ Runs all the fixtures in `~/test/fixtures/two-fer` through the analyzer, giving
 a summary at the end with all results. This places an `analysis.json` in the
 source fixture folder.
 
-You'll most likely want `-cp`  (`--console` and `--pretty`) during development, 
-which enables console output (instead of `stdout`/`stderr`) and formats the 
+You'll most likely want `-cp` (`--console` and `--pretty`) during development,
+which enables console output (instead of `stdout`/`stderr`) and formats the
 output JSON with 2 space indentation.
 
 If you wish to _preview_ the actual messages, pass in `--noTemplates` to use
@@ -166,14 +167,14 @@ output as on the site.
 ./bin/remote.sh https://exercism.io/tracks/javascript/exercises/two-fer/solutions/df3bb5d7131c44ea9c62206cc8d6c225 -dcp --dry
 ```
 
-You need the [`exercism` cli][cli] in order for this to work. It takes an 
+You need the [`exercism` cli][cli] in order for this to work. It takes an
 _exercism solution url_. and downloads it using the `exercism` cli. It then
-runs the analyzer on it. 
+runs the analyzer on it.
 
-You'll most likely want `-dcp --dry` (`--debug`, `--pretty`, `--console` and 
-`dry run`) during development, which enables console output (instead of 
-`stdout`/`stderr`), shows `logger.log` as well as `logger.error` and 
-`logger.fatal`, pretty prints the JSON output and disables writing the output 
+You'll most likely want `-dcp --dry` (`--debug`, `--pretty`, `--console` and
+`dry run`) during development, which enables console output (instead of
+`stdout`/`stderr`), shows `logger.log` as well as `logger.error` and
+`logger.fatal`, pretty prints the JSON output and disables writing the output
 to `analysis.json`.
 
 You can pass the following type of URLs:

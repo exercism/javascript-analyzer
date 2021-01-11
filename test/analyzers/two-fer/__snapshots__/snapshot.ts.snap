@@ -86,20 +86,6 @@ AnalyzerOutput {
         "method.name": "twoFer",
       },
     },
-    CommentImpl {
-      "externalTemplate": "javascript.general.no_named_export",
-      "message": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`twoFer\`.
-The tests won't pass without it.
-
-Did you forget adding: \`export twoFer\`?",
-      "template": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`%{export.name}\`.
-The tests won't pass without it.
-
-Did you forget adding: \`export %{export.name}\`?",
-      "variables": Object {
-        "export.name": "twoFer",
-      },
-    },
   ],
   "status": "disapprove",
 }
@@ -375,20 +361,6 @@ AnalyzerOutput {
       "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
       "variables": Object {
         "method.name": "twoFer",
-      },
-    },
-    CommentImpl {
-      "externalTemplate": "javascript.general.no_named_export",
-      "message": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`twoFer\`.
-The tests won't pass without it.
-
-Did you forget adding: \`export twoFer\`?",
-      "template": "No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`%{export.name}\`.
-The tests won't pass without it.
-
-Did you forget adding: \`export %{export.name}\`?",
-      "variables": Object {
-        "export.name": "twoFer",
       },
     },
   ],

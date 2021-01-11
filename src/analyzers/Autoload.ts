@@ -1,7 +1,6 @@
+import { getProcessLogger } from '@exercism/static-analysis'
 import path from 'path'
-
-import { getProcessLogger } from '~src/utils/logger'
-import { Exercise, Analyzer } from '~src/interface'
+import type { Analyzer, Exercise } from '../interface'
 
 type AnalyzerConstructor = new () => Analyzer
 
@@ -13,7 +12,9 @@ type AnalyzerConstructor = new () => Analyzer
  */
 export function find(exercise: Readonly<Exercise>): AnalyzerConstructor {
   const file = autoload(exercise)
-  const key = Object.keys(file).find((key): boolean => file[key] instanceof Function)
+  const key = Object.keys(file).find(
+    (key): boolean => file[key] instanceof Function
+  )
 
   if (key === undefined) {
     throw new Error(`No Analyzer found in './${exercise.slug}`)
@@ -28,9 +29,10 @@ function autoload(exercise: Readonly<Exercise>): ReturnType<NodeRequire> {
   const modulePath = path.join(__dirname, exercise.slug, 'index') // explicit path (no extension)
   try {
     return require(modulePath)
-  } catch(err) {
+  } catch (err) {
     const logger = getProcessLogger()
-    logger.error(`
+    logger.error(
+      `
 Whilst loading the index.js analyzer in "${modulePath}", something went wrong.
 
 Make sure that:
@@ -39,7 +41,8 @@ Make sure that:
 
 Original error:
 
-`.trimLeft())
+`.trimLeft()
+    )
     logger.fatal(JSON.stringify(err), -32)
   }
 }

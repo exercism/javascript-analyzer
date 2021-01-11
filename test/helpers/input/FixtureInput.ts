@@ -1,5 +1,4 @@
-import { DirectoryInput } from "~src/input/DirectoryInput";
-
+import { DirectoryInput } from '@exercism/static-analysis'
 import nodePath from 'path'
 
 export class FixtureInput extends DirectoryInput {
@@ -10,6 +9,9 @@ export class FixtureInput extends DirectoryInput {
    * @param num the exercise index
    */
   constructor(slug: string, private readonly num: number) {
-    super(nodePath.join(__dirname, '..', '..', 'fixtures', slug, num.toString()), slug)
+    super(
+      nodePath.join(__dirname, '..', '..', 'fixtures', slug, num.toString()),
+      slug
+    )
   }
 }

@@ -1,9 +1,16 @@
-import { ExecutionOptionsImpl } from "~src/utils/execution_options";
-import { ExerciseImpl } from "~src/ExerciseImpl";
-import { BootstrapResult } from "~src/utils/bootstrap";
-import { setProcessLogger, Logger } from "~src/utils/logger";
+import { ExecutionOptionsImpl } from '~src/utils/execution_options'
+import { ExerciseImpl } from '~src/ExerciseImpl'
+import { BootstrapResult } from '~src/utils/bootstrap'
+import { ExecutionOptions } from '~src/interface'
+import { Logger, setProcessLogger } from '@exercism/static-analysis'
 
-export function bootstrap({ exercise, ...overrides }: { exercise: string } & Partial<ExecutionOptions>): Omit<BootstrapResult, 'input'> {
+export function bootstrap({
+  exercise,
+  ...overrides
+}: { exercise: string } & Partial<ExecutionOptions>): Omit<
+  BootstrapResult,
+  'input'
+> {
   const options = new ExecutionOptionsImpl({
     debug: false,
     console: false,
@@ -13,7 +20,7 @@ export function bootstrap({ exercise, ...overrides }: { exercise: string } & Par
     noTemplates: false,
     pretty: false,
     exercise,
-    ...overrides
+    ...overrides,
   })
 
   const logger = setProcessLogger(new Logger(options))
@@ -21,6 +28,6 @@ export function bootstrap({ exercise, ...overrides }: { exercise: string } & Par
   return {
     options,
     exercise: new ExerciseImpl(exercise),
-    logger
+    logger,
   }
 }

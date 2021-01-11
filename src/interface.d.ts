@@ -1,88 +1,79 @@
+import type { Input } from '@exercism/static-analysis'
+
 export interface ExecutionOptions {
   /** If true, logger.debug messages are displayed */
-  debug: boolean;
+  debug: boolean
   /** If true, logger messages are sent to the console */
-  console: boolean;
+  console: boolean
   /** If true, does a dry run and does not output anything to file */
-  dry: boolean;
+  dry: boolean
   /** The output file name */
-  output: string;
+  output: string
   /** The input directory path */
-  inputDir: string;
+  inputDir: string
   /** The exercise slug */
-  exercise: string;
+  exercise: string
   /** Unless true, expects website-copy to provide the contents of the templates */
-  noTemplates: boolean;
+  noTemplates: boolean
   /** If true, outputs the JSON using 2 space-indentation (pretty-print) */
-  pretty: boolean;
+  pretty: boolean
 }
-
-export interface AstParser<T extends object> {
-  /**
-   * Parse an input to an Abstract Syntax Tree
-   * @param input the input
-   * @returns the AST
-   */
-  parse(input: Input): Promise<T>;
-}
-
-export interface Input {
-  /**
-   * Read in a number of strings
-   * @param n the number
-   * @returns at most `n` strings
-   */
-  read(n?: number): Promise<string[]>;
-
-  informativeBail(): Promise<never>;
-}
-
 
 export interface Exercise {
-  readonly slug: string;
+  readonly slug: string
 }
 
 export interface Comment {
   /** The constructed message with all the template variables applied */
-  message: string;
+  message: string
   /** The message with the template variables in there */
-  template: string;
+  template: string
   /** The provided variables as array or name (key), value (value) map */
-  variables: Readonly<{ [name: string]: string | undefined; [name: number]: string | undefined }>;
+  variables: Readonly<{
+    [name: string]: string | undefined
+    [name: number]: string | undefined
+  }>
   /** The identifier for the template on website-copy */
-  externalTemplate: string;
+  externalTemplate: string
 }
 
 export interface Output {
-  status: 'refer_to_mentor' | 'approve' | 'disapprove';
-  comments: Comment[];
+  status: 'refer_to_mentor' | 'approve' | 'disapprove'
+  comments: Comment[]
 
   /**
    * Makes the output ready to be processed
    * @param options the execution options
    * @returns the output as string
    */
-  toProcessable(options: Readonly<ExecutionOptions>): Promise<string>;
+  toProcessable(options: Readonly<ExecutionOptions>): Promise<string>
 }
 
 export interface WritableOutput extends Output {
-  approve(comment?: Comment): never;
-  disapprove(comment?: Comment): never;
-  redirect(comment?: Comment): never;
-  add(comment: Comment): void;
+  approve(comment?: Comment): never
+  disapprove(comment?: Comment): never
+  redirect(comment?: Comment): never
+  add(comment: Comment): void
 
-  hasCommentary: boolean;
-  commentCount: number;
+  hasCommentary: boolean
+  commentCount: number
 }
 
 export interface OutputProcessor {
-  (previous: Promise<string>, options: Readonly<ExecutionOptions>): Promise<string>;
+  (
+    previous: Promise<string>,
+    options: Readonly<ExecutionOptions>
+  ): Promise<string>
 }
 
 export interface Analyzer {
-  run(input: Input): Promise<Output>;
+  run(input: Input): Promise<Output>
 }
 
 export interface Runner {
-  call(analyzer: Analyzer, input: Input, options: Readonly<ExecutionOptions>): Promise<Output>;
+  call(
+    analyzer: Analyzer,
+    input: Input,
+    options: Readonly<ExecutionOptions>
+  ): Promise<Output>
 }

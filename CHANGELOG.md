@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.8.0
+
+- Use `@exercism/static-analysis`
+- Add workflows
+- Add `prettier`
+- Add `plugin/import` for `eslint`
+- Reimplement analyzers using new library
+
+## 0.7.0
+
+- Add main entrypoint in `package.json`
+- Add `web` run
+- Upgrade dependencies
+
 ## 0.6.1
 
 - Update dependencies

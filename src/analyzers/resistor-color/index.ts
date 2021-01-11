@@ -1,12 +1,20 @@
-import { TSESTree } from "@typescript-eslint/typescript-estree";
-import { factory } from "~src/comments/comment";
-import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, UNEXPECTED_PARAMETER } from "~src/comments/shared";
-import { NoExportError } from "~src/errors/NoExportError";
-import { NoMethodError } from "~src/errors/NoMethodError";
-import { AstParser } from "~src/parsers/AstParser";
-import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl";
-import { ResistorColorSolution } from "./ResistorColorSolution";
-import { Input, WritableOutput } from "~src/interface";
+import {
+  AstParser,
+  Input,
+  NoExportError,
+  NoMethodError,
+} from '@exercism/static-analysis'
+import { TSESTree } from '@typescript-eslint/typescript-estree'
+import { factory } from '../../comments/comment'
+import {
+  NO_METHOD,
+  NO_NAMED_EXPORT,
+  NO_PARAMETER,
+  UNEXPECTED_PARAMETER,
+} from '../../comments/shared'
+import { WritableOutput } from '../../interface'
+import { IsolatedAnalyzerImpl } from '../IsolatedAnalyzerImpl'
+import { ResistorColorSolution } from './ResistorColorSolution'
 
 const TIP_EXPORT_INLINE = factory<'method.signature' | 'constant.signature'>`
 Did you know that you can export functions, classes and constants directly
@@ -66,12 +74,9 @@ no need to manually normalise the inputs.
 
 type Program = TSESTree.Program
 
-const Parser: AstParser = new AstParser(undefined, 1)
-
 export class ResistorColorAnalyzer extends IsolatedAnalyzerImpl {
-
   protected async execute(input: Input, output: WritableOutput): Promise<void> {
-    const [parsed] = await Parser.parse(input)
+    const [parsed] = await AstParser.ANALYZER.parse(input)
 
     // Firstly we want to check that the structure of this solution is correct
     // and that there is nothing structural stopping it from passing the tests
@@ -96,7 +101,11 @@ export class ResistorColorAnalyzer extends IsolatedAnalyzerImpl {
     // The solution is automatically referred to the mentor if it reaches this
   }
 
-  private checkStructure(program: Readonly<Program>, source: Readonly<string>, output: WritableOutput): ResistorColorSolution | never {
+  private checkStructure(
+    program: Readonly<Program>,
+    source: Readonly<string>,
+    output: WritableOutput
+  ): ResistorColorSolution | never {
     try {
       return new ResistorColorSolution(program, source)
     } catch (error) {
@@ -112,7 +121,10 @@ export class ResistorColorAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 
-  private checkSignature({ entry }: ResistorColorSolution, output: WritableOutput): void | never {
+  private checkSignature(
+    { entry }: ResistorColorSolution,
+    output: WritableOutput
+  ): void | never {
     // If there is no parameter then this solution won't pass the tests.
     //
     if (!entry.hasAtLeastOneParameter) {
@@ -142,7 +154,10 @@ export class ResistorColorAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 
-  private checkForOptimalSolutions(solution: ResistorColorSolution, output: WritableOutput): void | never {
+  private checkForOptimalSolutions(
+    solution: ResistorColorSolution,
+    output: WritableOutput
+  ): void | never {
     // The optional solution looks like this:
     //
     // const COLORS = [...]
@@ -164,13 +179,19 @@ export class ResistorColorAnalyzer extends IsolatedAnalyzerImpl {
     output.approve()
   }
 
-  private checkForApprovableSolutions(solution: ResistorColorSolution, output: WritableOutput): void | never {
+  private checkForApprovableSolutions(
+    solution: ResistorColorSolution,
+    output: WritableOutput
+  ): void | never {
     if (solution || output) {
       return
     }
   }
 
-  private checkForDisapprovables(solution: ResistorColorSolution, output: WritableOutput): void | never {
+  private checkForDisapprovables(
+    solution: ResistorColorSolution,
+    output: WritableOutput
+  ): void | never {
     const numberOfComments = output.comments.length
 
     if (solution.entry.hasFindIndex) {
@@ -199,7 +220,10 @@ export class ResistorColorAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 
-  private checkForTips(solution: ResistorColorSolution, output: WritableOutput): void | never {
+  private checkForTips(
+    solution: ResistorColorSolution,
+    output: WritableOutput
+  ): void | never {
     if (!solution.hasInlineExports) {
       if (!output.hasCommentary) {
         // output.add(BETA_COMMENTARY_PREFIX())
@@ -209,7 +233,7 @@ export class ResistorColorAnalyzer extends IsolatedAnalyzerImpl {
       output.add(
         TIP_EXPORT_INLINE({
           'method.signature': solution.entry.signature,
-          'constant.signature': solution.constant.signature
+          'constant.signature': solution.constant.signature,
         })
       )
     }

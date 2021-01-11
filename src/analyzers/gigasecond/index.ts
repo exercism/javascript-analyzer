@@ -1,15 +1,23 @@
-import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/typescript-estree";
-
-import { isIdentifier } from "~src/analyzers/utils/is_identifier";
-import { factory } from "~src/comments/comment";
-import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, PREFER_CONST_OVER_LET_AND_VAR, UNEXPECTED_PARAMETER } from "~src/comments/shared";
-import { NoExportError } from "~src/errors/NoExportError";
-import { NoMethodError } from "~src/errors/NoMethodError";
-import { AstParser } from "~src/parsers/AstParser";
-
-import { IsolatedAnalyzerImpl } from "../IsolatedAnalyzerImpl";
-import { GigasecondSolution } from "./GigasecondSolution";
-import { Input, WritableOutput } from "~src/interface";
+import {
+  AstParser,
+  extractSource,
+  guardIdentifier,
+  Input,
+  NoExportError,
+  NoMethodError,
+} from '@exercism/static-analysis'
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
+import { factory } from '../../comments/comment'
+import {
+  NO_METHOD,
+  NO_NAMED_EXPORT,
+  NO_PARAMETER,
+  PREFER_CONST_OVER_LET_AND_VAR,
+  UNEXPECTED_PARAMETER,
+} from '../../comments/shared'
+import type { WritableOutput } from '../../interface'
+import { IsolatedAnalyzerImpl } from '../IsolatedAnalyzerImpl'
+import { GigasecondSolution } from './GigasecondSolution'
 
 const TIP_EXPORT_INLINE = factory<'method.signature'>`
 Did you know that you can export functions, classes and constants directly
@@ -37,7 +45,7 @@ export const gigasecond = (...)
 \`\`\`
 `('javascript.gigasecond.prefer_top_level_constant')
 
-const PREFER_EXTRACTED_TOP_LEVEL_CONSTANT =  factory<'value' | 'name'>`
+const PREFER_EXTRACTED_TOP_LEVEL_CONSTANT = factory<'value' | 'name'>`
 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions and classes that are not \`export\`ed,
 are not accessible from outside the file.
@@ -92,13 +100,9 @@ or locale (such as timezones).
 `('javascript.gigasecond.dont_use_get_seconds')
 
 type Program = TSESTree.Program
-
-const Parser: AstParser = new AstParser(undefined, 1)
-
 export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
-
   protected async execute(input: Input, output: WritableOutput): Promise<void> {
-    const [parsed] = await Parser.parse(input)
+    const [parsed] = await AstParser.ANALYZER.parse(input)
 
     // Firstly we want to check that the structure of this solution is correct
     // and that there is nothing structural stopping it from passing the tests
@@ -123,7 +127,11 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     // The solution is automatically referred to the mentor if it reaches this
   }
 
-  private checkStructure(program: Readonly<Program>, source: Readonly<string>, output: WritableOutput): GigasecondSolution | never {
+  private checkStructure(
+    program: Readonly<Program>,
+    source: Readonly<string>,
+    output: WritableOutput
+  ): GigasecondSolution | never {
     try {
       return new GigasecondSolution(program, source)
     } catch (error) {
@@ -139,7 +147,10 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 
-  private checkSignature({ entry }: GigasecondSolution, output: WritableOutput): void | never {
+  private checkSignature(
+    { entry }: GigasecondSolution,
+    output: WritableOutput
+  ): void | never {
     // If there is no parameter then this solution won't pass the tests.
     //
     if (!entry.hasAtLeastOneParameter) {
@@ -169,7 +180,10 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 
-  private checkForOptimalSolutions(solution: GigasecondSolution, output: WritableOutput): void | never {
+  private checkForOptimalSolutions(
+    solution: GigasecondSolution,
+    output: WritableOutput
+  ): void | never {
     // The optional solution looks like this:
     //
     // const GIGASECOND_IN_MS = 10 ** 12
@@ -193,26 +207,38 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     output.approve()
   }
 
-  private checkForApprovableSolutions(solution: GigasecondSolution, output: WritableOutput): void | never {
+  private checkForApprovableSolutions(
+    solution: GigasecondSolution,
+    output: WritableOutput
+  ): void | never {
     if (solution.constant) {
       this.logger.log(`=> found a constant (${solution.constant.kind})`)
 
       if (solution.constant.kind !== 'const') {
-        output.add(PREFER_CONST_OVER_LET_AND_VAR({
-          kind: solution.constant.kind,
-          name: solution.constant.name
-        }))
+        output.add(
+          PREFER_CONST_OVER_LET_AND_VAR({
+            kind: solution.constant.kind,
+            name: solution.constant.name,
+          })
+        )
 
         // If this is the only issue, approve
-        if (solution.entry.isOptimal(solution.constant)) {
+        if (
+          solution.entry.isOptimal(
+            solution.constant,
+            solution.numberComprehension
+          )
+        ) {
           output.approve()
         }
       }
 
       if (solution.constant.isLargeNumberLiteral) {
-        output.disapprove(USE_NUMBER_COMPREHENSION({
-          literal: solution.constant.name
-        }))
+        output.disapprove(
+          USE_NUMBER_COMPREHENSION({
+            literal: solution.constant.name,
+          })
+        )
       }
     } else {
       // This means there is no constant found. The approvable solution looks
@@ -237,39 +263,54 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
         switch (comprehension.type) {
           // ... + 10 ** 12
           case AST_NODE_TYPES.BinaryExpression: {
-            output.add(PREFER_TOP_LEVEL_CONSTANT({
-              'name': 'GIGASECOND_IN_MS',
-              'value': solution.source.get(comprehension)
-            }))
-            break;
+            output.add(
+              PREFER_TOP_LEVEL_CONSTANT({
+                name: 'GIGASECOND_IN_MS',
+                value: solution.source.get(comprehension),
+              })
+            )
+            break
           }
 
           // Math.pow(10, 12)
           case AST_NODE_TYPES.CallExpression: {
-            output.add(PREFER_TOP_LEVEL_CONSTANT({
-              'name': 'GIGASECOND_IN_MS',
-              'value': solution.source.get(comprehension)
-            }))
-            break;
+            output.add(
+              PREFER_TOP_LEVEL_CONSTANT({
+                name: 'GIGASECOND_IN_MS',
+                value: solution.source.get(comprehension),
+              })
+            )
+            break
           }
 
           // 1e12
           case AST_NODE_TYPES.Literal: {
-            output.add(PREFER_TOP_LEVEL_CONSTANT({
-              'name': 'GIGASECOND_IN_MS',
-              'value': solution.source.get(comprehension)
-            }))
-            break;
+            output.add(
+              PREFER_TOP_LEVEL_CONSTANT({
+                name: 'GIGASECOND_IN_MS',
+                value: solution.source.get(comprehension),
+              })
+            )
+            break
           }
 
           // const name = ... (one of the comprehensions above)
           case AST_NODE_TYPES.VariableDeclarator: {
             // Extract into const to top-level
-            output.add(PREFER_EXTRACTED_TOP_LEVEL_CONSTANT({
-              'name': 'id' in comprehension && isIdentifier(comprehension.id) && comprehension.id.name || 'GIGASECOND_IN_MS',
-              'value': comprehension.init && solution.source.get(comprehension.init) || '...'
-            }))
-            break;
+            output.add(
+              PREFER_EXTRACTED_TOP_LEVEL_CONSTANT({
+                name:
+                  ('id' in comprehension &&
+                    guardIdentifier(comprehension.id) &&
+                    comprehension.id.name) ||
+                  'GIGASECOND_IN_MS',
+                value:
+                  (comprehension.init &&
+                    solution.source.get(comprehension.init)) ||
+                  '...',
+              })
+            )
+            break
           }
         }
 
@@ -283,22 +324,28 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
         return
       } else if (literal) {
         this.logger.log(`=> found a literal (${literal.type})`)
-        output.disapprove(USE_NUMBER_COMPREHENSION({
-          literal: 'raw' in literal && literal.raw || literal.type
-        }))
+        output.disapprove(
+          USE_NUMBER_COMPREHENSION({
+            literal:
+              ('raw' in literal && literal.raw) || solution.source.get(literal),
+          })
+        )
       }
 
       return
     }
   }
 
-  private checkForDisapprovables(solution: GigasecondSolution, output: WritableOutput): void | never {
+  private checkForDisapprovables(
+    solution: GigasecondSolution,
+    output: WritableOutput
+  ): void | never {
     const numberOfComments = output.comments.length
 
     if (solution.entry.hasDateParse) {
       output.add(
         DONT_USE_DATE_PARSE({
-          'parameter.name': solution.entry.parameterName
+          'parameter.name': solution.entry.parameterName,
         })
       )
     }
@@ -318,7 +365,10 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 
-  private checkForTips(solution: GigasecondSolution, output: WritableOutput): void | never {
+  private checkForTips(
+    solution: GigasecondSolution,
+    output: WritableOutput
+  ): void | never {
     if (!solution.hasInlineExport) {
       // export { gigasecond }
       output.add(
@@ -339,7 +389,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
         output.add(
           PREFER_CONST_OVER_LET_AND_VAR({
             kind: constant.kind,
-            name: constant.name
+            name: constant.name,
           })
         )
       }

@@ -115,7 +115,7 @@ IsolatedAnalyzerOutput {
       "message": "Did you know that you can export functions, classes and constants directly
 inline?
 \`\`\`javascript
-export const decodedValue = colors => ...;
+export const decodedValue = colors => ...
 \`\`\`",
       "template": "Did you know that you can export functions, classes and constants directly
 inline?
@@ -123,7 +123,7 @@ inline?
 export %{method.signature}
 \`\`\`",
       "variables": Object {
-        "method.signature": "const decodedValue = colors => ...;",
+        "method.signature": "const decodedValue = colors => ...",
       },
     },
     CommentImpl {

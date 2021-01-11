@@ -1,5 +1,5 @@
-import { InlineInput } from "~src/input/InlineInput";
-import { Analyzer, Output } from "~src/interface";
+import { InlineInput } from '@exercism/static-analysis'
+import { Analyzer, Output } from '~src/interface'
 
 type AnalyzerFactory = () => Analyzer
 type analyze = (solutionContent: string) => Promise<Output>

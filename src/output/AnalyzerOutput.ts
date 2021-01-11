@@ -1,4 +1,4 @@
-import { Output, Comment, ExecutionOptions } from "~src/interface"
+import type { Comment, ExecutionOptions, Output } from '../interface'
 
 enum SolutionStatus {
   /** This is the default situation and should be used when there is any
@@ -9,7 +9,7 @@ enum SolutionStatus {
   Approve = 'approve',
   /** To be used when a solution can be disapproved as suboptimal and a comment
    *  is provided. */
-  Disapprove = 'disapprove'
+  Disapprove = 'disapprove',
 }
 
 /**
@@ -82,35 +82,47 @@ export class AnalyzerOutput implements Output {
    * @param {ExecutionOptions} options
    * @returns {Promise<string>}
    */
-  public toProcessable({ noTemplates, pretty }: Pick<ExecutionOptions, 'noTemplates' | 'pretty'>): Promise<string> {
+  public toProcessable({
+    noTemplates,
+    pretty,
+  }: Pick<ExecutionOptions, 'noTemplates' | 'pretty'>): Promise<string> {
     return Promise.resolve(
-      JSON.stringify({
-        status: this.status,
-        comments: this.comments.map(noTemplates ? makeIsolatedComment : makeExternalComment)
-      }, null, pretty ? 2 : 0)
+      JSON.stringify(
+        {
+          status: this.status,
+          comments: this.comments.map(
+            noTemplates ? makeIsolatedComment : makeExternalComment
+          ),
+        },
+        null,
+        pretty ? 2 : 0
+      )
     )
   }
 }
 
-function makeExternalComment(comment: Comment): string | { comment: string; params: Comment['variables'] } {
+function makeExternalComment(
+  comment: Comment
+): string | { comment: string; params: Comment['variables'] } {
   if (!comment.variables || Object.keys(comment.variables).length === 0) {
     return comment.externalTemplate
   }
 
   return {
     comment: comment.externalTemplate,
-    params: comment.variables
+    params: comment.variables,
   }
 }
 
-function makeIsolatedComment(comment: Comment): string | { comment: string; params: Comment['variables'] } {
+function makeIsolatedComment(
+  comment: Comment
+): string | { comment: string; params: Comment['variables'] } {
   if (!comment.variables || Object.keys(comment.variables).length === 0) {
     return comment.message
   }
 
   return {
     comment: comment.template,
-    params: comment.variables
+    params: comment.variables,
   }
 }
-

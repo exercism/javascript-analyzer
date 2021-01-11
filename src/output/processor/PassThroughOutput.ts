@@ -1,5 +1,7 @@
-import { OutputProcessor } from "~src/interface"
+import { OutputProcessor } from '../..//interface'
 
-export const PassThroughOutput: OutputProcessor = async (previous: Promise<string>): Promise<string> => {
+export const PassThroughOutput: OutputProcessor = async (
+  previous: Promise<string>
+): Promise<string> => {
   return previous
 }

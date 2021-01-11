@@ -57,7 +57,7 @@ where a typeguard is not applicable:
 
 ```typescript
 class Foo {
-  private param: string!
+  private param: !string
 
   constructor() {
     this.init()

@@ -1,9 +1,12 @@
-import { ExecutionOptionsImpl } from "./utils/execution_options";
-import { registerExceptionHandler } from "./errors/handler";
-import { Logger, setProcessLogger } from "./utils/logger";
-import { spawnSync, spawn } from 'child_process';
-import fs from 'fs';
-import path from 'path';
+import { registerExceptionHandler } from '@exercism/static-analysis/dist/errors/handler'
+import {
+  Logger,
+  setProcessLogger,
+} from '@exercism/static-analysis/dist/utils/logger'
+import { spawn, spawnSync } from 'child_process'
+import fs from 'fs'
+import path from 'path'
+import { ExecutionOptionsImpl } from './utils/execution_options'
 
 // The calls below uses the arguments passed to the process to figure out
 // which exercise to target, where the input lives (url/solution id) and what
@@ -33,34 +36,31 @@ let uuid = undefined
 if (input.startsWith('https://exercism.io/')) {
   uuid = input.split('/').reverse()[0]
   if (uuid.length != 32) {
-    process.stderr.write(`Expected a UUID (length 32), got '${uuid}' (len: ${uuid.length})`)
+    process.stderr.write(
+      `Expected a UUID (length 32), got '${uuid}' (len: ${uuid.length})`
+    )
     process.exit(-2)
   }
 } else if (input.length == 32) {
   uuid = input
 } else if (fs.existsSync(input)) {
-  logger.error("=> input seems to be local")
+  logger.error('=> input seems to be local')
   logger.error(`=> run bin/analyse.sh <exercise> ${input}`)
   process.exit(-3)
 } else {
-  process.stderr.write(`Expected a UUID (length 32) or solution URL, got '${input}'`)
+  process.stderr.write(
+    `Expected a UUID (length 32) or solution URL, got '${input}'`
+  )
   process.exit(-4)
 }
 
 logger.log(`~> exercism uuid: ${uuid}`)
 
-const downloadResult = spawnSync(
-  'exercism',
-  [
-    'download',
-    `--uuid=${uuid}`
-  ],
-  {
-    env: process.env,
-    cwd: process.cwd(),
-    stdio: 'pipe'
-  }
-)
+const downloadResult = spawnSync('exercism', ['download', `--uuid=${uuid}`], {
+  env: process.env,
+  cwd: process.cwd(),
+  stdio: 'pipe',
+})
 
 // Capture CLI tool errors
 if (downloadResult.error) {
@@ -69,7 +69,7 @@ if (downloadResult.error) {
   process.exit(-5)
 }
 
-const [, downloadOut] = downloadResult.output;
+const [, downloadOut] = downloadResult.output
 const localPath = downloadOut.toString().trim()
 
 // Capture CLI tool issues (reported but not true)
@@ -87,18 +87,25 @@ if (track !== 'javascript') {
 }
 
 const spawnable = path.join(__dirname, '..', 'dist', `analyze.js`)
-logger.log(`-> executing node -r esm -r module-alias/register "${spawnable}" ${exerciseSlug} "${localPath}" ${process.argv.slice(4).join(' ')}`)
+logger.log(
+  `-> executing node -r esm -r module-alias/register "${spawnable}" ${exerciseSlug} "${localPath}" ${process.argv
+    .slice(4)
+    .join(' ')}`
+)
 
 // Keep in sync with bin/analyze.sh
 //
-const analyzeProcess = spawn('node',
+const analyzeProcess = spawn(
+  'node',
   [
-    '-r', 'esm',
-    '-r', 'module-alias/register',
+    '-r',
+    'esm',
+    '-r',
+    'module-alias/register',
     spawnable,
     exerciseSlug,
     localPath,
-    ...process.argv.slice(4)
+    ...process.argv.slice(4),
   ],
   { cwd: process.cwd(), env: process.env }
 )
@@ -112,5 +119,5 @@ analyzeProcess.stdout.on('data', (data) => {
 })
 
 analyzeProcess.on('close', (code) => {
-  process.exit(code)
+  process.exit(code || undefined)
 })

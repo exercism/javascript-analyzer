@@ -1,5 +1,5 @@
-import { AnalyzerOutput } from  '~src/output/AnalyzerOutput'
-import { factory } from '~src/comments/comment';
+import { AnalyzerOutput } from '~src/output/AnalyzerOutput'
+import { factory } from '~src/comments/comment'
 
 const COMMENT_TEMPLATE_IDENTIFIER = 'javascript.test.output'
 const COMMENT = factory`something to test with`(COMMENT_TEMPLATE_IDENTIFIER)
@@ -24,8 +24,12 @@ describe('AnalyzerOutput', () => {
 
     it('has those comments', () => {
       expect(output.comments).toHaveLength(2)
-      expect(output.comments[0]).toMatchObject({ externalTemplate: COMMENT_TEMPLATE_IDENTIFIER })
-      expect(output.comments[1]).toMatchObject({ externalTemplate: COMMENT_TEMPLATE_IDENTIFIER })
+      expect(output.comments[0]).toMatchObject({
+        externalTemplate: COMMENT_TEMPLATE_IDENTIFIER,
+      })
+      expect(output.comments[1]).toMatchObject({
+        externalTemplate: COMMENT_TEMPLATE_IDENTIFIER,
+      })
     })
   })
 
@@ -54,7 +58,9 @@ describe('AnalyzerOutput', () => {
 
       it('has that comment', () => {
         expect(output.comments).toHaveLength(1)
-        expect(output.comments[0]).toMatchObject({ externalTemplate: COMMENT_TEMPLATE_IDENTIFIER })
+        expect(output.comments[0]).toMatchObject({
+          externalTemplate: COMMENT_TEMPLATE_IDENTIFIER,
+        })
       })
     })
 
@@ -112,7 +118,9 @@ describe('AnalyzerOutput', () => {
 
       it('has that comment', () => {
         expect(output.comments).toHaveLength(1)
-        expect(output.comments[0]).toMatchObject({ externalTemplate: COMMENT_TEMPLATE_IDENTIFIER })
+        expect(output.comments[0]).toMatchObject({
+          externalTemplate: COMMENT_TEMPLATE_IDENTIFIER,
+        })
       })
     })
 
@@ -170,7 +178,9 @@ describe('AnalyzerOutput', () => {
 
       it('has that comment', () => {
         expect(output.comments).toHaveLength(1)
-        expect(output.comments[0]).toMatchObject({ externalTemplate: COMMENT_TEMPLATE_IDENTIFIER })
+        expect(output.comments[0]).toMatchObject({
+          externalTemplate: COMMENT_TEMPLATE_IDENTIFIER,
+        })
       })
     })
 
