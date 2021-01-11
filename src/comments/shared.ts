@@ -13,10 +13,14 @@ No method called \`${'method.name'}\`. The tests won't pass without it.
 `('javascript.general.no_method')
 
 export const NO_NAMED_EXPORT = factory<'export.name'>`
-No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) called \`${'export.name'}\`.
-The tests won't pass without it.
+No [export](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export)
+called \`${'export.name'}\`. The tests won't pass without it.
 
-Did you forget adding: \`export ${'export.name'}\`?
+Make sure \`${'export.name'}\` exists and add \`export\` in front of it:
+
+\`\`\`javascript
+export \`${'export.name'}\`
+\`\`\`
 `('javascript.general.no_named_export')
 
 export const NO_DEFAULT_EXPORT = factory`
