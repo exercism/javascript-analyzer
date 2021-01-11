@@ -5,7 +5,6 @@ const analyze = makeAnalyze(() => new ResistorColorDuoAnalyzer())
 
 describe('When running analysis on resistor-color-duo', () => {
   it('can approve as optimal', async () => {
-
     const solutionContent = `
     const COLORS = [
       "black",
@@ -31,7 +30,7 @@ describe('When running analysis on resistor-color-duo', () => {
 
     const output = await analyze(solutionContent)
 
-    expect(output.status).toBe('approve');
-    expect(output.comments.length).toBe(0);
+    expect(output.status).toBe('approve')
+    expect(output.comments.length).toBe(0)
   })
 })

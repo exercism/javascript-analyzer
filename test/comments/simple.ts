@@ -29,7 +29,7 @@ describe(`Comment Factory (simple)`, () => {
         expect(comment.externalTemplate).toBe('test.javascript.simple')
       })
 
-      it('doesn\'t modify the original template', () => {
+      it("doesn't modify the original template", () => {
         expect(comment.template).toBe('simple example')
       })
 
@@ -38,5 +38,4 @@ describe(`Comment Factory (simple)`, () => {
       })
     })
   })
-
 })
