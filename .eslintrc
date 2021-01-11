@@ -3,7 +3,7 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json",
-    "ecmaVersion": 6,
+    "ecmaVersion": 2018,
     "sourceType": "module",
     "ecmaFeatures": {
       "modules": true
@@ -13,21 +13,29 @@
     "es6": true,
     "node": true
   },
+  "plugins": ["import", "@typescript-eslint"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/@typescript-eslint",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
   ],
   "rules": {
     "@typescript-eslint/explicit-function-return-type": [
-      "warn", {
+      "warn",
+      {
         "allowExpressions": false,
         "allowTypedFunctionExpressions": true,
         "allowHigherOrderFunctions": true
       }
     ],
     "@typescript-eslint/explicit-member-accessibility": [
-      "warn", {
+      "warn",
+      {
         "accessibility": "no-public",
         "overrides": {
           "accessors": "explicit",
@@ -38,27 +46,28 @@
         }
       }
     ],
-    "@typescript-eslint/indent": ["error", 2],
-    "@typescript-eslint/no-inferrable-types": [
-      "error", {
-        "ignoreParameters": true
-      }
-    ],
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-parameter-properties": [
-      "warn", {
+      "warn",
+      {
         "allows": [
-          "private", "protected", "public",
-          "private readonly", "protected readonly", "public readonly"
+          "private",
+          "protected",
+          "public",
+          "private readonly",
+          "protected readonly",
+          "public readonly"
         ]
       }
     ],
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-use-before-define": [
-      "error", {
+      "error",
+      {
         "functions": false,
         "typedefs": false
       }
-    ]
+    ],
+    "import/no-unresolved": "off"
   }
 }

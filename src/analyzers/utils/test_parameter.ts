@@ -1,13 +1,13 @@
-import { Parameter } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
-import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree";
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
+
+type Parameter = TSESTree.Parameter
 
 export function isOptional(parameter: Parameter): boolean {
-  switch(parameter.type) {
-
-    case AST_NODE_TYPES.ArrayPattern:         // [arg]?: type
-    case AST_NODE_TYPES.Identifier:           // arg?: type
-    case AST_NODE_TYPES.ObjectPattern:        // { arg }?: type
-    case AST_NODE_TYPES.RestElement:          // ...arg?: type
+  switch (parameter.type) {
+    case AST_NODE_TYPES.ArrayPattern: // [arg]?: type
+    case AST_NODE_TYPES.Identifier: // arg?: type
+    case AST_NODE_TYPES.ObjectPattern: // { arg }?: type
+    case AST_NODE_TYPES.RestElement: // ...arg?: type
       return parameter.optional || false
 
     // (...)?: type = expression

@@ -1,10 +1,16 @@
-import { FixtureInput } from "~test/helpers/input/FixtureInput";
+import { Analyzer, Output } from '~src/interface'
+import { FixtureInput } from './input/FixtureInput'
 
 type AnalyzerFactory = () => Analyzer
-type generateAll = (status: Output['status'], fixtures: readonly number[]) => void
+type generateAll = (
+  status: Output['status'],
+  fixtures: readonly number[]
+) => void
 
-// eslint-disable-next-line jest/no-export
-export function makeTestGenerator(slug: string, AnalyzerFactory: AnalyzerFactory): generateAll {
+export function makeTestGenerator(
+  slug: string,
+  AnalyzerFactory: AnalyzerFactory
+): generateAll {
   function analyze(fixture: number): Promise<Output> {
     const analyzer = AnalyzerFactory()
     const input = new FixtureInput(slug, fixture)
@@ -12,16 +18,22 @@ export function makeTestGenerator(slug: string, AnalyzerFactory: AnalyzerFactory
     return analyzer.run(input)
   }
 
-  return async function (status: Output['status'], fixtures: readonly number[]) {
+  return async function (
+    status: Output['status'],
+    fixtures: readonly number[]
+  ): Promise<void> {
     describe(`and expecting it to ${status.replace(/_/g, ' ')}`, () => {
-      fixtures.slice().sort().forEach((fixture) => {
-        const identifier = `${slug}/${fixture}`
-        it(`matches ${identifier}'s output`, async () => {
-          const output = await analyze(fixture)
-          expect(output.status).toBe(status);
-          expect(output).toMatchSnapshot(`output`)
+      fixtures
+        .slice()
+        .sort()
+        .forEach((fixture) => {
+          const identifier = `${slug}/${fixture}`
+          it(`matches ${identifier}'s output`, async () => {
+            const output = await analyze(fixture)
+            expect(output.status).toBe(status)
+            expect(output).toMatchSnapshot(`output`)
+          })
         })
-      })
     })
   }
 }

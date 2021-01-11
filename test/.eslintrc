@@ -1,18 +1,17 @@
 {
-  "extends": [
-    "../.eslintrc",
-    "plugin:jest/recommended"
-  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./test/tsconfig.eslint.json",
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "modules": true
+    }
+  },
   "env": {
+    "es6": true,
+    "node": true,
     "jest": true
   },
-  "rules": {
-    "@typescript-eslint/explicit-function-return-type": [
-      "warn", {
-        "allowExpressions": true,
-        "allowTypedFunctionExpressions": true,
-        "allowHigherOrderFunctions": true
-      }
-    ]
-  }
+  "extends": ["../.eslintrc"]
 }

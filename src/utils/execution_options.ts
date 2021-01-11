@@ -1,5 +1,5 @@
 import yargs from 'yargs'
-import { ExecutionOptions } from '~src/interface'
+import type { ExecutionOptions } from '../interface'
 
 export class ExecutionOptionsImpl implements ExecutionOptions {
   public debug!: boolean
@@ -12,22 +12,34 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
   public pretty!: boolean
 
   constructor(options: ExecutionOptions) {
-    Object.assign(this, options);
+    Object.assign(this, options)
   }
 
   public static create(): ExecutionOptions {
     const args = yargs
       .usage('Usage: $0 <exercise> <input-directory> [options]')
-      .example('$0 two-fer ~/javascript/two-fer/128/', 'Analyze the input directory "128" against the two-fer analyzer')
+      .example(
+        '$0 two-fer ~/javascript/two-fer/128/',
+        'Analyze the input directory "128" against the two-fer analyzer'
+      )
       .alias('d', 'debug')
       .alias('c', 'console')
       .alias('o', 'output')
       .alias('p', 'pretty')
       .describe('d', 'Unless given, only outputs warnings and errors')
       .describe('c', 'If given, outputs to the console')
-      .describe('o', 'Path relative to the input dir where the analyzis results are stored')
-      .describe('noTemplates', 'Unless given, exports templates instead of messages (feature flag)')
-      .describe('p', 'If given, formats the JSON output using 2 space indentation')
+      .describe(
+        'o',
+        'Path relative to the input dir where the analyzis results are stored'
+      )
+      .describe(
+        'noTemplates',
+        'Unless given, exports templates instead of messages (feature flag)'
+      )
+      .describe(
+        'p',
+        'If given, formats the JSON output using 2 space indentation'
+      )
       .describe('dry', 'If given, does not output anything to disk')
       .boolean(['d', 'c', 'p', 'dry', 'noTemplates'])
       .string('o')
@@ -38,8 +50,7 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
       .default('o', './analysis.json')
       .default('dry', false)
       .help('h')
-      .alias('h', 'help')
-      .argv
+      .alias('h', 'help').argv
 
     const { d, c, o, dry, p, noTemplates, _ } = args
     return new ExecutionOptionsImpl({
@@ -49,8 +60,8 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
       pretty: p,
       dry,
       noTemplates,
-      exercise: _[0],
-      inputDir: _[1]
+      exercise: String(_[0]),
+      inputDir: String(_[1]),
     })
   }
 }

@@ -1,7 +1,3 @@
-import { Bootstrap } from '~src/utils/bootstrap'
-import { find } from '~src/analyzers/Autoload'
-import { run } from '~src/utils/runner'
-
 // The bootstrap call uses the arguments passed to the process to figure out
 // which exercise to target, where the input lives (directory input) and what
 // execution options to set.
@@ -11,12 +7,21 @@ import { run } from '~src/utils/runner'
 // For example, if arguments are passed directly, the above will run the two-fer
 // exercise analyzer with the ~/test/ input directory and turning on debug and
 // console logging.
+
+import { find } from './analyzers/Autoload'
+import { Bootstrap } from './utils/bootstrap'
+import { run } from './utils/runner'
+
 //
 const { exercise, options, input, logger } = Bootstrap.call()
 
 logger.log('=> DEBUG mode is on')
 logger.log(`=> exercise: ${exercise.slug}`)
-logger.log(`=> options: ${options.pretty ? 'pretty ' : ''}${options.noTemplates ? 'no-templates' : 'templates'} ${options.dry ? 'dry ' : ''}`)
+logger.log(
+  `=> options: ${options.pretty ? 'pretty ' : ''}${
+    options.noTemplates ? 'no-templates' : 'templates'
+  } ${options.dry ? 'dry ' : ''}`
+)
 
 // The autoloader knows where an analyzer should live and tries to require it
 // so it can be instantiated here. This allows us to add new analyzers without
@@ -33,6 +38,5 @@ const analyzer = new AnalyzerClass()
 // logged and/or written to a file.
 //
 run(analyzer, input, options)
-  .then((): never => process.exit(0))
-  .catch((err): never => logger.fatal(err.toString()))
-
+  .then(() => process.exit(0))
+  .catch((err) => logger.fatal(err.toString()))

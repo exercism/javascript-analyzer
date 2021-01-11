@@ -1,28 +1,44 @@
-import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree";
-import { ConditionalExpression, IfStatement, LogicalExpression, Parameter, Program, TemplateLiteral } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
+import {
+  AstParser,
+  ExtractedFunction,
+  extractExports,
+  findAll,
+  findFirstOfType,
+  guardAssignmentPattern,
+  guardBinaryExpression,
+  guardIdentifier,
+  guardLiteral,
+  guardLogicalExpression,
+  guardTemplateLiteral,
+  guardUnaryExpression,
+  Input,
+  NoSourceError,
+  ParsedSource,
+  ParserError,
+} from '@exercism/static-analysis'
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
+import { factory } from '../../comments/comment'
+import {
+  NO_METHOD,
+  NO_NAMED_EXPORT,
+  NO_PARAMETER,
+  PREFER_STRICT_EQUALITY,
+  PREFER_TEMPLATED_STRINGS,
+  UNEXPECTED_SPLAT_ARGS,
+} from '../../comments/shared'
+import { extractNamedFunction } from '../../extracts/extract_named_function'
+import { makeNoSourceOutput } from '../../output/makeNoSourceOutput'
+import { makeParseErrorOutput } from '../../output/makeParseErrorOutput'
+import { AnalyzerImpl } from '../AnalyzerImpl'
+import { parameterName } from '../utils/extract_parameter'
+import { annotateType } from '../utils/type_annotations'
 
-import { AnalyzerImpl } from "~src/analyzers/AnalyzerImpl";
-import { extractAll } from "~src/analyzers/utils/extract_all";
-import { extractExport } from "~src/analyzers/utils/extract_export";
-import { extractFirst } from "~src/analyzers/utils/extract_first";
-import { extractMainMethod, MainMethod } from "~src/analyzers/utils/extract_main_method";
-import { parameterName } from '~src/analyzers/utils/extract_parameter';
-import { isAssignmentPattern } from "~src/analyzers/utils/is_assignment_pattern";
-import { isBinaryExpression } from "~src/analyzers/utils/is_binary_expression";
-import { isIdentifier } from "~src/analyzers/utils/is_identifier";
-import { isLiteral } from "~src/analyzers/utils/is_literal";
-import { isLogicalExpression } from "~src/analyzers/utils/is_logical_expression";
-import { isTemplateLiteral } from "~src/analyzers/utils/is_template_literal";
-import { isUnaryExpression } from "~src/analyzers/utils/is_unary_expression";
-import { annotateType } from "~src/analyzers/utils/type_annotations";
-import { factory } from "~src/comments/comment";
-import { NO_METHOD, NO_NAMED_EXPORT, NO_PARAMETER, PREFER_STRICT_EQUALITY, PREFER_TEMPLATED_STRINGS, UNEXPECTED_SPLAT_ARGS, PARSE_ERROR } from "~src/comments/shared";
-import { AstParser, ParsedSource } from "~src/parsers/AstParser";
-import { NoSourceError } from "~src/errors/NoSourceError";
-import { ParserError } from "~src/errors/ParserError";
-import { makeParseErrorOutput } from "~src/output/makeParseErrorOutput";
-import { makeNoSourceOutput } from "~src/output/makeNoSourceOutput";
-import { Input } from "~src/interface";
+type ConditionalExpression = TSESTree.ConditionalExpression
+type IfStatement = TSESTree.IfStatement
+type LogicalExpression = TSESTree.LogicalExpression
+type Parameter = TSESTree.Parameter
+type Program = TSESTree.Program
+type TemplateLiteral = TSESTree.TemplateLiteral
 
 /**
  * The factories here SHOULD be kept in sync with exercism/website-copy. Under
@@ -38,7 +54,9 @@ You currently use a conditional to branch in case there is no value passed into
 of ${'parameter'} to 'you' to avoid this conditional.
 `('javascript.two-fer.optimise_default_value')
 
-const OPTIMISE_EXPLICIT_DEFAULT_VALUE = factory<'parameter' | 'maybe_undefined_expression'>`
+const OPTIMISE_EXPLICIT_DEFAULT_VALUE = factory<
+  'parameter' | 'maybe_undefined_expression'
+>`
 Instead of relying on ${'maybe_undefined_expression'} being "undefined" when
 no value is passed in, you could set the default value of '${'parameter'}' to
 'you'.
@@ -53,44 +71,19 @@ Did you know that you can export functions, classes and constants directly
 inline?
 `('javascript.two-fer.export_inline')
 
-const Parser: AstParser = new AstParser(undefined, 1)
-
 export class TwoFerAnalyzer extends AnalyzerImpl {
   private program!: Program
   private source!: string
 
-  private _mainMethod!: ReturnType<typeof extractMainMethod>
-  private _mainExport!: ReturnType<typeof extractExport>
-
-  private _mainParameter!: Parameter
-
-  private get mainMethod(): ReturnType<typeof extractMainMethod> {
-    if (!this._mainMethod) {
-      this._mainMethod = extractMainMethod(this.program, 'twoFer')
-    }
-    return this._mainMethod
-  }
-
-  private get mainExport(): ReturnType<typeof extractExport> {
-    if (!this._mainExport) {
-      this._mainExport = extractExport(this.program, 'twoFer')
-    }
-    return this._mainExport
-  }
-
-  private get mainParameter(): Parameter {
-    if (!this._mainParameter) {
-      this._mainParameter = this.mainMethod!.params[0]
-    }
-
-    return this._mainParameter
-  }
+  private mainMethod!: ExtractedFunction
 
   protected async execute(input: Input): Promise<void> {
     const [parsed] = await this.parse(input)
 
     this.program = parsed.program
     this.source = parsed.source
+
+    this.mainMethod = extractNamedFunction('twoFer', this.program)!
 
     // Firstly we want to check that the structure of this solution is correct
     // and that there is nothing structural stopping it from passing the tests
@@ -132,9 +125,8 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
 
   private async parse(input: Input): never | Promise<ParsedSource[]> {
     try {
-      return await Parser.parse(input)
+      return await AstParser.ANALYZER.parse(input)
     } catch (err) {
-
       // Here we handle errors that blew up the analyzer but we don't want to
       // report as blown up. This converts these errors to the commentary.
       if (err instanceof NoSourceError) {
@@ -152,16 +144,15 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
   }
 
   private checkStructure(): void | never {
-    const method = this.mainMethod
-    const [declaration,] = this.mainExport
+    const exported = extractExports(this.program).find(
+      (extracted) => extracted.name === 'twoFer'
+    )
 
     // First we check that there is a two-fer function and that this function
     // is exported.
-    if (!method) {
+    if (!this.mainMethod) {
       this.comment(NO_METHOD({ 'method.name': 'twoFer' }))
-    }
-
-    if (!declaration) {
+    } else if (!exported) {
       this.comment(NO_NAMED_EXPORT({ 'export.name': 'twoFer' }))
     }
 
@@ -171,15 +162,13 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
   }
 
   private checkSignature(): void | never {
-    const method: MainMethod = this.mainMethod!
-
     // If there is no parameter or it doesn't have a default value,
     // then this solution won't pass the tests.
-    if (method.params.length === 0) {
-      this.disapprove(NO_PARAMETER({ 'function.name': method.id!.name }))
+    if (this.mainMethod.params.length === 0) {
+      this.disapprove(NO_PARAMETER({ 'function.name': this.mainMethod.name }))
     }
 
-    const firstParameter = this.mainParameter!
+    const firstParameter = this.mainMethod.params[0]
 
     // If they provide a splat, the tests can pass but we should suggest they
     // use a real parameter.
@@ -187,10 +176,12 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
       const splatArgName = parameterName(firstParameter)
       const splatArgType = annotateType(firstParameter.typeAnnotation)
 
-      this.disapprove(UNEXPECTED_SPLAT_ARGS({
-        'splat-arg.name': splatArgName,
-        'parameter.type': splatArgType
-      }))
+      this.disapprove(
+        UNEXPECTED_SPLAT_ARGS({
+          'splat-arg.name': splatArgName,
+          'parameter.type': splatArgType,
+        })
+      )
     }
   }
 
@@ -209,9 +200,9 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     // NOTE: the current tests are incorrect and want you to do name || 'you'
 
     if (
-      !this.isDefaultArgumentOptimal()
-      || !this.isOneLineSolution()
-      || !this.isUsingTemplatedString()
+      !this.isDefaultArgumentOptimal() ||
+      !this.isOneLineSolution() ||
+      !this.isUsingTemplatedString()
     ) {
       // continue analyzing
       this.logger.log('~> Solution is not optimal')
@@ -263,16 +254,16 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
   }
 
   private checkForSolutionWithoutStringTemplate(): void | never {
-    const [expression] = extractAll(this.mainMethod!, AST_NODE_TYPES.BinaryExpression)
-
+    const [expression] = findAll(this.mainMethod.node, guardBinaryExpression)
 
     //
     // "One for " + name + ", one for me."
     //
-    if (isBinaryExpression(expression, '+') && (
-      expression.left.type === AST_NODE_TYPES.Literal
-        || expression.right.type === AST_NODE_TYPES.Literal
-    )) {
+    if (
+      guardBinaryExpression(expression, '+') &&
+      (expression.left.type === AST_NODE_TYPES.Literal ||
+        expression.right.type === AST_NODE_TYPES.Literal)
+    ) {
       this.disapprove(PREFER_TEMPLATED_STRINGS())
     }
   }
@@ -282,79 +273,104 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     // "One for " + (name || 'you') + ", one for me."
     // `One for ${name || 'you'}, one for me.`
     //
-    const expression = extractFirst<LogicalExpression>(this.mainMethod!, AST_NODE_TYPES.LogicalExpression)
+    const expression = findFirstOfType<LogicalExpression>(
+      this.mainMethod.node,
+      AST_NODE_TYPES.LogicalExpression
+    )
 
-    if (expression && isLogicalExpression(expression, '||') && isIdentifier(expression.left)) {
+    if (
+      expression &&
+      guardLogicalExpression(expression, '||') &&
+      guardIdentifier(expression.left)
+    ) {
       if (
-        isLiteral(expression.right, 'you')
-        || isTemplateLiteral(expression.right, ['you'])
+        guardLiteral(expression.right, 'you') ||
+        guardTemplateLiteral(expression.right, ['you'])
       ) {
-        const firstParameter = this.mainMethod!.params[0]
+        const firstParameter = this.mainMethod.params[0]
         const parameter = parameterName(firstParameter, 'name')
 
-        this.comment(OPTIMISE_EXPLICIT_DEFAULT_VALUE({
-          parameter,
-          'maybe_undefined_expression': expression.left.name
-        }))
+        this.comment(
+          OPTIMISE_EXPLICIT_DEFAULT_VALUE({
+            parameter,
+            maybe_undefined_expression: expression.left.name,
+          })
+        )
       }
 
       return
     }
 
-
     // `One for ${name ? name : 'you'}, one for me.`
-    const conditionalExpression = extractFirst<ConditionalExpression>(this.mainMethod!, AST_NODE_TYPES.ConditionalExpression)
+    const conditionalExpression = findFirstOfType<ConditionalExpression>(
+      this.mainMethod.node,
+      AST_NODE_TYPES.ConditionalExpression
+    )
     if (
-      conditionalExpression
-      && isIdentifier(conditionalExpression.test)
-      && conditionalExpression.consequent.type === conditionalExpression.test.type
-      && conditionalExpression.consequent.name === conditionalExpression.test.name
+      conditionalExpression &&
+      guardIdentifier(conditionalExpression.test) &&
+      conditionalExpression.consequent.type ===
+        conditionalExpression.test.type &&
+      conditionalExpression.consequent.name === conditionalExpression.test.name
     ) {
-
       if (
-        isLiteral(conditionalExpression.alternate, 'you')
-          || isTemplateLiteral(conditionalExpression.alternate, ['you'])
-      )
-      {
-        const firstParameter = this.mainMethod!.params[0]
+        guardLiteral(conditionalExpression.alternate, 'you') ||
+        guardTemplateLiteral(conditionalExpression.alternate, ['you'])
+      ) {
+        const firstParameter = this.mainMethod.params[0]
         const parameter = parameterName(firstParameter, 'name')
 
-        this.comment(OPTIMISE_EXPLICIT_DEFAULT_VALUE({
-          parameter,
-          'maybe_undefined_expression': conditionalExpression.consequent.name
-        }))
+        this.comment(
+          OPTIMISE_EXPLICIT_DEFAULT_VALUE({
+            parameter,
+            maybe_undefined_expression: conditionalExpression.consequent.name,
+          })
+        )
       }
     }
   }
 
   private checkForConditionalOnDefaultArgument(): void | never {
-    const conditionalExpressions = extractAll<ConditionalExpression>(this.mainMethod!, AST_NODE_TYPES.ConditionalExpression)
-    const ifStatements = extractAll<IfStatement>(this.mainMethod!, AST_NODE_TYPES.IfStatement)
+    const conditionalExpressions = findAll<ConditionalExpression>(
+      this.mainMethod.node,
+      (node): node is ConditionalExpression =>
+        node.type === AST_NODE_TYPES.ConditionalExpression
+    )
+    const ifStatements = findAll<IfStatement>(
+      this.mainMethod.node,
+      (node): node is IfStatement => node.type === AST_NODE_TYPES.IfStatement
+    )
 
     if (
-      ifStatements.length === 0
-      && conditionalExpressions.length === 0
-      || (ifStatements.length + conditionalExpressions.length > 1)
+      (ifStatements.length === 0 && conditionalExpressions.length === 0) ||
+      ifStatements.length + conditionalExpressions.length > 1
     ) {
       // If there are no ifs or ? : or if there is more than one, we have not
       // accounted for it so bail out.
       return
     }
 
-    const defaultParameterName = parameterName(this.mainParameter)
+    const defaultParameterName = parameterName(this.mainMethod.params[0])
 
     const [ifStatement] = ifStatements
     if (ifStatement) {
       const { test } = ifStatement
 
       // if (!name)
-      if (isUnaryExpression(test, '!') && isIdentifier(test.argument, defaultParameterName)) {
-        this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
+      if (
+        guardUnaryExpression(test, '!') &&
+        guardIdentifier(test.argument, defaultParameterName)
+      ) {
+        this.disapprove(
+          OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName })
+        )
       }
 
       // if(name)
-      if (isIdentifier(test, defaultParameterName)) {
-        this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
+      if (guardIdentifier(test, defaultParameterName)) {
+        this.disapprove(
+          OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName })
+        )
       }
 
       // if (name === undefined)
@@ -366,10 +382,14 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
       // if (name !== '')          => old test
       // if ('' !== name)          => old test
       if (
-        (isBinaryExpression(test, '===') || isBinaryExpression(test, '!=='))
-        && (isIdentifier(test.left, defaultParameterName) || isIdentifier(test.right, defaultParameterName))
+        (guardBinaryExpression(test, '===') ||
+          guardBinaryExpression(test, '!==')) &&
+        (guardIdentifier(test.left, defaultParameterName) ||
+          guardIdentifier(test.right, defaultParameterName))
       ) {
-        this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
+        this.disapprove(
+          OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName })
+        )
       }
 
       // if (name == false)
@@ -389,11 +409,15 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
       // if (null != name)
       // if ('' != name)
       if (
-        (isBinaryExpression(test, '==') || isBinaryExpression(test, '!='))
-        && (isIdentifier(test.left, defaultParameterName) || isIdentifier(test.right, defaultParameterName))
+        (guardBinaryExpression(test, '==') ||
+          guardBinaryExpression(test, '!=')) &&
+        (guardIdentifier(test.left, defaultParameterName) ||
+          guardIdentifier(test.right, defaultParameterName))
       ) {
         this.comment(PREFER_STRICT_EQUALITY())
-        this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
+        this.disapprove(
+          OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName })
+        )
       }
 
       // This has a conditional, but we don't know how to default with it
@@ -408,20 +432,29 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     // name ? name : `you`
     // !name ? `you` : 'name'
     if (
-      (isIdentifier(consequent) && (isLiteral(alternate, 'you') || isTemplateLiteral(alternate)))
-      || (isIdentifier(alternate) && (isLiteral(consequent, 'you') || isTemplateLiteral(consequent)))
+      (guardIdentifier(consequent) &&
+        (guardLiteral(alternate, 'you') || guardTemplateLiteral(alternate))) ||
+      (guardIdentifier(alternate) &&
+        (guardLiteral(consequent, 'you') || guardTemplateLiteral(consequent)))
     ) {
-      this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
+      this.disapprove(
+        OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName })
+      )
     }
 
     // name ? `One for ${name}, and one for me` : 'One for you, one for me.')
     // !name ? 'One for you, one for me.' : `One for ${name}, and one for me`
     if (
-      (isTemplateLiteral(consequent) && (isLiteral(alternate, 'One for you, one for me.') || isTemplateLiteral(alternate)))
-      || isTemplateLiteral(alternate) && (isLiteral(consequent, 'One for you, one for me.') || isTemplateLiteral(consequent))
-
+      (guardTemplateLiteral(consequent) &&
+        (guardLiteral(alternate, 'One for you, one for me.') ||
+          guardTemplateLiteral(alternate))) ||
+      (guardTemplateLiteral(alternate) &&
+        (guardLiteral(consequent, 'One for you, one for me.') ||
+          guardTemplateLiteral(consequent)))
     ) {
-      this.disapprove(OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName }))
+      this.disapprove(
+        OPTIMISE_DEFAULT_VALUE({ parameter: defaultParameterName })
+      )
     }
 
     // This has a conditional, but we don't know how to default with it
@@ -429,14 +462,21 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
   }
 
   private isDefaultArgumentOptimal(): boolean {
-    return isAssignmentPattern(this.mainParameter, 'you')
+    return guardAssignmentPattern(this.mainMethod.params[0], 'you')
   }
 
   private isOneLineSolution(): boolean {
     // A one-line solution will never have any conditional expressions
     // (ternary operators) or if statements.
-    const conditionalExpressions = extractAll<ConditionalExpression>(this.mainMethod!, AST_NODE_TYPES.ConditionalExpression)
-    const ifStatements = extractAll<IfStatement>(this.mainMethod!, AST_NODE_TYPES.IfStatement)
+    const conditionalExpressions = findAll<ConditionalExpression>(
+      this.mainMethod.node,
+      (node): node is ConditionalExpression =>
+        node.type === AST_NODE_TYPES.ConditionalExpression
+    )
+    const ifStatements = findAll<IfStatement>(
+      this.mainMethod.node,
+      (node): node is IfStatement => node.type === AST_NODE_TYPES.IfStatement
+    )
 
     if (conditionalExpressions.length !== 0 || ifStatements.length !== 0) {
       return false
@@ -452,18 +492,23 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     //
     // 1: export const twoFer = (name = 'you') => ...
     //
-    const body = this.mainMethod!.body!
+    const body = this.mainMethod.body
 
     // This trick actually looks to the inner expression instead of the entire
     // function in order to allow for comments inside the body.
-    const { loc: { start: { line: lineStart }, end: { line: lineEnd } } } =
-         body.type === AST_NODE_TYPES.BlockStatement
-      && body.body.length === 1
-      && body.body[0].type === AST_NODE_TYPES.ReturnStatement
-           ? body.body[0]
-           : this.mainMethod!
+    const {
+      loc: {
+        start: { line: lineStart },
+        end: { line: lineEnd },
+      },
+    } =
+      body.type === AST_NODE_TYPES.BlockStatement &&
+      body.body.length === 1 &&
+      body.body[0].type === AST_NODE_TYPES.ReturnStatement
+        ? body.body[0]
+        : this.mainMethod.node
 
-    return (lineEnd - lineStart) <= 2
+    return lineEnd - lineStart <= 2
   }
 
   private hasInlineExport(): boolean {
@@ -476,18 +521,26 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     // export { gigasecond }
     // => yes specififers
     //
-    return this.mainExport[0]!.specifiers && this.mainExport[0]!.specifiers.length === 0
+    return !!extractExports(this.program).find(
+      (extracted) =>
+        extracted.exported === 'twoFer' && extracted.exportKind === 'value'
+    )
   }
 
   private isUsingTemplatedString(): TemplateLiteral | undefined {
-    return extractFirst<TemplateLiteral>(this.mainMethod!, AST_NODE_TYPES.TemplateLiteral)
+    return findFirstOfType<TemplateLiteral>(
+      this.mainMethod.node,
+      AST_NODE_TYPES.TemplateLiteral
+    )
   }
 
   private hasThreeComponentsInTemplateLiteral(): boolean {
-    const template = extractFirst<TemplateLiteral>(this.mainMethod!, AST_NODE_TYPES.TemplateLiteral)
+    const template = findFirstOfType<TemplateLiteral>(
+      this.mainMethod.node,
+      AST_NODE_TYPES.TemplateLiteral
+    )
     return !!(
       template && template.quasis.length + template.expressions.length === 3
     )
   }
 }
-

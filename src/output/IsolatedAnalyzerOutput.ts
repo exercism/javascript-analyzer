@@ -1,16 +1,17 @@
-import { AnalyzerOutput } from "./AnalyzerOutput";
-import { WritableOutput, Comment } from "~src/interface";
+import type { Comment, WritableOutput } from '../interface'
+import { AnalyzerOutput } from './AnalyzerOutput'
 
 export class EarlyFinalization extends Error {
   constructor() {
     super('Early finalization')
-    Object.setPrototypeOf(this, EarlyFinalization.prototype);
+    Object.setPrototypeOf(this, EarlyFinalization.prototype)
     Error.captureStackTrace(this, this.constructor)
   }
 }
 
-export class IsolatedAnalyzerOutput extends AnalyzerOutput implements WritableOutput {
-
+export class IsolatedAnalyzerOutput
+  extends AnalyzerOutput
+  implements WritableOutput {
   /**
    * Mark the solution as approved
    */

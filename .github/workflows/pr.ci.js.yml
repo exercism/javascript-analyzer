@@ -1,0 +1,47 @@
+# This workflow will do a clean install of node dependencies and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: javascript-representer / pr
+
+on: pull_request
+
+jobs:
+  precheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v2
+
+      - name: Use Node.js LTS (14.x)
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Install project dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts
+
+      - name: Run exercism/javascript ci precheck (lint code)
+        run: yarn lint
+
+  ci:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 15.x]
+
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install project dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts
+
+      - name: Build the test-runner and run the tests (using Node ${{ matrix.node-version }})
+        run: yarn test

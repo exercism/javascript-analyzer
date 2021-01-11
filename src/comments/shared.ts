@@ -1,4 +1,4 @@
-import { factory } from "./comment"
+import { factory } from './comment'
 
 /**
  * The factories here SHOULD be kept in sync with exercism/website-copy. Under
@@ -36,7 +36,9 @@ export const UNEXPECTED_PARAMETER = factory<'type'>`
 Did not find a parameter of type \`${'type'}\`.
 `('javascript.general.unexpected_parameter')
 
-export const UNEXPECTED_SPLAT_ARGS = factory<'splat-arg.name' | 'parameter.type'>`
+export const UNEXPECTED_SPLAT_ARGS = factory<
+  'splat-arg.name' | 'parameter.type'
+>`
 Instead of using \`...${'splat-arg.name'}: ${'parameter.type'}[]\`, you should
 define a parameter called \`${'splat-arg.name'}\` with the type \`${'parameter.type'}\`.
 

@@ -1,19 +1,30 @@
-import { TSTypeAnnotation, TypeNode, Parameter, EntityName } from "@typescript-eslint/typescript-estree/dist/ts-estree/ts-estree";
-import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree";
-import { parameterName } from "./extract_parameter";
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
+import { parameterName } from './extract_parameter'
 
-export function parameterType(parameter: Parameter, fallback: string = 'any'): string {
-  switch(parameter.type) {
+type TSTypeAnnotation = TSESTree.TSTypeAnnotation
+type TypeNode = TSESTree.TypeNode
+type Parameter = TSESTree.Parameter
+type EntityName = TSESTree.EntityName
 
-    case AST_NODE_TYPES.ArrayPattern:       // [arg]?: type
-    case AST_NODE_TYPES.Identifier:         // arg?: type
-    case AST_NODE_TYPES.ObjectPattern:      // { arg }?: type
-    case AST_NODE_TYPES.RestElement:        // ...arg?: type
-      return parameter.typeAnnotation && annotateType(parameter.typeAnnotation, fallback) || fallback
+export function parameterType(parameter: Parameter, fallback = 'any'): string {
+  switch (parameter.type) {
+    case AST_NODE_TYPES.ArrayPattern: // [arg]?: type
+    case AST_NODE_TYPES.Identifier: // arg?: type
+    case AST_NODE_TYPES.ObjectPattern: // { arg }?: type
+    case AST_NODE_TYPES.RestElement: // ...arg?: type
+      return (
+        (parameter.typeAnnotation &&
+          annotateType(parameter.typeAnnotation, fallback)) ||
+        fallback
+      )
 
     // (...)?: type = expression
     case AST_NODE_TYPES.AssignmentPattern: {
-      return parameter.left.typeAnnotation && annotateType(parameter.left.typeAnnotation, fallback) || fallback
+      return (
+        (parameter.left.typeAnnotation &&
+          annotateType(parameter.left.typeAnnotation, fallback)) ||
+        fallback
+      )
     }
 
     // public (...)?
@@ -27,7 +38,10 @@ export function parameterType(parameter: Parameter, fallback: string = 'any'): s
   }
 }
 
-export function annotateType(typeAnnotation?: TSTypeAnnotation | null, fallback: string = 'any'): string {
+export function annotateType(
+  typeAnnotation?: TSTypeAnnotation | null,
+  fallback = 'any'
+): string {
   if (typeAnnotation === undefined || typeAnnotation === null) {
     return fallback
   }
@@ -36,13 +50,15 @@ export function annotateType(typeAnnotation?: TSTypeAnnotation | null, fallback:
 }
 
 export function annotateEntityName(entityName: EntityName): string {
-  switch(entityName.type) {
+  switch (entityName.type) {
     case AST_NODE_TYPES.Identifier: {
       return entityName.name
     }
 
     case AST_NODE_TYPES.TSQualifiedName: {
-      return `${annotateEntityName(entityName.left)}.${annotateEntityName(entityName.right)}`
+      return `${annotateEntityName(entityName.left)}.${annotateEntityName(
+        entityName.right
+      )}`
     }
 
     default: {
@@ -51,15 +67,15 @@ export function annotateEntityName(entityName: EntityName): string {
   }
 }
 
-function annotate(typeNode?: TypeNode, fallback: string = 'any'): string {
+function annotate(typeNode?: TypeNode, fallback = 'any'): string {
   if (typeNode === undefined) {
     return fallback
   }
 
-  switch(typeNode.type) {
-    case AST_NODE_TYPES.ThisExpression: {
-      return 'this'
-    }
+  switch (typeNode.type) {
+    // case AST_NODE_TYPES.ThisExpression: {
+    //   return 'this'
+    // }
     case AST_NODE_TYPES.TSAnyKeyword: {
       return 'any'
     }
@@ -80,40 +96,70 @@ function annotate(typeNode?: TypeNode, fallback: string = 'any'): string {
       return `${ctC} extends ${ctE} ? ${ctT} : ${ctF}`
     }
     case AST_NODE_TYPES.TSConstructorType: {
-      const ctP = typeNode.params.map((parameter): string => `${parameterName(parameter)}: ${parameterType(parameter, fallback)}`).join(', ')
+      const ctP = typeNode.params
+        .map(
+          (parameter): string =>
+            `${parameterName(parameter)}: ${parameterType(parameter, fallback)}`
+        )
+        .join(', ')
       const ctR = annotateType(typeNode.returnType, fallback)
       return `new (${ctP}) => ${ctR}`
     }
-    case AST_NODE_TYPES.TSClassImplements: {
-      return '<...>' // TODO id + type parameters
-    }
+    // case AST_NODE_TYPES.TSClassImplements: {
+    // ...  return '<...>' // TODO id + type parameters
+    // }
     case AST_NODE_TYPES.TSFunctionType: {
-      const ftP = typeNode.params.map((parameter): string => `${parameterName(parameter)}: ${parameterType(parameter, fallback)}`).join(', ')
+      const ftP = typeNode.params
+        .map(
+          (parameter): string =>
+            `${parameterName(parameter)}: ${parameterType(parameter, fallback)}`
+        )
+        .join(', ')
       const ftR = annotateType(typeNode.returnType, fallback)
       return `(${ftP}) => ${ftR}`
     }
     case AST_NODE_TYPES.TSIntersectionType: {
-      return typeNode.types.map((innerTypeNode): string => annotate(innerTypeNode, fallback)).join(' & ')
+      return typeNode.types
+        .map((innerTypeNode): string => annotate(innerTypeNode, fallback))
+        .join(' & ')
     }
     case AST_NODE_TYPES.TSImportType: {
-      return `${typeNode.isTypeOf ? 'typeof ' : ''} import(${typeNode.parameter})${typeNode.qualifier ? `.${annotateEntityName(typeNode.qualifier)}` : '' } <...>` // todo type parameters
+      return `${typeNode.isTypeOf ? 'typeof ' : ''} import(${
+        typeNode.parameter
+      })${
+        typeNode.qualifier ? `.${annotateEntityName(typeNode.qualifier)}` : ''
+      } <...>` // todo type parameters
     }
     case AST_NODE_TYPES.TSInferType: {
       return 'infer <...>' // TODO type parameter
     }
     case AST_NODE_TYPES.TSIndexedAccessType: {
-      return `${annotate(typeNode.objectType, fallback)}[${annotate(typeNode.indexType, fallback)}]`
+      return `${annotate(typeNode.objectType, fallback)}[${annotate(
+        typeNode.indexType,
+        fallback
+      )}]`
     }
     case AST_NODE_TYPES.TSInterfaceHeritage: {
-      return typeNode.expression.type === AST_NODE_TYPES.Identifier && typeNode.expression.name
-        || typeNode.expression.type === AST_NODE_TYPES.Literal && typeNode.expression.raw
-        || '<...>' // TODO id + type parameters
+      return (
+        (typeNode.expression.type === AST_NODE_TYPES.Identifier &&
+          typeNode.expression.name) ||
+        (typeNode.expression.type === AST_NODE_TYPES.Literal &&
+          typeNode.expression.raw) ||
+        '<...>'
+      ) // TODO id + type parameters
     }
     case AST_NODE_TYPES.TSLiteralType: {
-      return typeNode.literal.type === AST_NODE_TYPES.Literal && typeNode.literal.raw || fallback
+      return (
+        (typeNode.literal.type === AST_NODE_TYPES.Literal &&
+          typeNode.literal.raw) ||
+        fallback
+      )
     }
     case AST_NODE_TYPES.TSMappedType: {
-      return `{ ${typeNode.readonly ? 'readonly ' : ''}...: ${annotate(typeNode.typeAnnotation, fallback)} }` // TODO parameters
+      return `{ ${typeNode.readonly ? 'readonly ' : ''}...: ${annotate(
+        typeNode.typeAnnotation,
+        fallback
+      )} }` // TODO parameters
     }
     case AST_NODE_TYPES.TSNullKeyword: {
       return 'null'
@@ -140,13 +186,15 @@ function annotate(typeNode?: TypeNode, fallback: string = 'any'): string {
       return 'string'
     }
     case AST_NODE_TYPES.TSSymbolKeyword: {
-      return "symbol"
+      return 'symbol'
     }
     case AST_NODE_TYPES.TSThisType: {
-      return "this"
+      return 'this'
     }
     case AST_NODE_TYPES.TSTupleType: {
-      return `[${typeNode.elementTypes.map((innerTypeNode): string => annotate(innerTypeNode, fallback)).join(', ')}]`
+      return `[${typeNode.elementTypes
+        .map((innerTypeNode): string => annotate(innerTypeNode, fallback))
+        .join(', ')}]`
     }
     case AST_NODE_TYPES.TSTypeLiteral: {
       return '<...>' // TODO
@@ -155,10 +203,16 @@ function annotate(typeNode?: TypeNode, fallback: string = 'any'): string {
       if (!typeNode.typeAnnotation) {
         return `${typeNode.operator}`
       }
-      return `${typeNode.operator} ${annotate(typeNode.typeAnnotation, fallback)}`
+      return `${typeNode.operator} ${annotate(
+        typeNode.typeAnnotation,
+        fallback
+      )}`
     }
     case AST_NODE_TYPES.TSTypePredicate: {
-      return `${typeNode.parameterName} is ${annotateType(typeNode.typeAnnotation, fallback)}`
+      return `${typeNode.parameterName} is ${annotateType(
+        typeNode.typeAnnotation,
+        fallback
+      )}`
     }
     case AST_NODE_TYPES.TSTypeQuery: {
       return `typeof ${annotateEntityName(typeNode.exprName)}`
@@ -177,6 +231,12 @@ function annotate(typeNode?: TypeNode, fallback: string = 'any'): string {
     }
     case AST_NODE_TYPES.TSVoidKeyword: {
       return 'void'
+    }
+    case AST_NODE_TYPES.TSNamedTupleMember: {
+      return annotate(typeNode.elementType) // TODO
+    }
+    case AST_NODE_TYPES.TSTemplateLiteralType: {
+      return '...' // TODO
     }
     default: {
       return typeNode

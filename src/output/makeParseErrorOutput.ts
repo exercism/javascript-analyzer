@@ -1,9 +1,9 @@
-import { AnalyzerOutput } from "./AnalyzerOutput"
-import { ParserError } from "~src/errors/ParserError"
-import { Source } from "~src/analyzers/SourceImpl"
-import { AST_NODE_TYPES } from "@typescript-eslint/typescript-estree"
-import { PARSE_ERROR } from "~src/comments/shared"
-import { Output } from "~src/interface"
+import type { ParserError } from '@exercism/static-analysis'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
+import { Source } from '../analyzers/SourceImpl'
+import { PARSE_ERROR } from '../comments/shared'
+import type { Output } from '../interface'
+import { AnalyzerOutput } from './AnalyzerOutput'
 
 /**
  * Makes a generic output, based on a ParserError
@@ -24,16 +24,7 @@ export function makeParseErrorOutput(err: ParserError): Output {
   // Select all the source code until a few lines after the error. The end line
   // is denoted by endline. The rest of the options fakes a "parsed source".
   //
-  const surroundingSource = source.getLines({
-    loc: {
-      start: { line: 0, column: 0 },
-      end: { line: endLine, column: -1 }
-    },
-    sourceType: 'module',
-    body: [],
-    range: [0, Infinity],
-    type: AST_NODE_TYPES.Program
-  })
+  const surroundingSource = source.getLines(0, endLine)
 
   // Insert the marker BELOW, where the parse error occurred
   //           -------^
@@ -48,12 +39,12 @@ export function makeParseErrorOutput(err: ParserError): Output {
   // parse error location. These are denoted by startLine (and the source
   // array was already limited to endLine).
   //
-  output.add(PARSE_ERROR({
-    error: message,
-    details: surroundingSource
-      .slice(Math.max(0, startLine - 1))
-      .join('\n')
-  }))
+  output.add(
+    PARSE_ERROR({
+      error: message,
+      details: surroundingSource.slice(Math.max(0, startLine - 1)).join('\n'),
+    })
+  )
 
   output.redirect()
   process.exitCode = err.code

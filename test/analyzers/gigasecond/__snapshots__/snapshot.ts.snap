@@ -82,7 +82,7 @@ export const gigasecond = (...)
       "message": "Did you know that you can export functions, classes and constants directly
 inline?
 \`\`\`javascript
-export const gigasecond = date => ...;
+export const gigasecond = date => ...
 \`\`\`",
       "template": "Did you know that you can export functions, classes and constants directly
 inline?
@@ -90,7 +90,7 @@ inline?
 export %{method.signature}
 \`\`\`",
       "variables": Object {
-        "method.signature": "const gigasecond = date => ...;",
+        "method.signature": "const gigasecond = date => ...",
       },
     },
   ],
@@ -1546,7 +1546,7 @@ export const gigasecond = (...)
       "message": "Did you know that you can export functions, classes and constants directly
 inline?
 \`\`\`javascript
-export const gigasecond = birth => ...;
+export const gigasecond = birth => ...
 \`\`\`",
       "template": "Did you know that you can export functions, classes and constants directly
 inline?
@@ -1554,7 +1554,7 @@ inline?
 export %{method.signature}
 \`\`\`",
       "variables": Object {
-        "method.signature": "const gigasecond = birth => ...;",
+        "method.signature": "const gigasecond = birth => ...",
       },
     },
   ],
@@ -2655,14 +2655,14 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.gigasecond.use_number_comprehension",
-      "message": "Large numbers like \`VariableDeclarator\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`VariableDeclarator\` using \`Math.pow\` or
+      "message": "Large numbers like \`billms = 1000000000000\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`billms = 1000000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
-        "literal": "VariableDeclarator",
+        "literal": "billms = 1000000000000",
       },
     },
   ],
@@ -2756,14 +2756,14 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.gigasecond.use_number_comprehension",
-      "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
+      "message": "Large numbers like \`1000*1000000000\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`1000*1000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
-        "literal": "BinaryExpression",
+        "literal": "1000*1000000000",
       },
     },
   ],
@@ -2796,14 +2796,14 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.gigasecond.use_number_comprehension",
-      "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
+      "message": "Large numbers like \`1000*1000*1000\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`1000*1000*1000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
-        "literal": "BinaryExpression",
+        "literal": "1000*1000*1000",
       },
     },
   ],
@@ -3033,14 +3033,14 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.gigasecond.use_number_comprehension",
-      "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
+      "message": "Large numbers like \`1000000000 * 1000\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`1000000000 * 1000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
-        "literal": "BinaryExpression",
+        "literal": "1000000000 * 1000",
       },
     },
   ],
@@ -3432,14 +3432,14 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.gigasecond.use_number_comprehension",
-      "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
+      "message": "Large numbers like \`1000000000 * 1000\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`1000000000 * 1000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
-        "literal": "BinaryExpression",
+        "literal": "1000000000 * 1000",
       },
     },
   ],
@@ -3582,14 +3582,14 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.gigasecond.use_number_comprehension",
-      "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
+      "message": "Large numbers like \`1000 * 1000000000\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`1000 * 1000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
-        "literal": "BinaryExpression",
+        "literal": "1000 * 1000000000",
       },
     },
   ],
@@ -3650,14 +3650,14 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.gigasecond.use_number_comprehension",
-      "message": "Large numbers like \`VariableDeclarator\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`VariableDeclarator\` using \`Math.pow\` or
+      "message": "Large numbers like \`gSec = 1000 * 1000000000\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`gSec = 1000 * 1000000000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
-        "literal": "VariableDeclarator",
+        "literal": "gSec = 1000 * 1000000000",
       },
     },
   ],
@@ -4489,14 +4489,14 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.gigasecond.use_number_comprehension",
-      "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
+      "message": "Large numbers like \`1000000000*1000\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`1000000000*1000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
-        "literal": "BinaryExpression",
+        "literal": "1000000000*1000",
       },
     },
   ],
@@ -4582,14 +4582,14 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.gigasecond.use_number_comprehension",
-      "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
+      "message": "Large numbers like \`1000000000 * 1000\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`1000000000 * 1000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
-        "literal": "BinaryExpression",
+        "literal": "1000000000 * 1000",
       },
     },
   ],
@@ -4602,14 +4602,14 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.gigasecond.use_number_comprehension",
-      "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
+      "message": "Large numbers like \`1000000000 * 1000\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`1000000000 * 1000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
-        "literal": "BinaryExpression",
+        "literal": "1000000000 * 1000",
       },
     },
   ],
@@ -4686,14 +4686,14 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.gigasecond.use_number_comprehension",
-      "message": "Large numbers like \`BinaryExpression\` are easy to misread and difficult to
-comprehend. Rewrite the literal \`BinaryExpression\` using \`Math.pow\` or
+      "message": "Large numbers like \`1000000000 * 1000\` are easy to misread and difficult to
+comprehend. Rewrite the literal \`1000000000 * 1000\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "template": "Large numbers like \`%{literal}\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`%{literal}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.",
       "variables": Object {
-        "literal": "BinaryExpression",
+        "literal": "1000000000 * 1000",
       },
     },
   ],

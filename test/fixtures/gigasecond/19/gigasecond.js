@@ -1,6 +1,4 @@
-import moment from 'moment';
-
-export const gigasecond = (date) =>{
-    const retdate = moment(date).add(10 ** 9, 'seconds');
-    return new Date(retdate)
-}
+export function gigasecond(dateOfBirth) {
+      const gigasecondInMillis = Math.pow(10, 9) * 1000;
+      return new Date(dateOfBirth.getTime() + gigasecondInMillis)
+    }
