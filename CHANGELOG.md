@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.1
+
+- Upgrade dependencies
+
 ## 0.8.0
 
 - Use `@exercism/static-analysis`
