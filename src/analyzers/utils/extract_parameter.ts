@@ -37,12 +37,19 @@ export function parameterName(
 
     // { arg }?: type
     case AST_NODE_TYPES.ObjectPattern: {
-      // TODO: fix any
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return `{${parameter.properties
-        .map((element): string =>
-          objectLiteralElementName(element as any, fallback)
-        )
+        .map((element): string => {
+          if (element.type === AST_NODE_TYPES.RestElement) {
+            switch (element.argument.type) {
+              case AST_NODE_TYPES.ArrayPattern:
+              case AST_NODE_TYPES.Identifier:
+              case AST_NODE_TYPES.ObjectPattern:
+                return parameterName(element.argument)
+            }
+          }
+
+          return fallback
+        })
         .join(', ')}`
     }
     // ...arg?: type
