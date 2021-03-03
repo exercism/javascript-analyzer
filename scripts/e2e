@@ -3,15 +3,18 @@
 const shelljs = require('shelljs')
 const path = require('path')
 
-const binRoot = path.resolve(path.join(__dirname), '..', 'bin')
-const fixtureRoot = path.resolve(path.join(__dirname, '..', 'test', 'fixtures'))
+const root = path.resolve(__dirname, '..')
+const binRoot = path.resolve(root, 'bin')
+const fixtureRoot = path.resolve(root, 'test', 'fixtures')
 const tmp = shelljs.tempdir()
 
 shelljs
   .cat(path.join(fixtureRoot, 'gigasecond', '2', 'gigasecond.js'))
   .to(path.join(tmp, 'gigasecond.js'))
 
-shelljs.exec(`${path.join(binRoot, 'analyze')} gigasecond ${tmp} ${tmp}`)
+shelljs.exec(
+  `node ${path.join(root, 'dist', 'analyze.js')} gigasecond ${tmp} ${tmp}`
+)
 
 const result = JSON.parse(
   shelljs.cat(path.join(tmp, 'analysis.json')).toString()
@@ -22,4 +25,5 @@ if (result.status !== 'disapprove' || result.comments.length !== 1) {
   shelljs.exit(-1)
 }
 
+console.log('Tests passed')
 shelljs.exit(0)
