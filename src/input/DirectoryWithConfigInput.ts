@@ -1,4 +1,5 @@
 import { FileInput, Input } from '@exercism/static-analysis'
+import fs from 'fs'
 import path from 'path'
 
 interface MetaConfiguration {
@@ -18,8 +19,6 @@ type PersonReference = {
   github_username: string
   exercism_username: string
 }
-
-import fs from 'fs'
 
 export class DirectoryWithConfigInput implements Input {
   /**
