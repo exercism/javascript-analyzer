@@ -1,16 +1,18 @@
 import {
   DirectoryInput,
+  Input,
   Logger,
   registerExceptionHandler,
   setProcessLogger,
 } from '@exercism/static-analysis'
 import { ExerciseImpl } from '~src/ExerciseImpl'
 import { ExecutionOptions, Exercise } from '~src/interface'
+import { DirectoryWithConfigInput } from '../input/DirectoryWithConfigInput'
 import { ExecutionOptionsImpl } from './execution_options'
 
 export interface BootstrapResult {
   exercise: Exercise
-  input: DirectoryInput
+  input: Input
   options: ExecutionOptions
   logger: Logger
 }
@@ -37,7 +39,9 @@ export class Bootstrap {
     const options = ExecutionOptionsImpl.create()
     const logger = new Logger(options)
     const exercise = new ExerciseImpl(options.exercise)
-    const input = new DirectoryInput(options.inputDir, exercise.slug)
+    const input = DirectoryWithConfigInput.test(options.inputDir)
+      ? new DirectoryWithConfigInput(options.inputDir)
+      : new DirectoryInput(options.inputDir, exercise.slug)
 
     setProcessLogger(logger)
 

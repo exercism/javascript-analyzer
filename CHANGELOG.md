@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.0
+
+- Use `.meta/config.json` when its available
+
 ## 0.9.0
 
 - Change to compile using babel
