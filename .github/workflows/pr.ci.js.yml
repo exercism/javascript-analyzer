@@ -24,6 +24,9 @@ jobs:
       - name: Run exercism/javascript ci precheck (lint code)
         run: yarn lint
 
+      - name: Run end-to-end tests
+        run: yarn test:e2e
+
   ci:
     runs-on: ubuntu-latest
 
