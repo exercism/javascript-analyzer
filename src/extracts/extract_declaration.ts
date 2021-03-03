@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
 import { ExtractedFunction } from '@exercism/static-analysis'
-import { Source } from '../analyzers/SourceImpl'
+import { Source } from '~src/analyzers/SourceImpl'
 
 export function extractSignature(
   fn: Readonly<ExtractedFunction>,

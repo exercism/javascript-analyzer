@@ -10,4 +10,4 @@
 # - mentor solution:  https://exercism.io/mentor/solutions/df3bb5d7131c44ea9c62206cc8d6c225
 # - private solution: https://exercism.io/solutions/df3bb5d7131c44ea9c62206cc8d6c225
 
-node -r esm -r module-alias/register ./dist/remote-analyze.js __remote__ "$@"
+node ./dist/remote-analyze.js __remote__ "$@"

@@ -1,4 +1,4 @@
-import { GigasecondAnalyzer } from '~src/analyzers/gigasecond'
+import { GigasecondAnalyzer } from '~src/analyzers/practice/gigasecond'
 import { makeAnalyze } from '~test/helpers/smoke'
 
 const analyze = makeAnalyze(() => new GigasecondAnalyzer())

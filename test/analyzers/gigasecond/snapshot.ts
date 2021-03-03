@@ -1,4 +1,4 @@
-import { GigasecondAnalyzer } from '~src/analyzers/gigasecond'
+import { GigasecondAnalyzer } from '~src/analyzers/practice/gigasecond'
 import { makeTestGenerator } from '~test/helpers/snapshot'
 
 const snapshotTestsGenerator = makeTestGenerator(

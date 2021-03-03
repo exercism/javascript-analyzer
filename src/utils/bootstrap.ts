@@ -4,8 +4,8 @@ import {
   registerExceptionHandler,
   setProcessLogger,
 } from '@exercism/static-analysis'
-import { ExerciseImpl } from '../ExerciseImpl'
-import { ExecutionOptions, Exercise } from '../interface'
+import { ExerciseImpl } from '~src/ExerciseImpl'
+import { ExecutionOptions, Exercise } from '~src/interface'
 import { ExecutionOptionsImpl } from './execution_options'
 
 export interface BootstrapResult {

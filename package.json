@@ -1,6 +1,6 @@
 {
   "name": "@exercism/javascript-analyzer",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "description": "Exercism analyzer for javascript",
   "repository": "https://github.com/exercism/javascript-analyzer",
   "author": "Derk-Jan Karrenbeld <derk-jan+github@karrenbeld.info>",
@@ -23,15 +23,19 @@
     "analyze:dev": "yarn build && yarn analyze",
     "analyze:dev:bat": "yarn build && yarn analyze:bat",
     "prepare": "yarn build",
-    "build": "yarn tsc --build src",
+    "prebuild": "rimraf dist",
+    "build": "yarn babel src --out-dir dist --extensions .ts",
     "prepublishOnly": "yarn test:bare && yarn lint",
     "lint": "yarn eslint . --ext ts,js,tsx,jsx,mjs",
     "test": "yarn build && yarn test:bare",
+    "test:e2e": "yarn build && node scripts/e2e",
     "test:bare": "jest"
   },
   "devDependencies": {
+    "@babel/cli": "^7.13.0",
     "@babel/core": "^7.13.8",
     "@babel/node": "^7.13.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.13.8",
     "@babel/preset-env": "^7.13.9",
     "@babel/preset-typescript": "^7.13.0",
     "@tsconfig/recommended": "^1.0.1",
@@ -40,14 +44,18 @@
     "@types/yargs": "^16.0.0",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "babel-jest": "^26.6.3",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "core-js": "3",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.1.5",
-    "jest": "^26.6.3"
+    "jest": "^26.6.3",
+    "rimraf": "^3.0.2",
+    "shelljs": "^0.8.4"
   },
   "dependencies": {
-    "@exercism/static-analysis": "^0.7.1",
+    "@exercism/static-analysis": "^0.7.2",
     "@typescript-eslint/parser": "^4.16.1",
     "@typescript-eslint/typescript-estree": "^4.16.1",
     "@typescript-eslint/visitor-keys": "^4.16.1",
@@ -55,9 +63,5 @@
     "module-alias": "^2.2.2",
     "typescript": "^4.2.2",
     "yargs": "^16.2.0"
-  },
-  "_moduleAliases": {
-    "~src": "dist",
-    "~test": "test"
   }
 }

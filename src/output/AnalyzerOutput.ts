@@ -1,4 +1,4 @@
-import type { Comment, ExecutionOptions, Output } from '../interface'
+import type { Comment, ExecutionOptions, Output } from '~src/interface'
 
 enum SolutionStatus {
   /** This is the default situation and should be used when there is any

@@ -1,6 +1,6 @@
 import type { NoSourceError } from '@exercism/static-analysis'
-import { ERROR_CAPTURED_NO_SOURCE } from '../comments/shared'
-import type { Output } from '../interface'
+import { ERROR_CAPTURED_NO_SOURCE } from '~src/comments/shared'
+import type { Output } from '~src/interface'
 import { AnalyzerOutput } from './AnalyzerOutput'
 
 /**

@@ -1,0 +1,95 @@
+#!/usr/bin/env node
+
+const shelljs = require('shelljs')
+const path = require('path')
+
+const root = path.resolve(__dirname, '..')
+const binRoot = path.resolve(root, 'bin')
+const fixtureRoot = path.resolve(root, 'test', 'fixtures')
+const tmp = path.join(shelljs.tempdir(), 'javascript-analyzer')
+
+shelljs.mkdir('-p', tmp)
+
+const TESTS = [
+  {
+    input: {
+      fixture: '2',
+      slug: 'gigasecond',
+      file: 'gigasecond.js',
+    },
+    expected: {
+      status: 'disapprove',
+      comments: 1,
+    },
+  },
+  {
+    input: {
+      fixture: '36',
+      slug: 'resistor-color',
+      file: 'resistor-color.js',
+    },
+    expected: {
+      status: 'approve',
+      comments: 0,
+    },
+  },
+  {
+    input: {
+      fixture: '261',
+      slug: 'resistor-color-duo',
+      file: 'resistor-color-duo.js',
+    },
+    expected: {
+      status: 'disapprove',
+      comments: 1,
+    },
+  },
+  ,
+  {
+    input: {
+      fixture: '408',
+      slug: 'two-fer',
+      file: 'two-fer.js',
+    },
+    expected: {
+      status: 'disapprove',
+      comments: 1,
+    },
+  },
+]
+
+TESTS.forEach(({ input, expected }) => {
+  const out = path.join(tmp, input.file)
+
+  shelljs
+    .cat(path.join(fixtureRoot, input.slug, input.fixture, input.file))
+    .to(out)
+
+  shelljs.exec(
+    `node ${path.join(root, 'dist', 'analyze.js')} ${input.slug} ${tmp} ${tmp}`
+  )
+
+  const result = JSON.parse(
+    shelljs.cat(path.join(tmp, 'analysis.json')).toString()
+  )
+
+  shelljs.rm(out)
+  shelljs.rm(path.join(tmp, 'analysis.json'))
+
+  console.log(`Testing ${input.slug} (fixture ${input.fixture})`)
+
+  if (
+    result.status !== expected.status ||
+    result.comments.length !== expected.comments
+  ) {
+    console.error(
+      `Expected ${expected.status}, with comment count of ${expected.comments}. Actual:`,
+      result
+    )
+
+    shelljs.exit(-1)
+  }
+})
+
+console.log('All e2e tests passed')
+shelljs.exit(0)

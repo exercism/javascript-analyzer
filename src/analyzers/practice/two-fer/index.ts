@@ -17,7 +17,10 @@ import {
   ParserError,
 } from '@exercism/static-analysis'
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
-import { factory } from '../../comments/comment'
+import { AnalyzerImpl } from '~src/analyzers/AnalyzerImpl'
+import { parameterName } from '~src/analyzers/utils/extract_parameter'
+import { annotateType } from '~src/analyzers/utils/type_annotations'
+import { factory } from '~src/comments/comment'
 import {
   NO_METHOD,
   NO_NAMED_EXPORT,
@@ -25,13 +28,10 @@ import {
   PREFER_STRICT_EQUALITY,
   PREFER_TEMPLATED_STRINGS,
   UNEXPECTED_SPLAT_ARGS,
-} from '../../comments/shared'
-import { extractNamedFunction } from '../../extracts/extract_named_function'
-import { makeNoSourceOutput } from '../../output/makeNoSourceOutput'
-import { makeParseErrorOutput } from '../../output/makeParseErrorOutput'
-import { AnalyzerImpl } from '../AnalyzerImpl'
-import { parameterName } from '../utils/extract_parameter'
-import { annotateType } from '../utils/type_annotations'
+} from '~src/comments/shared'
+import { extractNamedFunction } from '~src/extracts/extract_named_function'
+import { makeNoSourceOutput } from '~src/output/makeNoSourceOutput'
+import { makeParseErrorOutput } from '~src/output/makeParseErrorOutput'
 
 type ConditionalExpression = TSESTree.ConditionalExpression
 type IfStatement = TSESTree.IfStatement

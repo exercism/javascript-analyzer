@@ -5,13 +5,13 @@ import {
   NoSourceError,
   ParserError,
 } from '@exercism/static-analysis'
-import type { Analyzer, Output, WritableOutput } from '../interface'
+import type { Analyzer, Output, WritableOutput } from '~src/interface'
 import {
   EarlyFinalization,
   IsolatedAnalyzerOutput,
-} from '../output/IsolatedAnalyzerOutput'
-import { makeNoSourceOutput } from '../output/makeNoSourceOutput'
-import { makeParseErrorOutput } from '../output/makeParseErrorOutput'
+} from '~src/output/IsolatedAnalyzerOutput'
+import { makeNoSourceOutput } from '~src/output/makeNoSourceOutput'
+import { makeParseErrorOutput } from '~src/output/makeParseErrorOutput'
 
 export abstract class IsolatedAnalyzerImpl implements Analyzer {
   protected readonly logger: Logger

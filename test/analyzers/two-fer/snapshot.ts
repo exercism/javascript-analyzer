@@ -1,4 +1,4 @@
-import { TwoFerAnalyzer } from '~src/analyzers/two-fer'
+import { TwoFerAnalyzer } from '~src/analyzers/practice/two-fer'
 import { makeTestGenerator } from '~test/helpers/snapshot'
 
 const snapshotTestsGenerator = makeTestGenerator(

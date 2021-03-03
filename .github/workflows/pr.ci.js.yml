@@ -45,3 +45,6 @@ jobs:
 
       - name: Build the test-runner and run the tests (using Node ${{ matrix.node-version }})
         run: yarn test
+
+      - name: Run end-to-end tests
+        run: yarn test:e2e

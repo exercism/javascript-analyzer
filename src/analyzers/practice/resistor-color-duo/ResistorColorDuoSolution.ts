@@ -21,12 +21,12 @@ import {
   SpecificPropertyCall,
 } from '@exercism/static-analysis'
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
-import { assertNamedExport } from '../../asserts/assert_named_export'
-import { assertNamedFunction } from '../../asserts/assert_named_function'
-import { extractSignature } from '../../extracts/extract_declaration'
-import { extractNamedFunction } from '../../extracts/extract_named_function'
-import { Source } from '../SourceImpl'
-import { parameterName } from '../utils/extract_parameter'
+import { Source } from '~src/analyzers/SourceImpl'
+import { parameterName } from '~src/analyzers/utils/extract_parameter'
+import { assertNamedExport } from '~src/asserts/assert_named_export'
+import { assertNamedFunction } from '~src/asserts/assert_named_function'
+import { extractSignature } from '~src/extracts/extract_declaration'
+import { extractNamedFunction } from '~src/extracts/extract_named_function'
 
 type Node = TSESTree.Node
 type Program = TSESTree.Program

@@ -3,4 +3,4 @@
 # Usage:
 # ./bin/stats.sh two-fer
 
-node -r esm -r module-alias/register ./dist/stats.js "$@"
+node ./dist/stats.js "$@"
