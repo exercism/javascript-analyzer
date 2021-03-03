@@ -238,6 +238,9 @@ function annotate(typeNode?: TypeNode, fallback = 'any'): string {
     case AST_NODE_TYPES.TSTemplateLiteralType: {
       return '...' // TODO
     }
+    case AST_NODE_TYPES.TSIntrinsicKeyword: {
+      return typeNode.type
+    }
     default: {
       return typeNode
     }
