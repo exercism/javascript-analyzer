@@ -23,7 +23,7 @@ template, replacing `<slug>` with the actual slug and entering **1 to 20** (more
 is better, try to have at least 20 per status) fixture numbers to be tested.
 
 ```typescript
-import { SlugAnalyzer } from '~src/analyzers/<slug>'
+import { SlugAnalyzer } from '~src/analyzers/<type>/<slug>'
 import { makeTestGenerator } from '~test/helpers/snapshot'
 
 const snapshotTestsGenerator = makeTestGenerator(

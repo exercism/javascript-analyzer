@@ -1,4 +1,4 @@
-import type { Comment, WritableOutput } from '../interface'
+import type { Comment, WritableOutput } from '~src/interface'
 import { AnalyzerOutput } from './AnalyzerOutput'
 
 export class EarlyFinalization extends Error {

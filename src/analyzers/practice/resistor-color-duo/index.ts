@@ -5,15 +5,15 @@ import {
   NoMethodError,
 } from '@exercism/static-analysis'
 import { TSESTree } from '@typescript-eslint/typescript-estree'
-import { factory } from '../../comments/comment'
+import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl'
+import { factory } from '~src/comments/comment'
 import {
   NO_METHOD,
   NO_NAMED_EXPORT,
   NO_PARAMETER,
   UNEXPECTED_PARAMETER,
-} from '../../comments/shared'
-import { WritableOutput } from '../../interface'
-import { IsolatedAnalyzerImpl } from '../IsolatedAnalyzerImpl'
+} from '~src/comments/shared'
+import { WritableOutput } from '~src/interface'
 import {
   HelperCallNotFound,
   HelperNotOptimal,

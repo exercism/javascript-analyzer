@@ -1,4 +1,4 @@
-import { TwoFerAnalyzer } from '~src/analyzers/two-fer'
+import { TwoFerAnalyzer } from '~src/analyzers/practice/two-fer'
 import { run } from '~src/utils/runner'
 import { find } from '~src/analyzers/Autoload'
 

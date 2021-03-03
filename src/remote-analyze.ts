@@ -88,7 +88,7 @@ if (track !== 'javascript') {
 
 const spawnable = path.join(__dirname, '..', 'dist', `analyze.js`)
 logger.log(
-  `-> executing node -r esm -r module-alias/register "${spawnable}" ${exerciseSlug} "${localPath}" ${process.argv
+  `-> executing node "${spawnable}" ${exerciseSlug} "${localPath}" ${process.argv
     .slice(4)
     .join(' ')}`
 )

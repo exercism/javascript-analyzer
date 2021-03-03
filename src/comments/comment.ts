@@ -1,4 +1,4 @@
-import { Comment } from '../interface'
+import { Comment } from '~src/interface'
 
 type TemplateKeys = (number | string)[]
 type NamedTags<R extends string> = Record<R, string | undefined>

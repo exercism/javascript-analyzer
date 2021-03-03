@@ -1,6 +1,6 @@
 import { guardIdentifier } from '@exercism/static-analysis'
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
-import { extractNamedFunction } from '../../extracts/extract_named_function'
+import { extractNamedFunction } from '~src/extracts/extract_named_function'
 
 type Program = TSESTree.Program
 type Node = TSESTree.Node

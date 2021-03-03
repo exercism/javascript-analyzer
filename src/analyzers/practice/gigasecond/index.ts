@@ -1,22 +1,21 @@
 import {
   AstParser,
-  extractSource,
   guardIdentifier,
   Input,
   NoExportError,
   NoMethodError,
 } from '@exercism/static-analysis'
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
-import { factory } from '../../comments/comment'
+import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl'
+import { factory } from '~src/comments/comment'
 import {
   NO_METHOD,
   NO_NAMED_EXPORT,
   NO_PARAMETER,
   PREFER_CONST_OVER_LET_AND_VAR,
   UNEXPECTED_PARAMETER,
-} from '../../comments/shared'
-import type { WritableOutput } from '../../interface'
-import { IsolatedAnalyzerImpl } from '../IsolatedAnalyzerImpl'
+} from '~src/comments/shared'
+import type { WritableOutput } from '~src/interface'
 import { GigasecondSolution } from './GigasecondSolution'
 
 const TIP_EXPORT_INLINE = factory<'method.signature'>`

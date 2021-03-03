@@ -1,8 +1,7 @@
 import type { ParserError } from '@exercism/static-analysis'
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
-import { Source } from '../analyzers/SourceImpl'
-import { PARSE_ERROR } from '../comments/shared'
-import type { Output } from '../interface'
+import { Source } from '~src/analyzers/SourceImpl'
+import { PARSE_ERROR } from '~src/comments/shared'
+import type { Output } from '~src/interface'
 import { AnalyzerOutput } from './AnalyzerOutput'
 
 /**

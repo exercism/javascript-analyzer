@@ -1,7 +1,7 @@
 import type { Input } from '@exercism/static-analysis'
 import { getProcessLogger, Logger } from '@exercism/static-analysis'
-import type { Analyzer, Comment, Output } from '../interface'
-import { AnalyzerOutput } from '../output/AnalyzerOutput'
+import type { Analyzer, Comment, Output } from '~src/interface'
+import { AnalyzerOutput } from '~src/output/AnalyzerOutput'
 
 class EarlyFinalization extends Error {
   constructor() {

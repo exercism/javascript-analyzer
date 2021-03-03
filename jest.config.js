@@ -2,6 +2,7 @@ module.exports = {
   verbose: true,
   projects: ['<rootDir>'],
   roots: ['<rootDir>/src/', '<rootDir>/test/'],
+  moduleDirectories: ['node_modules', 'src'],
   moduleNameMapper: {
     '^~src/(.*)$': '<rootDir>/src/$1',
     '^~test/(.*)$': '<rootDir>/test/$1',

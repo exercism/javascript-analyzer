@@ -1,4 +1,4 @@
-import { ResistorColorDuoAnalyzer } from '~src/analyzers/resistor-color-duo'
+import { ResistorColorDuoAnalyzer } from '~src/analyzers/practice/resistor-color-duo'
 import { makeTestGenerator } from '~test/helpers/snapshot'
 
 const snapshotTestsGenerator = makeTestGenerator(

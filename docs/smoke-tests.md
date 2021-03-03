@@ -11,7 +11,7 @@ Add a new file `test/analyzers/<slug>/smoke.ts` and copy the following template,
 replacing `<slug>` with the actual slug.
 
 ```typescript
-import { SlugAnalyzer } from '~src/analyzers/<slug>'
+import { SlugAnalyzer } from '~src/analyzers/<type>/<slug>'
 import { makeAnalyze } from '~test/helpers/smoke'
 
 const analyze = makeAnalyze(() => new SlugAnalyzer())

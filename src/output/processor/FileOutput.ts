@@ -1,7 +1,7 @@
 import { getProcessLogger, writeFile } from '@exercism/static-analysis'
 import path from 'path'
 
-import { ExecutionOptions, OutputProcessor } from '../../interface'
+import { ExecutionOptions, OutputProcessor } from '~src/interface'
 
 type FileOutputOptions = Pick<ExecutionOptions, 'output' | 'inputDir'>
 

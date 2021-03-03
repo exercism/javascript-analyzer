@@ -1,4 +1,4 @@
-import { ResistorColorDuoAnalyzer } from '~src/analyzers/resistor-color-duo'
+import { ResistorColorDuoAnalyzer } from '~src/analyzers/practice/resistor-color-duo'
 import { makeAnalyze } from '~test/helpers/smoke'
 
 const analyze = makeAnalyze(() => new ResistorColorDuoAnalyzer())

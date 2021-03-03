@@ -1,5 +1,6 @@
 /.vscode
 /dist
 /node_modules
+/production_node_modules
 /test/fixtures
 /tmp

@@ -4,10 +4,10 @@ import type {
   ExecutionOptions,
   Output,
   OutputProcessor,
-} from '../interface'
-import { FileOutput } from '../output/processor/FileOutput'
-import { LogOutput } from '../output/processor/LogOutput'
-import { PassThroughOutput } from '../output/processor/PassThroughOutput'
+} from '~src/interface'
+import { FileOutput } from '~src/output/processor/FileOutput'
+import { LogOutput } from '~src/output/processor/LogOutput'
+import { PassThroughOutput } from '~src/output/processor/PassThroughOutput'
 
 /**
  * Run a specific analyzer, given a set of execution options

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.0
+
+- Change to compile using babel
+- Change relative paths to module paths for cleaner imports
+- Change analyzer folders to include practice/concept
+- Add e2e test for CI
+
 ## 0.8.2
 
 - Upgrade dependencies

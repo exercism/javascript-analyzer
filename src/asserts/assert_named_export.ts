@@ -1,6 +1,6 @@
 import { ExtractedExport, NoExportError } from '@exercism/static-analysis'
 import type { TSESTree } from '@typescript-eslint/typescript-estree'
-import { extractNamedExport } from '../extracts/extract_named_export'
+import { extractNamedExport } from '~src/extracts/extract_named_export'
 
 type Node = TSESTree.Node
 

@@ -1,5 +1,5 @@
 import { getProcessLogger } from '@exercism/static-analysis'
-import type { OutputProcessor } from '../../interface'
+import type { OutputProcessor } from '~src/interface'
 
 export const LogOutput: OutputProcessor = async (
   previous: Promise<string>

@@ -1,4 +1,4 @@
-import { ResistorColorAnalyzer } from '~src/analyzers/resistor-color'
+import { ResistorColorAnalyzer } from '~src/analyzers/practice/resistor-color'
 import { makeAnalyze } from '~test/helpers/smoke'
 
 const analyze = makeAnalyze(() => new ResistorColorAnalyzer())

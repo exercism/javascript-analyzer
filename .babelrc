@@ -1,6 +1,28 @@
 {
   "presets": [
-    ["@babel/preset-env", { "targets": { "node": "current" } }],
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "usage",
+        "corejs": "3.9",
+        "targets": {
+          "node": "14.16"
+        }
+
+      }
+    ],
     "@babel/preset-typescript"
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-optional-chaining",
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "~src": "./src",
+          "~test": "./test"
+        }
+      }
+    ]
   ]
 }
