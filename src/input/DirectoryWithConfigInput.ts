@@ -51,8 +51,10 @@ export class DirectoryWithConfigInput implements Input {
   private configuration: MetaConfiguration
 
   constructor(private readonly directory: string) {
+    const pathName = path.join(directory, '.meta', 'config.json')
+
     this.configuration = JSON.parse(
-      fs.readFileSync(directory).toString()
+      fs.readFileSync(pathName).toString()
     ) as MetaConfiguration
   }
 
