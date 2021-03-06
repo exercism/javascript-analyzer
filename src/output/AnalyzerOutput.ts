@@ -34,12 +34,10 @@ enum SolutionStatus {
  * @class AnalyzerOutput
  */
 export class AnalyzerOutput implements Output {
-  public status: SolutionStatus | null
   public summary?: string
   public comments: Comment[]
 
   constructor() {
-    this.status = null
     this.comments = []
   }
 
@@ -78,7 +76,9 @@ export class AnalyzerOutput implements Output {
     return this
   }
 
-  protected freeze(): void {
+  public freeze(summary?: string): void {
+    this.summary = summary
+
     Object.freeze(this)
     Object.freeze(this.comments)
   }
@@ -100,8 +100,7 @@ export class AnalyzerOutput implements Output {
     return Promise.resolve(
       JSON.stringify(
         {
-          summary: this.summary,
-          status: this.status,
+          ...(this.summary ? { summary: this.summary } : {}),
           comments: this.comments.map(
             noTemplates ? makeIsolatedComment : makeExternalComment
           ),
@@ -123,6 +122,7 @@ function makeExternalComment(comment: Comment): OutputableComment {
   const result: OutputableComment = {
     comment: comment.externalTemplate,
     params: comment.variables,
+    type: comment.type,
   }
 
   if (!comment.variables || Object.keys(comment.variables).length === 0) {

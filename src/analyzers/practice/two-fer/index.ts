@@ -20,7 +20,7 @@ import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
 import { AnalyzerImpl } from '~src/analyzers/AnalyzerImpl'
 import { parameterName } from '~src/analyzers/utils/extract_parameter'
 import { annotateType } from '~src/analyzers/utils/type_annotations'
-import { factory } from '~src/comments/comment'
+import { CommentType, factory } from '~src/comments/comment'
 import {
   NO_METHOD,
   NO_NAMED_EXPORT,
@@ -52,7 +52,7 @@ const OPTIMISE_DEFAULT_VALUE = factory<'parameter'>`
 You currently use a conditional to branch in case there is no value passed into
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of ${'parameter'} to 'you' to avoid this conditional.
-`('javascript.two-fer.optimise_default_value')
+`('javascript.two-fer.optimise_default_value', CommentType.Actionable)
 
 const OPTIMISE_EXPLICIT_DEFAULT_VALUE = factory<
   'parameter' | 'maybe_undefined_expression'
@@ -60,16 +60,19 @@ const OPTIMISE_EXPLICIT_DEFAULT_VALUE = factory<
 Instead of relying on ${'maybe_undefined_expression'} being "undefined" when
 no value is passed in, you could set the default value of '${'parameter'}' to
 'you'.
-`('javascript.two-fer.optimise_explicity_default_value')
+`('javascript.two-fer.optimise_explicity_default_value', CommentType.Actionable)
 
 const REDIRECT_INCORRECT_STRING_TEMPLATE = factory`
 The string template looks incorrect. Expected a template with 3 components.
-`('javascript.two-fer.redirect_incorrect_string_template')
+`(
+  'javascript.two-fer.redirect_incorrect_string_template',
+  CommentType.Essential
+)
 
 const TIP_EXPORT_INLINE = factory`
 Did you know that you can export functions, classes and constants directly
 inline?
-`('javascript.two-fer.export_inline')
+`('javascript.two-fer.export_inline', CommentType.Informative)
 
 export class TwoFerAnalyzer extends AnalyzerImpl {
   private program!: Program

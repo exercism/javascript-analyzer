@@ -7,8 +7,10 @@ const snapshotTestsGenerator = makeTestGenerator(
 )
 
 describe('When running analysis on two-fer fixtures', () => {
-  snapshotTestsGenerator('approve', [129, 139, 400, 493, 70])
-  snapshotTestsGenerator('disapprove', [
+  snapshotTestsGenerator([129, 139, 400, 493, 70])
+
+  // With non-approvable comment
+  snapshotTestsGenerator([
     1,
     10,
     100,
@@ -33,7 +35,9 @@ describe('When running analysis on two-fer fixtures', () => {
     120,
     313,
   ])
-  snapshotTestsGenerator('refer_to_mentor', [
+
+  // With unprocessable/undecidable code
+  snapshotTestsGenerator([
     0,
     103,
     106,

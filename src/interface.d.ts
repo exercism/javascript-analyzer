@@ -54,7 +54,6 @@ export interface Comment {
 }
 
 export interface Output {
-  status: 'refer_to_mentor' | 'approve' | 'disapprove' | null
   summary?: string
   comments: Comment[]
 

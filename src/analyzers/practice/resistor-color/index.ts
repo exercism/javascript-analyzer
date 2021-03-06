@@ -6,7 +6,7 @@ import {
 } from '@exercism/static-analysis'
 import { TSESTree } from '@typescript-eslint/typescript-estree'
 import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl'
-import { factory } from '~src/comments/comment'
+import { CommentType, factory } from '~src/comments/comment'
 import {
   NO_METHOD,
   NO_NAMED_EXPORT,
@@ -24,14 +24,14 @@ export ${'constant.signature'}
 
 export ${'method.signature'}
 \`\`\`
-`('javascript.resistor-color.export_inline')
+`('javascript.resistor-color.export_inline', CommentType.Informative)
 
 const SIGNATURE_NOT_OPTIMAL = factory`
 📕 If you look at the tests, the function \`colorCode\` only receives one
 parameter. Nothing more and nothing less. Suggest that the student
 removes the additional parameters from your function, as their value will
 always be \`undefined\` or whatever default they've assigned.
-`('javascript.resistor-color.signature_not_optimal')
+`('javascript.resistor-color.signature_not_optimal', CommentType.Essential)
 
 const USE_INDEX_OF = factory<'current'>`
 📕 The analyzer expected \`indexOf\`, instead of  \`${'current'}\`.
@@ -39,14 +39,14 @@ const USE_INDEX_OF = factory<'current'>`
 💬 Replace \`${'current'}\` with a different built-in function, a function
 which does exactly what is now explicitly programmed in: finding the index
 of a given value in an \`Array\`.
-`('javascript.resistor-color.use_index_of')
+`('javascript.resistor-color.use_index_of', CommentType.Essential)
 
 const USE_ARRAY_COMPREHENSIONS = factory<'current'>`
 📕 The analyzer expected \`indexOf\`, instead of  \`${'current'}\`.
 
 💬 Replace \`${'current'}\` with a single function call that _directly_
 finds the index of a given input value.
-`('javascript.resistor-color.use_array_comprehensions')
+`('javascript.resistor-color.use_array_comprehensions', CommentType.Essential)
 
 const USE_IMPLICIT_INCLUDES = factory<'current'>`
 📕 Using \`includes\` iterates _twice_ over the array. Performance is not
@@ -58,7 +58,7 @@ should not be discouraged.
 string is converted to a color code (number), there is already a special
 value which is returned if the color is not present. Look for and use
 that value instead.
-`('javascript.resistor-color.use_implicit_includes')
+`('javascript.resistor-color.use_implicit_includes', CommentType.Essential)
 
 const DONT_NORMALISE_INPUTS = factory`
 📕 It's always fine to be defensive about inputs, so that a program will
@@ -70,7 +70,7 @@ normalising the input. Keep it simple for now.
 💬 Remove the call to \`.toLowerCase\`. The tests only provide the inputs
 in lower case, and the colors should be defined in lower case. There is
 no need to manually normalise the inputs.
-`('javascript.resistor-color.dont_normalise_inputs')
+`('javascript.resistor-color.dont_normalise_inputs', CommentType.Actionable)
 
 type Program = TSESTree.Program
 
