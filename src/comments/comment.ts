@@ -10,12 +10,40 @@ export type FactoryResultParameter<R extends string = string> =
   | [string[], NamedTags<R>] // (['a', 'b'], { foo: 'foo' })
   | [NamedTags<R>] // ({ foo: foo })
 
+export enum CommentType {
+  /**
+   * We will soft-block students until they have addressed this comment
+   */
+  Essential = 'essential',
+
+  /**
+   * Any comment that gives a specific instruction to a user to improve their
+   * solution
+   */
+  Actionable = 'actionable',
+
+  /**
+   * Comments that give information, but do not necessarily expect students to
+   * use it. For example, in Ruby, if someone uses String Concatenation in
+   * TwoFer, we also tell them about String Formatting, but don't suggest that
+   * it is a better option.
+   */
+  Informative = 'informative',
+
+  /**
+   * Comments that tell users they've done something right, either as a general
+   * comment on the solution, or on a technique.
+   */
+  Celebratory = 'celebratory',
+}
+
 export class CommentImpl implements Comment {
   constructor(
     public readonly message: string,
     public readonly template: string,
     public readonly variables: CommentVariables,
-    public readonly externalTemplate: string
+    public readonly externalTemplate: string,
+    public readonly type: CommentType = CommentType.Informative
   ) {}
 
   public toString(): string {
@@ -39,7 +67,7 @@ type CommentVariables = Readonly<{
  * const NO_PARAMETER = factory<'function_name'>`
  * Your function \`${'function_name'}\` does not have a parameter.
  * The tests won't pass without it.
- * `('javascript.generic.no_parameter')
+ * `('javascript.generic.no_parameter', CommentType.Essential)
  *
  * NO_PARAMETER({ function_name: 'foo' })
  * //
@@ -52,7 +80,8 @@ type CommentVariables = Readonly<{
  * //      variables: {
  * //        function_name: "foo"
  * //      },
- * //      external_template: "javascript.generic.no_parameter"
+ * //      external_template: "javascript.generic.no_parameter",
+ * //      type: "essential"
  * //    })
  *
  * @template R A list of keys 'key' | 'another_key' that are necessary
@@ -64,7 +93,7 @@ export function factory<R extends string = ''>(
   strings: TemplateStringsArray,
   ...keys: TemplateKeys
 ) {
-  return (externalTemplate: string): CommentFactory<R> => {
+  return (externalTemplate: string, type?: CommentType): CommentFactory<R> => {
     return function (...values: FactoryResultParameter<R>): Comment {
       const { positionalValues, dictionary } = separateValues(...values)
 
@@ -97,7 +126,8 @@ export function factory<R extends string = ''>(
         template.trimRight(),
         // Widen the type so we don't need to make `Comment` a generic
         combineValues({ dictionary, positionalValues }),
-        externalTemplate
+        externalTemplate,
+        type
       )
     }
   }

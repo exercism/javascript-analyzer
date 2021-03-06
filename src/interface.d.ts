@@ -24,21 +24,38 @@ export interface Exercise {
 }
 
 export interface Comment {
-  /** The constructed message with all the template variables applied */
+  /**
+   * The constructed message with all the template variables applied
+   */
   message: string
-  /** The message with the template variables in there */
+
+  /**
+   * The message with the template variables in there
+   */
   template: string
-  /** The provided variables as array or name (key), value (value) map */
+
+  /**
+   * The provided variables as array or name (key), value (value) map
+   */
   variables: Readonly<{
     [name: string]: string | undefined
     [name: number]: string | undefined
   }>
-  /** The identifier for the template on website-copy */
+
+  /**
+   * The identifier for the template on website-copy
+   */
   externalTemplate: string
+
+  /**
+   * The type of the comment
+   */
+  type?: 'essential' | 'actionable' | 'informative' | 'celebratory'
 }
 
 export interface Output {
-  status: 'refer_to_mentor' | 'approve' | 'disapprove'
+  status: 'refer_to_mentor' | 'approve' | 'disapprove' | null
+  summary?: string
   comments: Comment[]
 
   /**

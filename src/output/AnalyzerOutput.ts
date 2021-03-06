@@ -1,14 +1,27 @@
 import type { Comment, ExecutionOptions, Output } from '~src/interface'
 
 enum SolutionStatus {
-  /** This is the default situation and should be used when there is any
-   *  uncertainty. */
+  /**
+   * This is the default situation and should be used when there is any
+   * uncertainty.
+   *
+   * @deprecated don't return any status or use an {Essential} comment.
+   * */
   Redirect = 'refer_to_mentor',
-  /** To be used when a solution matches pre-known optimal solutions or when a
-   *  solution can be approved but with a known improvement. */
+  /**
+   * To be used when a solution matches pre-known optimal solutions or when a
+   * solution can be approved but with a known improvement.
+   *
+   * @deprecated don't return any status or use a {Celebratory} comment.
+   * */
   Approve = 'approve',
-  /** To be used when a solution can be disapproved as suboptimal and a comment
-   *  is provided. */
+  /**
+   * To be used when a solution can be disapproved as suboptimal and a comment
+   * is provided.
+   *
+   * @deprecated replace with one or more comments with {Essential} or an
+   *   {Actionable} type.
+   **/
   Disapprove = 'disapprove',
 }
 
@@ -21,38 +34,36 @@ enum SolutionStatus {
  * @class AnalyzerOutput
  */
 export class AnalyzerOutput implements Output {
-  public status: SolutionStatus
+  public status: SolutionStatus | null
+  public summary?: string
   public comments: Comment[]
 
   constructor() {
-    this.status = SolutionStatus.Redirect
+    this.status = null
     this.comments = []
   }
 
   /**
    * Mark the solution as approved
+   * @deprecated add a {celebratory} or {informative} comment instead
    */
   public approve(): void {
-    this.status = SolutionStatus.Approve
-
     this.freeze()
   }
 
   /**
    * Mark the solution as dissapproved
+   * @deprecated add an {actionable} or {essential} comment instead
    */
   public disapprove(): void {
-    this.status = SolutionStatus.Disapprove
-
     this.freeze()
   }
 
   /**
    * Mark the solution as refer to mentor
+   * @deprecated do nothing, or add an {actionable} or {essential} comment instead
    */
   public redirect(): void {
-    this.status = SolutionStatus.Redirect
-
     this.freeze()
   }
 
@@ -89,6 +100,7 @@ export class AnalyzerOutput implements Output {
     return Promise.resolve(
       JSON.stringify(
         {
+          summary: this.summary,
           status: this.status,
           comments: this.comments.map(
             noTemplates ? makeIsolatedComment : makeExternalComment
@@ -101,28 +113,35 @@ export class AnalyzerOutput implements Output {
   }
 }
 
-function makeExternalComment(
-  comment: Comment
-): string | { comment: string; params: Comment['variables'] } {
-  if (!comment.variables || Object.keys(comment.variables).length === 0) {
-    return comment.externalTemplate
-  }
+type OutputableComment = {
+  comment: string
+  params?: Comment['variables']
+  type?: Comment['type']
+}
 
-  return {
+function makeExternalComment(comment: Comment): OutputableComment {
+  const result: OutputableComment = {
     comment: comment.externalTemplate,
     params: comment.variables,
   }
+
+  if (!comment.variables || Object.keys(comment.variables).length === 0) {
+    delete result.params
+  }
+
+  return result
 }
 
-function makeIsolatedComment(
-  comment: Comment
-): string | { comment: string; params: Comment['variables'] } {
-  if (!comment.variables || Object.keys(comment.variables).length === 0) {
-    return comment.message
-  }
-
-  return {
+function makeIsolatedComment(comment: Comment): OutputableComment {
+  const result: OutputableComment = {
     comment: comment.template,
     params: comment.variables,
+    type: comment.type,
   }
+
+  if (!comment.variables || Object.keys(comment.variables).length === 0) {
+    delete result.params
+  }
+
+  return result
 }

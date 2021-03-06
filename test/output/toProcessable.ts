@@ -35,6 +35,7 @@ describe('AnalyzerOutput#toProcessable', () => {
           {
             comment: '%{foo} is foo, given also %{bar}',
             params: PARAMS,
+            type: 'informative',
           },
         ],
       })
@@ -59,6 +60,7 @@ describe('AnalyzerOutput#toProcessable', () => {
           {
             comment: COMMENT_WITH_PARAMS_IDENTIFIER,
             params: PARAMS,
+            type: 'informative',
           },
         ],
       })
