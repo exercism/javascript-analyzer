@@ -7,7 +7,7 @@ import {
 } from '@exercism/static-analysis'
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
 import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl'
-import { factory } from '~src/comments/comment'
+import { CommentType, factory } from '~src/comments/comment'
 import {
   NO_METHOD,
   NO_NAMED_EXPORT,
@@ -24,13 +24,13 @@ inline?
 \`\`\`javascript
 export ${'method.signature'}
 \`\`\`
-`('javascript.gigasecond.export_inline')
+`('javascript.gigasecond.export_inline', CommentType.Informative)
 
 const USE_NUMBER_COMPREHENSION = factory<'literal'>`
 Large numbers like \`${'literal'}\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`${'literal'}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.
-`('javascript.gigasecond.use_number_comprehension')
+`('javascript.gigasecond.use_number_comprehension', CommentType.Actionable)
 
 const PREFER_TOP_LEVEL_CONSTANT = factory<'value' | 'name'>`
 Your solution current has a magic number, or rather a magic expression. Consider
@@ -42,7 +42,7 @@ const ${'name'} = ${'value'}
 
 export const gigasecond = (...)
 \`\`\`
-`('javascript.gigasecond.prefer_top_level_constant')
+`('javascript.gigasecond.prefer_top_level_constant', CommentType.Actionable)
 
 const PREFER_EXTRACTED_TOP_LEVEL_CONSTANT = factory<'value' | 'name'>`
 Instead of defining the constant _inside_ the function, consider extracting it
@@ -54,7 +54,10 @@ const ${'name'} = ${'value'}
 
 export const gigasecond = (...)
 \`\`\`
-`('javascript.gigasecond.prefer_extracted_top_level_constant')
+`(
+  'javascript.gigasecond.prefer_extracted_top_level_constant',
+  CommentType.Actionable
+)
 
 const SIGNATURE_NOT_OPTIMAL = factory`
 If you look at the tests, the function \`gigasecond\` only receives one
@@ -62,13 +65,13 @@ parameter. Nothing more and nothing less.
 
 Remove the additional parameters from your function, as their value will always
 be \`undefined\` or whatever default you've assigned.
-`('javascript.gigasecond.signature_not_optimal')
+`('javascript.gigasecond.signature_not_optimal', CommentType.Actionable)
 
 const DONT_USE_DATE_PARSE = factory<'parameter.name'>`
 Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime),
 as \`Date.parse(${'parameter.name'})\` is not a good candidate. It's supposed to
 work with strings only, and not _intended_ to be used like this.
-`('javascript.gigasecond.dont_use_date_parse')
+`('javascript.gigasecond.dont_use_date_parse', CommentType.Essential)
 
 const DONT_USE_DATE_VALUE = factory`
 Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)
@@ -77,7 +80,7 @@ They are functionally equivalent, but \`valueOf\` is marked as follows:
 
 > This method is usually called internally by JavaScript and not explicitly in
 > code.
-`('javascript.gigasecond.dont_use_date_value')
+`('javascript.gigasecond.dont_use_date_value', CommentType.Essential)
 
 const PREFER_SIDE_EFFECT_FREE_DATE = factory`
 Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)
@@ -88,7 +91,7 @@ This ensures the _input_ is not modified when calling \`gigasecond\`, which
 also means that there are no unintended side-effects. Futhermore, \`setSeconds\`
 only works because it _rolls over_, but it wasn't meant to be used like this.
 Its function is to set the \`seconds\` component of a \`Date\`.
-`('javascript.gigasecond.prefer_side_effect_free_date')
+`('javascript.gigasecond.prefer_side_effect_free_date', CommentType.Actionable)
 
 const DONT_USE_GET_SECONDS = factory`
 Use [\`Date#getTime\`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)
@@ -96,7 +99,7 @@ to get the number of milliseconds the \`Date\` represents, instead of getting
 the \`seconds\` component of the \`Date\`. In general, [Unix/UTC time](https://en.wikipedia.org/wiki/Unix_time)
 is preferred when dealing with dates, as it is not affected by _interpretation_
 or locale (such as timezones).
-`('javascript.gigasecond.dont_use_get_seconds')
+`('javascript.gigasecond.dont_use_get_seconds', CommentType.Essential)
 
 type Program = TSESTree.Program
 export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {

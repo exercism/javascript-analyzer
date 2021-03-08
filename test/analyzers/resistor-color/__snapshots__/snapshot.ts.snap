@@ -1,421 +1,421 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/0's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/0's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/1's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/1's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/2's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/2's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/12's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/12's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/13's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/13's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/14's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/14's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/16's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/16's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/17's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/17's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/18's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/18's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/20's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/20's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/100's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/100's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/101's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/101's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/102's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/102's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/105's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/105's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/106's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/106's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/107's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/107's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/110's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/110's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/113's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/113's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/115's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/115's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/117's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/117's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/122's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/122's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/123's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/123's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/127's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/127's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/131's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/131's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/132's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/132's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/134's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/134's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/135's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/135's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/137's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/137's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/138's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/138's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/142's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/142's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/149's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/149's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/150's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/150's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/151's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/151's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/158's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/158's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/161's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/161's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/163's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/163's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/164's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/164's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/165's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/165's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/168's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/168's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/171's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/171's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/172's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/172's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/173's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/173's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/174's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/174's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/175's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/175's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/179's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/179's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/180's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/180's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/182's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/182's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/184's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/184's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/186's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/186's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/187's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/187's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/189's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/189's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/191's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/191's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/192's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/192's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/196's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/196's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/197's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/197's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/199's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/199's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/206's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/206's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/209's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/209's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/211's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/211's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;
 
-exports[`When running analysis on resistor-color fixtures and expecting it to approve matches resistor-color/212's output: output 1`] = `
+exports[`When running analysis on resistor-color fixtures and expecting matches resistor-color/212's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [],
-  "status": "approve",
+  "summary": undefined,
 }
 `;

@@ -18,7 +18,6 @@ describe('When running analysis on resistor-color', () => {
 
     const output = await analyze(solutionContent)
 
-    expect(output.status).toBe('approve')
     expect(output.comments.length).toBe(0)
   })
 })

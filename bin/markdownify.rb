@@ -20,7 +20,6 @@ def get_comment_template(identifier)
 end
 
 File.open(output_path, 'w') do |f|
-  f.puts "status: #{analysis['status']}"
   f.puts "comment_count: #{analysis['comments'].length}"
   f.puts "---\n"
   f.puts "# Markdown output"

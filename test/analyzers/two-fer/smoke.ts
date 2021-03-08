@@ -13,7 +13,6 @@ describe('When running analysis on two-fer', () => {
 
     const output = await analyze(solutionContent)
 
-    expect(output.status).toBe('approve')
     expect(output.comments.length).toBe(0)
   })
 
@@ -28,11 +27,11 @@ describe('When running analysis on two-fer', () => {
 
     const output = await analyze(solutionContent)
 
-    expect(output.status).toBe('approve')
     expect(output.comments.length).toBeGreaterThanOrEqual(1)
+    expect(output.comments[0].type).toBe('informative')
   })
 
-  it('can dissapprove with comment', async () => {
+  it('can block with a comment', async () => {
     const solutionContent = `
     export const twoFer = (name) => {
       return \`One for \${name || 'you'}, one for me.\`;
@@ -41,11 +40,11 @@ describe('When running analysis on two-fer', () => {
 
     const output = await analyze(solutionContent)
 
-    expect(output.status).toBe('disapprove')
     expect(output.comments.length).toBeGreaterThanOrEqual(1)
+    expect(output.comments[0].type).toBe('actionable')
   })
 
-  it('can refer to mentor', async () => {
+  it('can ignore solutions', async () => {
     const solutionContent = `
     const whomst = 'for'
     export const twoFer = (name = 'you') => {
@@ -55,6 +54,6 @@ describe('When running analysis on two-fer', () => {
 
     const output = await analyze(solutionContent)
 
-    expect(output.status).toBe('refer_to_mentor')
+    expect(output.comments.length).toBeGreaterThanOrEqual(1)
   })
 })

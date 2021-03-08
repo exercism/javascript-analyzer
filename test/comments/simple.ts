@@ -6,9 +6,9 @@ describe(`Comment Factory (simple)`, () => {
   `
 
   it('generates a templatable factory', () => {
-    // Takes one argument
+    // Takes two arguments
     expect(templatable).toBeInstanceOf(Function)
-    expect(templatable).toHaveLength(1)
+    expect(templatable).toHaveLength(2)
   })
 
   describe('templatable factory', () => {

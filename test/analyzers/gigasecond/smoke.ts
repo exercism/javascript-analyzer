@@ -15,7 +15,6 @@ describe('When running analysis on gigasecond', () => {
 
     const output = await analyze(solutionContent)
 
-    expect(output.status).toBe('approve')
     expect(output.comments.length).toBe(0)
   })
 
@@ -29,11 +28,11 @@ describe('When running analysis on gigasecond', () => {
 
     const output = await analyze(solutionContent)
 
-    expect(output.status).toBe('approve')
     expect(output.comments.length).toBe(1)
+    expect(output.comments[0].type).toBe('actionable')
   })
 
-  it('can disapprove with comment', async () => {
+  it('can have an actionable comment', async () => {
     const solutionContent = `
     export function gigasecond(dateOfBirth) {
       return dateOfBirth.setSeconds(dateOfBirth.getSeconds() + 10 ** 9)
@@ -42,7 +41,7 @@ describe('When running analysis on gigasecond', () => {
 
     const output = await analyze(solutionContent)
 
-    expect(output.status).toBe('disapprove')
     expect(output.comments.length).toBe(1)
+    expect(output.comments[0].type).toBe('actionable')
   })
 })

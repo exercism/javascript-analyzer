@@ -7,7 +7,7 @@ const snapshotTestsGenerator = makeTestGenerator(
 )
 
 describe('When running analysis on gigasecond fixtures', () => {
-  snapshotTestsGenerator('approve', [
+  snapshotTestsGenerator([
     101,
     103,
     110,
@@ -89,7 +89,9 @@ describe('When running analysis on gigasecond fixtures', () => {
     499,
     50,
   ])
-  snapshotTestsGenerator('disapprove', [
+
+  // With a non-approvable comment
+  snapshotTestsGenerator([
     106,
     107,
     109,
@@ -191,5 +193,4 @@ describe('When running analysis on gigasecond fixtures', () => {
     286,
     288,
   ])
-  snapshotTestsGenerator('refer_to_mentor', [])
 })
