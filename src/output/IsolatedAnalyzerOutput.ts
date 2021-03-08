@@ -39,8 +39,13 @@ export class IsolatedAnalyzerOutput
     return this.freeze()
   }
 
-  public freeze(summary?: string): never {
+  public finish(summary?: string): never {
+    return this.freeze(summary)
+  }
+
+  protected freeze(summary?: string): never {
     this.summary = summary || this.summary
+
     super.freeze()
     throw new EarlyFinalization()
   }

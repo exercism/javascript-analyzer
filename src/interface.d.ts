@@ -66,10 +66,22 @@ export interface Output {
 }
 
 export interface WritableOutput extends Output {
+  /**
+   * @deprecated use {WritableOutput#add} + {WritableOutput#finish}
+   */
   approve(comment?: Comment): never
+  /**
+   * @deprecated use {WritableOutput#add} + {WritableOutput#finish}
+   */
   disapprove(comment?: Comment): never
+  /**
+   * @deprecated use {WritableOutput#add} + {WritableOutput#finish}
+   */
   redirect(comment?: Comment): never
+
   add(comment: Comment): void
+
+  finish(summary?: string): never
 
   hasCommentary: boolean
   commentCount: number
@@ -83,7 +95,7 @@ export interface OutputProcessor {
 }
 
 export interface Analyzer {
-  run(input: Input): Promise<Output>
+  run(input: Input, options: ExecutionOptions): Promise<Output>
 }
 
 export interface Runner {

@@ -76,8 +76,8 @@ export class AnalyzerOutput implements Output {
     return this
   }
 
-  public freeze(summary?: string): void {
-    this.summary = summary
+  protected freeze(summary?: string): void {
+    this.summary = summary || this.summary
 
     Object.freeze(this)
     Object.freeze(this.comments)

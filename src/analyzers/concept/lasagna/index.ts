@@ -1,28 +1,20 @@
 import {
   AstParser,
-  ExtractedExport,
-  ExtractedFunction,
-  extractExports,
-  extractFunctions,
-  extractVariables,
-  findTopLevelConstants,
-  guardIdentifier,
-  guardLiteral,
   Input,
   NoExportError,
   NoMethodError,
-  ProgramConstant,
-  StructureError,
 } from '@exercism/static-analysis'
 import { TSESTree } from '@typescript-eslint/typescript-estree'
-import { factory } from '~src/comments/comment'
-import { extractNamedFunction } from '~src/extracts/extract_named_function'
-import { WritableOutput } from '~src/interface'
-import { assertNamedExport } from '../../../asserts/assert_named_export'
-import { assertNamedFunction } from '../../../asserts/assert_named_function'
+import { CommentType, factory } from '~src/comments/comment'
+import { ExecutionOptions, WritableOutput } from '~src/interface'
 import { NO_METHOD, NO_NAMED_EXPORT } from '../../../comments/shared'
 import { IsolatedAnalyzerImpl } from '../../IsolatedAnalyzerImpl'
-import { Source } from '../../SourceImpl'
+import { LasagnaSolution } from './LasagnaSolution'
+
+const EXEMPLAR_SOLUTION_SUMMARY = `
+🎉 That is an exemplar solution. Congratulations. It is exactly what we think
+is the most idiomatic implementation of the tasks at hand.
+`.trim()
 
 const SIGNATURE_CHANGED = factory`
 📕 Don't change the function declarations unless absolutely necessary. The stub
@@ -32,75 +24,79 @@ function signature (change how its parameters work), but in this case the
 parameters were already optimally defined.
 `('javascript.lasagna.signature_changed')
 
+const REMAINING_MINUTES_IN_OVEN_NOT_OPTIMAL = factory`
+📕 It looks like remainingMinutesInOven is not optimal, but the automated
+analyzer isn't smart enough yet to figure out what exactly is not optimal. In
+general, this function is expected to be as simple as possible, without
+declaring any extra variables.`(
+  'javascript.lasagna.remaining_minutes_in_oven_not_optimal',
+  CommentType.Informative
+)
+
+const PREPARATION_TIME_IN_MINUTES_NOT_OPTIMAL = factory`
+📕 It looks like preparationTimeInMinutes is not optimal, but the automated
+analyzer isn't smart enough yet to figure out what exactly is not optimal. In
+general, this function is expected to be as simple as possible, without
+declaring any extra variables.`(
+  'javascript.lasagna.preparation_time_in_minutes_not_optimal',
+  CommentType.Informative
+)
+
+const TOTAL_TIME_IN_MINUTES_NOT_OPTIMAL = factory`
+📕 It looks like totalTimeInMinutes is not optimalbut the automated analyzer
+isn't smart enough yet to figure out what exactly is not optimal. In general,
+this function is expected to be as simple as possible, without declaring any
+extra variables.`(
+  'javascript.lasagna.total_time_in_minutes_not_optimal',
+  CommentType.Informative
+)
+
 type Program = TSESTree.Program
 
 export class LasagnaAnalyzer extends IsolatedAnalyzerImpl {
   private solution!: LasagnaSolution
 
-  protected async execute(input: Input, output: WritableOutput): Promise<void> {
+  protected async execute(
+    input: Input,
+    output: WritableOutput,
+    options: ExecutionOptions
+  ): Promise<void> {
     const [parsed] = await AstParser.ANALYZER.parse(input)
 
     this.solution = this.checkStructure(parsed.program, parsed.source, output)
+    this.solution.readExemplar(options.inputDir)
+
+    if (this.solution.isExemplar) {
+      return output.finish(EXEMPLAR_SOLUTION_SUMMARY)
+    }
 
     if (!this.solution.hasConstantDeclaredAsConst) {
-      throw new Error(
-        'informational: talk about SCREAMING_SNAKE_CASE convention'
-      )
+      // PREFER_CONST_OVER_LET_AND_VAR()
     }
 
     if (!this.solution.hasOptimalConstant) {
-      throw new Error('not optimal constant')
+      // throw new Error('not optimal constant')
     }
 
-    // remainingMinutesInOven.body
+    if (!this.solution.hasOptimalRemainingMinutesInOven) {
+      output.summary = REMAINING_MINUTES_IN_OVEN_NOT_OPTIMAL().toString()
+      // output.add(REMAINING_MINUTES_IN_OVEN_NOT_OPTIMAL())
+      return output.finish()
+    }
 
-    /* "argument": {
-      "type": "BinaryExpression",
-      "operator": "-",
-      "left": {
-        "type": "Identifier",
-        "name": "EXPECTED_MINUTES_IN_OVEN",
-      },
-      "right": {
-        "type": "Identifier",
-        "name": "actualMinutesInOven",
-      },
-    },*/
+    if (!this.solution.hasOptimalPreparationTimeInMinutes) {
+      output.summary = PREPARATION_TIME_IN_MINUTES_NOT_OPTIMAL().toString()
+      // output.add(PREPARATION_TIME_IN_MINUTES_NOT_OPTIMAL())
+      return output.finish()
+    }
 
-    /*
-    "type": "BinaryExpression",
-    "operator": "*",
-    "left": {
-      "type": "Identifier",
-      "name": "numberOfLayers",
-    },
-    "right": {
-      "type": "Identifier",
-      "name": "PREPARATION_MINUTES_PER_LAYER",
-    },*/
+    if (!this.solution.hasOptimalTotalTimeInMinutes) {
+      output.summary = TOTAL_TIME_IN_MINUTES_NOT_OPTIMAL().toString()
+      // output.add(TOTAL_TIME_IN_MINUTES_NOT_OPTIMAL())
+      return output.finish()
+    }
 
-    /*
-    "type": "BinaryExpression",
-    "operator": "+",
-    "left": {
-      "type": "CallExpression",
-      "callee": {
-        "type": "Identifier",
-        "name": "preparationTimeInMinutes",
-      },
-      "arguments": [
-        {
-          "type": "Identifier",
-          "name": "numberOfLayers",
-        }
-      ],
-      "optional": false,
-    },
-    "right": {
-      "type": "Identifier",
-      "name": "actualMinutesInOven",
-    },*/
-    output.approve()
+    output.finish()
   }
 
   private checkStructure(
@@ -112,94 +108,16 @@ export class LasagnaAnalyzer extends IsolatedAnalyzerImpl {
       return new LasagnaSolution(program, source)
     } catch (error) {
       if (error instanceof NoMethodError) {
-        output.disapprove(NO_METHOD({ 'method.name': error.method }))
+        output.add(NO_METHOD({ 'method.name': error.method }))
+        output.finish()
       }
 
       if (error instanceof NoExportError) {
-        output.disapprove(NO_NAMED_EXPORT({ 'export.name': error.namedExport }))
+        output.add(NO_NAMED_EXPORT({ 'export.name': error.namedExport }))
+        output.finish()
       }
 
       throw error
     }
-  }
-}
-
-class NoPublicConstantError extends StructureError {
-  constructor(public name: string) {
-    super(`Expected an exported constant named ${name}, but did not find it.`)
-
-    Error.captureStackTrace(this, this.constructor)
-  }
-}
-
-const REMAINING_MINUTES_IN_OVEN = 'remainingMinutesInOven'
-const PREPARATION_TIME_IN_MINUTES = 'preparationTimeInMinutes'
-const TOTAL_TIME_IN_MINUTES = 'totalTimeInMinutes'
-const EXPECTED_MINUTES_IN_OVEN = 'EXPECTED_MINUTES_IN_OVEN'
-
-function assertPublicApi(
-  exported: string,
-  exports: ExtractedExport[],
-  functions: ExtractedFunction[]
-): ExtractedFunction {
-  const namedExport = assertNamedExport(exported, exports)
-  return assertNamedFunction(namedExport.local, functions)
-}
-
-function assertPublicConstant(
-  exported: string,
-  exports: ExtractedExport[],
-  root: TSESTree.Node
-): ProgramConstant {
-  const namedExport = assertNamedExport(exported, exports)
-  const result = findTopLevelConstants(root, ['let', 'const', 'var']).find(
-    (constant) =>
-      guardIdentifier(constant.id) && constant.id.name === namedExport.name
-  )
-
-  if (!result) {
-    throw new NoPublicConstantError(exported)
-  }
-
-  return result
-}
-
-class LasagnaSolution {
-  private readonly source: Source
-
-  private readonly remainingMinutesInOven: ExtractedFunction
-  private readonly preparationTimeInMinutes: ExtractedFunction
-  private readonly totalTimeInMinutes: ExtractedFunction
-  private readonly expectedMinutesInOven: ProgramConstant
-
-  constructor(public readonly program: Program, source: string) {
-    this.source = new Source(source)
-
-    const functions = extractFunctions(program)
-    const exports = extractExports(program)
-
-    this.expectedMinutesInOven = assertPublicConstant(
-      EXPECTED_MINUTES_IN_OVEN,
-      exports,
-      program
-    )
-
-    this.remainingMinutesInOven = assertPublicApi(
-      REMAINING_MINUTES_IN_OVEN,
-      exports,
-      functions
-    )
-
-    this.preparationTimeInMinutes = assertPublicApi(
-      PREPARATION_TIME_IN_MINUTES,
-      exports,
-      functions
-    )
-
-    this.totalTimeInMinutes = assertPublicApi(
-      TOTAL_TIME_IN_MINUTES,
-      exports,
-      functions
-    )
   }
 }
