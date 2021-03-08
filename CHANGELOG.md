@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.110
+## 0.11.0
 
 - Add initial implementation for `concept/lasagna`
 
