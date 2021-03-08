@@ -11,16 +11,15 @@ The above command generates `analysis.json` for all the `two-fer` fixtures, as
 located in `test/fixtures/two-fer/`. You can use these outputs to see if your
 analyzer produces the right result.
 
-Once you have established which solutions should generate which status and with
-what commentary, it might be a good time to set up a 📸 _snapshot_ test. These
-will record a snapshot of output and make sure they are the same, every single
-time.
+Once you have established which solutions should generate a result and with what
+commentary, it might be a good time to set up a 📸 _snapshot_ test. These will
+record a snapshot of output and make sure they are the same, every single time.
 
 ## Contents
 
 Add a new file `test/analyzers/<slug>/snapshot.ts` and copy the following
 template, replacing `<slug>` with the actual slug and entering **1 to 20** (more
-is better, try to have at least 20 per status) fixture numbers to be tested.
+is better, but too many is not good) fixture numbers to be tested.
 
 ```typescript
 import { SlugAnalyzer } from '~src/analyzers/<type>/<slug>'
@@ -32,11 +31,9 @@ const snapshotTestsGenerator = makeTestGenerator(
 )
 
 describe('When running analysis on two-fer fixtures', () => {
-  snapshotTestsGenerator('approve', [
+  snapshotTestsGenerator([
     // <fixture numbers>
   ])
-  snapshotTestsGenerator('disapprove', [])
-  snapshotTestsGenerator('refer_to_mentor', [])
 })
 ```
 

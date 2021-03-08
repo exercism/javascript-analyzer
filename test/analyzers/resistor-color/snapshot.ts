@@ -7,7 +7,7 @@ const snapshotTestsGenerator = makeTestGenerator(
 )
 
 describe('When running analysis on resistor-color fixtures', () => {
-  snapshotTestsGenerator('approve', [
+  snapshotTestsGenerator([
     0,
     1,
     100,
@@ -69,6 +69,4 @@ describe('When running analysis on resistor-color fixtures', () => {
     211,
     212,
   ])
-  snapshotTestsGenerator('disapprove', [])
-  snapshotTestsGenerator('refer_to_mentor', [])
 })

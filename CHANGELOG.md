@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.110
+
+- Add initial implementation for `concept/lasagna`
+
 ## 0.10.0
 
 - Use `.meta/config.json` when its available

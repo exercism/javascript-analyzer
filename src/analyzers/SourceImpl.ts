@@ -50,6 +50,10 @@ class SourceImpl implements Source {
       }
     }
   }
+
+  public toString(): string {
+    return this.source
+  }
 }
 
 export { SourceImpl as Source }

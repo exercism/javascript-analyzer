@@ -7,20 +7,10 @@ const snapshotTestsGenerator = makeTestGenerator(
 )
 
 describe('When running analysis on resistor-color-duo fixtures', () => {
-  snapshotTestsGenerator('approve', [
-    0,
-    102,
-    121,
-    128,
-    145,
-    15,
-    160,
-    170,
-    229,
-    311,
-    32,
-  ])
-  snapshotTestsGenerator('disapprove', [
+  snapshotTestsGenerator([0, 102, 121, 128, 145, 15, 160, 170, 229, 311, 32])
+
+  // With a non-approvable comment
+  snapshotTestsGenerator([
     1,
     10,
     100,
@@ -172,5 +162,4 @@ describe('When running analysis on resistor-color-duo fixtures', () => {
     303,
     304,
   ])
-  snapshotTestsGenerator('refer_to_mentor', [])
 })

@@ -6,7 +6,7 @@ import {
 } from '@exercism/static-analysis'
 import { TSESTree } from '@typescript-eslint/typescript-estree'
 import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl'
-import { factory } from '~src/comments/comment'
+import { CommentType, factory } from '~src/comments/comment'
 import {
   NO_METHOD,
   NO_NAMED_EXPORT,
@@ -29,13 +29,16 @@ inline?
 \`\`\`javascript
 export ${'method.signature'}
 \`\`\`
-`('javascript.resistor-color-duo.export_inline')
+`('javascript.resistor-color-duo.export_inline', CommentType.Informative)
 
 const TIP_DESTRUCTURING_IN_PARAMETER = factory<'parameter'>`
 You can destructure an array directly in the parameter \`${'parameter'}\`.
 This allows you to give a name to the items inside, limit how many values come
 in and replace the more cryptic numeric indexers with the named items.
-`('javascript.resistor-color-duo.destructuring_in_parameter')
+`(
+  'javascript.resistor-color-duo.destructuring_in_parameter',
+  CommentType.Informative
+)
 
 const SIGNATURE_NOT_OPTIMAL = factory`
 📕 If you look at the tests, the function \`decodedValue\` only receives one
@@ -43,11 +46,14 @@ parameter. Nothing more and nothing less.
 
 📕 Remove the additional parameters from your function, as their value will
 always be \`undefined\` or whatever default you've assigned.
-`('javascript.resistor-color-duo.signature_not_optimal')
+`('javascript.resistor-color-duo.signature_not_optimal', CommentType.Essential)
 
 const USE_ARRAY_COMPREHENSIONS = factory<'current'>`
 💬 Replace \`${'current'}\` with a comprehension such as \`map\`.
-`('javascript.resistor-color-duo.use_array_comprehensions')
+`(
+  'javascript.resistor-color-duo.use_array_comprehensions',
+  CommentType.Actionable
+)
 
 const LIMIT_NUMBER_OF_COLORS = factory`
 💬 Limit the number of input colors that are processed. If more than two colors
@@ -58,25 +64,31 @@ are passed in, only the first two colors should be used to calculate the total
 has not accounted for this, they might need to update their solution. Help them
 find the button to update. The tests won't pass without limiting the number of
 colors.
-`('javascript.resistor-color-duo.limit_number_of_colors')
+`('javascript.resistor-color-duo.limit_number_of_colors', CommentType.Essential)
 
 const PREFER_NUMBER_OVER_PARSE = factory`
 💬 Use \`Number(...)\` when the input is expected to be a number. It's more
 strict than the \`parseXXX\` family and applies in this exercise.
-`('javascript.resistor-color-duo.prefer_number_over_parse')
+`(
+  'javascript.resistor-color-duo.prefer_number_over_parse',
+  CommentType.Actionable
+)
 
 const USE_MATH_INSTEAD_OF_TYPE_JUGGLING = factory`
 📕 The final value is currently "constructed" by placing digits in a string and
 then intepreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.
-`('javascript.resistor-color-duo.use_math_instead_of_type_juggling')
+`(
+  'javascript.resistor-color-duo.use_math_instead_of_type_juggling',
+  CommentType.Actionable
+)
 
 const ISSUE_OPTIMISE_HELPER = factory<'method.name'>`
 ⚡ The helper method \`${'method.name'}\` is not optimal. The helper can
 probably be the same as the solution to \`resistor-color\`. Mentor the student
 to retrieve their solution and/or optimise their helper.
-`('javascript.resistor-color-duo.must_optimise_helper')
+`('javascript.resistor-color-duo.must_optimise_helper', CommentType.Actionable)
 
 const ISSUE_USE_A_HELPER = factory`
 📕 Mentor the student to add helper function and DRY-up this solution. The
@@ -87,22 +99,25 @@ Re-using \`colorCode\` explains this in both cases.
 
 💬 Using a helper method is good practice, because it replaces a cryptic "member
 call" with a named call, that can be documented individually.
-`('javascript.resistor-color-duo.must_use_a_helper')
+`('javascript.resistor-color-duo.must_use_a_helper', CommentType.Actionable)
 
 const ISSUE_METHOD_NOT_FOUND = factory<'method.name'>`
 ⚡ Ensure the method \`${'method/name'}\` exists. It was not found when
 analysing this solution. If it does not exist, point this out to the student.
 
-`('javascript.resistor-color-duo.must_declare_function')
+`('javascript.resistor-color-duo.must_declare_function', CommentType.Actionable)
 
 const ISSUE_EXPECTED_CALL = factory<'method.name' | 'expected.reason'>`
 📕 In order to ${'expected.reason'}, expected a \`${'method.name'}\` call. If
 that reasoning applies, mentor the student to add this call.
-`('javascript.resistor-color-duo.must_add_missing_call')
+`('javascript.resistor-color-duo.must_add_missing_call', CommentType.Actionable)
 
 const ISSUE_UNEXPECTED_CALL = factory<'unexpected' | 'expected'>`
 📕 Found \`${'unexpected'}\`, expected \`${'expected'}\`.
-`('javascript.resistor-color-duo.expected_different_call')
+`(
+  'javascript.resistor-color-duo.expected_different_call',
+  CommentType.Actionable
+)
 
 type Program = TSESTree.Program
 

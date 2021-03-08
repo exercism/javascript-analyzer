@@ -14,31 +14,38 @@ export class IsolatedAnalyzerOutput
   implements WritableOutput {
   /**
    * Mark the solution as approved
+   * @deprecated add a {celebratory} or {informative} comment instead
    */
   public approve(comment?: Comment): never {
     comment && this.add(comment)
-    super.approve()
     return this.freeze()
   }
 
   /**
    * Mark the solution as dissapproved
+   * @deprecated add an {actionable} or {essential} comment instead
    */
   public disapprove(comment?: Comment): never {
     comment && this.add(comment)
-    super.disapprove()
     return this.freeze()
   }
 
   /**
    * Mark the solution as refer to mentor
+   * @deprecated do nothing, or add an {actionable} or {essential} comment instead
    */
   public redirect(comment?: Comment): never {
     comment && this.add(comment)
     return this.freeze()
   }
 
-  protected freeze(): never {
+  public finish(summary?: string): never {
+    return this.freeze(summary)
+  }
+
+  protected freeze(summary?: string): never {
+    this.summary = summary || this.summary
+
     super.freeze()
     throw new EarlyFinalization()
   }

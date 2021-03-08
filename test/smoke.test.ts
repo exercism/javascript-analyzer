@@ -19,7 +19,6 @@ describe('When running analysis', () => {
     const input = new InlineInput([solutionContent])
     const output = await run(analyzer, input, options)
 
-    expect(output.status).toBe('approve')
     expect(output.comments.length).toBe(0)
   })
 
@@ -36,8 +35,8 @@ describe('When running analysis', () => {
     const input = new InlineInput([solutionContent])
     const output = await run(analyzer, input, options)
 
-    expect(output.status).toBe('approve')
     expect(output.comments.length).toBeGreaterThanOrEqual(1)
+    expect(output.comments[0].type).toBe('informative')
   })
 
   it('can dissapprove with comment', async () => {
@@ -51,23 +50,8 @@ describe('When running analysis', () => {
     const input = new InlineInput([solutionContent])
     const output = await run(analyzer, input, options)
 
-    expect(output.status).toBe('disapprove')
     expect(output.comments.length).toBeGreaterThanOrEqual(1)
-  })
-
-  it('can refer to mentor', async () => {
-    const solutionContent = `
-    const whomst = 'for'
-    export const twoFer = (name = 'you') => {
-      return \`One \${whomst} \${name}, one \${whomst} me.\`;
-    };
-    `.trim()
-
-    const analyzer = new TwoFerAnalyzer()
-    const input = new InlineInput([solutionContent])
-    const output = await run(analyzer, input, options)
-
-    expect(output.status).toBe('refer_to_mentor')
+    expect(output.comments[0].type).toBe('actionable')
   })
 })
 

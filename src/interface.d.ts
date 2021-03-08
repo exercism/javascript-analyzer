@@ -24,21 +24,37 @@ export interface Exercise {
 }
 
 export interface Comment {
-  /** The constructed message with all the template variables applied */
+  /**
+   * The constructed message with all the template variables applied
+   */
   message: string
-  /** The message with the template variables in there */
+
+  /**
+   * The message with the template variables in there
+   */
   template: string
-  /** The provided variables as array or name (key), value (value) map */
+
+  /**
+   * The provided variables as array or name (key), value (value) map
+   */
   variables: Readonly<{
     [name: string]: string | undefined
     [name: number]: string | undefined
   }>
-  /** The identifier for the template on website-copy */
+
+  /**
+   * The identifier for the template on website-copy
+   */
   externalTemplate: string
+
+  /**
+   * The type of the comment
+   */
+  type?: 'essential' | 'actionable' | 'informative' | 'celebratory'
 }
 
 export interface Output {
-  status: 'refer_to_mentor' | 'approve' | 'disapprove'
+  summary?: string
   comments: Comment[]
 
   /**
@@ -50,10 +66,22 @@ export interface Output {
 }
 
 export interface WritableOutput extends Output {
+  /**
+   * @deprecated use {WritableOutput#add} + {WritableOutput#finish}
+   */
   approve(comment?: Comment): never
+  /**
+   * @deprecated use {WritableOutput#add} + {WritableOutput#finish}
+   */
   disapprove(comment?: Comment): never
+  /**
+   * @deprecated use {WritableOutput#add} + {WritableOutput#finish}
+   */
   redirect(comment?: Comment): never
+
   add(comment: Comment): void
+
+  finish(summary?: string): never
 
   hasCommentary: boolean
   commentCount: number
@@ -67,7 +95,7 @@ export interface OutputProcessor {
 }
 
 export interface Analyzer {
-  run(input: Input): Promise<Output>
+  run(input: Input, options: ExecutionOptions): Promise<Output>
 }
 
 export interface Runner {

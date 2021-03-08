@@ -2,10 +2,7 @@ import { Analyzer, Output } from '~src/interface'
 import { FixtureInput } from './input/FixtureInput'
 
 type AnalyzerFactory = () => Analyzer
-type generateAll = (
-  status: Output['status'],
-  fixtures: readonly number[]
-) => void
+type generateAll = (fixtures: readonly number[]) => void
 
 export function makeTestGenerator(
   slug: string,
@@ -18,11 +15,8 @@ export function makeTestGenerator(
     return analyzer.run(input)
   }
 
-  return async function (
-    status: Output['status'],
-    fixtures: readonly number[]
-  ): Promise<void> {
-    describe(`and expecting it to ${status.replace(/_/g, ' ')}`, () => {
+  return async function (fixtures: readonly number[]): Promise<void> {
+    describe(`and expecting`, () => {
       fixtures
         .slice()
         .sort()
@@ -30,7 +24,6 @@ export function makeTestGenerator(
           const identifier = `${slug}/${fixture}`
           it(`matches ${identifier}'s output`, async () => {
             const output = await analyze(fixture)
-            expect(output.status).toBe(status)
             expect(output).toMatchSnapshot(`output`)
           })
         })
