@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.11.1
+
+- Remove `console.log` from EarlyFinalisation code path
+
 ## 0.11.0
 
 - Add initial implementation for `concept/lasagna`

@@ -61,7 +61,6 @@ export abstract class IsolatedAnalyzerImpl implements Analyzer {
       // The isolated analyzer output can use exceptions as control flow.
       // This block here explicitly accepts this.
       if (err instanceof EarlyFinalization) {
-        console.log(output)
         this.logger.log(`=> early finalization (${output.summary || '-'})`)
       } else {
         throw err
