@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.11.2
+
+- Improve `concept/lasagna` analysis
+- Add various generic comments
+
 ## 0.11.1
 
 - Remove `console.log` from EarlyFinalisation code path

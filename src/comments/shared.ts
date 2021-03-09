@@ -124,3 +124,31 @@ standard. Proceed with caution.
 export const ERROR_CAPTURED_NO_SOURCE = factory<'expected' | 'available'>`
 Expected source file "${'expected'}", found: ${'available'}.
 `('javascript.general.error_captured_no_source', CommentType.Essential)
+
+export const EXEMPLAR_SOLUTION = factory`
+🎉 That is an exemplar solution. Congratulations. It is exactly what we think
+is the most idiomatic implementation of the tasks at hand. Rejoice!
+`('javascript.general.exemplar', CommentType.Celebratory)
+
+export const FUNCTION_NOT_OPTIMAL = factory<'function'>`
+📕 It looks like ${'function'} is not optimal. This analyzer is a Work In
+Progress and can't tell you exactly why it thinks something is not optimal. Feel
+free to ignore this feedback. If you wish to attempt to resolve it, the advice
+is as follows: this function is expected to be as simple as possible, without
+declaring any extra variables.`(
+  'javascript.general.function_not_optimal',
+  CommentType.Informative
+)
+
+export const SIGNATURE_CHANGED = factory`
+📕 Don't change the function declarations unless absolutely necessary. The stub
+provides the correct exports and correct function declarations, with the
+expected amount and format of parameters. It is sometimes possible to change the
+function signature (change how its parameters work), but in this case the
+parameters were already optimally defined.
+`('javascript.general.signature_changed', CommentType.Informative)
+
+export const REPLACE_MAGIC_WITH_IDENTIFIER = factory<'literal' | 'identifier'>`
+The a magic value \`${'literal'}\` can be replaced by \`${'identifier'}\`. When
+possible, named constants are often a better choice than in-lined literals.
+`('javascript.general.replace_magic_with_identifier', CommentType.Actionable)

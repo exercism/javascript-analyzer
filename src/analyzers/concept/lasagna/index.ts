@@ -5,53 +5,42 @@ import {
   NoMethodError,
 } from '@exercism/static-analysis'
 import { TSESTree } from '@typescript-eslint/typescript-estree'
-import { CommentType, factory } from '~src/comments/comment'
 import { ExecutionOptions, WritableOutput } from '~src/interface'
-import { NO_METHOD, NO_NAMED_EXPORT } from '../../../comments/shared'
+import { CommentType, factory } from '../../../comments/comment'
+import {
+  EXEMPLAR_SOLUTION,
+  FUNCTION_NOT_OPTIMAL,
+  NO_METHOD,
+  NO_NAMED_EXPORT,
+  PREFER_CONST_OVER_LET_AND_VAR,
+  REPLACE_MAGIC_WITH_IDENTIFIER,
+} from '../../../comments/shared'
 import { IsolatedAnalyzerImpl } from '../../IsolatedAnalyzerImpl'
-import { LasagnaSolution } from './LasagnaSolution'
-
-const EXEMPLAR_SOLUTION_SUMMARY = `
-🎉 That is an exemplar solution. Congratulations. It is exactly what we think
-is the most idiomatic implementation of the tasks at hand.
-`.trim()
-
-const SIGNATURE_CHANGED = factory`
-📕 Don't change the function declarations unless absolutely necessary. The stub
-provides the correct exports and correct function declarations, with the
-expected amount and format of parameters. It is sometimes possible to change the
-function signature (change how its parameters work), but in this case the
-parameters were already optimally defined.
-`('javascript.lasagna.signature_changed')
-
-const REMAINING_MINUTES_IN_OVEN_NOT_OPTIMAL = factory`
-📕 It looks like remainingMinutesInOven is not optimal, but the automated
-analyzer isn't smart enough yet to figure out what exactly is not optimal. In
-general, this function is expected to be as simple as possible, without
-declaring any extra variables.`(
-  'javascript.lasagna.remaining_minutes_in_oven_not_optimal',
-  CommentType.Informative
-)
-
-const PREPARATION_TIME_IN_MINUTES_NOT_OPTIMAL = factory`
-📕 It looks like preparationTimeInMinutes is not optimal, but the automated
-analyzer isn't smart enough yet to figure out what exactly is not optimal. In
-general, this function is expected to be as simple as possible, without
-declaring any extra variables.`(
-  'javascript.lasagna.preparation_time_in_minutes_not_optimal',
-  CommentType.Informative
-)
-
-const TOTAL_TIME_IN_MINUTES_NOT_OPTIMAL = factory`
-📕 It looks like totalTimeInMinutes is not optimalbut the automated analyzer
-isn't smart enough yet to figure out what exactly is not optimal. In general,
-this function is expected to be as simple as possible, without declaring any
-extra variables.`(
-  'javascript.lasagna.total_time_in_minutes_not_optimal',
-  CommentType.Informative
-)
+import {
+  EXPECTED_MINUTES_IN_OVEN,
+  LasagnaSolution,
+  PREPARATION_TIME_IN_MINUTES,
+  REMAINING_MINUTES_IN_OVEN,
+  TOTAL_TIME_IN_MINUTES,
+} from './LasagnaSolution'
 
 type Program = TSESTree.Program
+
+const MUST_CALL_PREPARATION_TIME_IN_MINUTES = factory<'target' | 'function'>`
+  Change \`${'target'}\' so it calls \`${'function'}\`.
+
+  According to the instructions, \`${'target'}\` can be implemented by taking
+  the preparation time in minutes and adding the amount of time spent in the
+  oven. The preparation time in minutes is the result of calling
+  \`${'function'}\`.
+
+  In JavaScript a function can be executed using \`()\`, with any arguments
+  required comma-separated between the opening parenthesis \`(\` and closing
+  parenthesis \`)\`.
+`(
+  'javascript.lasagna.must_call_preparation_time_in_minutes',
+  CommentType.Essential
+)
 
 export class LasagnaAnalyzer extends IsolatedAnalyzerImpl {
   private solution!: LasagnaSolution
@@ -67,32 +56,57 @@ export class LasagnaAnalyzer extends IsolatedAnalyzerImpl {
     this.solution.readExemplar(options.inputDir)
 
     if (this.solution.isExemplar) {
-      return output.finish(EXEMPLAR_SOLUTION_SUMMARY)
+      output.add(EXEMPLAR_SOLUTION())
+      output.finish()
     }
 
     if (!this.solution.hasConstantDeclaredAsConst) {
-      // PREFER_CONST_OVER_LET_AND_VAR()
+      output.add(
+        PREFER_CONST_OVER_LET_AND_VAR({
+          kind: this.solution.constantKind,
+          name: EXPECTED_MINUTES_IN_OVEN,
+        })
+      )
     }
 
     if (!this.solution.hasOptimalConstant) {
       // throw new Error('not optimal constant')
     }
 
-    if (!this.solution.hasOptimalRemainingMinutesInOven) {
-      output.summary = REMAINING_MINUTES_IN_OVEN_NOT_OPTIMAL().toString()
-      // output.add(REMAINING_MINUTES_IN_OVEN_NOT_OPTIMAL())
+    if (!this.solution.remainingMinutesInOven.isOptimal) {
+      if (this.solution.remainingMinutesInOven.hasReplacableLiteral) {
+        output.add(
+          REPLACE_MAGIC_WITH_IDENTIFIER({
+            literal: '40',
+            identifier: EXPECTED_MINUTES_IN_OVEN,
+          })
+        )
+        return output.finish()
+      }
+
+      output.add(FUNCTION_NOT_OPTIMAL({ function: REMAINING_MINUTES_IN_OVEN }))
       return output.finish()
     }
 
     if (!this.solution.hasOptimalPreparationTimeInMinutes) {
-      output.summary = PREPARATION_TIME_IN_MINUTES_NOT_OPTIMAL().toString()
-      // output.add(PREPARATION_TIME_IN_MINUTES_NOT_OPTIMAL())
+      output.add(
+        FUNCTION_NOT_OPTIMAL({ function: PREPARATION_TIME_IN_MINUTES })
+      )
       return output.finish()
     }
 
-    if (!this.solution.hasOptimalTotalTimeInMinutes) {
-      output.summary = TOTAL_TIME_IN_MINUTES_NOT_OPTIMAL().toString()
-      // output.add(TOTAL_TIME_IN_MINUTES_NOT_OPTIMAL())
+    if (!this.solution.totalTimeInMinutes.isOptimal) {
+      if (!this.solution.totalTimeInMinutes.hasCallToPreparationTime) {
+        output.add(
+          MUST_CALL_PREPARATION_TIME_IN_MINUTES({
+            target: TOTAL_TIME_IN_MINUTES,
+            function: PREPARATION_TIME_IN_MINUTES,
+          })
+        )
+        return output.finish()
+      }
+
+      output.add(FUNCTION_NOT_OPTIMAL({ function: TOTAL_TIME_IN_MINUTES }))
       return output.finish()
     }
 
