@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.12.0
+
+- Add generic ExemplarAnalyzer
+- Use generic ExemplarAnalyzer for `annalyns-infiltration`
+- Use generic ExemplarAnalyzer for `freelancer-rates`
+
 ## 0.11.2
 
 - Improve `concept/lasagna` analysis
