@@ -154,6 +154,8 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
       this.comment(NO_NAMED_EXPORT({ 'export.name': 'twoFer' }))
     }
 
+    console.log(exported?.node.type, this.mainMethod.body.type)
+
     if (this.hasCommentary) {
       this.disapprove()
     }
