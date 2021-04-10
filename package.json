@@ -4,7 +4,7 @@
   "description": "Exercism analyzer for javascript",
   "repository": "https://github.com/exercism/javascript-analyzer",
   "author": "Derk-Jan Karrenbeld <derk-jan+github@karrenbeld.info>",
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "main": "dist/analyze.js",
   "browser": "dist/web.js",
   "directories": {
