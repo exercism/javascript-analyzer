@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.13.1
+
+- Update dependencies
+
 ## 0.13.0
 
 - Use generic ExemplarAnalyzer for `poetry-club-door-analyzer`
