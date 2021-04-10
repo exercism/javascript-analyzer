@@ -1,7 +1,7 @@
+import { DirectoryWithConfigInput } from '@exercism/static-analysis'
 import path from 'path'
 import { FreelancerRatesAnalyzer } from '~src/analyzers/concept/freelancer-rates'
 import { EXEMPLAR_SOLUTION } from '~src/comments/shared'
-import { DirectoryWithConfigInput } from '~src/input/DirectoryWithConfigInput'
 import { makeAnalyze, makeOptions } from '~test/helpers/smoke'
 
 const inputDir = path.join(

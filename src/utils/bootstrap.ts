@@ -4,10 +4,10 @@ import {
   Logger,
   registerExceptionHandler,
   setProcessLogger,
+  DirectoryWithConfigInput,
 } from '@exercism/static-analysis'
 import { ExerciseImpl } from '~src/ExerciseImpl'
 import { ExecutionOptions, Exercise } from '~src/interface'
-import { DirectoryWithConfigInput } from '../input/DirectoryWithConfigInput'
 import { ExecutionOptionsImpl } from './execution_options'
 
 export interface BootstrapResult {
