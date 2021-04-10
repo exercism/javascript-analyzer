@@ -1,7 +1,7 @@
+import { DirectoryWithConfigInput } from '@exercism/static-analysis'
 import path from 'path'
 import { PoetryClubDoorPolicyAnalyzer } from '~src/analyzers/concept/poetry-club-door-policy'
 import { EXEMPLAR_SOLUTION } from '~src/comments/shared'
-import { DirectoryWithConfigInput } from '~src/input/DirectoryWithConfigInput'
 import { makeAnalyze, makeOptions } from '~test/helpers/smoke'
 
 const inputDir = path.join(
