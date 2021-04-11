@@ -97,16 +97,7 @@ logger.log(
 //
 const analyzeProcess = spawn(
   'node',
-  [
-    '-r',
-    'esm',
-    '-r',
-    'module-alias/register',
-    spawnable,
-    exerciseSlug,
-    localPath,
-    ...process.argv.slice(4),
-  ],
+  [spawnable, exerciseSlug, localPath, ...process.argv.slice(4)],
   { cwd: process.cwd(), env: process.env }
 )
 
