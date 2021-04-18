@@ -37,7 +37,7 @@ export interface Comment {
   /**
    * The provided variables as array or name (key), value (value) map
    */
-  variables: Readonly<{
+  variables?: Readonly<{
     [name: string]: string | undefined
     [name: number]: string | undefined
   }>
@@ -62,26 +62,26 @@ export interface Output {
    * @param options the execution options
    * @returns the output as string
    */
-  toProcessable(options: Readonly<ExecutionOptions>): Promise<string>
+  toProcessable: (options: Readonly<ExecutionOptions>) => Promise<string>
 }
 
 export interface WritableOutput extends Output {
   /**
    * @deprecated use {WritableOutput#add} + {WritableOutput#finish}
    */
-  approve(comment?: Comment): never
+  approve: (comment?: Comment) => never
   /**
    * @deprecated use {WritableOutput#add} + {WritableOutput#finish}
    */
-  disapprove(comment?: Comment): never
+  disapprove: (comment?: Comment) => never
   /**
    * @deprecated use {WritableOutput#add} + {WritableOutput#finish}
    */
-  redirect(comment?: Comment): never
+  redirect: (comment?: Comment) => never
 
-  add(comment: Comment): void
+  add: (comment: Comment) => void
 
-  finish(summary?: string): never
+  finish: (summary?: string) => never
 
   hasCommentary: boolean
   commentCount: number
@@ -95,13 +95,13 @@ export interface OutputProcessor {
 }
 
 export interface Analyzer {
-  run(input: Input, options: ExecutionOptions): Promise<Output>
+  run: (input: Input, options: ExecutionOptions) => Promise<Output>
 }
 
 export interface Runner {
-  call(
+  call: (
     analyzer: Analyzer,
     input: Input,
     options: Readonly<ExecutionOptions>
-  ): Promise<Output>
+  ) => Promise<Output>
 }

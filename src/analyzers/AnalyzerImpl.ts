@@ -1,5 +1,5 @@
-import type { Input } from '@exercism/static-analysis'
-import { getProcessLogger, Logger } from '@exercism/static-analysis'
+import type { Input, Logger } from '@exercism/static-analysis'
+import { getProcessLogger } from '@exercism/static-analysis'
 import type { Analyzer, Comment, Output } from '~src/interface'
 import { AnalyzerOutput } from '~src/output/AnalyzerOutput'
 
@@ -47,7 +47,11 @@ export abstract class AnalyzerImpl implements Analyzer {
 
     await this.execute(input).catch((err): void | never => {
       if (err instanceof EarlyFinalization) {
-        this.logger.log(`=> early finialization (${this.output.status})`)
+        this.logger.log(
+          `=> early finalization (${
+            this.output.summary ?? this.output.comments.length
+          })`
+        )
       } else {
         throw err
       }

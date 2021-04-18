@@ -1,4 +1,5 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
 
 type Parameter = TSESTree.Parameter
 type ObjectLiteralElementLike = TSESTree.ObjectLiteralElementLike
@@ -128,10 +129,7 @@ function expressionName(
     case AST_NODE_TYPES.ArrayPattern:
     case AST_NODE_TYPES.ObjectPattern:
     case AST_NODE_TYPES.Identifier:
-      // Disabled this rule here because we _want_ the fall-through
-      // eslint-disable-next-line no-case-declarations
-      const result = parameterName(element, fallback)
-      return Array.isArray(result) ? result[0] : result
+      return parameterName(element, fallback)
 
     // Don't know how to get the name
     default:

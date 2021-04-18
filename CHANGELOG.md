@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.14.0
+
+- Use `@exercism/eslint-config-tooling` for linting the files in this repository
+- Use `@exercism/eslint-config-javascript` to lint (and report) on student code
+
 ## 0.13.1
 
 - Update dependencies

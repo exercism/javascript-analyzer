@@ -15,7 +15,7 @@ export function makeParseErrorOutput(err: ParserError): Output {
   const output = new AnalyzerOutput()
 
   const { message, ...details } = err.original
-  const source = new Source(err.source || '')
+  const source = new Source(err.source ?? '')
 
   const startLine = details.lineNumber - 2
   const endLine = details.lineNumber + 3 /* last line might be empty */

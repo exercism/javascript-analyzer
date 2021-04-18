@@ -1,7 +1,7 @@
 import { ExecutionOptionsImpl } from '~src/utils/execution_options'
 import { ExerciseImpl } from '~src/ExerciseImpl'
-import { BootstrapResult } from '~src/utils/bootstrap'
-import { ExecutionOptions } from '~src/interface'
+import type { BootstrapResult } from '~src/utils/bootstrap'
+import type { ExecutionOptions } from '~src/interface'
 import { Logger, setProcessLogger } from '@exercism/static-analysis'
 
 export function bootstrap({

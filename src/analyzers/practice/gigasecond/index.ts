@@ -1,11 +1,12 @@
+import type { Input } from '@exercism/static-analysis'
 import {
   AstParser,
   guardIdentifier,
-  Input,
   NoExportError,
   NoMethodError,
 } from '@exercism/static-analysis'
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
 import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl'
 import { CommentType, factory } from '~src/comments/comment'
 import {
@@ -136,7 +137,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
   ): GigasecondSolution | never {
     try {
       return new GigasecondSolution(program, source)
-    } catch (error) {
+    } catch (error: unknown) {
       if (error instanceof NoMethodError) {
         output.disapprove(NO_METHOD({ 'method.name': error.method }))
       }

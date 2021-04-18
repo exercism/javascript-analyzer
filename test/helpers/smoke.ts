@@ -1,8 +1,8 @@
 import { InlineInput } from '@exercism/static-analysis'
-import { Analyzer, ExecutionOptions, Output } from '~src/interface'
+import type { Analyzer, ExecutionOptions, Output } from '~src/interface'
 
 type AnalyzerFactory = () => Analyzer
-type analyze = (solutionContent: string) => Promise<Output>
+type Analyze = (solutionContent: string) => Promise<Output>
 
 const EMPTY_OPTIONS: Omit<
   ExecutionOptions,
@@ -23,12 +23,13 @@ export function makeOptions(
 }
 
 export function makeAnalyze(
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   AnalyzerFactory: AnalyzerFactory,
   options: Omit<
     ExecutionOptions,
     'exercise' | 'inputDir' | 'output'
   > = EMPTY_OPTIONS
-): analyze {
+): Analyze {
   return async function (solutionContent: string): Promise<Output> {
     const analyzer = AnalyzerFactory()
     const input = new InlineInput([solutionContent])
