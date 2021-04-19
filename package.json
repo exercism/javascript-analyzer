@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "@exercism/eslint-config-javascript": "^0.3.1",
-    "@exercism/static-analysis": "^0.8.1",
+    "@exercism/static-analysis": "^0.9.0",
     "@typescript-eslint/parser": "^4.22.0",
     "@typescript-eslint/typescript-estree": "^4.22.0",
     "@typescript-eslint/visitor-keys": "^4.22.0",

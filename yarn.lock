@@ -1310,10 +1310,10 @@
   resolved "https://registry.yarnpkg.com/@exercism/eslint-config-tooling/-/eslint-config-tooling-0.1.0.tgz#a70b3dd8fec09b839f849e91ae8663be7e9fd4b9"
   integrity sha512-rGMQ1WVvrR7RiJ66Zw3t2X3QfiNALDwd2G5ky0kdPz83t45I5wZy1potnxGONUEon81l+wy+7QfN8UbTTeCUzQ==
 
-"@exercism/static-analysis@^0.8.1":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@exercism/static-analysis/-/static-analysis-0.8.1.tgz#74596ca63000f979a01e1f2ff4baaf14198c1088"
-  integrity sha512-0xzPeaII/VkNamHcZ5ixPcqQ63FuZlOu2kiXe1p0zCTrjCW8nwhSeuguKVu7wy7Q4gjvfabd1n8xUOzAbA4PdQ==
+"@exercism/static-analysis@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@exercism/static-analysis/-/static-analysis-0.9.0.tgz#6f441e29d60fe2962bae504e7875a45f06f0ac78"
+  integrity sha512-sOaLbKI6yM7lxBV8569OQkiUWXqqrXJuEkuylTPAx8M88bWCy/3q3E2hjW0CPjS5FFKddq7bUMq3Pw3UMWbSDw==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.0.0"
