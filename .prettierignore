@@ -1,4 +1,6 @@
 /.vscode
+/.github/labels.yml
+/.github/workflows/sync-labels.yml
 /dist
 /node_modules
 /production_node_modules
