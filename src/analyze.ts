@@ -27,6 +27,7 @@ logger.log(
 // so it can be instantiated here. This allows us to add new analyzers without
 // needing to update a bookkeeping construct
 //
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const AnalyzerClass = find(exercise)
 const analyzer = new AnalyzerClass()
 
@@ -39,4 +40,4 @@ const analyzer = new AnalyzerClass()
 //
 run(analyzer, input, options)
   .then(() => process.exit(0))
-  .catch((err) => logger.fatal(err.toString()))
+  .catch((err: unknown) => logger.fatal(`${err}`))

@@ -1,6 +1,13 @@
-import {
+import type {
   ExtractedExport,
   ExtractedFunction,
+  Logger,
+  ProgramConstants,
+  SpecificFunctionCall,
+  SpecificObjectPropertyCall,
+  SpecificPropertyCall,
+} from '@exercism/static-analysis'
+import {
   ExtractedVariable,
   extractExports,
   extractFunctions,
@@ -14,13 +21,9 @@ import {
   guardLiteral,
   guardMemberExpression,
   guardTemplateLiteral,
-  Logger,
-  ProgramConstants,
-  SpecificFunctionCall,
-  SpecificObjectPropertyCall,
-  SpecificPropertyCall,
 } from '@exercism/static-analysis'
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
 import { Source } from '~src/analyzers/SourceImpl'
 import { parameterName } from '~src/analyzers/utils/extract_parameter'
 import { assertNamedExport } from '~src/asserts/assert_named_export'
@@ -87,7 +90,7 @@ class Constant {
     private readonly constant: Readonly<ExtractedVariable>,
     source: Source
   ) {
-    this.name = constant.name || '<NO NAME>'
+    this.name = constant.name ?? '<NO NAME>'
     this.signature = source.getOuter(constant.node)
   }
 
@@ -149,7 +152,7 @@ class Constant {
   public isOptimalObject(
     node: ExtractedVariable | undefined = this.constant
   ): boolean {
-    if (!node || !node.init) {
+    if (!node.init) {
       return false
     }
 
@@ -229,7 +232,7 @@ class Entry {
   private lastIssue_: Issue
 
   constructor(method: Readonly<ExtractedFunction>, source: Readonly<Source>) {
-    this.name = method.name || EXPECTED_METHOD
+    this.name = method.name ?? EXPECTED_METHOD
     this.params = method.params
     this.body = method.body
 
@@ -255,12 +258,12 @@ class Entry {
   public get hasOptimalParameter(): boolean {
     const [param] = this.params
     return (
-      !!param &&
+      Boolean(param) &&
       param.type === AST_NODE_TYPES.ArrayPattern &&
       param.elements.length === 2 &&
-      !!param.elements[0] &&
+      Boolean(param.elements[0]) &&
       guardIdentifier(param.elements[0]) &&
-      !!param.elements[1] &&
+      Boolean(param.elements[1]) &&
       guardIdentifier(param.elements[1])
     )
   }
@@ -524,7 +527,7 @@ class Entry {
       //
       if (helperMethodName) {
         const helperDeclaration =
-          extractNamedFunction(helperMethodName, program) ||
+          extractNamedFunction(helperMethodName, program) ??
           extractNamedFunction(helperMethodName, body)
         if (!helperDeclaration) {
           logger.log(`~> could not find helper ${helperMethodName}`)
@@ -605,7 +608,7 @@ class Entry {
         }
 
         const helperDeclaration =
-          extractNamedFunction(helperMethodName, program) ||
+          extractNamedFunction(helperMethodName, program) ??
           extractNamedFunction(helperMethodName, body)
         if (!helperDeclaration) {
           logger.log(`~> could not find helper ${helperMethodName}`)
@@ -690,9 +693,7 @@ class Entry {
     constant?: Readonly<Constant>
   ): boolean {
     logger.log(
-      `~> reduce optimal check is not implemented: ${body.type} (${
-        constant && constant.name
-      })`
+      `~> reduce optimal check is not implemented: ${body.type} (${constant?.name})`
     )
     // colors.slice(0, 2).reduce((acc, color) => acc * 10 + colorCode(code), 0)
     // colors.slice(0, 2).reverse().reduce((acc, color, index) => acc + colorCode(code) * (10 ** index), 0)
@@ -796,7 +797,7 @@ class Entry {
     }
 
     const helperDeclaration =
-      extractNamedFunction(helperMethodName, program) ||
+      extractNamedFunction(helperMethodName, program) ??
       extractNamedFunction(helperMethodName, body)
     if (!helperDeclaration) {
       logger.log(`~> could not find helper ${helperMethodName}`)
@@ -1005,10 +1006,10 @@ class Entry {
 export class ResistorColorDuoSolution {
   public readonly source: Source
 
-  private mainMethod: Entry
-  private mainExport: ExtractedExport
-  private fileConstants: ProgramConstants
-  private mainConstant: Constant | undefined
+  private readonly mainMethod: Entry
+  private readonly mainExport: ExtractedExport
+  private readonly fileConstants: ProgramConstants
+  private readonly mainConstant: Constant | undefined
 
   constructor(public readonly program: Program, source: string) {
     this.source = new Source(source)
@@ -1039,7 +1040,7 @@ export class ResistorColorDuoSolution {
     const expectedConstant =
       this.fileConstants.find((constant) =>
         guardIdentifier(constant.id, PROBABLE_CONSTANT)
-      ) ||
+      ) ??
       // Or find the first array or object assignment
       this.fileConstants.find(
         (constant) =>
@@ -1047,7 +1048,7 @@ export class ResistorColorDuoSolution {
           [
             AST_NODE_TYPES.ArrayExpression,
             AST_NODE_TYPES.ObjectExpression,
-          ].indexOf(constant.init.type) !== -1
+          ].includes(constant.init.type)
       )
 
     this.mainConstant =

@@ -1,4 +1,7 @@
-import { ExtractedExport, ExtractedFunction } from '@exercism/static-analysis'
+import type {
+  ExtractedExport,
+  ExtractedFunction,
+} from '@exercism/static-analysis'
 import { assertNamedExport } from './assert_named_export'
 import { assertNamedFunction } from './assert_named_function'
 

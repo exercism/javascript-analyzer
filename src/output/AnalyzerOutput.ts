@@ -1,30 +1,5 @@
 import type { Comment, ExecutionOptions, Output } from '~src/interface'
 
-enum SolutionStatus {
-  /**
-   * This is the default situation and should be used when there is any
-   * uncertainty.
-   *
-   * @deprecated don't return any status or use an {Essential} comment.
-   * */
-  Redirect = 'refer_to_mentor',
-  /**
-   * To be used when a solution matches pre-known optimal solutions or when a
-   * solution can be approved but with a known improvement.
-   *
-   * @deprecated don't return any status or use a {Celebratory} comment.
-   * */
-  Approve = 'approve',
-  /**
-   * To be used when a solution can be disapproved as suboptimal and a comment
-   * is provided.
-   *
-   * @deprecated replace with one or more comments with {Essential} or an
-   *   {Actionable} type.
-   **/
-  Disapprove = 'disapprove',
-}
-
 /**
  * The interface for the analyzer output is described [here][doc].
  *
@@ -77,7 +52,7 @@ export class AnalyzerOutput implements Output {
   }
 
   public freeze(summary?: string): void {
-    this.summary = summary || this.summary
+    this.summary = summary ?? this.summary
 
     Object.freeze(this)
     Object.freeze(this.comments)

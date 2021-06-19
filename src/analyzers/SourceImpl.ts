@@ -1,5 +1,6 @@
 import { extractSource } from '@exercism/static-analysis'
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
 
 type NodeWithLocation = TSESTree.Node & {
   range?: TSESTree.Range
@@ -7,7 +8,7 @@ type NodeWithLocation = TSESTree.Node & {
 }
 
 interface Source {
-  get(node: NodeWithLocation): string
+  get: (node: NodeWithLocation) => string
 }
 
 class SourceImpl implements Source {
@@ -27,16 +28,10 @@ class SourceImpl implements Source {
         return this.get(node).replace(this.get(node.body), '...')
       }
       case AST_NODE_TYPES.FunctionDeclaration: {
-        return this.get(node).replace(
-          (node.body && this.get(node.body)) || '...',
-          '...'
-        )
+        return this.get(node).replace(this.get(node.body) || '...', '...')
       }
       case AST_NODE_TYPES.FunctionExpression: {
-        return this.get(node).replace(
-          (node.body && this.get(node.body)) || '...',
-          '...'
-        )
+        return this.get(node).replace(this.get(node.body) || '...', '...')
       }
       case AST_NODE_TYPES.VariableDeclaration: {
         const first = node.declarations[0].init

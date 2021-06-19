@@ -1,6 +1,10 @@
+import type {
+  ExtractedFunction,
+  Input,
+  ParsedSource,
+} from '@exercism/static-analysis'
 import {
   AstParser,
-  ExtractedFunction,
   extractExports,
   findAll,
   findFirstOfType,
@@ -11,12 +15,11 @@ import {
   guardLogicalExpression,
   guardTemplateLiteral,
   guardUnaryExpression,
-  Input,
   NoSourceError,
-  ParsedSource,
   ParserError,
 } from '@exercism/static-analysis'
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
 import { AnalyzerImpl } from '~src/analyzers/AnalyzerImpl'
 import { parameterName } from '~src/analyzers/utils/extract_parameter'
 import { annotateType } from '~src/analyzers/utils/type_annotations'
@@ -124,16 +127,20 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
   private async parse(input: Input): never | Promise<ParsedSource[]> {
     try {
       return await AstParser.ANALYZER.parse(input)
-    } catch (err) {
+    } catch (err: unknown) {
       // Here we handle errors that blew up the analyzer but we don't want to
       // report as blown up. This converts these errors to the commentary.
       if (err instanceof NoSourceError) {
         const output = makeNoSourceOutput(err)
-        output.comments.forEach((comment) => this.comment(comment))
+        output.comments.forEach((comment) => {
+          this.comment(comment)
+        })
         this.redirect()
       } else if (err instanceof ParserError) {
         const output = makeParseErrorOutput(err)
-        output.comments.forEach((comment) => this.comment(comment))
+        output.comments.forEach((comment) => {
+          this.comment(comment)
+        })
         this.redirect()
       }
 
@@ -291,6 +298,7 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
         this.comment(
           OPTIMISE_EXPLICIT_DEFAULT_VALUE({
             parameter,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             maybe_undefined_expression: expression.left.name,
           })
         )
@@ -321,6 +329,7 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
         this.comment(
           OPTIMISE_EXPLICIT_DEFAULT_VALUE({
             parameter,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             maybe_undefined_expression: conditionalExpression.consequent.name,
           })
         )
@@ -519,9 +528,11 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     // export { gigasecond }
     // => yes specififers
     //
-    return !!extractExports(this.program).find(
-      (extracted) =>
-        extracted.exported === 'twoFer' && extracted.exportKind === 'value'
+    return Boolean(
+      extractExports(this.program).find(
+        (extracted) =>
+          extracted.exported === 'twoFer' && extracted.exportKind === 'value'
+      )
     )
   }
 
@@ -537,7 +548,7 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
       this.mainMethod.node,
       AST_NODE_TYPES.TemplateLiteral
     )
-    return !!(
+    return Boolean(
       template && template.quasis.length + template.expressions.length === 3
     )
   }

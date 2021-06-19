@@ -1,28 +1,25 @@
+import type {
+  ExtractedFunction,
+  IdentifierWithName,
+  MetaConfiguration,
+  ProgramConstant,
+  SpecificFunctionCall,
+} from '@exercism/static-analysis'
 import {
   AstParser,
-  ExtractedExport,
-  ExtractedFunction,
   extractExports,
   extractFunctions,
   findFirst,
-  findLiteral,
-  findMemberCall,
   findRawLiteral,
-  findTopLevelConstants,
   guardCallExpression,
   guardIdentifier,
   guardLiteral,
-  IdentifierWithName,
-  ProgramConstant,
-  SpecificFunctionCall,
-  StructureError,
   traverse,
 } from '@exercism/static-analysis'
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
 import { readFileSync } from 'fs'
 import path from 'path'
-import { assertNamedExport } from '~src/asserts/assert_named_export'
-import { assertNamedFunction } from '~src/asserts/assert_named_function'
 import { assertPublicApi } from '../../../asserts/assert_public_api'
 import { assertPublicConstant } from '../../../asserts/assert_public_constant'
 import { Source } from '../../SourceImpl'
@@ -154,12 +151,10 @@ class TotalTimeInMinutes {
   }
 
   public get hasCallToPreparationTime(): boolean {
-    return !!findFirst(
-      this.implementation.body,
-      (
-        node
-      ): node is SpecificFunctionCall<typeof PREPARATION_TIME_IN_MINUTES> =>
-        guardCallExpression(node, PREPARATION_TIME_IN_MINUTES)
+    return Boolean(
+      findFirst(this.implementation.body, (node): node is SpecificFunctionCall<
+        typeof PREPARATION_TIME_IN_MINUTES
+      > => guardCallExpression(node, PREPARATION_TIME_IN_MINUTES))
     )
   }
 }
@@ -203,9 +198,11 @@ export class LasagnaSolution {
 
   public readExemplar(directory: string): void {
     const configPath = path.join(directory, '.meta', 'config.json')
-    const config = JSON.parse(readFileSync(configPath).toString())
+    const config = JSON.parse(
+      readFileSync(configPath).toString()
+    ) as MetaConfiguration
 
-    const exemplarPath = path.join(directory, config.files.exemplar[0])
+    const exemplarPath = path.join(directory, (config.files.exemplar ?? [])[0])
     this.exemplar = new Source(readFileSync(exemplarPath).toString())
   }
 

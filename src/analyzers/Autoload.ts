@@ -13,14 +13,14 @@ type AnalyzerConstructor = new () => Analyzer
 export function find(exercise: Readonly<Exercise>): AnalyzerConstructor {
   const file = autoload(exercise)
   const key = Object.keys(file).find(
-    (key): boolean => file[key] instanceof Function
+    (fileKey): boolean => file[fileKey] instanceof Function
   )
 
   if (key === undefined) {
     throw new Error(`No Analyzer found in './${exercise.slug}`)
   }
 
-  const analyzer = file[key]
+  const analyzer = file[key] as AnalyzerConstructor
   getProcessLogger().log(`=> analyzer: ${analyzer.name}`)
   return analyzer
 }
@@ -35,22 +35,28 @@ class RequireError extends Error {
   }
 }
 
-function autoload(exercise: Readonly<Exercise>): ReturnType<NodeRequire> {
+function autoload(exercise: Readonly<Exercise>): Record<string, unknown> {
   // explicit path (no extension)
   const modulePaths = [
     path.join(__dirname, 'practice', exercise.slug, 'index'),
     path.join(__dirname, 'concept', exercise.slug, 'index'),
+    path.join(__dirname, 'generic', 'index'),
   ]
 
   const results = modulePaths.map((modulePath) => {
     try {
-      return require(modulePath)
-    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      return require(modulePath) as unknown
+    } catch (err: unknown) {
       return new RequireError(modulePath, err)
     }
   })
 
-  if (results.every((result) => result instanceof RequireError)) {
+  if (
+    results.every(
+      (result): result is RequireError => result instanceof RequireError
+    )
+  ) {
     const slug = exercise.slug
     const logger = getProcessLogger()
 
@@ -72,11 +78,14 @@ function autoload(exercise: Readonly<Exercise>): ReturnType<NodeRequire> {
       JSON.stringify(
         results.map((error) => ({
           name: error.name,
-          cause: {
-            name: error.inner.name,
-            message: error.inner.message,
-            stack: error.inner.stack,
-          },
+          cause:
+            error.inner instanceof Error
+              ? {
+                  name: error.inner.name,
+                  message: error.inner.message,
+                  stack: error.inner.stack,
+                }
+              : error.inner,
         })),
         undefined,
         2
@@ -85,5 +94,8 @@ function autoload(exercise: Readonly<Exercise>): ReturnType<NodeRequire> {
     )
   }
 
-  return results.find((result) => !(result instanceof RequireError))
+  return results.find((result) => !(result instanceof RequireError)) as Record<
+    string,
+    unknown
+  >
 }

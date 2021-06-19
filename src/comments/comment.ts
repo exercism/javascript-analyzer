@@ -1,4 +1,5 @@
-import { Comment } from '~src/interface'
+/* eslint-disable @typescript-eslint/naming-convention */
+import type { Comment } from '~src/interface'
 
 type TemplateKeys = (number | string)[]
 type NamedTags<R extends string> = Record<R, string | undefined>
@@ -109,13 +110,13 @@ export function factory<R extends string = ''>(
 
         const value =
           typeof key === 'number'
-            ? (positionalValues[key] as string)
+            ? positionalValues[key]!
             : dictionary[key as R]
 
         const tag = buildTemplateTag(key)
 
         const next = strings[i + 1]
-        message += (value || tag) + next
+        message += (value ?? tag) + next
         template += tag + next
       }
 
@@ -155,7 +156,7 @@ function separateValues<R extends string>(
   const positionalValues = (values as (string | string[])[])
     .map((item): string[] => (typeof item === 'string' ? [item] : item))
     .filter(Array.isArray)
-    .reduce((total, array): string[] => total.concat(array), []) as string[]
+    .reduce<string[]>((total, array): string[] => total.concat(array), [])
 
   // When there is no dictionary
   if (
@@ -164,7 +165,7 @@ function separateValues<R extends string>(
     Array.isArray(last) ||
     Object.keys(last).length === 0
   ) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
     const dictionary: NamedTags<R> = {} as any
     return {
       dictionary,

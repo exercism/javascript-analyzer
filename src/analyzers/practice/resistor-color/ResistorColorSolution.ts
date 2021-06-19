@@ -1,6 +1,11 @@
-import {
+import type {
   ExtractedExport,
   ExtractedFunction,
+  ProgramConstant,
+  ProgramConstants,
+  SpecificPropertyCall,
+} from '@exercism/static-analysis'
+import {
   extractExports,
   extractFunctions,
   findFirst,
@@ -10,11 +15,9 @@ import {
   guardIdentifier,
   guardLiteral,
   guardMemberExpression,
-  ProgramConstant,
-  ProgramConstants,
-  SpecificPropertyCall,
 } from '@exercism/static-analysis'
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
 import { Source } from '~src/analyzers/SourceImpl'
 import { parameterName } from '~src/analyzers/utils/extract_parameter'
 import { assertNamedExport } from '~src/asserts/assert_named_export'
@@ -42,9 +45,8 @@ class Constant {
     source: Source
   ) {
     this.name =
-      (constant && guardIdentifier(constant.id) && constant.id.name) ||
-      '<NO-CONSTANT-NAME>'
-    this.signature = source.getOuter(constant.parent || constant)
+      (guardIdentifier(constant.id) && constant.id.name) || '<NO-CONSTANT-NAME>'
+    this.signature = source.getOuter(constant.parent ?? constant)
   }
 
   public get kind(): ProgramConstant['kind'] {
@@ -103,7 +105,7 @@ class Constant {
   }
 
   public isOptimalObject(node = this.constant): boolean {
-    if (!node || !node.init) {
+    if (!node.init) {
       return false
     }
 
@@ -172,7 +174,7 @@ class Constant {
     const name = this.referencedSourceObjectName
     return constants.find(
       (constant): boolean =>
-        constant && guardIdentifier(constant.id) && constant.id.name === name
+        guardIdentifier(constant.id) && constant.id.name === name
     )
   }
 }
@@ -185,7 +187,7 @@ class Entry {
   private readonly body: Node
 
   constructor(method: Readonly<ExtractedFunction>, source: Readonly<Source>) {
-    this.name = method.name || EXPECTED_METHOD
+    this.name = method.name ?? EXPECTED_METHOD
     this.params = method.params
     this.body = method.body
 
@@ -376,13 +378,13 @@ class Entry {
 export class ResistorColorSolution {
   public readonly source: Source
 
-  private mainMethod: Entry
-  private mainExports: {
+  private readonly mainMethod: Entry
+  private readonly mainExports: {
     function: ExtractedExport
     constant: ExtractedExport
   }
-  private fileConstants: ProgramConstants
-  private mainConstant: Constant | undefined
+  private readonly fileConstants: ProgramConstants
+  private readonly mainConstant: Constant | undefined
 
   constructor(public readonly program: Program, source: string) {
     this.source = new Source(source)
@@ -408,7 +410,6 @@ export class ResistorColorSolution {
       // TODO: bug in upstream
     ] as unknown) as ['let']).filter(
       (declaration): boolean =>
-        declaration &&
         guardIdentifier(declaration.id) &&
         declaration.id.name !== EXPECTED_METHOD
     )
@@ -417,15 +418,15 @@ export class ResistorColorSolution {
     const expectedConstant =
       this.fileConstants.find((constant) =>
         guardIdentifier(constant.id, EXPECTED_CONSTANT)
-      ) ||
+      ) ??
       // Or find the first array or object assignment
       this.fileConstants.find(
         (constant) =>
           constant.init &&
-          [
+          ![
             AST_NODE_TYPES.ArrayExpression,
             AST_NODE_TYPES.ObjectExpression,
-          ].indexOf(constant.init.type) === -1
+          ].includes(constant.init.type)
       )
 
     this.mainConstant =

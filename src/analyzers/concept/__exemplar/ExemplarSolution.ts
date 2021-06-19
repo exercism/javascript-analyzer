@@ -1,9 +1,10 @@
+import type { MetaConfiguration } from '@exercism/static-analysis'
 import {
   AstParser,
   extractExports,
   extractFunctions,
 } from '@exercism/static-analysis'
-import { TSESTree } from '@typescript-eslint/typescript-estree'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
 import { readFileSync } from 'fs'
 import path from 'path'
 import { Source } from '../../SourceImpl'
@@ -22,9 +23,11 @@ export class ExemplarSolution {
 
   public readExemplar(directory: string): void {
     const configPath = path.join(directory, '.meta', 'config.json')
-    const config = JSON.parse(readFileSync(configPath).toString())
+    const config = JSON.parse(
+      readFileSync(configPath).toString()
+    ) as MetaConfiguration
 
-    const exemplarPath = path.join(directory, config.files.exemplar[0])
+    const exemplarPath = path.join(directory, (config.files.exemplar ?? [])[0])
     this.exemplar = new Source(readFileSync(exemplarPath).toString())
   }
 

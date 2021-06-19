@@ -32,7 +32,8 @@ async function internalRun(
 ): Promise<Output> {
   // This actually runs the analyzer and is the bases for any run. The options
   // currently only affect the output.
-  const analysis = await analyzer.run(input)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const analysis = await analyzer.run(input, {} as any)
 
   // An output processor gets the Promise to the previous output processor and
   // can add its own side-effects or transformation.
@@ -77,7 +78,10 @@ export async function run(
     )
 
     return await internalRun(analyzer, input, options)
-  } catch (err) {
-    reportException(err)
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      reportException(err)
+    }
+    return Promise.reject(err)
   }
 }

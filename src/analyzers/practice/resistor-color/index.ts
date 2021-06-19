@@ -1,10 +1,10 @@
+import type { Input } from '@exercism/static-analysis'
 import {
   AstParser,
-  Input,
   NoExportError,
   NoMethodError,
 } from '@exercism/static-analysis'
-import { TSESTree } from '@typescript-eslint/typescript-estree'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
 import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl'
 import { CommentType, factory } from '~src/comments/comment'
 import {
@@ -13,7 +13,7 @@ import {
   NO_PARAMETER,
   UNEXPECTED_PARAMETER,
 } from '~src/comments/shared'
-import { WritableOutput } from '~src/interface'
+import type { WritableOutput } from '~src/interface'
 import { ResistorColorSolution } from './ResistorColorSolution'
 
 const TIP_EXPORT_INLINE = factory<'method.signature' | 'constant.signature'>`
@@ -108,7 +108,7 @@ export class ResistorColorAnalyzer extends IsolatedAnalyzerImpl {
   ): ResistorColorSolution | never {
     try {
       return new ResistorColorSolution(program, source)
-    } catch (error) {
+    } catch (error: unknown) {
       if (error instanceof NoMethodError) {
         output.disapprove(NO_METHOD({ 'method.name': error.method }))
       }
@@ -183,9 +183,7 @@ export class ResistorColorAnalyzer extends IsolatedAnalyzerImpl {
     solution: ResistorColorSolution,
     output: WritableOutput
   ): void | never {
-    if (solution || output) {
-      return
-    }
+    //
   }
 
   private checkForDisapprovables(
@@ -215,9 +213,7 @@ export class ResistorColorAnalyzer extends IsolatedAnalyzerImpl {
       output.disapprove()
     }
 
-    if (solution || output) {
-      return
-    }
+    //
   }
 
   private checkForTips(

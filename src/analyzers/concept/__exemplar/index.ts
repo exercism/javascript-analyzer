@@ -1,11 +1,11 @@
+import type { Input } from '@exercism/static-analysis'
 import {
   AstParser,
-  Input,
   NoExportError,
   NoMethodError,
 } from '@exercism/static-analysis'
-import { TSESTree } from '@typescript-eslint/typescript-estree'
-import { ExecutionOptions, WritableOutput } from '~src/interface'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import type { ExecutionOptions, WritableOutput } from '~src/interface'
 import {
   EXEMPLAR_SOLUTION,
   NO_METHOD,
@@ -44,7 +44,7 @@ export class ExemplarAnalyzer extends IsolatedAnalyzerImpl {
   ): ExemplarSolution | never {
     try {
       return new ExemplarSolution(program, source)
-    } catch (error) {
+    } catch (error: unknown) {
       if (error instanceof NoMethodError) {
         output.add(NO_METHOD({ 'method.name': error.method }))
         output.finish()

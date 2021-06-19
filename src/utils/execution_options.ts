@@ -5,6 +5,7 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
   public debug!: boolean
   public console!: boolean
   public output!: string
+  public outputDir!: string
   public inputDir!: string
   public exercise!: string
   public dry!: boolean
@@ -17,7 +18,9 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
 
   public static create(): ExecutionOptions {
     const args = yargs
-      .usage('Usage: $0 <exercise> <input-directory> [options]')
+      .usage(
+        'Usage: $0 <exercise> <input-directory> [<output-directory>] [options]'
+      )
       .example(
         '$0 two-fer ~/javascript/two-fer/128/',
         'Analyze the input directory "128" against the two-fer analyzer'
@@ -30,7 +33,7 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
       .describe('c', 'If given, outputs to the console')
       .describe(
         'o',
-        'Path relative to the input dir where the analyzis results are stored'
+        'Path relative to the input dir where the analysis results are stored'
       )
       .describe(
         'noTemplates',
@@ -62,6 +65,7 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
       noTemplates,
       exercise: String(_[0]),
       inputDir: String(_[1]),
+      outputDir: String(_[2] || _[1]),
     })
   }
 }

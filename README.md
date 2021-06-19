@@ -81,21 +81,6 @@ It will also format the output JSON with 2 space indentation, both in the output
 If you wish to _preview_ the actual messages, pass in `--noTemplates` to use the analyzer `Comment`Factories to generate actual messages.
 If the comment factories are kept in-sync with `website-copy`, it will be the exact same output as on the site.
 
-### `batch` (.sh, .bat)
-
-```shell
-./bin/batch.sh two-fer -cp
-```
-
-Runs all the fixtures in `~/test/fixtures/two-fer` through the analyzer, giving a summary at the end with all results.
-This places an `analysis.json` in the source fixture folder.
-
-You'll most likely want `-cp` (`--console` and `--pretty`) during development, which enables console output (instead of `stdout`/`stderr`) and formats the
-output JSON with 2 space indentation.
-
-If you wish to _preview_ the actual messages, pass in `--noTemplates` to use the analyzer `Comment`Factories to generate actual messages.
-If the comment factories are kept in-sync with `website-copy`, it will be the exact same output as on the site.
-
 ### `remote` (.sh, .bat)
 
 ```shell

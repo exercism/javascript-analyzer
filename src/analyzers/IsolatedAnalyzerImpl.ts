@@ -1,7 +1,6 @@
-import type { Input } from '@exercism/static-analysis'
+import type { Input, Logger } from '@exercism/static-analysis'
 import {
   getProcessLogger,
-  Logger,
   NoSourceError,
   ParserError,
 } from '@exercism/static-analysis'
@@ -61,7 +60,7 @@ export abstract class IsolatedAnalyzerImpl implements Analyzer {
       // The isolated analyzer output can use exceptions as control flow.
       // This block here explicitly accepts this.
       if (err instanceof EarlyFinalization) {
-        this.logger.log(`=> early finalization (${output.summary || '-'})`)
+        this.logger.log(`=> early finalization (${output.summary ?? '-'})`)
       } else {
         throw err
       }

@@ -44,7 +44,7 @@ export class IsolatedAnalyzerOutput
   }
 
   public freeze(summary?: string): never {
-    this.summary = summary || this.summary
+    this.summary = summary ?? this.summary
 
     super.freeze()
     throw new EarlyFinalization()
