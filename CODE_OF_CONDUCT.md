@@ -1,76 +1,82 @@
-# Contributor Covenant Code of Conduct
+# Code of Conduct
 
-## Our Pledge
+## Introduction
 
-In the interest of fostering an open and welcoming environment, we as
-contributors and maintainers pledge to making participation in our project and
-our community a harassment-free experience for everyone, regardless of age, body
-size, disability, ethnicity, sex characteristics, gender identity and expression,
-level of experience, education, socio-economic status, nationality, personal
-appearance, race, religion, or sexual identity and orientation.
+Exercism is a platform centered around empathetic conversation. We have a low tolerance for communication that makes anyone feel unwelcome, unsupported, insulted or discriminated against.
 
-## Our Standards
+## Seen or experienced something uncomfortable?
 
-Examples of behavior that contributes to creating a positive environment
-include:
-
-- Using welcoming and inclusive language
-- Being respectful of differing viewpoints and experiences
-- Gracefully accepting constructive criticism
-- Focusing on what is best for the community
-- Showing empathy towards other community members
-
-Examples of unacceptable behavior by participants include:
-
-- The use of sexualized language or imagery and unwelcome sexual attention or
-  advances
-- Trolling, insulting/derogatory comments, and personal or political attacks
-- Public or private harassment
-- Publishing others' private information, such as a physical or electronic
-  address, without explicit permission
-- Other conduct which could reasonably be considered inappropriate in a
-  professional setting
-
-## Our Responsibilities
-
-Project maintainers are responsible for clarifying the standards of acceptable
-behavior and are expected to take appropriate and fair corrective action in
-response to any instances of unacceptable behavior.
-
-Project maintainers have the right and responsibility to remove, edit, or
-reject comments, commits, code, wiki edits, issues, and other contributions
-that are not aligned to this Code of Conduct, or to ban temporarily or
-permanently any contributor for other behaviors that they deem inappropriate,
-threatening, offensive, or harmful.
-
-## Scope
-
-This Code of Conduct applies both within project spaces and in public spaces
-when an individual is representing the project or its community. Examples of
-representing a project or community include using an official project e-mail
-address, posting via an official social media account, or acting as an appointed
-representative at an online or offline event. Representation of a project may be
-further defined and clarified by project maintainers.
+If you see or experience abuse, harassment, discrimination, or feel unsafe or upset, please email abuse@exercism.io. We will take your report seriously.
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project team at derk-jan+exercism@karrenbeld.info. All
-complaints will be reviewed and investigated and will result in a response that
-is deemed necessary and appropriate to the circumstances. The project team is
-obligated to maintain confidentiality with regard to the reporter of an incident.
-Further details of specific enforcement policies may be posted separately.
+We actively monitor for Code of Conduct (CoC) violations and take any reports of violations extremely seriously. We have banned contributors, mentors and users due to violations.
 
-Project maintainers who do not follow or enforce the Code of Conduct in good
-faith may face temporary or permanent repercussions as determined by other
-members of the project's leadership.
+After we receive a report of a CoC violation, we view that person's conversation history on Exercism and related communication channels and attempt to understand whether someone has deliberately broken the CoC, or accidentally crossed a line. We generally reach out to the person who has been reported to discuss any concerns we have and warn them that repeated violations will result in a ban. Sometimes we decide that no violation has occurred and that no action is required and sometimes we will also ban people on a first offense. We strive to be fair, but will err on the side of protecting the culture of our community.
 
-## Attribution
+Exercism's leadership reserve the right to take whatever action they feel appropriate with regards to CoC violations.
 
-This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4,
-available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.html
+## The simple version
 
-[homepage]: https://www.contributor-covenant.org
+- Be empathetic
+- Be welcoming
+- Be kind
+- Be honest
+- Be supportive
+- Be polite
 
-For answers to common questions about this code of conduct, see
-https://www.contributor-covenant.org/faq
+## The details
+
+Exercism should be a safe place for everybody regardless of
+
+- Gender, gender identity or gender expression
+- Sexual orientation
+- Disability
+- Physical appearance (including but not limited to body size)
+- Race
+- Age
+- Religion
+- Anything else you can think of.
+
+As someone who is part of this community, you agree that:
+
+- We are collectively and individually committed to safety and inclusivity.
+- We have zero tolerance for abuse, harassment, or discrimination.
+- We respect people’s boundaries and identities.
+- We refrain from using language that can be considered offensive or oppressive (systemically or otherwise), eg. sexist, racist, homophobic, transphobic, ableist, classist, etc. - this includes (but is not limited to) various slurs.
+- We avoid using offensive topics as a form of humor.
+
+We actively work towards:
+
+- Being a safe community
+- Cultivating a network of support & encouragement for each other
+- Encouraging responsible and varied forms of expression
+
+We condemn:
+
+- Stalking, doxxing, or publishing private information
+- Violence, threats of violence or violent language
+- Anything that compromises people’s safety
+- Conduct or speech which might be considered sexist, racist, homophobic, transphobic, ableist or otherwise discriminatory or offensive in nature.
+- The use of unwelcome, suggestive, derogatory or inappropriate nicknames or terms.
+- Disrespect towards others (jokes, innuendo, dismissive attitudes) and towards differences of opinion.
+- Intimidation or harassment (online or in-person). Please read the [Citizen Code of Conduct](https://github.com/stumpsyn/policies/blob/master/citizen_code_of_conduct.md) for how we interpret harassment.
+- Inappropriate attention or contact.
+- Not understanding the differences between constructive criticism and disparagement.
+
+These things are NOT OK.
+
+Be aware of how your actions affect others. If it makes someone uncomfortable, stop.
+
+If you say something that is found offensive, and you are called out on it, try to:
+
+- Listen without interruption.
+- Believe what the person is saying & do not attempt to disqualify what they have to say.
+- Ask for tips / help with avoiding making the offense in the future.
+- Apologize and ask forgiveness.
+
+## History
+
+This policy was initially adopted from the Front-end London Slack community and has been modified since. A version history can be seen on [GitHub](https://github.com/exercism/website-copy/edit/main/pages/code_of_conduct.md).
+
+_This policy is a "living" document, and subject to refinement and expansion in the future. This policy applies to the Exercism website, the Exercism GitHub organization, any other Exercism-related communication channels (e.g. Slack, Twitter, email) and any other Exercism entity or event._
