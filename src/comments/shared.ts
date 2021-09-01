@@ -60,7 +60,7 @@ instead and interpolate dynamic values:
 "Hello there \${firstName}, I will give you \${calculateInventory()} apples."
 \`\`\`
 
-`('typescrypt.general.prefer_templated_strings', CommentType.Actionable)
+`('javascript.general.prefer_templated_strings', CommentType.Actionable)
 
 export const PREFER_STRICT_EQUALITY = factory`
 In _JavaScript_, always prefer [strict (identity and non-identity) equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity)
