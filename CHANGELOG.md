@@ -11,7 +11,6 @@
 - Add exemplary analyzer for `elyses-looping-enchantments`
 - Add exemplary analyzer for `elyses-transformative-enchantments`
 - Add exemplary analyzer for `factory-sensors`
-- Add exemplary analyzer for `fruit-picker`
 - Add exemplary analyzer for `high-score-board`
 - Add exemplary analyzer for `lasagna-master`
 - Add exemplary analyzer for `lucky-numbers`
