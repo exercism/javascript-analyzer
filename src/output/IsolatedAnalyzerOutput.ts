@@ -11,7 +11,8 @@ export class EarlyFinalization extends Error {
 
 export class IsolatedAnalyzerOutput
   extends AnalyzerOutput
-  implements WritableOutput {
+  implements WritableOutput
+{
   /**
    * Mark the solution as approved
    * @deprecated add a {celebratory} or {informative} comment instead

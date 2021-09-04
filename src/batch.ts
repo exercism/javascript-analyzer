@@ -150,9 +150,9 @@ readDir(FIXTURES_ROOT)
     )
   })
   .then((grouped) => {
-    const aggregatedGroups = (Object.keys(
-      grouped
-    ) as Output['status'][]).reduce((aggregated, status) => {
+    const aggregatedGroups = (
+      Object.keys(grouped) as Output['status'][]
+    ).reduce((aggregated, status) => {
       const { count, comments, runtimes, fixtures } = grouped[status]
 
       const sortedRuntimes = runtimes.sort()

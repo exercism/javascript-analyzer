@@ -230,15 +230,19 @@ class Entry {
 
   public get hasFor(): boolean {
     return (
-      findFirst(this.body, (node): node is
-        | TSESTree.ForInStatement
-        | TSESTree.ForOfStatement
-        | TSESTree.ForStatement =>
-        [
-          AST_NODE_TYPES.ForInStatement,
-          AST_NODE_TYPES.ForOfStatement,
-          AST_NODE_TYPES.ForStatement,
-        ].some((type) => type === node.type)
+      findFirst(
+        this.body,
+        (
+          node
+        ): node is
+          | TSESTree.ForInStatement
+          | TSESTree.ForOfStatement
+          | TSESTree.ForStatement =>
+          [
+            AST_NODE_TYPES.ForInStatement,
+            AST_NODE_TYPES.ForOfStatement,
+            AST_NODE_TYPES.ForStatement,
+          ].some((type) => type === node.type)
       ) !== undefined
     )
   }
@@ -400,13 +404,13 @@ export class ResistorColorSolution {
     }
 
     // All constants at the top level that are _not_ the main method
-    this.fileConstants = findTopLevelConstants(program, ([
+    this.fileConstants = findTopLevelConstants(program, [
       'let',
       'const',
       'var',
 
       // TODO: bug in upstream
-    ] as unknown) as ['let']).filter(
+    ] as unknown as ['let']).filter(
       (declaration): boolean =>
         declaration &&
         guardIdentifier(declaration.id) &&
