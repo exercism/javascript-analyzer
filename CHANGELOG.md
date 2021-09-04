@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.16.0
+
+- Add check for no value returned in `two-fer`
+
 ## 0.15.0
 
 - Allow non-optimal constants in `resistor-color-duo`

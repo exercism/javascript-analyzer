@@ -9,7 +9,7 @@ import { CommentType, factory } from './comment'
  */
 
 export const NO_METHOD = factory<'method.name'>`
-No method called \`${'method.name'}\`. The tests won't pass without it.
+No function called \`${'method.name'}\`. The tests won't pass without it.
 `('javascript.general.no_method', CommentType.Essential)
 
 export const NO_NAMED_EXPORT = factory<'export.name'>`
@@ -22,6 +22,16 @@ Make sure \`${'export.name'}\` exists and add \`export\` in front of it:
 export \`${'export.name'}\`
 \`\`\`
 `('javascript.general.no_named_export', CommentType.Essential)
+
+export const NO_VALUE_RETURNED = factory<'export.name'>`
+The function \`${'export.name'}\` doesn't seem to \`return\` a value in all cases.
+
+Are you certain the tests pass?
+
+If they do, please open an issue here and provide your solution:
+
+<https://github.com/exercism/javascript-analyzer/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc>
+`('javascript.general.no_value_returned', CommentType.Essential)
 
 export const NO_DEFAULT_EXPORT = factory`
 No [default](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/default)

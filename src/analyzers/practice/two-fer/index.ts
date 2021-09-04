@@ -9,6 +9,8 @@ import {
   guardIdentifier,
   guardLiteral,
   guardLogicalExpression,
+  guardReturnBlockStatement,
+  guardReturnStatementWithValue,
   guardTemplateLiteral,
   guardUnaryExpression,
   Input,
@@ -25,6 +27,7 @@ import {
   NO_METHOD,
   NO_NAMED_EXPORT,
   NO_PARAMETER,
+  NO_VALUE_RETURNED,
   PREFER_STRICT_EQUALITY,
   PREFER_TEMPLATED_STRINGS,
   UNEXPECTED_SPLAT_ARGS,
@@ -152,6 +155,36 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
       this.comment(NO_METHOD({ 'method.name': 'twoFer' }))
     } else if (!exported) {
       this.comment(NO_NAMED_EXPORT({ 'export.name': 'twoFer' }))
+    }
+
+    // If the main method's body is NOT a block statement, then it's likely an
+    // ArrowFunctionExpression with inline return, such as:
+    //
+    // const twoFer = () => ...
+    //
+    // Any function that has a block as body MUST provide a value upon return:
+    //
+    // const twoFer = () => { ... }
+    // function twoFer() { ... }
+    //
+    if (this.mainMethod.body.type === AST_NODE_TYPES.BlockStatement) {
+      const returnStatements = this.mainMethod.body.body.filter(
+        (node) => node.type === AST_NODE_TYPES.ReturnStatement
+      )
+
+      if (returnStatements.length === 0) {
+        // In this case there isn't a single return statement, such as:
+        //
+        // const twoFer = () => { console.log(...) }
+        //
+        this.comment(NO_VALUE_RETURNED({ 'export.name': 'twoFer' }))
+      } else if (
+        !returnStatements.every((node) => guardReturnStatementWithValue(node))
+      ) {
+        // And in this case there is at least one return statement, but not
+        // every return statement returns a value.
+        this.comment(NO_VALUE_RETURNED({ 'export.name': 'twoFer' }))
+      }
     }
 
     if (this.hasCommentary) {
