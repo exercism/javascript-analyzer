@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.15.0
+
+- Allow non-optimal constants in `resistor-color-duo`
+
 ## 0.14.0
 
 - Update dependencies

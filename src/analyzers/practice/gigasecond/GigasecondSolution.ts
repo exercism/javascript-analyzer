@@ -68,9 +68,8 @@ class Constant {
       return !!this._memoized['isOptimisedComprehension']
     }
 
-    return (this._memoized[
-      'isOptimisedComprehension'
-    ] = isOptimisedComprehension(init))
+    return (this._memoized['isOptimisedComprehension'] =
+      isOptimisedComprehension(init))
   }
 
   public get isLargeNumberLiteral(): boolean {
@@ -299,13 +298,13 @@ export class GigasecondSolution {
     this.mainExport = assertNamedExport(EXPECTED_EXPORT, exports)
 
     // All constants at the top level that are _not_ the main method
-    this.fileConstants = findTopLevelConstants(program, ([
+    this.fileConstants = findTopLevelConstants(program, [
       'let',
       'const',
       'var',
 
       // TODO upstream bug
-    ] as unknown) as ['let']).filter(
+    ] as unknown as ['let']).filter(
       (declaration): boolean =>
         declaration &&
         guardIdentifier(declaration.id) &&

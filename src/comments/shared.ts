@@ -73,7 +73,8 @@ There are definitely cases where you'll want to use non-strict equality, but
 that's not the case in this exercise.
 `('javascript.general.prefer_strict_equality', CommentType.Actionable)
 
-export const PREFER_UNPREFIXED_UNDERSCORE_PARAMETERS = factory<'parameter.name'>`
+export const PREFER_UNPREFIXED_UNDERSCORE_PARAMETERS =
+  factory<'parameter.name'>`
 Unlike other languages, \`_parameter\` does not signify a *private* variable.
 
 Instead, in Javascript, prefixing a parameter with an underscore will stop
@@ -81,9 +82,9 @@ most IDEs from highlighting that parameter if it's unused, which is actually a
 tool you probably want to keep in this case. Remove the underscore \`_\` from
 ${'parameter.name'} in order to fix this.
 `(
-  'javascript.general.prefer_unprefixed_underscore_parameters',
-  CommentType.Informative
-)
+    'javascript.general.prefer_unprefixed_underscore_parameters',
+    CommentType.Informative
+  )
 
 export const PARSE_ERROR = factory<'error' | 'details'>`
 There is something wrong with your submission, most likely a Syntax Error:

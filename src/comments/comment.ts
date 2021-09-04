@@ -188,11 +188,11 @@ function combineValues<R extends string>({
   positionalValues: string[]
 }): CommentVariables {
   if (positionalValues.length === 0) {
-    return (Object.freeze(dictionary) as unknown) as CommentVariables
+    return Object.freeze(dictionary) as unknown as CommentVariables
   }
 
   // Assigns the positional variables as keys
-  return (Object.freeze(
+  return Object.freeze(
     Object.assign({}, dictionary, positionalValues)
-  ) as unknown) as CommentVariables
+  ) as unknown as CommentVariables
 }
