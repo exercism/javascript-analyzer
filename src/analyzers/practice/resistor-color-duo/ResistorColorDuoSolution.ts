@@ -27,6 +27,7 @@ import { assertNamedExport } from '~src/asserts/assert_named_export'
 import { assertNamedFunction } from '~src/asserts/assert_named_function'
 import { extractSignature } from '~src/extracts/extract_declaration'
 import { extractNamedFunction } from '~src/extracts/extract_named_function'
+import { guardLiteralCaseInsensitive } from '../../utils/guard_literal_case_insensitive'
 
 type Node = TSESTree.Node
 type Program = TSESTree.Program
@@ -129,6 +130,36 @@ class Constant {
     return false
   }
 
+  public get isNonOptimalArray(): boolean {
+    const { init } = this.constant
+
+    if (!init) {
+      return false
+    }
+
+    const literals = [
+      'black',
+      'brown',
+      'red',
+      'orange',
+      'yellow',
+      'green',
+      'blue',
+      'violet',
+      'grey',
+      'white',
+    ]
+
+    if (init.type === AST_NODE_TYPES.ArrayExpression) {
+      // Each literal needs to be present, and needs to be present exactly in this order
+      return init.elements.every((value, index): boolean =>
+        guardLiteralCaseInsensitive(value, literals[index])
+      )
+    }
+
+    return false
+  }
+
   public get isObjectToArray(): boolean {
     const { init } = this.constant
 
@@ -174,6 +205,39 @@ class Constant {
       return (
         property.type === AST_NODE_TYPES.Property &&
         guardLiteral(property.key, keys[index]) &&
+        guardLiteral(property.value, index)
+      )
+    })
+  }
+
+  public isNonOptimalObject(
+    node: ExtractedVariable | undefined = this.constant
+  ): boolean {
+    if (!node || !node.init) {
+      return false
+    }
+
+    if (node.init.type !== AST_NODE_TYPES.ObjectExpression) {
+      return false
+    }
+
+    const keys = [
+      'black',
+      'brown',
+      'red',
+      'orange',
+      'yellow',
+      'green',
+      'blue',
+      'violet',
+      'grey',
+      'white',
+    ]
+
+    return node.init.properties.every((property, index): boolean => {
+      return (
+        property.type === AST_NODE_TYPES.Property &&
+        guardLiteralCaseInsensitive(property.key, keys[index]) &&
         guardLiteral(property.value, index)
       )
     })
@@ -315,15 +379,19 @@ class Entry {
 
   public get hasFor(): boolean {
     return (
-      findFirst(this.body, (node): node is
-        | TSESTree.ForInStatement
-        | TSESTree.ForOfStatement
-        | TSESTree.ForStatement =>
-        [
-          AST_NODE_TYPES.ForInStatement,
-          AST_NODE_TYPES.ForOfStatement,
-          AST_NODE_TYPES.ForStatement,
-        ].some((type) => type === node.type)
+      findFirst(
+        this.body,
+        (
+          node
+        ): node is
+          | TSESTree.ForInStatement
+          | TSESTree.ForOfStatement
+          | TSESTree.ForStatement =>
+          [
+            AST_NODE_TYPES.ForInStatement,
+            AST_NODE_TYPES.ForOfStatement,
+            AST_NODE_TYPES.ForStatement,
+          ].some((type) => type === node.type)
       ) !== undefined
     )
   }
@@ -961,7 +1029,7 @@ class Entry {
       return false
     }
 
-    if (constant.isOptimalArray) {
+    if (constant.isOptimalArray || constant.isNonOptimalArray) {
       logger.log('=> constant is optimal array')
 
       // Only looking for:
@@ -977,7 +1045,7 @@ class Entry {
       )
     }
 
-    if (constant.isOptimalObject()) {
+    if (constant.isOptimalObject() || constant.isNonOptimalObject()) {
       logger.log('=> constant is optimal object')
 
       // Only looking for:
@@ -1023,13 +1091,13 @@ export class ResistorColorDuoSolution {
     this.mainExport = assertNamedExport(EXPECTED_EXPORT, exports)
 
     // All constants at the top level that are _not_ the main method
-    this.fileConstants = findTopLevelConstants(program, ([
+    this.fileConstants = findTopLevelConstants(program, [
       'let',
       'const',
       'var',
 
       // TODO upstream bug
-    ] as unknown) as ['let']).filter(
+    ] as unknown as ['let']).filter(
       (declaration): boolean =>
         declaration &&
         guardIdentifier(declaration.id) &&

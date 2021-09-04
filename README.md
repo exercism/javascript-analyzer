@@ -15,7 +15,7 @@ yarn install
 
 You'll need at least Node LTS for this to work.
 
-```
+```bash
 yarn build
 ```
 
@@ -23,13 +23,13 @@ yarn build
 
 You can run this either via `yarn`:
 
-```
+```bash
 yarn analyze:bat --debug --console two-fer ~/path/to/solution/folder
 ```
 
 Or directly via the provided shell script:
 
-```
+```bash
 ./bin/analyze.sh --debug --console two-fer ~/path/to/solution/folder
 ```
 
