@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.16.0
+
+- Add exemplary analyzer for `amusement-park`
+- Add exemplary analyzer for `bird-watcher`
+- Add exemplary analyzer for `coordinate-transformation`
+- Add exemplary analyzer for `elyses-analytic-enchantments`
+- Add exemplary analyzer for `elyses-destructured-enchantments`
+- Add exemplary analyzer for `elyses-enchantments`
+- Add exemplary analyzer for `elyses-looping-enchantments`
+- Add exemplary analyzer for `elyses-transformative-enchantments`
+- Add exemplary analyzer for `factory-sensors`
+- Add exemplary analyzer for `high-score-board`
+- Add exemplary analyzer for `lasagna-master`
+- Add exemplary analyzer for `lucky-numbers`
+- Add exemplary analyzer for `mixed-juices`
+- Add exemplary analyzer for `nullability`
+- Add exemplary analyzer for `ozans-playlist`
+- Add exemplary analyzer for `pizza-order`
+- Add exemplary analyzer for `translation-service`
+- Add exemplary analyzer for `vehicle-purchase`
+
 ## 0.15.0
 
 - Allow non-optimal constants in `resistor-color-duo`
