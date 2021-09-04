@@ -1,4 +1,5 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
 import { parameterName } from './extract_parameter'
 
 type TSTypeAnnotation = TSESTree.TSTypeAnnotation
@@ -80,7 +81,7 @@ function annotate(typeNode?: TypeNode, fallback = 'any'): string {
       return 'any'
     }
     case AST_NODE_TYPES.TSArrayType: {
-      return `Array<${typeNode.elementType}>`
+      return `Array<${typeNode.elementType.type}>`
     }
     case AST_NODE_TYPES.TSBigIntKeyword: {
       return 'bigint'
@@ -125,7 +126,7 @@ function annotate(typeNode?: TypeNode, fallback = 'any'): string {
     }
     case AST_NODE_TYPES.TSImportType: {
       return `${typeNode.isTypeOf ? 'typeof ' : ''} import(${
-        typeNode.parameter
+        typeNode.parameter.type
       })${
         typeNode.qualifier ? `.${annotateEntityName(typeNode.qualifier)}` : ''
       } <...>` // todo type parameters
@@ -209,7 +210,7 @@ function annotate(typeNode?: TypeNode, fallback = 'any'): string {
       )}`
     }
     case AST_NODE_TYPES.TSTypePredicate: {
-      return `${typeNode.parameterName} is ${annotateType(
+      return `${typeNode.parameterName.type} is ${annotateType(
         typeNode.typeAnnotation,
         fallback
       )}`
@@ -218,7 +219,7 @@ function annotate(typeNode?: TypeNode, fallback = 'any'): string {
       return `typeof ${annotateEntityName(typeNode.exprName)}`
     }
     case AST_NODE_TYPES.TSTypeReference: {
-      return `${typeNode.typeName}<...>` // TODO type parameters
+      return `${typeNode.typeName.type}<...>` // TODO type parameters
     }
     case AST_NODE_TYPES.TSUndefinedKeyword: {
       return 'undefined'

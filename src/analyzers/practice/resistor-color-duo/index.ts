@@ -1,10 +1,10 @@
+import type { Input } from '@exercism/static-analysis'
 import {
   AstParser,
-  Input,
   NoExportError,
   NoMethodError,
 } from '@exercism/static-analysis'
-import { TSESTree } from '@typescript-eslint/typescript-estree'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
 import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl'
 import { CommentType, factory } from '~src/comments/comment'
 import {
@@ -13,7 +13,7 @@ import {
   NO_PARAMETER,
   UNEXPECTED_PARAMETER,
 } from '~src/comments/shared'
-import { WritableOutput } from '~src/interface'
+import type { WritableOutput } from '~src/interface'
 import {
   HelperCallNotFound,
   HelperNotOptimal,
@@ -155,7 +155,7 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
   ): ResistorColorDuoSolution | never {
     try {
       return new ResistorColorDuoSolution(program, source)
-    } catch (error) {
+    } catch (error: unknown) {
       if (error instanceof NoMethodError) {
         output.disapprove(NO_METHOD({ 'method.name': error.method }))
       }
@@ -286,9 +286,7 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     solution: ResistorColorDuoSolution,
     output: WritableOutput
   ): void | never {
-    if (solution || output) {
-      return
-    }
+    //
   }
 
   private checkForDisapprovables(
@@ -330,9 +328,7 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
       output.disapprove()
     }
 
-    if (solution || output) {
-      return
-    }
+    //
   }
 
   private checkForTips(

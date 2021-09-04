@@ -35,13 +35,13 @@ const input = options.inputDir.trim()
 let uuid = undefined
 if (input.startsWith('https://exercism.io/')) {
   uuid = input.split('/').reverse()[0]
-  if (uuid.length != 32) {
+  if (uuid.length !== 32) {
     process.stderr.write(
       `Expected a UUID (length 32), got '${uuid}' (len: ${uuid.length})`
     )
     process.exit(-2)
   }
-} else if (input.length == 32) {
+} else if (input.length === 32) {
   uuid = input
 } else if (fs.existsSync(input)) {
   logger.error('=> input seems to be local')
@@ -101,14 +101,14 @@ const analyzeProcess = spawn(
   { cwd: process.cwd(), env: process.env }
 )
 
-analyzeProcess.stderr.on('data', (data) => {
-  logger.error(data.toString().trim())
+analyzeProcess.stderr.on('data', (data: unknown) => {
+  logger.error(`${data}`.trim())
 })
 
-analyzeProcess.stdout.on('data', (data) => {
-  logger.log(data.toString().trim())
+analyzeProcess.stdout.on('data', (data: unknown) => {
+  logger.log(`${data}`.trim())
 })
 
 analyzeProcess.on('close', (code) => {
-  process.exit(code || undefined)
+  process.exit(code ?? undefined)
 })

@@ -1,6 +1,6 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
-import { ExtractedFunction } from '@exercism/static-analysis'
-import { Source } from '~src/analyzers/SourceImpl'
+import type { ExtractedFunction } from '@exercism/static-analysis'
+import type { Source } from '~src/analyzers/SourceImpl'
 
 export function extractSignature(
   fn: Readonly<ExtractedFunction>,
@@ -21,7 +21,7 @@ export function extractSignature(
   // This will mutate const { definition } = init to const definition = init,
   // leaving other items inside the object- (or array-) expression alone.
   if (fn.node.type === AST_NODE_TYPES.VariableDeclarator) {
-    return `${fn.metadata.variable?.kind || 'const'} ${source.getOuter(
+    return `${fn.metadata.variable?.kind ?? 'const'} ${source.getOuter(
       signature
     )} ...`
   }

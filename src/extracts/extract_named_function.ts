@@ -1,5 +1,6 @@
-import { TSESTree } from '@typescript-eslint/typescript-estree'
-import { extractFunctions, ExtractedFunction } from '@exercism/static-analysis'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import type { ExtractedFunction } from '@exercism/static-analysis'
+import { extractFunctions } from '@exercism/static-analysis'
 
 type Node = TSESTree.Node
 

@@ -1,10 +1,11 @@
 import { getProcessLogger, writeFile } from '@exercism/static-analysis'
 import path from 'path'
 
-import { ExecutionOptions, OutputProcessor } from '~src/interface'
+import type { ExecutionOptions, OutputProcessor } from '~src/interface'
 
-type FileOutputOptions = Pick<ExecutionOptions, 'output' | 'inputDir'>
+type FileOutputOptions = Pick<ExecutionOptions, 'output' | 'outputDir'>
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const FileOutput: OutputProcessor = async (
   previous: Promise<string>,
   options: FileOutputOptions
@@ -16,6 +17,6 @@ export const FileOutput: OutputProcessor = async (
   return writeFile(outputPath, output).then(() => output)
 }
 
-function getOutputPath({ output, inputDir }: FileOutputOptions): string {
-  return path.isAbsolute(output) ? output : path.join(inputDir, output)
+function getOutputPath({ output, outputDir }: FileOutputOptions): string {
+  return path.isAbsolute(output) ? output : path.join(outputDir, output)
 }

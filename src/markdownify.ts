@@ -1,7 +1,7 @@
 import { readFile } from '@exercism/static-analysis'
 import { spawnSync } from 'child_process'
 import path from 'path'
-import { Output } from './interface'
+import type { Output } from './interface'
 import { Bootstrap } from './utils/bootstrap'
 
 // The bootstrap call uses the arguments passed to the process to figure out
@@ -19,13 +19,11 @@ logger.log('=> DEBUG mode is on')
 
 readFile(path.join(options.inputDir, 'analysis.json'))
   .then(
-    (jsonString: Buffer | string): Pick<Output, 'status' | 'comments'> =>
-      JSON.parse(jsonString.toString())
+    (jsonString: Buffer | string): Pick<Output, 'comments'> =>
+      JSON.parse(jsonString.toString()) as Pick<Output, 'comments'>
   )
-  .then((output: Pick<Output, 'status' | 'comments'>): void => {
-    logger.log(
-      `=> Got ${output.status} with ${output.comments.length} comments`
-    )
+  .then((output: Pick<Output, 'comments'>): void => {
+    logger.log(`=> Got ${output.comments.length} comments`)
     const spawned = spawnSync(
       'ruby',
       [
@@ -48,16 +46,14 @@ readFile(path.join(options.inputDir, 'analysis.json'))
       }
     )
 
-    spawned.error && logger.log(spawned.error.toString())
-    if (spawned.output) {
-      const [, out, err] = spawned.output
-      if (out) {
-        logger.log(out.toString().trim())
-      }
+    spawned.error && logger.log(spawned.error.message)
+    const [, out, err] = spawned.output
+    if (out) {
+      logger.log(out.toString().trim())
+    }
 
-      if (err) {
-        logger.error(err.toString().trim())
-      }
+    if (err) {
+      logger.error(err.toString().trim())
     }
   })
-  .catch((err): void => logger.error(err))
+  .catch((err): void => void logger.error(err))

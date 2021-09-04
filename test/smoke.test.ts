@@ -19,7 +19,7 @@ describe('When running analysis', () => {
     const input = new InlineInput([solutionContent])
     const output = await run(analyzer, input, options)
 
-    expect(output.comments.length).toBe(0)
+    expect(output.comments).toHaveLength(0)
   })
 
   it('can approve with comment', async () => {
@@ -57,6 +57,7 @@ describe('When running analysis', () => {
 
 describe('When autoloading analyzers', () => {
   it('can find an analyzer based on an exercise', () => {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const ActualAnalyzer = find(exercise)
     expect(ActualAnalyzer).toBe(TwoFerAnalyzer)
   })

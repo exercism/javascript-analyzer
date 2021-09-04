@@ -1,18 +1,17 @@
 import { LogOutput } from '~src/output/processor/LogOutput'
-import { ExecutionOptions } from '~src/interface'
-import {
-  Logger,
-  LoggerInput,
-  setProcessLogger,
-} from '@exercism/static-analysis'
+import type { ExecutionOptions } from '~src/interface'
+import type { Logger, LoggerInput } from '@exercism/static-analysis'
+import { setProcessLogger } from '@exercism/static-analysis'
 
 const CONTENTS = `My Fine Output`
 
+/* eslint-disable @typescript-eslint/no-invalid-void-type */
 const TEST_LOGGER: Logger & { log: jest.MockInstance<void, [LoggerInput]> } = {
   error: jest.fn<void, [LoggerInput]>(),
   log: jest.fn<void, [LoggerInput]>(),
   fatal: jest.fn<never, [LoggerInput, number | undefined]>(),
 }
+/* eslint-enable @typescript-eslint/no-invalid-void-type */
 
 const DEFAULT_OPTIONS: ExecutionOptions = {
   debug: false,

@@ -1,11 +1,11 @@
+import type { Input } from '@exercism/static-analysis'
 import {
   AstParser,
-  Input,
   NoExportError,
   NoMethodError,
 } from '@exercism/static-analysis'
-import { TSESTree } from '@typescript-eslint/typescript-estree'
-import { ExecutionOptions, WritableOutput } from '~src/interface'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import type { ExecutionOptions, WritableOutput } from '~src/interface'
 import { CommentType, factory } from '../../../comments/comment'
 import {
   EXEMPLAR_SOLUTION,
@@ -120,7 +120,7 @@ export class LasagnaAnalyzer extends IsolatedAnalyzerImpl {
   ): LasagnaSolution | never {
     try {
       return new LasagnaSolution(program, source)
-    } catch (error) {
+    } catch (error: unknown) {
       if (error instanceof NoMethodError) {
         output.add(NO_METHOD({ 'method.name': error.method }))
         output.finish()

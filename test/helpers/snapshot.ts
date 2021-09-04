@@ -1,4 +1,4 @@
-import { Analyzer, ExecutionOptions, Output } from '~src/interface'
+import type { Analyzer, ExecutionOptions, Output } from '~src/interface'
 import { FixtureInput } from './input/FixtureInput'
 
 const EMPTY_OPTIONS: ExecutionOptions = {
@@ -13,12 +13,13 @@ const EMPTY_OPTIONS: ExecutionOptions = {
 }
 
 type AnalyzerFactory = () => Analyzer
-type generateAll = (fixtures: readonly number[]) => void
+type GenerateAll = (fixtures: readonly number[]) => void
 
 export function makeTestGenerator(
   slug: string,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   AnalyzerFactory: AnalyzerFactory
-): generateAll {
+): GenerateAll {
   function analyze(fixture: number): Promise<Output> {
     const analyzer = AnalyzerFactory()
     const input = new FixtureInput(slug, fixture)
@@ -30,7 +31,7 @@ export function makeTestGenerator(
     describe(`and expecting`, () => {
       fixtures
         .slice()
-        .sort()
+        .sort((a, b) => a - b)
         .forEach((fixture) => {
           const identifier = `${slug}/${fixture}`
           it(`matches ${identifier}'s output`, async () => {
