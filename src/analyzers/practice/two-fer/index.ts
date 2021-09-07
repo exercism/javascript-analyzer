@@ -18,6 +18,7 @@ import {
   ParsedSource,
   ParserError,
 } from '@exercism/static-analysis'
+import { ReturnStatement } from '@typescript-eslint/types/dist/ast-spec'
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
 import { AnalyzerImpl } from '~src/analyzers/AnalyzerImpl'
 import { parameterName } from '~src/analyzers/utils/extract_parameter'
@@ -167,9 +168,11 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     // const twoFer = () => { ... }
     // function twoFer() { ... }
     //
-    if (this.mainMethod.body.type === AST_NODE_TYPES.BlockStatement) {
-      const returnStatements = this.mainMethod.body.body.filter(
-        (node) => node.type === AST_NODE_TYPES.ReturnStatement
+    if (this.mainMethod?.body.type === AST_NODE_TYPES.BlockStatement) {
+      const returnStatements = findAll(
+        this.mainMethod.body,
+        (node): node is ReturnStatement =>
+          node.type === AST_NODE_TYPES.ReturnStatement
       )
 
       if (returnStatements.length === 0) {
@@ -179,10 +182,10 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
         //
         this.comment(NO_VALUE_RETURNED({ 'export.name': 'twoFer' }))
       } else if (
-        !returnStatements.every((node) => guardReturnStatementWithValue(node))
+        !returnStatements.some((node) => guardReturnStatementWithValue(node))
       ) {
-        // And in this case there is at least one return statement, but not
-        // every return statement returns a value.
+        // In this case there isn't a single return statement that returns a
+        // value.
         this.comment(NO_VALUE_RETURNED({ 'export.name': 'twoFer' }))
       }
     }
