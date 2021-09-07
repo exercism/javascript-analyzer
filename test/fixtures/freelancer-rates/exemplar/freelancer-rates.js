@@ -25,7 +25,7 @@
  * @param {number} ratePerHour
  * @returns {number} the rate per day
  */
- export function dayRate(ratePerHour) {
+export function dayRate(ratePerHour) {
   return ratePerHour * 8;
 }
 

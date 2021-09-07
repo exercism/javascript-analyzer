@@ -42,6 +42,33 @@ function autoload(exercise: Readonly<Exercise>): ReturnType<NodeRequire> {
     path.join(__dirname, 'concept', exercise.slug, 'index'),
   ]
 
+  // These exercises can also defer to the exemplar analyzer only
+  if (
+    [
+      'amusement-park',
+      'bird-watcher',
+      'coordinate-transformation',
+      'elyses-analytic-enchantments',
+      'elyses-destructured-enchantments',
+      'elyses-enchantments',
+      'elyses-looping-enchantments',
+      'elyses-transformative-enchantments',
+      'factory-sensors',
+      // 'fruit-picker',
+      'high-score-board',
+      'lasagna-master',
+      'lucky-numbers',
+      'mixed-juices',
+      'nullability',
+      'ozans-playlist',
+      'pizza-order',
+      'translation-service',
+      'vehicle-purchase',
+    ].includes(exercise.slug)
+  ) {
+    modulePaths.push(path.join(__dirname, 'concept', '__exemplar', 'index'))
+  }
+
   const results = modulePaths.map((modulePath) => {
     try {
       return require(modulePath)
