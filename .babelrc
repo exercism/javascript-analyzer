@@ -4,9 +4,11 @@
       "@babel/preset-env",
       {
         "useBuiltIns": "usage",
-        "corejs": "3.9",
+        // package.json -> devDependencies -> "core-js"
+        "corejs": "3.18",
+        // https://hub.docker.com/layers/node/library/node/lts-alpine
         "targets": {
-          "node": "14.16"
+          "node": "current"
         }
 
       }
