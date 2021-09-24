@@ -1,28 +1,24 @@
 import {
   AstParser,
-  ExtractedExport,
   ExtractedFunction,
   extractExports,
   extractFunctions,
   findFirst,
-  findLiteral,
-  findMemberCall,
   findRawLiteral,
   findTopLevelConstants,
   guardCallExpression,
   guardIdentifier,
   guardLiteral,
+  Identifier,
   IdentifierWithName,
   ProgramConstant,
+  ProgramConstants,
   SpecificFunctionCall,
-  StructureError,
   traverse,
 } from '@exercism/static-analysis'
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
 import { readFileSync } from 'fs'
 import path from 'path'
-import { assertNamedExport } from '~src/asserts/assert_named_export'
-import { assertNamedFunction } from '~src/asserts/assert_named_function'
 import { assertPublicApi } from '../../../asserts/assert_public_api'
 import { assertPublicConstant } from '../../../asserts/assert_public_constant'
 import { Source } from '../../SourceImpl'
@@ -83,7 +79,7 @@ class RemainingMinutesInOven {
     return !foundSuboptimalNode
   }
 
-  public get hasReplacableLiteral(): boolean {
+  public get hasReplaceableLiteral(): boolean {
     const hasConstantLiteral = findFirst(
       this.implementation.body,
       (node): node is IdentifierWithName<typeof EXPECTED_MINUTES_IN_OVEN> =>
@@ -112,6 +108,13 @@ class TotalTimeInMinutes {
     const actualMinutesInOven = this.actualMinutesInOven
 
     let foundSuboptimalNode = false
+
+    // Optimal implementation looks like this:
+    //
+    // function totalTimeInMinutes(numberOfLayers, actualMinutesInOven) {
+    //   return actualMinutesInOven + preparationTimeInMinutes(numberOfLayers)
+    // }
+    //
     this.traverse({
       enter() {
         foundSuboptimalNode = true
@@ -164,12 +167,143 @@ class TotalTimeInMinutes {
   }
 }
 
+class PreparationTimeInMinutes {
+  private numberOfLayers: string
+
+  constructor(
+    private readonly implementation: ExtractedFunction,
+    private readonly constants: ProgramConstants
+  ) {
+    this.numberOfLayers = parameterName(this.implementation.params[0])
+  }
+
+  public traverse(options: Parameters<typeof traverse>[1]): void {
+    traverse(this.implementation.body, options)
+  }
+
+  /**
+   * Extract the name of the constant (`const`) that should be used
+   * instead of a magic number (`PREPARATION_MINUTES_PER_LAYER`).
+   *
+   * @returns the name of the constant, or `PREPARATION_MINUTES_PER_LAYER` if
+   *          it can't be found
+   */
+  public get predefinedConstantName(): string {
+    return (
+      (
+        this.constants.find(
+          (constant) =>
+            !!(
+              guardIdentifier(constant.id) &&
+              constant.init &&
+              guardLiteral(constant.init, 2)
+            )
+        )?.id as Identifier
+      )?.name ?? 'PREPARATION_MINUTES_PER_LAYER'
+    )
+  }
+
+  public get hasReplaceableLiteral(): boolean {
+    const hasConstantLiteral = findFirst(
+      this.implementation.body,
+      (node): node is IdentifierWithName<typeof EXPECTED_MINUTES_IN_OVEN> =>
+        guardIdentifier(node, EXPECTED_MINUTES_IN_OVEN)
+    )
+    const hasLiteral = findRawLiteral(this.implementation.body, '40')
+    return Boolean(hasLiteral && !hasConstantLiteral)
+  }
+
+  /**
+   * Determines if the solution uses the `PREPARATION_MINUTES_PER_LAYER` inside
+   * the `preparationTimeInMinutes` function.
+   */
+  public get usesPredefinedConstant(): boolean {
+    const parameter = this.numberOfLayers
+    const constantName = this.predefinedConstantName
+
+    let foundConstantUsage = false
+
+    // const PREPARATION_MINUTES_PER_LAYER = 2
+    //
+    // function preparationTimeInMinutes(numberOfLayers) {
+    //  return numberOfLayers * PREPARATION_MINUTES_PER_LAYER;
+    // }
+    //
+    this.traverse({
+      [AST_NODE_TYPES.BinaryExpression](node) {
+        foundConstantUsage =
+          node.operator === '*' &&
+          ((guardIdentifier(node.left, parameter) &&
+            guardIdentifier(node.right, constantName)) ||
+            (guardIdentifier(node.right, parameter) &&
+              guardIdentifier(node.left, constantName)))
+
+        this.skip()
+      },
+    })
+
+    return foundConstantUsage
+  }
+
+  public get isOptimal(): boolean {
+    const parameter = this.numberOfLayers
+    const constantName = this.predefinedConstantName
+
+    let foundSuboptimalNode = false
+
+    // function preparationTimeInMinutes(numberOfLayers) {
+    //   return numberOfLayers * PREPARATION_MINUTES_PER_LAYER;
+    // }
+    //
+    this.traverse({
+      enter() {
+        foundSuboptimalNode = true
+      },
+
+      [AST_NODE_TYPES.ReturnStatement]() {
+        // this is fine
+        foundSuboptimalNode = false
+      },
+
+      [AST_NODE_TYPES.BlockStatement]() {
+        // this is fine
+        foundSuboptimalNode = false
+      },
+
+      [AST_NODE_TYPES.BinaryExpression](node) {
+        // Don't know what's going on if it's not multiplication
+        foundSuboptimalNode =
+          node.operator !== '*' ||
+          !(
+            // Magic number problem
+            (
+              (guardIdentifier(node.left, parameter) &&
+                guardIdentifier(node.right, constantName)) ||
+              (guardIdentifier(node.right, parameter) &&
+                guardIdentifier(node.left, constantName))
+            )
+          )
+
+        this.skip()
+      },
+
+      exit() {
+        if (foundSuboptimalNode) {
+          this.break()
+        }
+      },
+    })
+
+    return !foundSuboptimalNode
+  }
+}
+
 export class LasagnaSolution {
   private readonly source: Source
 
   public readonly remainingMinutesInOven: RemainingMinutesInOven
   public readonly totalTimeInMinutes: TotalTimeInMinutes
-  private readonly preparationTimeInMinutes: ExtractedFunction
+  public readonly preparationTimeInMinutes: PreparationTimeInMinutes
   private readonly expectedMinutesInOven: ProgramConstant
 
   private exemplar!: Source
@@ -186,10 +320,9 @@ export class LasagnaSolution {
       program
     )
 
-    this.preparationTimeInMinutes = assertPublicApi(
-      PREPARATION_TIME_IN_MINUTES,
-      exports,
-      functions
+    this.preparationTimeInMinutes = new PreparationTimeInMinutes(
+      assertPublicApi(PREPARATION_TIME_IN_MINUTES, exports, functions),
+      findTopLevelConstants(this.program, ['const', 'let', 'var'])
     )
 
     this.remainingMinutesInOven = new RemainingMinutesInOven(
@@ -201,6 +334,11 @@ export class LasagnaSolution {
     )
   }
 
+  /**
+   * Reads the exemplar solution from the .meta directory
+   *
+   * @param directory base directory to this solution
+   */
   public readExemplar(directory: string): void {
     const configPath = path.join(directory, '.meta', 'config.json')
     const config = JSON.parse(readFileSync(configPath).toString())
@@ -209,11 +347,18 @@ export class LasagnaSolution {
     this.exemplar = new Source(readFileSync(exemplarPath).toString())
   }
 
+  /**
+   * The solution is considered exemplar if it's _exactly_ the same as the
+   * `exemplar.js` solution from `.meta`.
+   *
+   * TODO: account for non-structural changes such as left and right hand
+   *       side of a binary expression involving `*` or `+`
+   */
   public get isExemplar(): boolean {
-    const sourceAst = AstParser.REPRESENTER.parseSync(this.source.toString())
     const exemplarAst = AstParser.REPRESENTER.parseSync(
       this.exemplar.toString()
     )
+    const sourceAst = AstParser.REPRESENTER.parseSync(this.source.toString())
 
     return (
       JSON.stringify(sourceAst[0].program) ===
@@ -221,6 +366,15 @@ export class LasagnaSolution {
     )
   }
 
+  /**
+   * Find the type of the variable of the student defined constant
+   *
+   * ```javascript
+   *   export [kind] EXPECTED_MINUTES_IN_OVEN = 40
+   * ```
+   *
+   * @returns the kind: `const`, `let`, or `var`
+   */
   public get constantKind(): ProgramConstant['kind'] {
     return this.expectedMinutesInOven.kind
   }
@@ -231,47 +385,5 @@ export class LasagnaSolution {
 
   public get hasOptimalConstant(): boolean {
     return guardLiteral(this.expectedMinutesInOven.init!, 40)
-  }
-
-  public get hasOptimalPreparationTimeInMinutes(): boolean {
-    const parameter = parameterName(this.preparationTimeInMinutes.params[0])
-
-    let foundSuboptimalNode = false
-    traverse(this.preparationTimeInMinutes.body, {
-      enter() {
-        foundSuboptimalNode = true
-      },
-
-      [AST_NODE_TYPES.ReturnStatement]() {
-        // this is fine
-        foundSuboptimalNode = false
-      },
-
-      [AST_NODE_TYPES.BlockStatement]() {
-        // this is fine
-        foundSuboptimalNode = false
-      },
-
-      [AST_NODE_TYPES.BinaryExpression](node) {
-        // TODO look for top-level constant and use that name instead.
-        foundSuboptimalNode =
-          node.operator !== '*' ||
-          !(
-            (guardIdentifier(node.left, parameter) &&
-              guardIdentifier(node.right, 'PREPARATION_MINUTES_PER_LAYER')) ||
-            (guardIdentifier(node.right, parameter) &&
-              guardIdentifier(node.left, 'PREPARATION_MINUTES_PER_LAYER'))
-          )
-        this.skip()
-      },
-
-      exit() {
-        if (foundSuboptimalNode) {
-          this.break()
-        }
-      },
-    })
-
-    return !foundSuboptimalNode
   }
 }

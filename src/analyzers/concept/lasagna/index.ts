@@ -26,7 +26,9 @@ import {
 
 type Program = TSESTree.Program
 
-const MUST_CALL_PREPARATION_TIME_IN_MINUTES = factory<'target' | 'function'>`
+export const MUST_CALL_PREPARATION_TIME_IN_MINUTES = factory<
+  'target' | 'function'
+>`
   Change \`${'target'}\' so it calls \`${'function'}\`.
 
   According to the instructions, \`${'target'}\` can be implemented by taking
@@ -42,6 +44,16 @@ const MUST_CALL_PREPARATION_TIME_IN_MINUTES = factory<'target' | 'function'>`
   CommentType.Essential
 )
 
+/**
+ * Analyzer for `lasagna`
+ *
+ * - ✅ Verify that the `remainingMinutesInOven` function uses the `EXPECTED_MINUTES_IN_OVEN` constant.
+ * - ✅ Verify that the `preparationTimeInMinutes` function uses the `PREPARATION_MINUTES_PER_LAYER` constant.
+ * - ✅ Verify that the `totalTimeInMinutes` function calls the `preparationTimeInMinutes` function.
+ * - 🟥 Verify that no extra _bookkeeping_ or _intermediate_ variables are declared
+ *
+ * @see https://github.com/exercism/javascript/blob/main/exercises/concept/lasagna/.meta/design.md
+ */
 export class LasagnaAnalyzer extends IsolatedAnalyzerImpl {
   private solution!: LasagnaSolution
 
@@ -70,11 +82,12 @@ export class LasagnaAnalyzer extends IsolatedAnalyzerImpl {
     }
 
     if (!this.solution.hasOptimalConstant) {
+      // TODO: I don't remember why I commented this out
       // throw new Error('not optimal constant')
     }
 
     if (!this.solution.remainingMinutesInOven.isOptimal) {
-      if (this.solution.remainingMinutesInOven.hasReplacableLiteral) {
+      if (this.solution.remainingMinutesInOven.hasReplaceableLiteral) {
         output.add(
           REPLACE_MAGIC_WITH_IDENTIFIER({
             literal: '40',
@@ -88,10 +101,20 @@ export class LasagnaAnalyzer extends IsolatedAnalyzerImpl {
       return output.finish()
     }
 
-    if (!this.solution.hasOptimalPreparationTimeInMinutes) {
-      output.add(
-        FUNCTION_NOT_OPTIMAL({ function: PREPARATION_TIME_IN_MINUTES })
-      )
+    if (!this.solution.preparationTimeInMinutes.isOptimal) {
+      if (!this.solution.preparationTimeInMinutes.usesPredefinedConstant) {
+        output.add(
+          REPLACE_MAGIC_WITH_IDENTIFIER({
+            literal: '2',
+            identifier:
+              this.solution.preparationTimeInMinutes.predefinedConstantName,
+          })
+        )
+      } else {
+        output.add(
+          FUNCTION_NOT_OPTIMAL({ function: PREPARATION_TIME_IN_MINUTES })
+        )
+      }
       return output.finish()
     }
 

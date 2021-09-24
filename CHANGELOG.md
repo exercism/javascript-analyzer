@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.17.0
+
+- Improve analysis for `lasagna`
+
 ## 0.16.0
 
 - Add exemplary analyzer for `amusement-park`
