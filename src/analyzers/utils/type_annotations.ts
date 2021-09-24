@@ -139,7 +139,7 @@ function annotate(typeNode?: TypeNode, fallback = 'any'): string {
         fallback
       )}]`
     }
-    case AST_NODE_TYPES.TSInterfaceHeritage: {
+    /*case AST_NODE_TYPES.TSInterfaceHeritage: {
       return (
         (typeNode.expression.type === AST_NODE_TYPES.Identifier &&
           typeNode.expression.name) ||
@@ -147,7 +147,7 @@ function annotate(typeNode?: TypeNode, fallback = 'any'): string {
           typeNode.expression.raw) ||
         '<...>'
       ) // TODO id + type parameters
-    }
+    }*/
     case AST_NODE_TYPES.TSLiteralType: {
       return (
         (typeNode.literal.type === AST_NODE_TYPES.Literal &&

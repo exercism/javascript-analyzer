@@ -81,7 +81,7 @@ function objectLiteralElementName(
 ): string {
   switch (element.type) {
     case AST_NODE_TYPES.MethodDefinition:
-    case AST_NODE_TYPES.TSAbstractMethodDefinition:
+      // case AST_NODE_TYPES.TSAbstractMethodDefinition:
       return fallback
 
     case AST_NODE_TYPES.Property:
@@ -105,8 +105,8 @@ function properyNameName(key: PropertyName, fallback = '<unknown>'): string {
       return key.raw
     case AST_NODE_TYPES.ArrayPattern:
     case AST_NODE_TYPES.ObjectPattern:
-    case AST_NODE_TYPES.RestElement:
-    case AST_NODE_TYPES.SpreadElement:
+      // case AST_NODE_TYPES.RestElement:
+      // case AST_NODE_TYPES.SpreadElement:
       return fallback
     case AST_NODE_TYPES.MemberExpression:
       return properyNameName(key.property, fallback)
