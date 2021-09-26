@@ -158,3 +158,5 @@ export class LasagnaAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 }
+
+export default LasagnaAnalyzer

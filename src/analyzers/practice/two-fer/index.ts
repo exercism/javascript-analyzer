@@ -542,3 +542,5 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     )
   }
 }
+
+export default TwoFerAnalyzer

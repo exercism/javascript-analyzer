@@ -242,3 +242,5 @@ export class ResistorColorAnalyzer extends IsolatedAnalyzerImpl {
     // TODO use helper method
   }
 }
+
+export default ResistorColorAnalyzer

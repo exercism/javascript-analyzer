@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.17.1
+
+- Change the way autoloads work so they are more predicatable
+
 ## 0.17.0
 
 - Improve analysis for `lasagna`
