@@ -59,3 +59,5 @@ export class ExemplarAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 }
+
+export default ExemplarAnalyzer
