@@ -1,0 +1,25 @@
+{
+  "blurb": "TODO: add blurb for booleans exercise",
+  "authors": [
+    {
+      "github_username": "ovidiu141",
+      "exercism_username": "ovidiu141"
+    }
+  ],
+  "contributors": [
+    {
+      "github_username": "rishiosaur",
+      "exercism_username": "rishiosaur"
+    },
+    {
+      "github_username": "SleeplessByte",
+      "exercism_username": "SleeplessByte"
+    }
+  ],
+  "files": {
+    "solution": ["annalyns-infiltration.js"],
+    "test": ["annalyns-infiltration.spec.js"],
+    "exemplar": [".meta/exemplar.js"]
+  },
+  "forked_from": []
+}
