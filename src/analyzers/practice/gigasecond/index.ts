@@ -26,11 +26,11 @@ export ${'method.signature'}
 \`\`\`
 `('javascript.gigasecond.export_inline', CommentType.Informative)
 
-const USE_NUMBER_COMPREHENSION = factory<'literal'>`
+const PREFER_NUMBER_COMPREHENSION = factory<'literal'>`
 Large numbers like \`${'literal'}\` are easy to misread and difficult to
 comprehend. Rewrite the literal \`${'literal'}\` using \`Math.pow\` or
 \`10 ** n\` to make it more readable and lower the cognitive complexity.
-`('javascript.gigasecond.use_number_comprehension', CommentType.Actionable)
+`('javascript.gigasecond.prefer_number_comprehension', CommentType.Actionable)
 
 const PREFER_TOP_LEVEL_CONSTANT = factory<'value' | 'name'>`
 Your solution current has a magic number, or rather a magic expression. Consider
@@ -102,6 +102,7 @@ or locale (such as timezones).
 `('javascript.gigasecond.dont_use_get_seconds', CommentType.Essential)
 
 type Program = TSESTree.Program
+
 export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
   protected async execute(input: Input, output: WritableOutput): Promise<void> {
     const [parsed] = await AstParser.ANALYZER.parse(input)
@@ -237,7 +238,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
 
       if (solution.constant.isLargeNumberLiteral) {
         output.disapprove(
-          USE_NUMBER_COMPREHENSION({
+          PREFER_NUMBER_COMPREHENSION({
             literal: solution.constant.name,
           })
         )
@@ -327,7 +328,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
       } else if (literal) {
         this.logger.log(`=> found a literal (${literal.type})`)
         output.disapprove(
-          USE_NUMBER_COMPREHENSION({
+          PREFER_NUMBER_COMPREHENSION({
             literal:
               ('raw' in literal && literal.raw) || solution.source.get(literal),
           })
@@ -398,3 +399,5 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 }
+
+export default GigasecondAnalyzer

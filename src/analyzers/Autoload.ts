@@ -12,9 +12,12 @@ type AnalyzerConstructor = new () => Analyzer
  */
 export function find(exercise: Readonly<Exercise>): AnalyzerConstructor {
   const file = autoload(exercise)
-  const key = Object.keys(file).find(
-    (key): boolean => file[key] instanceof Function
-  )
+
+  // By default, load the default export
+  const key =
+    file['default'] instanceof Function
+      ? 'default'
+      : Object.keys(file).find((key): boolean => file[key] instanceof Function)
 
   if (key === undefined) {
     throw new Error(`No Analyzer found in './${exercise.slug}`)
