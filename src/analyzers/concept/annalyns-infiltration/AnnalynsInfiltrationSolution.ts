@@ -32,16 +32,18 @@ class FastAttack extends PublicApi {
   }
 
   public get isOptimal(): boolean {
-    if (this.parameter.length !== 1) {
+    if (this.implementation.params.length !== 1) {
       return false
     }
 
     const body = this.implementation.body
+
     if (!guardReturnBlockStatement(body)) {
       return false
     }
 
     const statement = body.body[0].argument!
+
     if (!guardUnaryExpression(statement, '!')) {
       return false
     }
@@ -93,7 +95,7 @@ class Spy extends PublicApi {
   }
 
   public get isOptimal(): boolean {
-    if (this.parameter.length !== 3) {
+    if (this.implementation.params.length !== 3) {
       return false
     }
 
@@ -162,7 +164,7 @@ class SignalPrisoner extends PublicApi {
   }
 
   public get isOptimal(): boolean {
-    if (this.parameter.length !== 3) {
+    if (this.implementation.params.length !== 2) {
       return false
     }
 
@@ -248,7 +250,7 @@ class FreePrisoner extends PublicApi {
   }
 
   public get isOptimal(): boolean {
-    if (this.parameter.length !== 4) {
+    if (this.implementation.params.length !== 4) {
       return false
     }
 
