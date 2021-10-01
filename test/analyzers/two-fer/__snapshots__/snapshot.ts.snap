@@ -54,8 +54,8 @@ AnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
-      "message": "No method called \`twoFer\`. The tests won't pass without it.",
-      "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
+      "message": "No function called \`twoFer\`. The tests won't pass without it.",
+      "template": "No function called \`%{method.name}\`. The tests won't pass without it.",
       "type": "essential",
       "variables": Object {
         "method.name": "twoFer",
@@ -373,8 +373,8 @@ AnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
-      "message": "No method called \`twoFer\`. The tests won't pass without it.",
-      "template": "No method called \`%{method.name}\`. The tests won't pass without it.",
+      "message": "No function called \`twoFer\`. The tests won't pass without it.",
+      "template": "No function called \`%{method.name}\`. The tests won't pass without it.",
       "type": "essential",
       "variables": Object {
         "method.name": "twoFer",

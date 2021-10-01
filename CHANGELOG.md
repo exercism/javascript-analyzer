@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.18.0
+
+- Add check for no value returned in `two-fer`
+
 ## 0.17.1
 
 - Change the way autoloads work so they are more predicatable

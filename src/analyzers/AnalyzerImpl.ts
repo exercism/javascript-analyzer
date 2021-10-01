@@ -47,7 +47,7 @@ export abstract class AnalyzerImpl implements Analyzer {
 
     await this.execute(input).catch((err): void | never => {
       if (err instanceof EarlyFinalization) {
-        this.logger.log(`=> early finialization (${this.output.status})`)
+        this.logger.log(`=> early finialization (${this.output.summary})`)
       } else {
         throw err
       }
