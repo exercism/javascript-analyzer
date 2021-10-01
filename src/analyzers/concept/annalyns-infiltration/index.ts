@@ -51,6 +51,7 @@ export const MUST_NOT_EXPLICITLY_CAST = factory`
 
   // ...In JavaScript, in general, values don't need to be explicitly changed
   return some_expression
+  \`\`\`
 `(
   'javascript.annalyns-infiltration.must_not_explicitly_cast',
   CommentType.Essential
@@ -79,6 +80,20 @@ export const CAN_SIMPLIFY_CONDITIONALS = factory`
 
 type Program = TSESTree.Program
 
+/**
+ * Analyzer for `annalyns-infiltration`
+ *
+ * - ✅ Verify that the `canExecuteFastAttack` function is as simple as possible
+ *     (single negation `!`)
+ * - ✅ Verify that the `canSpy` function is as simple as possible (double `||`)
+ * - ✅ Verify that the `canSignalPrisoner` function is as simple as possible
+ *     (`||` and negation `!`)
+ * - ✅ Verify that the `canFreePrisoner` function is not overly complex. Helper
+ *     variables may be used, but those should result in a suggestion about
+ *     combining them (informational, non-essential).
+ *
+ * @see https://github.com/exercism/javascript/blob/main/exercises/concept/annalyns-infiltration/.meta/design.md
+ */
 export class AnnalynsInfiltrationAnalyzer extends IsolatedAnalyzerImpl {
   private solution!: AnnalynsInfiltrationSolution
 
