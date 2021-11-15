@@ -8,9 +8,13 @@ type VariableDeclarator = TSESTree.VariableDeclarator
 type DestructuringPattern = TSESTree.DestructuringPattern
 
 export function parameterName(
-  parameter: Parameter | VariableDeclarator,
+  parameter: Parameter | VariableDeclarator | undefined,
   fallback = '<unknown>'
 ): string {
+  if (parameter === undefined) {
+    return '<undefined>'
+  }
+
   switch (parameter.type) {
     case AST_NODE_TYPES.VariableDeclarator: {
       return parameterName(parameter.id)
@@ -85,7 +89,7 @@ function objectLiteralElementName(
       return fallback
 
     case AST_NODE_TYPES.Property:
-      return properyNameName(element.key, fallback)
+      return propertyName(element.key, fallback)
 
     // Don't support nested names for now
     // case AST_NODE_TYPES.RestElement:
@@ -97,7 +101,7 @@ function objectLiteralElementName(
   }
 }
 
-function properyNameName(key: PropertyName, fallback = '<unknown>'): string {
+function propertyName(key: PropertyName, fallback = '<unknown>'): string {
   switch (key.type) {
     case AST_NODE_TYPES.Identifier:
       return key.name
@@ -109,7 +113,7 @@ function properyNameName(key: PropertyName, fallback = '<unknown>'): string {
       // case AST_NODE_TYPES.SpreadElement:
       return fallback
     case AST_NODE_TYPES.MemberExpression:
-      return properyNameName(key.property, fallback)
+      return propertyName(key.property, fallback)
     case AST_NODE_TYPES.ArrowFunctionExpression:
     case AST_NODE_TYPES.AssignmentExpression:
     case AST_NODE_TYPES.BinaryExpression:

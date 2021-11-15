@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.20.0
+
+- Replace generic ExemplarAnalyzer for `freelancer-rates` with specific analyzer stub
+
 ## 0.19.0
 
 - Add analyzer for `concept/annalyns-infiltration`
@@ -11,7 +15,7 @@
 
 ## 0.17.1
 
-- Change the way autoloads work so they are more predicatable
+- Change the way autoload work so they are more predictable
 
 ## 0.17.0
 
