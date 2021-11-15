@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.18.0
+
+- Replace generic ExemplarAnalyzer for `freelancer-rates` with specific analyzer stub
+
 ## 0.17.0
 
 - Improve analysis for `lasagna`
