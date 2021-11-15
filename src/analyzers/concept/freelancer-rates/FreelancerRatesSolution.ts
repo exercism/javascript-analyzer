@@ -45,7 +45,6 @@ class DaysInBudget extends PublicApi {
   // return Math.floor(budget / dayRate(ratePerHour));
 }
 
-
 class MonthRate extends PublicApi {
   public get ratePerHourParameter(): string {
     return this.parameter
@@ -58,10 +57,9 @@ class MonthRate extends PublicApi {
 
     this.discountParameter = parameterName(this.implementation.params[1])
   }
-  
+
   // Expect ceil
 }
-
 
 export class FreelancerRatesSolution {
   private readonly source: Source
