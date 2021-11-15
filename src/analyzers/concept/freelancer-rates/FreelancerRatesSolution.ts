@@ -33,13 +33,11 @@ class DaysInBudget extends PublicApi {
   }
 
   public readonly ratePerHourParameter: string
-  public readonly discountParameter: string
 
   constructor(implementation: ExtractedFunction) {
     super(implementation)
 
     this.ratePerHourParameter = parameterName(this.implementation.params[1])
-    this.discountParameter = parameterName(this.implementation.params[2])
   }
 
   // return Math.floor(budget / dayRate(ratePerHour));
@@ -50,12 +48,14 @@ class MonthRate extends PublicApi {
     return this.parameter
   }
 
+  public readonly daysParameter: string
   public readonly discountParameter: string
 
   constructor(implementation: ExtractedFunction) {
     super(implementation)
 
-    this.discountParameter = parameterName(this.implementation.params[1])
+    this.daysParameter = parameterName(this.implementation.params[1])
+    this.discountParameter = parameterName(this.implementation.params[2])
   }
 
   // Expect ceil
