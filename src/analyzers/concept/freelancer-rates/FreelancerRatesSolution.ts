@@ -13,27 +13,18 @@ import { PublicApi } from '../../PublicApi'
 import { parameterName } from '../../utils/extract_parameter'
 
 export const DAY_RATE = 'dayRate'
-export const MONTH_RATE = 'monthRate'
+export const MONTH_RATE = 'priceWithMonthlyDiscount'
 export const DAYS_IN_BUDGET = 'daysInBudget'
 
 class DayRate extends PublicApi {
   public get ratePerHourParameter(): string {
     return this.parameter
   }
-}
 
-class MonthRate extends PublicApi {
-  public get ratePerHourParameter(): string {
-    return this.parameter
-  }
-
-  public readonly discountParameter: string
-
-  constructor(implementation: ExtractedFunction) {
-    super(implementation)
-
-    this.discountParameter = parameterName(this.implementation.params[1])
-  }
+  // return ratePerHour * 8;
+  // return 8 * ratePerHour;
+  // return ratePerHour * HOURS_IN_DAY;
+  // return HOURS_IN_DAY * ratePerHour;
 }
 
 class DaysInBudget extends PublicApi {
@@ -50,7 +41,27 @@ class DaysInBudget extends PublicApi {
     this.ratePerHourParameter = parameterName(this.implementation.params[1])
     this.discountParameter = parameterName(this.implementation.params[2])
   }
+
+  // return Math.floor(budget / dayRate(ratePerHour));
 }
+
+
+class MonthRate extends PublicApi {
+  public get ratePerHourParameter(): string {
+    return this.parameter
+  }
+
+  public readonly discountParameter: string
+
+  constructor(implementation: ExtractedFunction) {
+    super(implementation)
+
+    this.discountParameter = parameterName(this.implementation.params[1])
+  }
+  
+  // Expect ceil
+}
+
 
 export class FreelancerRatesSolution {
   private readonly source: Source
