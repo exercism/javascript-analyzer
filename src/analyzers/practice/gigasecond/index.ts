@@ -102,6 +102,7 @@ or locale (such as timezones).
 `('javascript.gigasecond.dont_use_get_seconds', CommentType.Essential)
 
 type Program = TSESTree.Program
+
 export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
   protected async execute(input: Input, output: WritableOutput): Promise<void> {
     const [parsed] = await AstParser.ANALYZER.parse(input)
@@ -398,3 +399,5 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 }
+
+export default GigasecondAnalyzer

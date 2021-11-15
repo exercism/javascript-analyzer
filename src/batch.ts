@@ -1,3 +1,4 @@
+import { DirectoryWithConfigInput } from '@exercism/static-analysis'
 import { DirectoryInput } from '@exercism/static-analysis/dist/input/DirectoryInput'
 import { readDir } from '@exercism/static-analysis/dist/utils/fs'
 import path from 'path'
@@ -24,6 +25,9 @@ const FIXTURES_ROOT = path.join(
   exercise.slug
 )
 
+console.log('Analyzer found:', AnalyzerClass)
+console.log('Fixtures root:', FIXTURES_ROOT)
+
 /**
  * Pad the input `value` to `length` using the `padc` pad character
  *
@@ -49,6 +53,8 @@ const DEFAULT_LINE_DATA = {
     median: BigInt(0),
   },
 }
+
+type OutputGroup = NonNullable<Comment['type']> | 'none' | 'unknown'
 
 /**
  * Turns a data set into a table row
@@ -86,11 +92,14 @@ readDir(FIXTURES_ROOT)
       fixtureDirs.map(async (fixtureDir) => {
         try {
           const inputDir = path.join(FIXTURES_ROOT, fixtureDir)
-          const input = new DirectoryInput(inputDir, exercise.slug)
+          const input = DirectoryWithConfigInput.test(inputDir)
+            ? new DirectoryWithConfigInput(inputDir)
+            : new DirectoryInput(inputDir, exercise.slug)
           const analyzer = new AnalyzerClass()
+          options.inputDir = inputDir
 
           const fixtureStamp = process.hrtime.bigint()
-          const analysis = await analyzer.run(input)
+          const analysis = await analyzer.run(input, options)
           const runtime = process.hrtime.bigint() - fixtureStamp
 
           const fixture = fixtureDir
@@ -124,7 +133,19 @@ readDir(FIXTURES_ROOT)
   )
   .then((results) => {
     return results.reduce(
-      (groups, { result: { status, comments }, runtime, fixture }) => {
+      (groups, { result: { comments }, runtime, fixture }) => {
+        const uniques = comments
+          .map((comment) => comment.type)
+          .filter(Boolean)
+          .filter((value, index, self) => self.indexOf(value) === index)
+
+        const status: OutputGroup =
+          uniques.find((value) => value === 'essential') ||
+          uniques.find((value) => value === 'actionable') ||
+          uniques.find((value) => value === 'informative') ||
+          uniques.find((value) => value === 'celebratory') ||
+          (comments.length === 0 ? 'none' : 'unknown')
+
         groups[status] = groups[status] || {
           runtimes: [],
           comments: [],
@@ -140,7 +161,7 @@ readDir(FIXTURES_ROOT)
         return groups
       },
       {} as {
-        [K in Output['status']]: {
+        [K in OutputGroup]: {
           runtimes: bigint[]
           count: number
           comments: Comment[]
@@ -150,50 +171,59 @@ readDir(FIXTURES_ROOT)
     )
   })
   .then((grouped) => {
-    const aggregatedGroups = (
-      Object.keys(grouped) as Output['status'][]
-    ).reduce((aggregated, status) => {
-      const { count, comments, runtimes, fixtures } = grouped[status]
+    const aggregatedGroups = (Object.keys(grouped) as OutputGroup[]).reduce(
+      (aggregated, status) => {
+        const { count, comments, runtimes, fixtures } = grouped[status]
 
-      const sortedRuntimes = runtimes.sort()
+        const sortedRuntimes = runtimes.sort()
 
-      const totalRuntime = runtimes.reduce(
-        (result, time): bigint => result + time,
-        BigInt(0)
-      )
-      const averageRuntime = totalRuntime / BigInt(sortedRuntimes.length)
-      const medianRuntime = sortedRuntimes[(sortedRuntimes.length / 2) | 0]
+        const totalRuntime = runtimes.reduce(
+          (result, time): bigint => result + time,
+          BigInt(0)
+        )
+        const averageRuntime =
+          totalRuntime / BigInt(Math.max(1, sortedRuntimes.length))
+        const medianRuntime = sortedRuntimes[(sortedRuntimes.length / 2) | 0]
 
-      const uniqueComments = [
-        ...new Set(
-          comments.filter(Boolean).map((comment): string => comment.message)
-        ),
-      ]
-      const uniqueTemplates = [
-        ...new Set(
-          comments.filter(Boolean).map((comment): string => comment.template)
-        ),
-      ]
+        const uniqueComments = [
+          ...new Set(
+            comments.filter(Boolean).map((comment): string => comment.message)
+          ),
+        ]
+        const uniqueTemplates = [
+          ...new Set(
+            comments.filter(Boolean).map((comment): string => comment.template)
+          ),
+        ]
 
-      return {
-        ...aggregated,
-        [status]: {
-          count,
-          comments: {
-            unique: uniqueComments,
-            uniqueTemplates: uniqueTemplates,
+        return {
+          ...aggregated,
+          [status]: {
+            count,
+            comments: {
+              unique: uniqueComments,
+              uniqueTemplates: uniqueTemplates,
+            },
+            runtimes: {
+              total: totalRuntime,
+              average: averageRuntime,
+              median: medianRuntime,
+            },
+            fixtures,
           },
-          runtimes: {
-            total: totalRuntime,
-            average: averageRuntime,
-            median: medianRuntime,
-          },
-          fixtures,
-        },
+        }
+      },
+      {} as {
+        [K in OutputGroup]: {
+          count: number
+          fixtures: string[]
+          comments: { unique: string[]; uniqueTemplates: string[] }
+          runtimes: { total: bigint; average: bigint; median: bigint }
+        }
       }
-    }, {} as { [K in Output['status']]: { count: number; fixtures: string[]; comments: { unique: string[]; uniqueTemplates: string[] }; runtimes: { total: bigint; average: bigint; median: bigint } } })
+    )
 
-    const groupKeys = Object.keys(aggregatedGroups) as Output['status'][]
+    const groupKeys = Object.keys(aggregatedGroups) as OutputGroup[]
     const allRuntimesSorted = groupKeys
       .reduce(
         (runtimes, status): bigint[] =>
@@ -211,9 +241,11 @@ readDir(FIXTURES_ROOT)
         result + aggregatedGroups[status].runtimes.total,
       BigInt(0)
     )
-    const totalAverageRuntime = totalRuntime / BigInt(allRuntimesSorted.length)
-    const totalMedianRuntime =
-      allRuntimesSorted[(allRuntimesSorted.length / 2) | 0]
+    const totalAverageRuntime =
+      totalRuntime / BigInt(Math.max(1, allRuntimesSorted.length))
+    const totalMedianRuntime = BigInt(
+      allRuntimesSorted[(allRuntimesSorted.length / 2) | 0] ?? 0
+    )
     const totalTotalRuntime = groupKeys.reduce(
       (result, status): bigint =>
         result + aggregatedGroups[status].runtimes.total,
@@ -290,9 +322,12 @@ ${JSON.stringify(
 
 |               Status | Count | Comments | Unique |    Avg | Median |   Total |
 | --------------------:| -----:| --------:| ------:| ------:|-------:|--------:|
-${line('Approve', aggregatedGroups['approve'])}
-${line('Disapprove', aggregatedGroups['disapprove'])}
-${line('Refer to mentor', aggregatedGroups['refer_to_mentor'])}
+${line('Essential', aggregatedGroups['essential'])}
+${line('Actionable', aggregatedGroups['actionable'])}
+${line('Informative', aggregatedGroups['informative'])}
+${line('Celebratory', aggregatedGroups['celebratory'])}
+${line('Unknown', aggregatedGroups['unknown'])}
+${line('None', aggregatedGroups['none'])}
 ${line('Total', totalData)}
 `.trim()
     )

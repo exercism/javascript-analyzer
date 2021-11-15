@@ -32,7 +32,7 @@ async function internalRun(
 ): Promise<Output> {
   // This actually runs the analyzer and is the bases for any run. The options
   // currently only affect the output.
-  const analysis = await analyzer.run(input)
+  const analysis = await analyzer.run(input, options)
 
   // An output processor gets the Promise to the previous output processor and
   // can add its own side-effects or transformation.
@@ -78,6 +78,6 @@ export async function run(
 
     return await internalRun(analyzer, input, options)
   } catch (err) {
-    reportException(err)
+    reportException(err as Error)
   }
 }

@@ -1,12 +1,25 @@
 # Changelog
 
-## 0.18.0
+## 0.20.0
 
 - Replace generic ExemplarAnalyzer for `freelancer-rates` with specific analyzer stub
+=======
+## 0.19.0
+
+- Add analyzer for `concept/annalyns-infiltration`
+- Update dependencies
+
+## 0.18.0
+
+- Add check for no value returned in `two-fer`
+
+## 0.17.1
+
+- Change the way autoloads work so they are more predicatable
 
 ## 0.17.0
 
-- Improve analysis for `lasagna`
+- Improve analysis for `concept/lasagna`
 
 ## 0.16.0
 

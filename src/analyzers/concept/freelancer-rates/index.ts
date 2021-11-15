@@ -59,3 +59,5 @@ export class FreelancerRatesAnalyzer extends IsolatedAnalyzerImpl {
     }
   }
 }
+
+export default FreelancerRatesAnalyzer
