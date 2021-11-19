@@ -6,3 +6,4 @@ node_modules
 .gitignore
 .gitattributes
 .dockerignore
+Dockerfile
