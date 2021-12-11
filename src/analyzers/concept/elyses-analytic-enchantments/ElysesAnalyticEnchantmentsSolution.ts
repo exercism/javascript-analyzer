@@ -2,6 +2,9 @@ import {
   AstParser,
   extractExports,
   extractFunctions,
+  findFirst,
+  guardCallExpression,
+  SpecificPropertyCall,
 } from '@exercism/static-analysis'
 import { TSESTree } from '@typescript-eslint/typescript-estree'
 import { readFileSync } from 'fs'
@@ -20,42 +23,120 @@ const GET_FIRST_EVEN_CARD_POSITION = 'getFirstEvenCardPosition'
 /* getCardPosition */
 class CardPosition extends PublicApi {
   public get isOptimal(): boolean {
+    if (this.implementation.params.length !== 2) {
+      return false
+    }
     return true
+  }
+
+  public get hasIndexOf(): boolean {
+    return (
+      findFirst(
+        this.implementation.body,
+        (node): node is SpecificPropertyCall<'indexOf'> =>
+          guardCallExpression(node, undefined, 'indexOf')
+      ) !== undefined
+    )
   }
 }
 
 /* doesStackIncludeCard */
 class StackIncludesCard extends PublicApi {
   public get isOptimal(): boolean {
+    if (this.implementation.params.length !== 2) {
+      return false
+    }
     return true
+  }
+
+  public get hasIncludes(): boolean {
+    return (
+      findFirst(
+        this.implementation.body,
+        (node): node is SpecificPropertyCall<'includes'> =>
+          guardCallExpression(node, undefined, 'includes')
+      ) !== undefined
+    )
   }
 }
 
 /* isEachCardEven */
 class CardsAreEven extends PublicApi {
   public get isOptimal(): boolean {
+    if (this.implementation.params.length !== 1) {
+      return false
+    }
     return true
+  }
+
+  public get hasEvery(): boolean {
+    return (
+      findFirst(
+        this.implementation.body,
+        (node): node is SpecificPropertyCall<'every'> =>
+          guardCallExpression(node, undefined, 'every')
+      ) !== undefined
+    )
   }
 }
 
 /* doesStackIncludeOddCard */
 class StackIncludesOdd extends PublicApi {
   public get isOptimal(): boolean {
+    if (this.implementation.params.length !== 1) {
+      return false
+    }
     return true
+  }
+
+  public get hasSome(): boolean {
+    return (
+      findFirst(
+        this.implementation.body,
+        (node): node is SpecificPropertyCall<'some'> =>
+          guardCallExpression(node, undefined, 'some')
+      ) !== undefined
+    )
   }
 }
 
 /* getFirstOddCard */
 class FirstOddCard extends PublicApi {
   public get isOptimal(): boolean {
+    if (this.implementation.params.length !== 1) {
+      return false
+    }
     return true
+  }
+
+  public get hasFind(): boolean {
+    return (
+      findFirst(
+        this.implementation.body,
+        (node): node is SpecificPropertyCall<'find'> =>
+          guardCallExpression(node, undefined, 'find')
+      ) !== undefined
+    )
   }
 }
 
 /* getFirstEvenCardPosition */
 class FirstEvenCard extends PublicApi {
   public get isOptimal(): boolean {
+    if (this.implementation.params.length !== 1) {
+      return false
+    }
     return true
+  }
+
+  public get hasFindIndex(): boolean {
+    return (
+      findFirst(
+        this.implementation.body,
+        (node): node is SpecificPropertyCall<'findIndex'> =>
+          guardCallExpression(node, undefined, 'findIndex')
+      ) !== undefined
+    )
   }
 }
 
