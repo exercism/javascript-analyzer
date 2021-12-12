@@ -166,4 +166,4 @@ possible, named constants are often a better choice than in-lined literals.
 
 export const PREFER_BUILT_IN_METHOD = factory<'type' | 'method'>`
 Make use of the built in \`${'method'}\` method available on the \`${'type'}\` type.
-`('javascript.general.prefer_build_in_method', CommentType.Actionable)
+`('javascript.general.prefer_built_in_method', CommentType.Actionable)
