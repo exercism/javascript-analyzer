@@ -5,15 +5,19 @@ import {
   NoMethodError,
 } from '@exercism/static-analysis'
 import { TSESTree } from '@typescript-eslint/typescript-estree'
+import { CommentType, factory } from '../../../comments/comment'
 import {
   EXEMPLAR_SOLUTION,
   NO_METHOD,
   NO_NAMED_EXPORT,
+  PREFER_BUILT_IN_METHOD,
 } from '../../../comments/shared'
 import { WritableOutput, ExecutionOptions } from '../../../interface'
 import { IsolatedAnalyzerImpl } from '../../IsolatedAnalyzerImpl'
 import { ElysesAnalyticEnchantmentsSolution } from './ElysesAnalyticEnchantmentsSolution'
+
 type Program = TSESTree.Program
+
 export class ElysesAnalyticEnchantmentsAnalyzer extends IsolatedAnalyzerImpl {
   private solution!: ElysesAnalyticEnchantmentsSolution
 
@@ -27,9 +31,19 @@ export class ElysesAnalyticEnchantmentsAnalyzer extends IsolatedAnalyzerImpl {
     this.solution = this.checkStructure(parsed.program, parsed.source, output)
     this.solution.readExemplar(options.inputDir)
 
-    if (this.solution.isExemplar) {
+    if (this.solution.isExemplar || this.solution.isOptimal) {
       output.add(EXEMPLAR_SOLUTION())
       output.finish()
+    }
+
+    // Does this make sense to comment on? If so, can do for each preferred method.
+    if (!this.solution.cardPosition.hasIndexOf) {
+      output.add(
+        PREFER_BUILT_IN_METHOD({
+          type: 'Array',
+          method: 'indexOf',
+        })
+      )
     }
 
     output.finish()

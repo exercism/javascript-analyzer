@@ -4,6 +4,7 @@ import {
   extractFunctions,
   findFirst,
   guardCallExpression,
+  guardReturnBlockStatement,
   SpecificPropertyCall,
 } from '@exercism/static-analysis'
 import { TSESTree } from '@typescript-eslint/typescript-estree'
@@ -20,13 +21,26 @@ const DOES_STACK_INCLUDE_ODD_CARD = 'doesStackIncludeOddCard'
 const GET_FIRST_ODD_CARD = 'getFirstOddCard'
 const GET_FIRST_EVEN_CARD_POSITION = 'getFirstEvenCardPosition'
 
-/* getCardPosition */
+/** getCardPosition
+  export function getCardPosition(stack, card) {
+    return stack.indexOf(card);
+  }
+  what do we analyze:
+  2. two params
+  3. return
+  3. indexOf
+**/
 class CardPosition extends PublicApi {
   public get isOptimal(): boolean {
     if (this.implementation.params.length !== 2) {
       return false
     }
-    return true
+
+    const body = this.implementation.body
+    if (!guardReturnBlockStatement(body)) {
+      return false
+    }
+    return this.hasIndexOf
   }
 
   public get hasIndexOf(): boolean {
@@ -46,7 +60,13 @@ class StackIncludesCard extends PublicApi {
     if (this.implementation.params.length !== 2) {
       return false
     }
-    return true
+
+    const body = this.implementation.body
+    if (!guardReturnBlockStatement(body)) {
+      return false
+    }
+
+    return this.hasIncludes
   }
 
   public get hasIncludes(): boolean {
@@ -66,7 +86,13 @@ class CardsAreEven extends PublicApi {
     if (this.implementation.params.length !== 1) {
       return false
     }
-    return true
+
+    const body = this.implementation.body
+    if (!guardReturnBlockStatement(body)) {
+      return false
+    }
+
+    return this.hasEvery
   }
 
   public get hasEvery(): boolean {
@@ -86,7 +112,13 @@ class StackIncludesOdd extends PublicApi {
     if (this.implementation.params.length !== 1) {
       return false
     }
-    return true
+
+    const body = this.implementation.body
+    if (!guardReturnBlockStatement(body)) {
+      return false
+    }
+
+    return this.hasSome
   }
 
   public get hasSome(): boolean {
@@ -106,7 +138,13 @@ class FirstOddCard extends PublicApi {
     if (this.implementation.params.length !== 1) {
       return false
     }
-    return true
+
+    const body = this.implementation.body
+    if (!guardReturnBlockStatement(body)) {
+      return false
+    }
+
+    return this.hasFind
   }
 
   public get hasFind(): boolean {
@@ -126,7 +164,13 @@ class FirstEvenCard extends PublicApi {
     if (this.implementation.params.length !== 1) {
       return false
     }
-    return true
+
+    const body = this.implementation.body
+    if (!guardReturnBlockStatement(body)) {
+      return false
+    }
+
+    return this.hasFindIndex
   }
 
   public get hasFindIndex(): boolean {
