@@ -8,6 +8,7 @@ import {
   guardCallExpression,
   guardReturnBlockStatement,
   SpecificPropertyCall,
+  traverse,
 } from '@exercism/static-analysis'
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
 import { readFileSync } from 'fs'
@@ -268,7 +269,7 @@ export class ElysesAnalyticEnchantmentsSolution {
     return (
       findAll(this.program, (node): node is SpecificPropertyCall<'forEach'> =>
         guardCallExpression(node, undefined, 'forEach')
-      ) !== undefined
+      ).length !== 0
     )
   }
 
@@ -287,7 +288,7 @@ export class ElysesAnalyticEnchantmentsSolution {
             AST_NODE_TYPES.ForOfStatement,
             AST_NODE_TYPES.ForStatement,
           ].some((type) => type === node.type)
-      ) !== undefined
+      ).length !== 0
     )
   }
 }
