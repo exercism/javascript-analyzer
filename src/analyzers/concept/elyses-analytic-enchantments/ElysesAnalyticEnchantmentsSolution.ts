@@ -75,7 +75,6 @@ class StackIncludesCard extends PublicApi {
       this.implementation.body,
       'includes'
     )
-    console.log(implementation)
   }
   public get isOptimal(): boolean {
     if (this.implementation.params.length !== 2) {
