@@ -1,56 +1,67 @@
 import {
   AstParser,
+  ExtractedFunction,
   extractExports,
   extractFunctions,
+  findAll,
   findFirst,
   guardCallExpression,
   guardReturnBlockStatement,
   SpecificPropertyCall,
 } from '@exercism/static-analysis'
-import { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
 import { readFileSync } from 'fs'
 import path from 'path'
 import { Source } from '~src/analyzers/SourceImpl'
 import { assertPublicApi } from '~src/asserts/assert_public_api'
 import { PublicApi } from '../../PublicApi'
 
-const GET_CARD_POSITION = 'getCardPosition'
-const DOES_STACK_INCLUDE_CARD = 'doesStackIncludeCard'
-const IS_EACH_CARD_EVEN = 'isEachCardEven'
-const DOES_STACK_INCLUDE_ODD_CARD = 'doesStackIncludeOddCard'
-const GET_FIRST_ODD_CARD = 'getFirstOddCard'
-const GET_FIRST_EVEN_CARD_POSITION = 'getFirstEvenCardPosition'
+export const GET_CARD_POSITION = 'getCardPosition'
+export const DOES_STACK_INCLUDE_CARD = 'doesStackIncludeCard'
+export const IS_EACH_CARD_EVEN = 'isEachCardEven'
+export const DOES_STACK_INCLUDE_ODD_CARD = 'doesStackIncludeOddCard'
+export const GET_FIRST_ODD_CARD = 'getFirstOddCard'
+export const GET_FIRST_EVEN_CARD_POSITION = 'getFirstEvenCardPosition'
 
-/** getCardPosition
-  export function getCardPosition(stack, card) {
-    return stack.indexOf(card);
-  }
-  what do we analyze:
-  2. two params
-  3. return
-  3. indexOf
-**/
+/* getCardPosition */
 class CardPosition extends PublicApi {
+  public usesIndexOf: boolean
+
+  constructor(public readonly implementation: ExtractedFunction) {
+    super(implementation)
+    this.usesIndexOf = usesCorrectArrayMethod(
+      this.implementation.body,
+      'indexOf'
+    )
+  }
   public get isOptimal(): boolean {
     if (this.implementation.params.length !== 2) {
       return false
     }
 
-    const body = this.implementation.body
-    if (!guardReturnBlockStatement(body)) {
-      return false
-    }
-    return this.hasIndexOf
-  }
+    let foundSuboptimalNode = false
 
-  public get hasIndexOf(): boolean {
-    return (
-      findFirst(
-        this.implementation.body,
-        (node): node is SpecificPropertyCall<'indexOf'> =>
-          guardCallExpression(node, undefined, 'indexOf')
-      ) !== undefined
-    )
+    this.traverse({
+      enter() {
+        foundSuboptimalNode = true
+      },
+
+      [AST_NODE_TYPES.ReturnStatement]() {
+        foundSuboptimalNode = false
+      },
+
+      [AST_NODE_TYPES.BlockStatement]() {
+        foundSuboptimalNode = false
+      },
+
+      exit() {
+        if (foundSuboptimalNode) {
+          this.break()
+        }
+      },
+    })
+
+    return !foundSuboptimalNode
   }
 }
 
@@ -188,11 +199,11 @@ export class ElysesAnalyticEnchantmentsSolution {
   private readonly source: Source
 
   public readonly cardPosition: CardPosition
-  public readonly stackIncludesCard: StackIncludesCard
-  public readonly cardsAreEven: CardsAreEven
-  public readonly stackIncludesOdd: StackIncludesOdd
-  public readonly firstOddCard: FirstOddCard
-  public readonly firstEvenCard: FirstEvenCard
+  // public readonly stackIncludesCard: StackIncludesCard
+  // public readonly cardsAreEven: CardsAreEven
+  // public readonly stackIncludesOdd: StackIncludesOdd
+  // public readonly firstOddCard: FirstOddCard
+  // public readonly firstEvenCard: FirstEvenCard
 
   private exemplar!: Source
 
@@ -205,33 +216,33 @@ export class ElysesAnalyticEnchantmentsSolution {
     this.cardPosition = new CardPosition(
       assertPublicApi(GET_CARD_POSITION, exports, functions)
     )
-    this.stackIncludesCard = new StackIncludesCard(
-      assertPublicApi(DOES_STACK_INCLUDE_CARD, exports, functions)
-    )
-    this.cardsAreEven = new CardsAreEven(
-      assertPublicApi(IS_EACH_CARD_EVEN, exports, functions)
-    )
-    this.stackIncludesOdd = new StackIncludesOdd(
-      assertPublicApi(DOES_STACK_INCLUDE_ODD_CARD, exports, functions)
-    )
-    this.firstOddCard = new FirstOddCard(
-      assertPublicApi(GET_FIRST_ODD_CARD, exports, functions)
-    )
-    this.firstEvenCard = new FirstEvenCard(
-      assertPublicApi(GET_FIRST_EVEN_CARD_POSITION, exports, functions)
-    )
+    // this.stackIncludesCard = new StackIncludesCard(
+    //   assertPublicApi(DOES_STACK_INCLUDE_CARD, exports, functions)
+    // )
+    // this.cardsAreEven = new CardsAreEven(
+    //   assertPublicApi(IS_EACH_CARD_EVEN, exports, functions)
+    // )
+    // this.stackIncludesOdd = new StackIncludesOdd(
+    //   assertPublicApi(DOES_STACK_INCLUDE_ODD_CARD, exports, functions)
+    // )
+    // this.firstOddCard = new FirstOddCard(
+    //   assertPublicApi(GET_FIRST_ODD_CARD, exports, functions)
+    // )
+    // this.firstEvenCard = new FirstEvenCard(
+    //   assertPublicApi(GET_FIRST_EVEN_CARD_POSITION, exports, functions)
+    // )
   }
 
-  public get isOptimal(): boolean {
-    return (
-      this.cardPosition.isOptimal &&
-      this.stackIncludesCard.isOptimal &&
-      this.cardsAreEven.isOptimal &&
-      this.stackIncludesCard.isOptimal &&
-      this.firstOddCard.isOptimal &&
-      this.firstEvenCard.isOptimal
-    )
-  }
+  // public get isOptimal(): boolean {
+  //   return (
+  //     this.cardPosition.isOptimal &&
+  //     this.stackIncludesCard.isOptimal &&
+  //     this.cardsAreEven.isOptimal &&
+  //     this.stackIncludesCard.isOptimal &&
+  //     this.firstOddCard.isOptimal &&
+  //     this.firstEvenCard.isOptimal
+  //   )
+  // }
 
   public readExemplar(directory: string): void {
     const configPath = path.join(directory, '.meta', 'config.json')
@@ -252,4 +263,39 @@ export class ElysesAnalyticEnchantmentsSolution {
       JSON.stringify(exemplarAst[0].program)
     )
   }
+
+  public get hasforEach(): boolean {
+    return (
+      findAll(this.program, (node): node is SpecificPropertyCall<'forEach'> =>
+        guardCallExpression(node, undefined, 'forEach')
+      ) !== undefined
+    )
+  }
+
+  public get hasFor(): boolean {
+    return (
+      findAll(
+        this.program,
+        (
+          node
+        ): node is
+          | TSESTree.ForInStatement
+          | TSESTree.ForOfStatement
+          | TSESTree.ForStatement =>
+          [
+            AST_NODE_TYPES.ForInStatement,
+            AST_NODE_TYPES.ForOfStatement,
+            AST_NODE_TYPES.ForStatement,
+          ].some((type) => type === node.type)
+      ) !== undefined
+    )
+  }
+}
+
+function usesCorrectArrayMethod(body: TSESTree.Node, method: string): boolean {
+  return (
+    findFirst(body, (node): node is SpecificPropertyCall<'${method}'> =>
+      guardCallExpression(node, undefined, method)
+    ) !== undefined
+  )
 }
