@@ -62,33 +62,49 @@ class CardPosition extends PublicApi {
       },
     })
 
-    return !foundSuboptimalNode
+    return foundSuboptimalNode
   }
 }
 
 /* doesStackIncludeCard */
 class StackIncludesCard extends PublicApi {
+  public usesIncludes: boolean
+  constructor(public readonly implementation: ExtractedFunction) {
+    super(implementation)
+    this.usesIncludes = usesCorrectArrayMethod(
+      this.implementation.body,
+      'includes'
+    )
+    console.log(implementation)
+  }
   public get isOptimal(): boolean {
     if (this.implementation.params.length !== 2) {
       return false
     }
 
-    const body = this.implementation.body
-    if (!guardReturnBlockStatement(body)) {
-      return false
-    }
+    let foundSuboptimalNode = false
 
-    return this.hasIncludes
-  }
+    this.traverse({
+      enter() {
+        foundSuboptimalNode = true
+      },
 
-  public get hasIncludes(): boolean {
-    return (
-      findFirst(
-        this.implementation.body,
-        (node): node is SpecificPropertyCall<'includes'> =>
-          guardCallExpression(node, undefined, 'includes')
-      ) !== undefined
-    )
+      [AST_NODE_TYPES.ReturnStatement]() {
+        foundSuboptimalNode = false
+      },
+
+      [AST_NODE_TYPES.BlockStatement]() {
+        foundSuboptimalNode = false
+      },
+
+      exit() {
+        if (foundSuboptimalNode) {
+          this.break()
+        }
+      },
+    })
+
+    return foundSuboptimalNode
   }
 }
 
@@ -200,7 +216,7 @@ export class ElysesAnalyticEnchantmentsSolution {
   private readonly source: Source
 
   public readonly cardPosition: CardPosition
-  // public readonly stackIncludesCard: StackIncludesCard
+  public readonly stackIncludesCard: StackIncludesCard
   // public readonly cardsAreEven: CardsAreEven
   // public readonly stackIncludesOdd: StackIncludesOdd
   // public readonly firstOddCard: FirstOddCard
@@ -217,9 +233,9 @@ export class ElysesAnalyticEnchantmentsSolution {
     this.cardPosition = new CardPosition(
       assertPublicApi(GET_CARD_POSITION, exports, functions)
     )
-    // this.stackIncludesCard = new StackIncludesCard(
-    //   assertPublicApi(DOES_STACK_INCLUDE_CARD, exports, functions)
-    // )
+    this.stackIncludesCard = new StackIncludesCard(
+      assertPublicApi(DOES_STACK_INCLUDE_CARD, exports, functions)
+    )
     // this.cardsAreEven = new CardsAreEven(
     //   assertPublicApi(IS_EACH_CARD_EVEN, exports, functions)
     // )

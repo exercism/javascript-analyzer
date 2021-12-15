@@ -16,6 +16,7 @@ import {
 import { WritableOutput, ExecutionOptions } from '../../../interface'
 import { IsolatedAnalyzerImpl } from '../../IsolatedAnalyzerImpl'
 import {
+  DOES_STACK_INCLUDE_CARD,
   ElysesAnalyticEnchantmentsSolution,
   GET_CARD_POSITION,
 } from './ElysesAnalyticEnchantmentsSolution'
@@ -61,9 +62,22 @@ export class ElysesAnalyticEnchantmentsAnalyzer extends IsolatedAnalyzerImpl {
           })
         )
         output.finish()
-      } else {
-        output.add(FUNCTION_NOT_OPTIMAL({ function: GET_CARD_POSITION }))
       }
+      output.add(FUNCTION_NOT_OPTIMAL({ function: GET_CARD_POSITION }))
+      output.finish()
+    }
+
+    if (!this.solution.stackIncludesCard.isOptimal) {
+      if (!this.solution.stackIncludesCard.usesIncludes) {
+        output.add(
+          PREFER_BUILT_IN_METHOD({
+            type: 'Array',
+            method: 'includes',
+          })
+        )
+        output.finish()
+      }
+      output.add(FUNCTION_NOT_OPTIMAL({ function: DOES_STACK_INCLUDE_CARD }))
       output.finish()
     }
 
