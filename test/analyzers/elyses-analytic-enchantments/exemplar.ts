@@ -1,6 +1,6 @@
 import { DirectoryWithConfigInput } from '@exercism/static-analysis'
 import path from 'path'
-import { PoetryClubDoorPolicyAnalyzer } from '~src/analyzers/concept/poetry-club-door-policy'
+import { ElysesAnalyticEnchantmentsAnalyzer } from '~src/analyzers/concept/elyses-analytic-enchantments'
 import { EXEMPLAR_SOLUTION } from '~src/comments/shared'
 import { makeAnalyze, makeOptions } from '~test/helpers/smoke'
 
@@ -9,24 +9,24 @@ const inputDir = path.join(
   '..',
   '..',
   'fixtures',
-  'poetry-club-door-policy',
+  'elyses-analytic-enchantments',
   'exemplar'
 )
 
 const analyze = makeAnalyze(
-  () => new PoetryClubDoorPolicyAnalyzer(),
+  () => new ElysesAnalyticEnchantmentsAnalyzer(),
   makeOptions({
     get inputDir(): string {
       return inputDir
     },
     get exercise(): string {
-      return 'poetry-club-door-policy'
+      return 'elyses-analytic-enchantments'
     },
   })
 )
 
-describe('When running analysis on poetry-club-door-policy', () => {
-  it('recognises the exemplar solution', async () => {
+describe('When running analysis on elyses-analytic-enchantments', () => {
+  it('recognizes the exemplar solution', async () => {
     const input = new DirectoryWithConfigInput(inputDir)
 
     const [solution] = await input.read()
