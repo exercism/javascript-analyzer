@@ -28,7 +28,13 @@ import {
 type Program = TSESTree.Program
 
 export const MUST_AVOID_IMPERATIVE_LOOP = factory`
-  Avoid use of for loops with this practice exercise. MAKE THIS MORE INFOMATIVE.
+  Avoid use of for loops with this practice exercise.
+
+  According to the instructions, there are build-in methods on the JavaScript
+  Array global object that are geared towards analysis.
+
+  Take a look at the instructions and/or the MDN docs on what methods are
+  available to use.
 `(
   'javascript.elyses-analytic-enchantments.must_avoid_imperative_loop',
   CommentType.Essential
