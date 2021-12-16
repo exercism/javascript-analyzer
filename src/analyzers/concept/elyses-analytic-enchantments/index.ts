@@ -17,6 +17,7 @@ import { WritableOutput, ExecutionOptions } from '../../../interface'
 import { IsolatedAnalyzerImpl } from '../../IsolatedAnalyzerImpl'
 import {
   DOES_STACK_INCLUDE_CARD,
+  DOES_STACK_INCLUDE_ODD_CARD,
   ElysesAnalyticEnchantmentsSolution,
   GET_CARD_POSITION,
   IS_EACH_CARD_EVEN,
@@ -93,6 +94,22 @@ export class ElysesAnalyticEnchantmentsAnalyzer extends IsolatedAnalyzerImpl {
         output.finish()
       }
       output.add(FUNCTION_NOT_OPTIMAL({ function: IS_EACH_CARD_EVEN }))
+      output.finish()
+    }
+
+    if (!this.solution.stackIncludesOdd.isOptimal) {
+      if (!this.solution.stackIncludesOdd.usesSome) {
+        output.add(
+          PREFER_BUILT_IN_METHOD({
+            type: 'Array',
+            method: 'some',
+          })
+        )
+        output.finish()
+      }
+      output.add(
+        FUNCTION_NOT_OPTIMAL({ function: DOES_STACK_INCLUDE_ODD_CARD })
+      )
       output.finish()
     }
 

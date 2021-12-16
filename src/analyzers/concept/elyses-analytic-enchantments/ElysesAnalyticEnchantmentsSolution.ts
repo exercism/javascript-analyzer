@@ -115,7 +115,7 @@ class CardsAreEven extends PublicApi {
     this.usesEvery = usesCorrectArrayMethod(this.implementation.body, 'every')
   }
   public get isOptimal(): boolean {
-    if (this.implementation.params.length !== 2) {
+    if (this.implementation.params.length !== 1) {
       return false
     }
 
@@ -147,27 +147,40 @@ class CardsAreEven extends PublicApi {
 
 /* doesStackIncludeOddCard */
 class StackIncludesOdd extends PublicApi {
+  public usesSome: boolean
+  constructor(public readonly implementation: ExtractedFunction) {
+    super(implementation)
+    this.usesSome = usesCorrectArrayMethod(this.implementation.body, 'some')
+  }
   public get isOptimal(): boolean {
     if (this.implementation.params.length !== 1) {
       return false
     }
 
-    const body = this.implementation.body
-    if (!guardReturnBlockStatement(body)) {
-      return false
-    }
+    let foundSuboptimalNode = false
 
-    return this.hasSome
-  }
+    this.traverse({
+      enter() {
+        foundSuboptimalNode = true
+      },
 
-  public get hasSome(): boolean {
-    return (
-      findFirst(
-        this.implementation.body,
-        (node): node is SpecificPropertyCall<'some'> =>
-          guardCallExpression(node, undefined, 'some')
-      ) !== undefined
-    )
+      [AST_NODE_TYPES.ReturnStatement]() {
+        foundSuboptimalNode = false
+      },
+
+      [AST_NODE_TYPES.BlockStatement]() {
+        console.log('BLOCK')
+        foundSuboptimalNode = false
+      },
+
+      exit() {
+        if (foundSuboptimalNode) {
+          this.break()
+        }
+      },
+    })
+
+    return foundSuboptimalNode
   }
 }
 
@@ -229,7 +242,7 @@ export class ElysesAnalyticEnchantmentsSolution {
   public readonly cardPosition: CardPosition
   public readonly stackIncludesCard: StackIncludesCard
   public readonly cardsAreEven: CardsAreEven
-  // public readonly stackIncludesOdd: StackIncludesOdd
+  public readonly stackIncludesOdd: StackIncludesOdd
   // public readonly firstOddCard: FirstOddCard
   // public readonly firstEvenCard: FirstEvenCard
 
@@ -250,9 +263,9 @@ export class ElysesAnalyticEnchantmentsSolution {
     this.cardsAreEven = new CardsAreEven(
       assertPublicApi(IS_EACH_CARD_EVEN, exports, functions)
     )
-    // this.stackIncludesOdd = new StackIncludesOdd(
-    //   assertPublicApi(DOES_STACK_INCLUDE_ODD_CARD, exports, functions)
-    // )
+    this.stackIncludesOdd = new StackIncludesOdd(
+      assertPublicApi(DOES_STACK_INCLUDE_ODD_CARD, exports, functions)
+    )
     // this.firstOddCard = new FirstOddCard(
     //   assertPublicApi(GET_FIRST_ODD_CARD, exports, functions)
     // )
