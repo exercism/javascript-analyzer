@@ -169,7 +169,6 @@ class StackIncludesOdd extends PublicApi {
       },
 
       [AST_NODE_TYPES.BlockStatement]() {
-        console.log('BLOCK')
         foundSuboptimalNode = false
       },
 
@@ -186,27 +185,39 @@ class StackIncludesOdd extends PublicApi {
 
 /* getFirstOddCard */
 class FirstOddCard extends PublicApi {
+  public usesFind: boolean
+  constructor(public readonly implementation: ExtractedFunction) {
+    super(implementation)
+    this.usesFind = usesCorrectArrayMethod(this.implementation.body, 'find')
+  }
   public get isOptimal(): boolean {
     if (this.implementation.params.length !== 1) {
       return false
     }
 
-    const body = this.implementation.body
-    if (!guardReturnBlockStatement(body)) {
-      return false
-    }
+    let foundSuboptimalNode = false
 
-    return this.hasFind
-  }
+    this.traverse({
+      enter() {
+        foundSuboptimalNode = true
+      },
 
-  public get hasFind(): boolean {
-    return (
-      findFirst(
-        this.implementation.body,
-        (node): node is SpecificPropertyCall<'find'> =>
-          guardCallExpression(node, undefined, 'find')
-      ) !== undefined
-    )
+      [AST_NODE_TYPES.ReturnStatement]() {
+        foundSuboptimalNode = false
+      },
+
+      [AST_NODE_TYPES.BlockStatement]() {
+        foundSuboptimalNode = false
+      },
+
+      exit() {
+        if (foundSuboptimalNode) {
+          this.break()
+        }
+      },
+    })
+
+    return foundSuboptimalNode
   }
 }
 
@@ -243,7 +254,7 @@ export class ElysesAnalyticEnchantmentsSolution {
   public readonly stackIncludesCard: StackIncludesCard
   public readonly cardsAreEven: CardsAreEven
   public readonly stackIncludesOdd: StackIncludesOdd
-  // public readonly firstOddCard: FirstOddCard
+  public readonly firstOddCard: FirstOddCard
   // public readonly firstEvenCard: FirstEvenCard
 
   private exemplar!: Source
@@ -266,9 +277,9 @@ export class ElysesAnalyticEnchantmentsSolution {
     this.stackIncludesOdd = new StackIncludesOdd(
       assertPublicApi(DOES_STACK_INCLUDE_ODD_CARD, exports, functions)
     )
-    // this.firstOddCard = new FirstOddCard(
-    //   assertPublicApi(GET_FIRST_ODD_CARD, exports, functions)
-    // )
+    this.firstOddCard = new FirstOddCard(
+      assertPublicApi(GET_FIRST_ODD_CARD, exports, functions)
+    )
     // this.firstEvenCard = new FirstEvenCard(
     //   assertPublicApi(GET_FIRST_EVEN_CARD_POSITION, exports, functions)
     // )
