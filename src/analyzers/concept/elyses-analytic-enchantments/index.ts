@@ -20,6 +20,7 @@ import {
   DOES_STACK_INCLUDE_ODD_CARD,
   ElysesAnalyticEnchantmentsSolution,
   GET_CARD_POSITION,
+  GET_FIRST_EVEN_CARD_POSITION,
   GET_FIRST_ODD_CARD,
   IS_EACH_CARD_EVEN,
 } from './ElysesAnalyticEnchantmentsSolution'
@@ -125,6 +126,22 @@ export class ElysesAnalyticEnchantmentsAnalyzer extends IsolatedAnalyzerImpl {
         output.finish()
       }
       output.add(FUNCTION_NOT_OPTIMAL({ function: GET_FIRST_ODD_CARD }))
+      output.finish()
+    }
+
+    if (!this.solution.firstEvenCard.isOptimal) {
+      if (!this.solution.firstEvenCard.usesFindIndex) {
+        output.add(
+          PREFER_BUILT_IN_METHOD({
+            type: 'Array',
+            method: 'findIndex',
+          })
+        )
+        output.finish()
+      }
+      output.add(
+        FUNCTION_NOT_OPTIMAL({ function: GET_FIRST_EVEN_CARD_POSITION })
+      )
       output.finish()
     }
 

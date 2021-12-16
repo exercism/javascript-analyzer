@@ -186,6 +186,7 @@ class StackIncludesOdd extends PublicApi {
 /* getFirstOddCard */
 class FirstOddCard extends PublicApi {
   public usesFind: boolean
+
   constructor(public readonly implementation: ExtractedFunction) {
     super(implementation)
     this.usesFind = usesCorrectArrayMethod(this.implementation.body, 'find')
@@ -223,27 +224,43 @@ class FirstOddCard extends PublicApi {
 
 /* getFirstEvenCardPosition */
 class FirstEvenCard extends PublicApi {
+  public usesFindIndex: boolean
+
+  constructor(public readonly implementation: ExtractedFunction) {
+    super(implementation)
+    this.usesFindIndex = usesCorrectArrayMethod(
+      this.implementation.body,
+      'findIndex'
+    )
+  }
   public get isOptimal(): boolean {
     if (this.implementation.params.length !== 1) {
       return false
     }
 
-    const body = this.implementation.body
-    if (!guardReturnBlockStatement(body)) {
-      return false
-    }
+    let foundSuboptimalNode = false
 
-    return this.hasFindIndex
-  }
+    this.traverse({
+      enter() {
+        foundSuboptimalNode = true
+      },
 
-  public get hasFindIndex(): boolean {
-    return (
-      findFirst(
-        this.implementation.body,
-        (node): node is SpecificPropertyCall<'findIndex'> =>
-          guardCallExpression(node, undefined, 'findIndex')
-      ) !== undefined
-    )
+      [AST_NODE_TYPES.ReturnStatement]() {
+        foundSuboptimalNode = false
+      },
+
+      [AST_NODE_TYPES.BlockStatement]() {
+        foundSuboptimalNode = false
+      },
+
+      exit() {
+        if (foundSuboptimalNode) {
+          this.break()
+        }
+      },
+    })
+
+    return foundSuboptimalNode
   }
 }
 
@@ -255,7 +272,7 @@ export class ElysesAnalyticEnchantmentsSolution {
   public readonly cardsAreEven: CardsAreEven
   public readonly stackIncludesOdd: StackIncludesOdd
   public readonly firstOddCard: FirstOddCard
-  // public readonly firstEvenCard: FirstEvenCard
+  public readonly firstEvenCard: FirstEvenCard
 
   private exemplar!: Source
 
@@ -280,21 +297,10 @@ export class ElysesAnalyticEnchantmentsSolution {
     this.firstOddCard = new FirstOddCard(
       assertPublicApi(GET_FIRST_ODD_CARD, exports, functions)
     )
-    // this.firstEvenCard = new FirstEvenCard(
-    //   assertPublicApi(GET_FIRST_EVEN_CARD_POSITION, exports, functions)
-    // )
+    this.firstEvenCard = new FirstEvenCard(
+      assertPublicApi(GET_FIRST_EVEN_CARD_POSITION, exports, functions)
+    )
   }
-
-  // public get isOptimal(): boolean {
-  //   return (
-  //     this.cardPosition.isOptimal &&
-  //     this.stackIncludesCard.isOptimal &&
-  //     this.cardsAreEven.isOptimal &&
-  //     this.stackIncludesCard.isOptimal &&
-  //     this.firstOddCard.isOptimal &&
-  //     this.firstEvenCard.isOptimal
-  //   )
-  // }
 
   public readExemplar(directory: string): void {
     const configPath = path.join(directory, '.meta', 'config.json')
