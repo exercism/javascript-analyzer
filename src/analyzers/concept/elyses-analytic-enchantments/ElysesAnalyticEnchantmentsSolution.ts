@@ -6,9 +6,7 @@ import {
   findAll,
   findFirst,
   guardCallExpression,
-  guardReturnBlockStatement,
   SpecificPropertyCall,
-  traverse,
 } from '@exercism/static-analysis'
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
 import { readFileSync } from 'fs'
@@ -35,6 +33,7 @@ class CardPosition extends PublicApi {
       'indexOf'
     )
   }
+
   public get isOptimal(): boolean {
     if (this.implementation.params.length !== 2) {
       return false
@@ -69,6 +68,7 @@ class CardPosition extends PublicApi {
 /* doesStackIncludeCard */
 class StackIncludesCard extends PublicApi {
   public usesIncludes: boolean
+
   constructor(public readonly implementation: ExtractedFunction) {
     super(implementation)
     this.usesIncludes = usesCorrectArrayMethod(
@@ -76,6 +76,7 @@ class StackIncludesCard extends PublicApi {
       'includes'
     )
   }
+
   public get isOptimal(): boolean {
     if (this.implementation.params.length !== 2) {
       return false
@@ -110,10 +111,12 @@ class StackIncludesCard extends PublicApi {
 /* isEachCardEven */
 class CardsAreEven extends PublicApi {
   public usesEvery: boolean
+
   constructor(public readonly implementation: ExtractedFunction) {
     super(implementation)
     this.usesEvery = usesCorrectArrayMethod(this.implementation.body, 'every')
   }
+
   public get isOptimal(): boolean {
     if (this.implementation.params.length !== 1) {
       return false
@@ -152,6 +155,7 @@ class StackIncludesOdd extends PublicApi {
     super(implementation)
     this.usesSome = usesCorrectArrayMethod(this.implementation.body, 'some')
   }
+
   public get isOptimal(): boolean {
     if (this.implementation.params.length !== 1) {
       return false
@@ -191,6 +195,7 @@ class FirstOddCard extends PublicApi {
     super(implementation)
     this.usesFind = usesCorrectArrayMethod(this.implementation.body, 'find')
   }
+
   public get isOptimal(): boolean {
     if (this.implementation.params.length !== 1) {
       return false
@@ -233,6 +238,7 @@ class FirstEvenCard extends PublicApi {
       'findIndex'
     )
   }
+
   public get isOptimal(): boolean {
     if (this.implementation.params.length !== 1) {
       return false
