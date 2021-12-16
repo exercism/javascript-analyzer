@@ -19,6 +19,7 @@ import {
   DOES_STACK_INCLUDE_CARD,
   ElysesAnalyticEnchantmentsSolution,
   GET_CARD_POSITION,
+  IS_EACH_CARD_EVEN,
 } from './ElysesAnalyticEnchantmentsSolution'
 
 type Program = TSESTree.Program
@@ -78,6 +79,20 @@ export class ElysesAnalyticEnchantmentsAnalyzer extends IsolatedAnalyzerImpl {
         output.finish()
       }
       output.add(FUNCTION_NOT_OPTIMAL({ function: DOES_STACK_INCLUDE_CARD }))
+      output.finish()
+    }
+
+    if (!this.solution.cardsAreEven.isOptimal) {
+      if (!this.solution.cardsAreEven.usesEvery) {
+        output.add(
+          PREFER_BUILT_IN_METHOD({
+            type: 'Array',
+            method: 'every',
+          })
+        )
+        output.finish()
+      }
+      output.add(FUNCTION_NOT_OPTIMAL({ function: IS_EACH_CARD_EVEN }))
       output.finish()
     }
 
