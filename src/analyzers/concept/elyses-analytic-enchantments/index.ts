@@ -58,9 +58,9 @@ export class ElysesAnalyticEnchantmentsAnalyzer extends IsolatedAnalyzerImpl {
       output.finish()
     }
 
-    if (this.solution.hasforEach || this.solution.hasFor) {
+    if (this.solution.hasImperativeLoop) {
       output.add(MUST_AVOID_IMPERATIVE_LOOP())
-      output.disapprove()
+      output.finish()
     }
 
     if (!this.solution.cardPosition.isOptimal) {

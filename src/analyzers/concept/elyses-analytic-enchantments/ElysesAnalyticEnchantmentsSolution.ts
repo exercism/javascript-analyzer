@@ -328,16 +328,11 @@ export class ElysesAnalyticEnchantmentsSolution {
     )
   }
 
-  public get hasforEach(): boolean {
+  public get hasImperativeLoop(): boolean {
     return (
       findAll(this.program, (node): node is SpecificPropertyCall<'forEach'> =>
         guardCallExpression(node, undefined, 'forEach')
-      ).length !== 0
-    )
-  }
-
-  public get hasFor(): boolean {
-    return (
+      ).length !== 0 ||
       findAll(
         this.program,
         (
