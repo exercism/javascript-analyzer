@@ -163,3 +163,7 @@ export const REPLACE_MAGIC_WITH_IDENTIFIER = factory<'literal' | 'identifier'>`
 The a magic value \`${'literal'}\` can be replaced by \`${'identifier'}\`. When
 possible, named constants are often a better choice than in-lined literals.
 `('javascript.general.replace_magic_with_identifier', CommentType.Actionable)
+
+export const PREFER_BUILT_IN_METHOD = factory<'type' | 'method'>`
+Make use of the built in \`${'method'}\` method available on the \`${'type'}\` type.
+`('javascript.general.prefer_built_in_method', CommentType.Actionable)
