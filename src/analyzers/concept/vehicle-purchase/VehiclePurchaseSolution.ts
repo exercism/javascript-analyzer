@@ -3,6 +3,7 @@ import {
   ExtractedFunction,
   extractExports,
   extractFunctions,
+  findFirstOfType,
 } from '@exercism/static-analysis'
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
 import { readFileSync } from 'fs'
@@ -15,6 +16,9 @@ export const NEEDS_LICENSE = 'needsLicense'
 export const CHOOSE_VEHICLE = 'chooseVehicle'
 export const CALCULATE_RESELL_PRICE = 'calculateResellPrice'
 
+/**
+ * `needsLicense` should not include unnecessary if-statement
+ */
 class NeedsLicense extends PublicApi {
   constructor(public readonly implementation: ExtractedFunction) {
     super(implementation)
@@ -48,6 +52,13 @@ class NeedsLicense extends PublicApi {
     })
 
     return !foundSuboptimalNode
+  }
+
+  public get hasConditional(): boolean {
+    return !!findFirstOfType(
+      this.implementation.body,
+      AST_NODE_TYPES.IfStatement
+    )
   }
 }
 class ChooseVehicle extends PublicApi {

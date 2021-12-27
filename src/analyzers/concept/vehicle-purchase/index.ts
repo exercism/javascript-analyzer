@@ -5,6 +5,7 @@ import {
   NoMethodError,
 } from '@exercism/static-analysis'
 import { TSESTree } from '@typescript-eslint/typescript-estree'
+import { CommentType, factory } from '../../../comments/comment'
 import {
   EXEMPLAR_SOLUTION,
   FUNCTION_NOT_OPTIMAL,
@@ -21,6 +22,27 @@ import {
 } from './VehiclePurchaseSolution'
 type Program = TSESTree.Program
 
+const UNNECESSARY_IF_STATEMENT = factory`
+Instead of creating an \`if (...) {}\` block, leverage the boolean value directly
+that can be returned from checking the value of the parameter.
+
+For example, the following:
+
+\`\`\`javascript
+if (param === true) {
+  return true;
+}
+\`\`\`
+
+can be turned into:
+
+\`\`\`javascript
+return param === true
+\`\`\`
+`(
+  'javascript.vehicle-purchase.unnecessary_if_statement',
+  CommentType.Actionable
+)
 export class VehiclePurchaseAnalyzer extends IsolatedAnalyzerImpl {
   private solution!: VehiclePurchaseSolution
 
@@ -40,7 +62,16 @@ export class VehiclePurchaseAnalyzer extends IsolatedAnalyzerImpl {
     }
 
     if (!this.solution.needsLicense.isOptimal) {
-      output.add(FUNCTION_NOT_OPTIMAL({ function: NEEDS_LICENSE }))
+      if (this.solution.needsLicense.hasConditional) {
+        output.add(UNNECESSARY_IF_STATEMENT())
+        output.finish()
+      } else {
+        output.add(FUNCTION_NOT_OPTIMAL({ function: NEEDS_LICENSE }))
+        output.finish()
+      }
+    }
+
+    if (this.solution.needsLicense.hasConditional) {
       output.finish()
     }
 
