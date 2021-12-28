@@ -28,13 +28,11 @@ import {
 type Program = TSESTree.Program
 
 export const MUST_AVOID_IMPERATIVE_LOOP = factory`
-  Avoid use of for loops with this practice exercise.
+  Avoid use of for loops with this exercise.
 
-  According to the instructions, there are build-in methods on the JavaScript
-  Array global object that are geared towards analysis.
+  According to the introduction, there are built-in methods on the JavaScript Array object that are geared towards analysis.
 
-  Take a look at the instructions and/or the MDN docs on what methods are
-  available to use.
+  Take a look at the introduction and/or the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#instance_methods) on what methods are available to use.
 `(
   'javascript.elyses-analytic-enchantments.must_avoid_imperative_loop',
   CommentType.Essential
@@ -63,93 +61,9 @@ export class ElysesAnalyticEnchantmentsAnalyzer extends IsolatedAnalyzerImpl {
       output.finish()
     }
 
-    if (!this.solution.cardPosition.isOptimal) {
-      if (!this.solution.cardPosition.usesIndexOf) {
-        output.add(
-          PREFER_BUILT_IN_METHOD({
-            type: 'Array',
-            method: 'indexOf',
-          })
-        )
-        output.finish()
-      }
-      output.add(FUNCTION_NOT_OPTIMAL({ function: GET_CARD_POSITION }))
-      output.finish()
-    }
+    this.checkCorrectMethodUsed(output)
 
-    if (!this.solution.stackIncludesCard.isOptimal) {
-      if (!this.solution.stackIncludesCard.usesIncludes) {
-        output.add(
-          PREFER_BUILT_IN_METHOD({
-            type: 'Array',
-            method: 'includes',
-          })
-        )
-        output.finish()
-      }
-      output.add(FUNCTION_NOT_OPTIMAL({ function: DOES_STACK_INCLUDE_CARD }))
-      output.finish()
-    }
-
-    if (!this.solution.cardsAreEven.isOptimal) {
-      if (!this.solution.cardsAreEven.usesEvery) {
-        output.add(
-          PREFER_BUILT_IN_METHOD({
-            type: 'Array',
-            method: 'every',
-          })
-        )
-        output.finish()
-      }
-      output.add(FUNCTION_NOT_OPTIMAL({ function: IS_EACH_CARD_EVEN }))
-      output.finish()
-    }
-
-    if (!this.solution.stackIncludesOdd.isOptimal) {
-      if (!this.solution.stackIncludesOdd.usesSome) {
-        output.add(
-          PREFER_BUILT_IN_METHOD({
-            type: 'Array',
-            method: 'some',
-          })
-        )
-        output.finish()
-      }
-      output.add(
-        FUNCTION_NOT_OPTIMAL({ function: DOES_STACK_INCLUDE_ODD_CARD })
-      )
-      output.finish()
-    }
-
-    if (!this.solution.firstOddCard.isOptimal) {
-      if (!this.solution.firstOddCard.usesFind) {
-        output.add(
-          PREFER_BUILT_IN_METHOD({
-            type: 'Array',
-            method: 'find',
-          })
-        )
-        output.finish()
-      }
-      output.add(FUNCTION_NOT_OPTIMAL({ function: GET_FIRST_ODD_CARD }))
-      output.finish()
-    }
-
-    if (!this.solution.firstEvenCard.isOptimal) {
-      if (!this.solution.firstEvenCard.usesFindIndex) {
-        output.add(
-          PREFER_BUILT_IN_METHOD({
-            type: 'Array',
-            method: 'findIndex',
-          })
-        )
-        output.finish()
-      }
-      output.add(
-        FUNCTION_NOT_OPTIMAL({ function: GET_FIRST_EVEN_CARD_POSITION })
-      )
-      output.finish()
-    }
+    this.checkForOptimalSolutions(output)
 
     output.finish()
   }
@@ -172,6 +86,104 @@ export class ElysesAnalyticEnchantmentsAnalyzer extends IsolatedAnalyzerImpl {
       }
 
       throw error
+    }
+  }
+
+  private checkCorrectMethodUsed(output: WritableOutput): void {
+    if (!this.solution.stackIncludesCard.usesIncludes) {
+      output.add(
+        PREFER_BUILT_IN_METHOD({
+          type: 'Array',
+          method: 'includes',
+        })
+      )
+      output.finish()
+    }
+
+    if (!this.solution.cardPosition.usesIndexOf) {
+      output.add(
+        PREFER_BUILT_IN_METHOD({
+          type: 'Array',
+          method: 'indexOf',
+        })
+      )
+      output.finish()
+    }
+
+    if (!this.solution.firstEvenCard.usesFindIndex) {
+      output.add(
+        PREFER_BUILT_IN_METHOD({
+          type: 'Array',
+          method: 'findIndex',
+        })
+      )
+      output.finish()
+    }
+
+    if (!this.solution.firstOddCard.usesFind) {
+      output.add(
+        PREFER_BUILT_IN_METHOD({
+          type: 'Array',
+          method: 'find',
+        })
+      )
+      output.finish()
+    }
+
+    if (!this.solution.stackIncludesOdd.usesSome) {
+      output.add(
+        PREFER_BUILT_IN_METHOD({
+          type: 'Array',
+          method: 'some',
+        })
+      )
+      output.finish()
+    }
+
+    if (!this.solution.cardsAreEven.usesEvery) {
+      output.add(
+        PREFER_BUILT_IN_METHOD({
+          type: 'Array',
+          method: 'every',
+        })
+      )
+      output.finish()
+    }
+  }
+
+  private checkForOptimalSolutions(output: WritableOutput): void {
+    if (!this.solution.cardPosition.isOptimal) {
+      output.add(FUNCTION_NOT_OPTIMAL({ function: GET_CARD_POSITION }))
+      output.finish()
+    }
+
+    if (!this.solution.stackIncludesCard.isOptimal) {
+      output.add(FUNCTION_NOT_OPTIMAL({ function: DOES_STACK_INCLUDE_CARD }))
+      output.finish()
+    }
+
+    if (!this.solution.cardsAreEven.isOptimal) {
+      output.add(FUNCTION_NOT_OPTIMAL({ function: IS_EACH_CARD_EVEN }))
+      output.finish()
+    }
+
+    if (!this.solution.stackIncludesOdd.isOptimal) {
+      output.add(
+        FUNCTION_NOT_OPTIMAL({ function: DOES_STACK_INCLUDE_ODD_CARD })
+      )
+      output.finish()
+    }
+
+    if (!this.solution.firstOddCard.isOptimal) {
+      output.add(FUNCTION_NOT_OPTIMAL({ function: GET_FIRST_ODD_CARD }))
+      output.finish()
+    }
+
+    if (!this.solution.firstEvenCard.isOptimal) {
+      output.add(
+        FUNCTION_NOT_OPTIMAL({ function: GET_FIRST_EVEN_CARD_POSITION })
+      )
+      output.finish()
     }
   }
 }
