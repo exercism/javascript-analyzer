@@ -17,7 +17,8 @@ export const CHOOSE_VEHICLE = 'chooseVehicle'
 export const CALCULATE_RESELL_PRICE = 'calculateResellPrice'
 
 /**
- * `needsLicense` should not include unnecessary if-statement
+ * Verify that `needsLicense` does not include an unnecessary if-statement where
+ * the student returns `true`/`false`.
  */
 class NeedsLicense extends PublicApi {
   constructor(public readonly implementation: ExtractedFunction) {
@@ -51,7 +52,7 @@ class NeedsLicense extends PublicApi {
       },
     })
 
-    return !foundSuboptimalNode
+    return foundSuboptimalNode
   }
 
   public get hasConditional(): boolean {
@@ -61,6 +62,12 @@ class NeedsLicense extends PublicApi {
     )
   }
 }
+
+/**
+ * Verify that in `chooseVehicle` the string `' is clearly the better choice'`
+ * only appears once.
+ * Verify the student actually practiced if/else and did not use early returns.
+ */
 class ChooseVehicle extends PublicApi {
   constructor(public readonly implementation: ExtractedFunction) {
     super(implementation)
@@ -93,9 +100,24 @@ class ChooseVehicle extends PublicApi {
       },
     })
 
-    return !foundSuboptimalNode
+    return foundSuboptimalNode
+  }
+
+  public get usesIfElse(): boolean | undefined {
+    const body = this.implementation.body
+    if (body.type === AST_NODE_TYPES.BlockStatement) {
+      const ifNode = body.body.find(
+        (node): node is TSESTree.IfStatement =>
+          node.type === AST_NODE_TYPES.IfStatement
+      )
+      return !ifNode?.alternate ? false : true
+    }
   }
 }
+
+/**
+ * Verify the student actually practiced if/else and did not use early returns.
+ */
 class CalculateResellPrice extends PublicApi {
   constructor(public readonly implementation: ExtractedFunction) {
     super(implementation)
@@ -128,7 +150,18 @@ class CalculateResellPrice extends PublicApi {
       },
     })
 
-    return !foundSuboptimalNode
+    return foundSuboptimalNode
+  }
+
+  public get usesIfElse(): boolean | undefined {
+    const body = this.implementation.body
+    if (body.type === AST_NODE_TYPES.BlockStatement) {
+      const ifNode = body.body.find(
+        (node): node is TSESTree.IfStatement =>
+          node.type === AST_NODE_TYPES.IfStatement
+      )
+      return !ifNode?.alternate ? false : true
+    }
   }
 }
 

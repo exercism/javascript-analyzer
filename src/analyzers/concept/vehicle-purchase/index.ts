@@ -43,6 +43,14 @@ return param === true
   'javascript.vehicle-purchase.unnecessary_if_statement',
   CommentType.Actionable
 )
+
+const USE_IF_ELSE = factory<'function'>`
+Nice.
+That's an \_early return\_.
+For the purpose of the Concept that this exercise aims to teach, try solving this
+using an \`else\` statement.
+`('javascript.vehicle-purchase.use_if_else', CommentType.Informative)
+
 export class VehiclePurchaseAnalyzer extends IsolatedAnalyzerImpl {
   private solution!: VehiclePurchaseSolution
 
@@ -61,17 +69,13 @@ export class VehiclePurchaseAnalyzer extends IsolatedAnalyzerImpl {
       output.finish()
     }
 
-    if (!this.solution.needsLicense.isOptimal) {
-      if (this.solution.needsLicense.hasConditional) {
-        output.add(UNNECESSARY_IF_STATEMENT())
-        output.finish()
-      } else {
-        output.add(FUNCTION_NOT_OPTIMAL({ function: NEEDS_LICENSE }))
-        output.finish()
-      }
+    if (this.solution.needsLicense.hasConditional) {
+      output.add(UNNECESSARY_IF_STATEMENT())
+      output.finish()
     }
 
-    if (this.solution.needsLicense.hasConditional) {
+    if (!this.solution.needsLicense.isOptimal) {
+      output.add(FUNCTION_NOT_OPTIMAL({ function: NEEDS_LICENSE }))
       output.finish()
     }
 
@@ -80,8 +84,18 @@ export class VehiclePurchaseAnalyzer extends IsolatedAnalyzerImpl {
       output.finish()
     }
 
+    if (!this.solution.chooseVehicle.usesIfElse) {
+      output.add(USE_IF_ELSE({ function: CHOOSE_VEHICLE }))
+      output.finish()
+    }
+
     if (!this.solution.calculateResellPrice.isOptimal) {
       output.add(FUNCTION_NOT_OPTIMAL({ function: CALCULATE_RESELL_PRICE }))
+      output.finish()
+    }
+
+    if (!this.solution.calculateResellPrice.usesIfElse) {
+      output.add(USE_IF_ELSE({ function: CALCULATE_RESELL_PRICE }))
       output.finish()
     }
 
