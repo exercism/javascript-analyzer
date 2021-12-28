@@ -110,7 +110,7 @@ class ChooseVehicle extends PublicApi {
         (node): node is TSESTree.IfStatement =>
           node.type === AST_NODE_TYPES.IfStatement
       )
-      return !ifNode?.alternate ? false : true
+      return ifNode?.alternate ? true : false
     }
   }
 }
@@ -160,7 +160,7 @@ class CalculateResellPrice extends PublicApi {
         (node): node is TSESTree.IfStatement =>
           node.type === AST_NODE_TYPES.IfStatement
       )
-      return !ifNode?.alternate ? false : true
+      return ifNode?.alternate ? true : false
     }
   }
 }
