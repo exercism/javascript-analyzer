@@ -113,11 +113,11 @@ class ChooseVehicle extends PublicApi {
     if (body.type !== AST_NODE_TYPES.BlockStatement) {
       return undefined
     }
-    const ifNode = findFirst(
+    const ifStatement = findFirst(
       body,
       (node): node is IfStatement => node.type === AST_NODE_TYPES.IfStatement
     )
-    return Boolean(ifNode?.alternate)
+    return Boolean(ifStatement?.alternate)
   }
 }
 
@@ -166,11 +166,11 @@ class CalculateResellPrice extends PublicApi {
     if (body.type !== AST_NODE_TYPES.BlockStatement) {
       return undefined
     }
-    const ifNode = findFirst(
+    const ifStatement = findFirst(
       body,
       (node): node is IfStatement => node.type === AST_NODE_TYPES.IfStatement
     )
-    return Boolean(ifNode?.alternate)
+    return Boolean(ifStatement?.alternate)
   }
 }
 
