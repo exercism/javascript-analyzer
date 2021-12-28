@@ -12,6 +12,8 @@ import { Source } from '~src/analyzers/SourceImpl'
 import { assertPublicApi } from '~src/asserts/assert_public_api'
 import { PublicApi } from '../../PublicApi'
 
+type IfStatement = TSESTree.IfStatement
+
 export const NEEDS_LICENSE = 'needsLicense'
 export const CHOOSE_VEHICLE = 'chooseVehicle'
 export const CALCULATE_RESELL_PRICE = 'calculateResellPrice'
@@ -105,13 +107,15 @@ class ChooseVehicle extends PublicApi {
 
   public get usesIfElse(): boolean | undefined {
     const body = this.implementation.body
-    if (body.type === AST_NODE_TYPES.BlockStatement) {
-      const ifNode = body.body.find(
-        (node): node is TSESTree.IfStatement =>
-          node.type === AST_NODE_TYPES.IfStatement
-      )
-      return ifNode?.alternate ? true : false
+    // Only block statements can be inspected. Use `undefined` to signal
+    // the analyzer does not know if it uses if / else.
+    if (body.type !== AST_NODE_TYPES.BlockStatement) {
+      return undefined
     }
+    const ifNode = body.body.find(
+      (node): node is IfStatement => node.type === AST_NODE_TYPES.IfStatement
+    )
+    return Boolean(ifNode?.alternate)
   }
 }
 
@@ -155,13 +159,15 @@ class CalculateResellPrice extends PublicApi {
 
   public get usesIfElse(): boolean | undefined {
     const body = this.implementation.body
-    if (body.type === AST_NODE_TYPES.BlockStatement) {
-      const ifNode = body.body.find(
-        (node): node is TSESTree.IfStatement =>
-          node.type === AST_NODE_TYPES.IfStatement
-      )
-      return ifNode?.alternate ? true : false
+    // Only block statements can be inspected. Use `undefined` to signal
+    // the analyzer does not know if it uses if / else.
+    if (body.type !== AST_NODE_TYPES.BlockStatement) {
+      return undefined
     }
+    const ifNode = body.body.find(
+      (node): node is IfStatement => node.type === AST_NODE_TYPES.IfStatement
+    )
+    return Boolean(ifNode?.alternate)
   }
 }
 

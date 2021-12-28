@@ -74,23 +74,8 @@ export class VehiclePurchaseAnalyzer extends IsolatedAnalyzerImpl {
       output.finish()
     }
 
-    if (!this.solution.needsLicense.isOptimal) {
-      output.add(FUNCTION_NOT_OPTIMAL({ function: NEEDS_LICENSE }))
-      output.finish()
-    }
-
-    if (!this.solution.chooseVehicle.isOptimal) {
-      output.add(FUNCTION_NOT_OPTIMAL({ function: CHOOSE_VEHICLE }))
-      output.finish()
-    }
-
     if (!this.solution.chooseVehicle.usesIfElse) {
       output.add(USE_IF_ELSE({ function: CHOOSE_VEHICLE }))
-      output.finish()
-    }
-
-    if (!this.solution.calculateResellPrice.isOptimal) {
-      output.add(FUNCTION_NOT_OPTIMAL({ function: CALCULATE_RESELL_PRICE }))
       output.finish()
     }
 
