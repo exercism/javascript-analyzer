@@ -3,6 +3,7 @@ import {
   ExtractedFunction,
   extractExports,
   extractFunctions,
+  findFirst,
   findFirstOfType,
 } from '@exercism/static-analysis'
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
@@ -112,7 +113,8 @@ class ChooseVehicle extends PublicApi {
     if (body.type !== AST_NODE_TYPES.BlockStatement) {
       return undefined
     }
-    const ifNode = body.body.find(
+    const ifNode = findFirst(
+      body,
       (node): node is IfStatement => node.type === AST_NODE_TYPES.IfStatement
     )
     return Boolean(ifNode?.alternate)
@@ -164,7 +166,8 @@ class CalculateResellPrice extends PublicApi {
     if (body.type !== AST_NODE_TYPES.BlockStatement) {
       return undefined
     }
-    const ifNode = body.body.find(
+    const ifNode = findFirst(
+      body,
       (node): node is IfStatement => node.type === AST_NODE_TYPES.IfStatement
     )
     return Boolean(ifNode?.alternate)
