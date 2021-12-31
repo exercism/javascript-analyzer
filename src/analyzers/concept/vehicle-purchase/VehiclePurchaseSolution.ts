@@ -98,28 +98,55 @@ class ChooseVehicle extends PublicApi {
     return Boolean(ifStatement?.alternate)
   }
 
+  /**
+   * Verify that the template literal ` is clearly the better choice`
+   * only appears once.
+   */
   public get isUsingSameTemplatedString(): boolean | undefined {
     const templateValue = ` is clearly the better choice.`
 
+    // expression: "TemplateLiteral"
     return (
+      // if there are multiple expressions we know the template literal appears
+      // more than once
       findAll(
         this.implementation.body,
         (node): node is TSESTree.TemplateLiteral =>
+          // type: "TemplateLiteral"
           node.type === AST_NODE_TYPES.TemplateLiteral
-      ).map((v) =>
-        v.quasis.map((v) => v.value.raw).some((v) => v === templateValue)
+      ).filter((expression: TSESTree.TemplateLiteral) =>
+        // quasis
+        expression.quasis
+          .map(
+            // value: {raw: string; cooked: string}
+            (templateElement: TSESTree.TemplateElement) =>
+              templateElement.value.raw
+          )
+          // check for some in case there are other template literals used
+          .some((value: string) => value.trim === templateValue.trim)
       ).length > 1
     )
   }
 
+  /**
+   * Verify that the literal string ` is clearly the better choice`
+   * only appears once.
+   */
   public get isUsingSameLiteralString(): boolean | undefined {
     const templateValue = ' is clearly the better choice.'
 
+    // Literal
     return (
       findAll(
         this.implementation.body,
-        (node): node is TSESTree.Literal => node.type === AST_NODE_TYPES.Literal
-      ).filter((v) => v.value === templateValue).length > 1
+        (node): node is TSESTree.Literal =>
+          // type: "Literal"
+          node.type === AST_NODE_TYPES.Literal
+      ).filter(
+        (literal: TSESTree.Literal) =>
+          // {value: string} - should it be value or raw?
+          literal.value?.toString().trim === templateValue.trim
+      ).length > 1
     )
   }
 }
