@@ -46,10 +46,17 @@ return param === true
 
 const USE_IF_ELSE = factory<'function'>`
 Nice.
-That's an \_early return\_.
+That's an \_early return\_ used in the \`${'function'}\` function.
 For the purpose of the Concept that this exercise aims to teach, try solving this
 using an \`else\` statement.
 `('javascript.vehicle-purchase.use_if_else', CommentType.Informative)
+
+const AVOID_DUPLICATE_LITERAL_USAGE = factory`
+TODO: How to inform possible best practice?
+`(
+  'javascript.vehicle-purchase.avoid_duplicate_literal_usage',
+  CommentType.Informative
+)
 
 export class VehiclePurchaseAnalyzer extends IsolatedAnalyzerImpl {
   private solution!: VehiclePurchaseSolution
@@ -71,17 +78,21 @@ export class VehiclePurchaseAnalyzer extends IsolatedAnalyzerImpl {
 
     if (this.solution.needsLicense.hasConditional) {
       output.add(UNNECESSARY_IF_STATEMENT())
-      output.finish()
     }
 
     if (!this.solution.chooseVehicle.usesIfElse) {
       output.add(USE_IF_ELSE({ function: CHOOSE_VEHICLE }))
-      output.finish()
+    }
+
+    if (
+      this.solution.chooseVehicle.isUsingSameLiteralString ||
+      this.solution.chooseVehicle.isUsingSameTemplatedString
+    ) {
+      output.add(AVOID_DUPLICATE_LITERAL_USAGE())
     }
 
     if (!this.solution.calculateResellPrice.usesIfElse) {
       output.add(USE_IF_ELSE({ function: CALCULATE_RESELL_PRICE }))
-      output.finish()
     }
 
     output.finish()

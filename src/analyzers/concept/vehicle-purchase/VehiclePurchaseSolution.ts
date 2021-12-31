@@ -30,36 +30,6 @@ class NeedsLicense extends PublicApi {
     super(implementation)
   }
 
-  public get isOptimal(): boolean {
-    if (this.implementation.params.length !== 1) {
-      return false
-    }
-
-    let foundSuboptimalNode = false
-
-    this.traverse({
-      enter() {
-        foundSuboptimalNode = true
-      },
-
-      [AST_NODE_TYPES.ReturnStatement]() {
-        foundSuboptimalNode = false
-      },
-
-      [AST_NODE_TYPES.BlockStatement]() {
-        foundSuboptimalNode = false
-      },
-
-      exit() {
-        if (foundSuboptimalNode) {
-          this.break()
-        }
-      },
-    })
-
-    return foundSuboptimalNode
-  }
-
   public get hasConditional(): boolean {
     return !!findFirstOfType(
       this.implementation.body,
@@ -68,22 +38,14 @@ class NeedsLicense extends PublicApi {
   }
 }
 
-/**
- * Verify that in `chooseVehicle` the string `' is clearly the better choice'`
- * only appears once.
- * Verify the student actually practiced if/else and did not use early returns.
- */
 class ChooseVehicle extends PublicApi {
   constructor(public readonly implementation: ExtractedFunction) {
     super(implementation)
   }
 
-  public get isOptimal(): boolean | undefined {
-    if (this.implementation.params.length !== 2) {
-      return false
-    }
-  }
-
+  /**
+   *  Verify the student actually practiced if/else and did not use early returns.
+   */
   public get usesIfElse(): boolean | undefined {
     const body = this.implementation.body
     // Only block statements can be inspected. Use `undefined` to signal
@@ -151,44 +113,14 @@ class ChooseVehicle extends PublicApi {
   }
 }
 
-/**
- * Verify the student actually practiced if/else and did not use early returns.
- */
 class CalculateResellPrice extends PublicApi {
   constructor(public readonly implementation: ExtractedFunction) {
     super(implementation)
   }
 
-  public get isOptimal(): boolean {
-    if (this.implementation.params.length !== 2) {
-      return false
-    }
-
-    let foundSuboptimalNode = false
-
-    this.traverse({
-      enter() {
-        foundSuboptimalNode = true
-      },
-
-      [AST_NODE_TYPES.ReturnStatement]() {
-        foundSuboptimalNode = false
-      },
-
-      [AST_NODE_TYPES.BlockStatement]() {
-        foundSuboptimalNode = false
-      },
-
-      exit() {
-        if (foundSuboptimalNode) {
-          this.break()
-        }
-      },
-    })
-
-    return foundSuboptimalNode
-  }
-
+  /**
+   * Verify the student actually practiced if/else and did not use early returns.
+   */
   public get usesIfElse(): boolean | undefined {
     const body = this.implementation.body
     // Only block statements can be inspected. Use `undefined` to signal
