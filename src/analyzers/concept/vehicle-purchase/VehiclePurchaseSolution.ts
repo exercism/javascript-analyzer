@@ -3,8 +3,10 @@ import {
   ExtractedFunction,
   extractExports,
   extractFunctions,
+  findAll,
   findFirst,
   findFirstOfType,
+  TemplateLiteral,
 } from '@exercism/static-analysis'
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
 import { readFileSync } from 'fs'
@@ -76,34 +78,10 @@ class ChooseVehicle extends PublicApi {
     super(implementation)
   }
 
-  public get isOptimal(): boolean {
+  public get isOptimal(): boolean | undefined {
     if (this.implementation.params.length !== 2) {
       return false
     }
-
-    let foundSuboptimalNode = false
-
-    this.traverse({
-      enter() {
-        foundSuboptimalNode = true
-      },
-
-      [AST_NODE_TYPES.ReturnStatement]() {
-        foundSuboptimalNode = false
-      },
-
-      [AST_NODE_TYPES.BlockStatement]() {
-        foundSuboptimalNode = false
-      },
-
-      exit() {
-        if (foundSuboptimalNode) {
-          this.break()
-        }
-      },
-    })
-
-    return foundSuboptimalNode
   }
 
   public get usesIfElse(): boolean | undefined {
@@ -118,6 +96,31 @@ class ChooseVehicle extends PublicApi {
       (node): node is IfStatement => node.type === AST_NODE_TYPES.IfStatement
     )
     return Boolean(ifStatement?.alternate)
+  }
+
+  public get isUsingSameTemplatedString(): boolean | undefined {
+    const templateValue = ` is clearly the better choice.`
+
+    return (
+      findAll(
+        this.implementation.body,
+        (node): node is TSESTree.TemplateLiteral =>
+          node.type === AST_NODE_TYPES.TemplateLiteral
+      ).map((v) =>
+        v.quasis.map((v) => v.value.raw).some((v) => v === templateValue)
+      ).length > 1
+    )
+  }
+
+  public get isUsingSameLiteralString(): boolean | undefined {
+    const templateValue = ' is clearly the better choice.'
+
+    return (
+      findAll(
+        this.implementation.body,
+        (node): node is TSESTree.Literal => node.type === AST_NODE_TYPES.Literal
+      ).filter((v) => v.value === templateValue).length > 1
+    )
   }
 }
 
