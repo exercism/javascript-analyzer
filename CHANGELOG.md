@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.21.0
+
+- Add analyzer for `concept/elyses-analytic-enchantments`
+
 ## 0.20.0
 
 - Replace generic ExemplarAnalyzer for `freelancer-rates` with specific analyzer stub
