@@ -20,14 +20,39 @@ class TotalBirdCount extends PublicApi {
   constructor(implementation: ExtractedFunction) {
     super(implementation)
   }
+
+  public get hasFor(): boolean {
+    return (
+      findFirst(
+        this.implementation.body,
+        (node): node is TSESTree.ForStatement =>
+          [AST_NODE_TYPES.ForStatement].some((type) => type === node.type)
+      ) !== undefined
+    )
+  }
 }
 
 class BirdsInWeek extends PublicApi {
   constructor(implementation: ExtractedFunction) {
     super(implementation)
-    console.log(this.hasFor())
   }
-  public hasFor(): boolean {
+  public get hasFor(): boolean {
+    return (
+      findFirst(
+        this.implementation.body,
+        (node): node is TSESTree.ForStatement =>
+          [AST_NODE_TYPES.ForStatement].some((type) => type === node.type)
+      ) !== undefined
+    )
+  }
+}
+
+class FixBirdCountLog extends PublicApi {
+  constructor(implementation: ExtractedFunction) {
+    super(implementation)
+  }
+
+  public get hasFor(): boolean {
     return (
       findFirst(
         this.implementation.body,
@@ -41,7 +66,9 @@ class BirdsInWeek extends PublicApi {
 export class BirdWatcherSolution {
   private readonly source: Source
 
+  public readonly totalBirdCount: TotalBirdCount
   public readonly birdsInWeek: BirdsInWeek
+  public readonly fixBirdCountLog: FixBirdCountLog
 
   private exemplar!: Source
 
@@ -51,8 +78,14 @@ export class BirdWatcherSolution {
     const functions = extractFunctions(program)
     const exports = extractExports(program)
 
+    this.totalBirdCount = new TotalBirdCount(
+      assertPublicApi(TOTAL_BIRD_COUNT, exports, functions)
+    )
     this.birdsInWeek = new BirdsInWeek(
       assertPublicApi(BIRDS_IN_WEEK, exports, functions)
+    )
+    this.fixBirdCountLog = new FixBirdCountLog(
+      assertPublicApi(FIX_BIRD_COUNT_LOG, exports, functions)
     )
   }
 

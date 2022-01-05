@@ -5,14 +5,29 @@ import {
   NoMethodError,
 } from '@exercism/static-analysis'
 import { TSESTree } from '@typescript-eslint/typescript-estree'
+import { CommentType, factory } from '~src/comments/comment'
 import {
   EXEMPLAR_SOLUTION,
   NO_METHOD,
   NO_NAMED_EXPORT,
-} from '../../../comments/shared'
-import { ExecutionOptions, WritableOutput } from '../../../interface'
-import { IsolatedAnalyzerImpl } from '../../IsolatedAnalyzerImpl'
-import { BirdWatcherSolution } from './BirdWatcherSolution'
+} from '~src/comments/shared'
+import { ExecutionOptions, WritableOutput } from '~src/interface'
+import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl'
+import {
+  BIRDS_IN_WEEK,
+  BirdWatcherSolution,
+  FIX_BIRD_COUNT_LOG,
+  TOTAL_BIRD_COUNT,
+} from './BirdWatcherSolution'
+
+const USE_FOR_LOOP = factory<'function'>`
+📕 The learning exercise exist to practice or demonstrate your knowledge of \`for-loops\`.
+This is different from practice exercises where you are asked to solve the best way you
+possibly can.
+
+💬 Update the function \`${'function'}\` so that it makes use of \`for-loops\`.
+
+`('javascript.bird-watcher.uses_for_loop', CommentType.Actionable)
 
 type Program = TSESTree.Program
 
@@ -32,6 +47,18 @@ export class BirdWatcherAnalyzer extends IsolatedAnalyzerImpl {
     if (this.solution.isExemplar) {
       output.add(EXEMPLAR_SOLUTION())
       output.finish()
+    }
+
+    if (!this.solution.birdsInWeek.hasFor) {
+      output.add(USE_FOR_LOOP({ function: BIRDS_IN_WEEK }))
+    }
+
+    if (!this.solution.totalBirdCount.hasFor) {
+      output.add(USE_FOR_LOOP({ function: TOTAL_BIRD_COUNT }))
+    }
+
+    if (!this.solution.fixBirdCountLog.hasFor) {
+      output.add(USE_FOR_LOOP({ function: FIX_BIRD_COUNT_LOG }))
     }
 
     output.finish()
