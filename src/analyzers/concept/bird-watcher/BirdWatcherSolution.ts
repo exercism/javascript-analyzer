@@ -1,19 +1,47 @@
 import {
   AstParser,
+  ExtractedFunction,
   extractExports,
   extractFunctions,
+  findFirst,
 } from '@exercism/static-analysis'
-import { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
 import { readFileSync } from 'fs'
 import path from 'path'
+import { PublicApi } from '~src/analyzers/PublicApi'
 import { Source } from '~src/analyzers/SourceImpl'
+import { assertPublicApi } from '~src/asserts/assert_public_api'
 
 export const TOTAL_BIRD_COUNT = 'totalBirdCount'
 export const BIRDS_IN_WEEK = 'birdsInWeek'
 export const FIX_BIRD_COUNT_LOG = 'fixBirdCountLog'
 
+class TotalBirdCount extends PublicApi {
+  constructor(implementation: ExtractedFunction) {
+    super(implementation)
+  }
+}
+
+class BirdsInWeek extends PublicApi {
+  constructor(implementation: ExtractedFunction) {
+    super(implementation)
+    console.log(this.hasFor())
+  }
+  public hasFor(): boolean {
+    return (
+      findFirst(
+        this.implementation.body,
+        (node): node is TSESTree.ForStatement =>
+          [AST_NODE_TYPES.ForStatement].some((type) => type === node.type)
+      ) !== undefined
+    )
+  }
+}
+
 export class BirdWatcherSolution {
   private readonly source: Source
+
+  public readonly birdsInWeek: BirdsInWeek
 
   private exemplar!: Source
 
@@ -22,6 +50,10 @@ export class BirdWatcherSolution {
 
     const functions = extractFunctions(program)
     const exports = extractExports(program)
+
+    this.birdsInWeek = new BirdsInWeek(
+      assertPublicApi(BIRDS_IN_WEEK, exports, functions)
+    )
   }
 
   public readExemplar(directory: string): void {
