@@ -52,7 +52,8 @@ using an \`else\` statement.
 `('javascript.vehicle-purchase.use_if_else', CommentType.Informative)
 
 const AVOID_DUPLICATE_LITERAL_USAGE = factory`
-TODO: How to inform possible best practice?
+Your code contains some unnecessary duplication.
+Think about a way to avoid that by first deciding for an option and then building up the final result.
 `(
   'javascript.vehicle-purchase.avoid_duplicate_literal_usage',
   CommentType.Informative
