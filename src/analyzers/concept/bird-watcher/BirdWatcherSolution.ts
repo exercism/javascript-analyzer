@@ -74,6 +74,16 @@ class FixBirdCountLog extends PublicApi {
     )
   }
 
+  public get usesIncrementalCounter(): boolean {
+    return (
+      findFirst(
+        this.implementation.body,
+        (node): node is TSESTree.ForStatement =>
+          [AST_NODE_TYPES.ForStatement].some((type) => type === node.type)
+      )?.body?.body[0].expression.operator === '++'
+    )
+  }
+
   public get usesShorthandAssignment(): boolean {
     return (
       findFirst(
