@@ -29,6 +29,28 @@ possibly can.
 
 `('javascript.bird-watcher.uses_for_loop', CommentType.Actionable)
 
+const PREFER_SHORTHAND_ASSIGNMENT = factory<'function'>`
+You can reduce some cognitive overhead when it comes to assignment in equations.
+One way to do this is using shorthand assignment that allows you to remove duplication.
+
+An example of assignment:
+
+\`\`\`javascript
+x = x + 1
+\`\`\`
+
+can be in the short hand:
+
+\`\`\`javascript
+x += 1
+\`\`\`
+
+Usage found in \`${'function'}\` if you are interested in modifying your solution.
+`(
+  'javascript.bird-watcher.prefer_shorthand_assignment',
+  CommentType.Informative
+)
+
 type Program = TSESTree.Program
 
 export class BirdWatcherAnalyzer extends IsolatedAnalyzerImpl {
@@ -56,9 +78,15 @@ export class BirdWatcherAnalyzer extends IsolatedAnalyzerImpl {
     if (!this.solution.totalBirdCount.hasFor) {
       output.add(USE_FOR_LOOP({ function: TOTAL_BIRD_COUNT }))
     }
+    if (!this.solution.totalBirdCount.usesShorthandAssignment) {
+      output.add(PREFER_SHORTHAND_ASSIGNMENT({ function: TOTAL_BIRD_COUNT }))
+    }
 
     if (!this.solution.fixBirdCountLog.hasFor) {
       output.add(USE_FOR_LOOP({ function: FIX_BIRD_COUNT_LOG }))
+    }
+    if (!this.solution.fixBirdCountLog.usesShorthandAssignment) {
+      output.add(PREFER_SHORTHAND_ASSIGNMENT({ function: FIX_BIRD_COUNT_LOG }))
     }
 
     output.finish()

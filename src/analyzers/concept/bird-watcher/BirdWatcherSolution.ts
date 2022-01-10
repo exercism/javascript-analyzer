@@ -30,6 +30,18 @@ class TotalBirdCount extends PublicApi {
       ) !== undefined
     )
   }
+
+  public get usesShorthandAssignment(): boolean {
+    return (
+      findFirst(
+        this.implementation.body,
+        (node): node is TSESTree.AssignmentExpression =>
+          [AST_NODE_TYPES.AssignmentExpression].some(
+            (type) => type === node.type
+          )
+      )?.operator === '+='
+    )
+  }
 }
 
 class BirdsInWeek extends PublicApi {
@@ -59,6 +71,18 @@ class FixBirdCountLog extends PublicApi {
         (node): node is TSESTree.ForStatement =>
           [AST_NODE_TYPES.ForStatement].some((type) => type === node.type)
       ) !== undefined
+    )
+  }
+
+  public get usesShorthandAssignment(): boolean {
+    return (
+      findFirst(
+        this.implementation.body,
+        (node): node is TSESTree.AssignmentExpression =>
+          [AST_NODE_TYPES.AssignmentExpression].some(
+            (type) => type === node.type
+          )
+      )?.operator === '+='
     )
   }
 }
