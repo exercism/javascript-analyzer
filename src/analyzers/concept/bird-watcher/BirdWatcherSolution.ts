@@ -42,6 +42,16 @@ class TotalBirdCount extends PublicApi {
       )?.operator === '+='
     )
   }
+
+  public get usesIncrementalCounter(): boolean {
+    return (
+      findFirst(
+        this.implementation.body,
+        (node): node is TSESTree.UpdateExpression =>
+          [AST_NODE_TYPES.UpdateExpression].some((type) => type === node.type)
+      )?.operator === '++'
+    )
+  }
 }
 
 class BirdsInWeek extends PublicApi {
