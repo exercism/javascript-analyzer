@@ -21,6 +21,16 @@ class TotalBirdCount extends PublicApi {
     super(implementation)
   }
 
+  public get hasInitialTotalValue(): boolean {
+    return (
+      findFirst(
+        this.implementation.body,
+        (node): node is TSESTree.VariableDeclarator =>
+          [AST_NODE_TYPES.VariableDeclarator].some((type) => type === node.type)
+      )?.init?.value === 0
+    )
+  }
+
   public get hasFor(): boolean {
     return (
       findFirst(
