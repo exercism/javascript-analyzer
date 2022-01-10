@@ -94,6 +94,16 @@ class FixBirdCountLog extends PublicApi {
     )
   }
 
+  public get usesIfStatement(): boolean {
+    return (
+      findFirst(
+        this.implementation.body,
+        (node): node is TSESTree.IfStatement =>
+          [AST_NODE_TYPES.IfStatement].some((type) => type === node.type)
+      ) !== undefined
+    )
+  }
+
   public get usesIncrementalCounter(): boolean {
     return (
       findFirst(
