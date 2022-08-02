@@ -68,11 +68,11 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -423,11 +423,11 @@ strict than the \`parseXXX\` family and applies in this exercise.",
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -491,11 +491,11 @@ strict than the \`parseXXX\` family and applies in this exercise.",
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -600,11 +600,11 @@ strict than the \`parseXXX\` family and applies in this exercise.",
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -763,11 +763,11 @@ strict than the \`parseXXX\` family and applies in this exercise.",
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -793,11 +793,11 @@ strict than the \`parseXXX\` family and applies in this exercise.",
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -1017,11 +1017,11 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -1506,11 +1506,11 @@ strict than the \`parseXXX\` family and applies in this exercise.",
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -1536,11 +1536,11 @@ strict than the \`parseXXX\` family and applies in this exercise.",
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -1832,11 +1832,11 @@ strict than the \`parseXXX\` family and applies in this exercise.",
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -1853,11 +1853,11 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -2215,11 +2215,11 @@ strict than the \`parseXXX\` family and applies in this exercise.",
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -2393,11 +2393,11 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -2878,11 +2878,11 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -2937,11 +2937,11 @@ strict than the \`parseXXX\` family and applies in this exercise.",
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -2984,11 +2984,11 @@ strict than the \`parseXXX\` family and applies in this exercise.",
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -3014,11 +3014,11 @@ strict than the \`parseXXX\` family and applies in this exercise.",
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -3044,11 +3044,11 @@ strict than the \`parseXXX\` family and applies in this exercise.",
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -3172,11 +3172,11 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -3219,11 +3219,11 @@ strict than the \`parseXXX\` family and applies in this exercise.",
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -3358,11 +3358,11 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -3581,11 +3581,11 @@ strict than the \`parseXXX\` family and applies in this exercise.",
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",
@@ -3879,11 +3879,11 @@ IsolatedAnalyzerOutput {
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_math_instead_of_type_juggling",
       "message": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "template": "📕 The final value is currently \\"constructed\\" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.",
       "type": "actionable",

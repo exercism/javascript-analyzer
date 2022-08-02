@@ -1,13 +1,17 @@
 {
+  //https://babeljs.io/docs/en/assumptions
+  "assumptions": {
+    "noDocumentAll": true
+  },
   "presets": [
     [
       "@babel/preset-env",
       {
         "useBuiltIns": "usage",
-        // package.json -> devDependencies -> "core-js"
-        "corejs": "3.18",
-        // https://hub.docker.com/layers/node/library/node/lts-alpine
+        // must match package.json
+        "corejs": "3.24",
         "targets": {
+          // https://hub.docker.com/layers/node/library/node/lts-alpine
           "node": "current"
         }
       }
@@ -15,7 +19,6 @@
     "@babel/preset-typescript"
   ],
   "plugins": [
-    "@babel/plugin-proposal-optional-chaining",
     [
       "module-resolver",
       {

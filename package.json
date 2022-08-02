@@ -1,6 +1,6 @@
 {
   "name": "@exercism/javascript-analyzer",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "description": "Exercism analyzer for javascript",
   "repository": "https://github.com/exercism/javascript-analyzer",
   "author": "Derk-Jan Karrenbeld <derk-jan+github@karrenbeld.info>",
@@ -32,35 +32,38 @@
     "test:bare": "jest"
   },
   "devDependencies": {
-    "@babel/cli": "^7.15.7",
-    "@babel/core": "^7.15.5",
-    "@babel/node": "^7.15.4",
-    "@babel/plugin-proposal-optional-chaining": "^7.14.5",
-    "@babel/preset-env": "^7.15.6",
-    "@babel/preset-typescript": "^7.15.0",
+    "@babel/cli": "~7.17.10",
+    "@babel/core": "~7.17.12",
+    "@babel/node": "~7.17.10",
+    "@babel/preset-env": "~7.17.12",
+    "@babel/preset-typescript": "~7.17.12",
+    "@babel/types": "~7.17.12",
     "@tsconfig/recommended": "^1.0.1",
-    "@types/jest": "^27.0.2",
-    "@types/node": "^14.17.20",
-    "@types/yargs": "^17.0.3",
-    "@typescript-eslint/eslint-plugin": "^4.32.0",
-    "babel-jest": "^27.2.4",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.11.47",
+    "@types/yargs": "^17.0.10",
+    "@typescript-eslint/eslint-plugin": "^5.32.0",
+    "babel-jest": "^27.5.1",
     "babel-plugin-module-resolver": "^4.1.0",
-    "core-js": "^3.18.1",
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-jest": "^24.5.0",
-    "jest": "^27.2.4",
-    "prettier": "^2.4.1",
+    "core-js": "^3.24.1",
+    "eslint": "^8.21.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^26.7.0",
+    "jest": "^27.5.1",
+    "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.5"
   },
   "dependencies": {
-    "@exercism/static-analysis": "^0.10.0",
-    "@typescript-eslint/parser": "^4.32.0",
-    "@typescript-eslint/typescript-estree": "^4.32.0",
-    "@typescript-eslint/visitor-keys": "^4.32.0",
-    "typescript": "^4.4.3",
-    "yargs": "^17.2.1"
+    "@exercism/static-analysis": "^0.12.0",
+    "@typescript-eslint/parser": "^5.32.0",
+    "@typescript-eslint/typescript-estree": "^5.32.0",
+    "@typescript-eslint/visitor-keys": "^5.32.0",
+    "typescript": "^4.7.4",
+    "yargs": "^17.5.1"
+  },
+  "resolutions": {
+    "**/@babel/types": "^7.17.0"
   }
 }

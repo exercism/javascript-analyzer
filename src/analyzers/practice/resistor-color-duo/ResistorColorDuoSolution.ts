@@ -20,7 +20,8 @@ import {
   SpecificObjectPropertyCall,
   SpecificPropertyCall,
 } from '@exercism/static-analysis'
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
 import { Source } from '~src/analyzers/SourceImpl'
 import { parameterName } from '~src/analyzers/utils/extract_parameter'
 import { assertNamedExport } from '~src/asserts/assert_named_export'
@@ -101,11 +102,13 @@ class Constant {
   }
 
   public get isOptimalArray(): boolean {
-    const { init } = this.constant
+    const init = this.constant.init as Expression
 
     if (!init) {
       return false
     }
+
+    init.type
 
     const literals = [
       'black',
@@ -172,8 +175,6 @@ class Constant {
     }
 
     const [argument, second] = init.arguments
-
-    // TODO: check that referenced object is optimal
     return !second && guardIdentifier(argument)
   }
 
@@ -244,8 +245,9 @@ class Constant {
   }
 
   /**
-   * In the case that the top-level constant is constructed from Object.keys(argument),
-   * this property holds the name of the "argument".
+   * In the case that the top-level constant is constructed from
+   * Object.keys(argument), or is an object literal, this property holds the
+   * name of the "argument" of that Object.keys call, or the object literal.
    *
    * @readonly
    * @type {(string | undefined)}
@@ -255,6 +257,50 @@ class Constant {
     const { init } = this.constant
 
     if (!init || !guardCallExpression(init, 'Object', 'keys')) {
+      // Try to figure out if this is:
+      //
+      // const COLOR_CODES = {
+      //  'black': 0,
+      //  'brown': 1,
+      //  'red': 2,
+      //  'orange': 3,
+      //  'yellow': 4,
+      //  'green': 5,
+      //  'blue': 6,
+      //  'violet': 7,
+      //  'grey': 8,
+      //  'white': 9,
+      // };
+
+      if (init?.type !== AST_NODE_TYPES.ObjectExpression) {
+        return undefined
+      }
+
+      const keys = [
+        'black',
+        'brown',
+        'red',
+        'orange',
+        'yellow',
+        'green',
+        'blue',
+        'violet',
+        'grey',
+        'white',
+      ]
+
+      if (
+        init.properties.every((property, index): boolean => {
+          return (
+            property.type === AST_NODE_TYPES.Property &&
+            guardLiteral(property.key, keys[index]) &&
+            guardLiteral(property.value, index)
+          )
+        })
+      ) {
+        return this.constant.name || undefined
+      }
+
       return undefined
     }
 
@@ -1026,6 +1072,7 @@ class Entry {
     }
 
     if (!body) {
+      logger.log('=> helper has no body')
       return false
     }
 
@@ -1054,12 +1101,8 @@ class Entry {
       return (
         (params.length === 1 &&
           guardIdentifier(params[0]) &&
-          constant.referencedSourceObjectName &&
-          guardMemberExpression(
-            body,
-            constant.referencedSourceObjectName,
-            params[0].name
-          ) &&
+          constant.name &&
+          guardMemberExpression(body, constant.name, params[0].name) &&
           body.computed) ||
         false
       )
@@ -1095,9 +1138,7 @@ export class ResistorColorDuoSolution {
       'let',
       'const',
       'var',
-
-      // TODO upstream bug
-    ] as unknown as ['let']).filter(
+    ]).filter(
       (declaration): boolean =>
         declaration &&
         guardIdentifier(declaration.id) &&

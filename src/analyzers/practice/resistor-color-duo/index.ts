@@ -1,5 +1,6 @@
 import {
   AstParser,
+  getProcessLogger,
   Input,
   NoExportError,
   NoMethodError,
@@ -76,7 +77,7 @@ strict than the \`parseXXX\` family and applies in this exercise.
 
 const USE_MATH_INSTEAD_OF_TYPE_JUGGLING = factory`
 📕 The final value is currently "constructed" by placing digits in a string and
-then intepreting that string as a number. This form of type-juggling is not
+then interpreting that string as a number. This form of type-juggling is not
 needed. Instead, a solution using one multiplication and one addition, has
 lower cognitive complexity.
 `(
@@ -313,7 +314,6 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     if (solution.entry.hasParseInt) {
       output.add(PREFER_NUMBER_OVER_PARSE())
     }
-
     if (solution.entry.hasOneMap || solution.entry.hasOneReduce) {
       if (!solution.entry.hasOneSlice) {
         output.add(LIMIT_NUMBER_OF_COLORS())
