@@ -32,12 +32,11 @@
     "test:bare": "jest"
   },
   "devDependencies": {
-    "@babel/cli": "~7.17.10",
-    "@babel/core": "~7.17.12",
-    "@babel/node": "~7.17.10",
-    "@babel/preset-env": "~7.17.12",
-    "@babel/preset-typescript": "~7.17.12",
-    "@babel/types": "~7.17.12",
+    "@babel/cli": "~7.18.10",
+    "@babel/core": "~7.18.10",
+    "@babel/node": "~7.18.10",
+    "@babel/preset-env": "~7.18.10",
+    "@babel/preset-typescript": "~7.18.6",
     "@tsconfig/recommended": "^1.0.1",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.11.47",
@@ -63,7 +62,5 @@
     "typescript": "^4.7.4",
     "yargs": "^17.5.1"
   },
-  "resolutions": {
-    "**/@babel/types": "^7.17.0"
-  }
+  "resolutions": {}
 }
