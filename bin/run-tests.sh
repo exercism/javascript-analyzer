@@ -17,11 +17,10 @@ exit_code=0
 # running within the Docker container does not have permissions 
 # to run the sed command on the fixtures directory
 fixtures_dir="test/fixtures"
-tmp_fixtures_dir="test/fixtures"
-# tmp_fixtures_dir="/tmp/test/fixtures"
-# rm -rf "${tmp_fixtures_dir}"
-# mkdir -p "${tmp_fixtures_dir}"
-# cp -R ${fixtures_dir}/* "${tmp_fixtures_dir}"
+tmp_fixtures_dir="/tmp/test/fixtures"
+rm -rf "${tmp_fixtures_dir}"
+mkdir -p "${tmp_fixtures_dir}"
+cp -R ${fixtures_dir}/* "${tmp_fixtures_dir}"
 
 # Iterate over all test directories
 for analysis_file in $(find "${tmp_fixtures_dir}" -name expected_analysis.json); do
