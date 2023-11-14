@@ -7,7 +7,7 @@ on: pull_request
 
 jobs:
   precheck:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout PR
@@ -25,7 +25,7 @@ jobs:
         run: yarn lint
 
   unit_tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
