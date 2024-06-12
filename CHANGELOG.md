@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.22.0
+
+- Add analyzer for `concept/bird-watcher`
+
 ## 0.21.0
 
 - Add analyzer for `concept/elyses-analytic-enchantments`
