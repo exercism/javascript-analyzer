@@ -92,14 +92,9 @@ to retrieve their solution and/or optimise their helper.
 `('javascript.resistor-color-duo.must_optimise_helper', CommentType.Actionable)
 
 const ISSUE_USE_A_HELPER = factory`
-📕 Mentor the student to add helper function and DRY-up this solution. The
-solution to \`resistor-color\` can be used as helper method here. When using an
-\`Array\` as colors source, in a years time, will the student recall why it's
-the _index_ in that array? When using an \`Object\`, what does the value mean?
-Re-using \`colorCode\` explains this in both cases.
+📕 Mentor the student to use a lookup table instead of a helper function. A well-named lookup table can provide clarity and efficiency without the need for an additional function.
 
-💬 Using a helper method is good practice, because it replaces a cryptic "member
-call" with a named call, that can be documented individually.
+💬 Using a lookup table is sufficient for this exercise, as it directly maps color names to their corresponding values.
 `('javascript.resistor-color-duo.must_use_a_helper', CommentType.Actionable)
 
 const ISSUE_METHOD_NOT_FOUND = factory<'method.name'>`
