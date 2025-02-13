@@ -87,6 +87,32 @@ exports[`When running analysis on resistor-color-duo fixtures and expecting matc
 IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
+      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const colors = ...
+
+export const decodedValue = (...)
+\`\`\`",
+      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const %{name} = %{value}
+
+export const decodedValue = (...)
+\`\`\`",
+      "type": "actionable",
+      "variables": Object {
+        "name": "colors",
+        "value": "...",
+      },
+    },
+    CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_number_over_parse",
       "message": "💬 Use \`Number(...)\` when the input is expected to be a number. It's more
 strict than the \`parseXXX\` family and applies in this exercise.",
@@ -588,6 +614,32 @@ call\\" with a named call, that can be documented individually.",
 exports[`When running analysis on resistor-color-duo fixtures and expecting matches resistor-color-duo/105's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
+      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const COLORS = ...
+
+export const decodedValue = (...)
+\`\`\`",
+      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const %{name} = %{value}
+
+export const decodedValue = (...)
+\`\`\`",
+      "type": "actionable",
+      "variables": Object {
+        "name": "COLORS",
+        "value": "...",
+      },
+    },
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_number_over_parse",
       "message": "💬 Use \`Number(...)\` when the input is expected to be a number. It's more
@@ -1187,24 +1239,59 @@ exports[`When running analysis on resistor-color-duo fixtures and expecting matc
 IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.resistor-color-duo.must_use_a_helper",
-      "message": "📕 Mentor the student to add helper function and DRY-up this solution. The
-solution to \`resistor-color\` can be used as helper method here. When using an
-\`Array\` as colors source, in a years time, will the student recall why it's
-the _index_ in that array? When using an \`Object\`, what does the value mean?
-Re-using \`colorCode\` explains this in both cases.
+      "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
+      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
 
-💬 Using a helper method is good practice, because it replaces a cryptic \\"member
-call\\" with a named call, that can be documented individually.",
-      "template": "📕 Mentor the student to add helper function and DRY-up this solution. The
-solution to \`resistor-color\` can be used as helper method here. When using an
-\`Array\` as colors source, in a years time, will the student recall why it's
-the _index_ in that array? When using an \`Object\`, what does the value mean?
-Re-using \`colorCode\` explains this in both cases.
+\`\`\`javascript
+const COLORS = ...
 
-💬 Using a helper method is good practice, because it replaces a cryptic \\"member
-call\\" with a named call, that can be documented individually.",
+export const decodedValue = (...)
+\`\`\`",
+      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const %{name} = %{value}
+
+export const decodedValue = (...)
+\`\`\`",
       "type": "actionable",
+      "variables": Object {
+        "name": "COLORS",
+        "value": "...",
+      },
+    },
+    CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.prefer_number_over_parse",
+      "message": "💬 Use \`Number(...)\` when the input is expected to be a number. It's more
+strict than the \`parseXXX\` family and applies in this exercise.",
+      "template": "💬 Use \`Number(...)\` when the input is expected to be a number. It's more
+strict than the \`parseXXX\` family and applies in this exercise.",
+      "type": "actionable",
+      "variables": Object {},
+    },
+    CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.limit_number_of_colors",
+      "message": "💬 Limit the number of input colors that are processed. If more than two colors
+are passed in, only the first two colors should be used to calculate the total
+\`colorCode\` value.
+
+📕 (At least) one test case inputs three colors instead of two. If the student
+has not accounted for this, they might need to update their solution. Help them
+find the button to update. The tests won't pass without limiting the number of
+colors.",
+      "template": "💬 Limit the number of input colors that are processed. If more than two colors
+are passed in, only the first two colors should be used to calculate the total
+\`colorCode\` value.
+
+📕 (At least) one test case inputs three colors instead of two. If the student
+has not accounted for this, they might need to update their solution. Help them
+find the button to update. The tests won't pass without limiting the number of
+colors.",
+      "type": "essential",
       "variables": Object {},
     },
   ],
@@ -1274,6 +1361,32 @@ The tests won't pass without it.",
 exports[`When running analysis on resistor-color-duo fixtures and expecting matches resistor-color-duo/143's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
+      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const CODES = ...
+
+export const decodedValue = (...)
+\`\`\`",
+      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const %{name} = %{value}
+
+export const decodedValue = (...)
+\`\`\`",
+      "type": "actionable",
+      "variables": Object {
+        "name": "CODES",
+        "value": "...",
+      },
+    },
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_array_comprehensions",
       "message": "💬 Replace \`.forEach(...)\` with a comprehension such as \`map\`.",
@@ -1821,6 +1934,32 @@ exports[`When running analysis on resistor-color-duo fixtures and expecting matc
 IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
+      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const COLORS = ...
+
+export const decodedValue = (...)
+\`\`\`",
+      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const %{name} = %{value}
+
+export const decodedValue = (...)
+\`\`\`",
+      "type": "actionable",
+      "variables": Object {
+        "name": "COLORS",
+        "value": "...",
+      },
+    },
+    CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_number_over_parse",
       "message": "💬 Use \`Number(...)\` when the input is expected to be a number. It's more
 strict than the \`parseXXX\` family and applies in this exercise.",
@@ -1872,34 +2011,64 @@ exports[`When running analysis on resistor-color-duo fixtures and expecting matc
 IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.resistor-color-duo.must_use_a_helper",
-      "message": "📕 Mentor the student to add helper function and DRY-up this solution. The
-solution to \`resistor-color\` can be used as helper method here. When using an
-\`Array\` as colors source, in a years time, will the student recall why it's
-the _index_ in that array? When using an \`Object\`, what does the value mean?
-Re-using \`colorCode\` explains this in both cases.
+      "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
+      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
 
-💬 Using a helper method is good practice, because it replaces a cryptic \\"member
-call\\" with a named call, that can be documented individually.",
-      "template": "📕 Mentor the student to add helper function and DRY-up this solution. The
-solution to \`resistor-color\` can be used as helper method here. When using an
-\`Array\` as colors source, in a years time, will the student recall why it's
-the _index_ in that array? When using an \`Object\`, what does the value mean?
-Re-using \`colorCode\` explains this in both cases.
+\`\`\`javascript
+const colorMap = ...
 
-💬 Using a helper method is good practice, because it replaces a cryptic \\"member
-call\\" with a named call, that can be documented individually.",
+export const decodedValue = (...)
+\`\`\`",
+      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const %{name} = %{value}
+
+export const decodedValue = (...)
+\`\`\`",
       "type": "actionable",
-      "variables": Object {},
+      "variables": Object {
+        "name": "colorMap",
+        "value": "...",
+      },
     },
   ],
-  "summary": undefined,
 }
 `;
 
 exports[`When running analysis on resistor-color-duo fixtures and expecting matches resistor-color-duo/183's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
+      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const colors = ...
+
+export const decodedValue = (...)
+\`\`\`",
+      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const %{name} = %{value}
+
+export const decodedValue = (...)
+\`\`\`",
+      "type": "actionable",
+      "variables": Object {
+        "name": "colors",
+        "value": "...",
+      },
+    },
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_number_over_parse",
       "message": "💬 Use \`Number(...)\` when the input is expected to be a number. It's more
@@ -1981,24 +2150,59 @@ exports[`When running analysis on resistor-color-duo fixtures and expecting matc
 IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.resistor-color-duo.must_use_a_helper",
-      "message": "📕 Mentor the student to add helper function and DRY-up this solution. The
-solution to \`resistor-color\` can be used as helper method here. When using an
-\`Array\` as colors source, in a years time, will the student recall why it's
-the _index_ in that array? When using an \`Object\`, what does the value mean?
-Re-using \`colorCode\` explains this in both cases.
+      "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
+      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
 
-💬 Using a helper method is good practice, because it replaces a cryptic \\"member
-call\\" with a named call, that can be documented individually.",
-      "template": "📕 Mentor the student to add helper function and DRY-up this solution. The
-solution to \`resistor-color\` can be used as helper method here. When using an
-\`Array\` as colors source, in a years time, will the student recall why it's
-the _index_ in that array? When using an \`Object\`, what does the value mean?
-Re-using \`colorCode\` explains this in both cases.
+\`\`\`javascript
+const bandColors = ...
 
-💬 Using a helper method is good practice, because it replaces a cryptic \\"member
-call\\" with a named call, that can be documented individually.",
+export const decodedValue = (...)
+\`\`\`",
+      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const %{name} = %{value}
+
+export const decodedValue = (...)
+\`\`\`",
       "type": "actionable",
+      "variables": Object {
+        "name": "bandColors",
+        "value": "...",
+      },
+    },
+    CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.prefer_number_over_parse",
+      "message": "💬 Use \`Number(...)\` when the input is expected to be a number. It's more
+strict than the \`parseXXX\` family and applies in this exercise.",
+      "template": "💬 Use \`Number(...)\` when the input is expected to be a number. It's more
+strict than the \`parseXXX\` family and applies in this exercise.",
+      "type": "actionable",
+      "variables": Object {},
+    },
+    CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.limit_number_of_colors",
+      "message": "💬 Limit the number of input colors that are processed. If more than two colors
+are passed in, only the first two colors should be used to calculate the total
+\`colorCode\` value.
+
+📕 (At least) one test case inputs three colors instead of two. If the student
+has not accounted for this, they might need to update their solution. Help them
+find the button to update. The tests won't pass without limiting the number of
+colors.",
+      "template": "💬 Limit the number of input colors that are processed. If more than two colors
+are passed in, only the first two colors should be used to calculate the total
+\`colorCode\` value.
+
+📕 (At least) one test case inputs three colors instead of two. If the student
+has not accounted for this, they might need to update their solution. Help them
+find the button to update. The tests won't pass without limiting the number of
+colors.",
+      "type": "essential",
       "variables": Object {},
     },
   ],
@@ -2263,6 +2467,32 @@ exports[`When running analysis on resistor-color-duo fixtures and expecting matc
 IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
+      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const COLORS = ...
+
+export const decodedValue = (...)
+\`\`\`",
+      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const %{name} = %{value}
+
+export const decodedValue = (...)
+\`\`\`",
+      "type": "actionable",
+      "variables": Object {
+        "name": "COLORS",
+        "value": "...",
+      },
+    },
+    CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_number_over_parse",
       "message": "💬 Use \`Number(...)\` when the input is expected to be a number. It's more
 strict than the \`parseXXX\` family and applies in this exercise.",
@@ -2296,6 +2526,32 @@ strict than the \`parseXXX\` family and applies in this exercise.",
 exports[`When running analysis on resistor-color-duo fixtures and expecting matches resistor-color-duo/205's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
+      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const COLORS = ...
+
+export const decodedValue = (...)
+\`\`\`",
+      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const %{name} = %{value}
+
+export const decodedValue = (...)
+\`\`\`",
+      "type": "actionable",
+      "variables": Object {
+        "name": "COLORS",
+        "value": "...",
+      },
+    },
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_array_comprehensions",
       "message": "💬 Replace \`for(...) { }\` with a comprehension such as \`map\`.",
@@ -2545,6 +2801,32 @@ exports[`When running analysis on resistor-color-duo fixtures and expecting matc
 IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
+      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const COLORS = ...
+
+export const decodedValue = (...)
+\`\`\`",
+      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const %{name} = %{value}
+
+export const decodedValue = (...)
+\`\`\`",
+      "type": "actionable",
+      "variables": Object {
+        "name": "COLORS",
+        "value": "...",
+      },
+    },
+    CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_number_over_parse",
       "message": "💬 Use \`Number(...)\` when the input is expected to be a number. It's more
 strict than the \`parseXXX\` family and applies in this exercise.",
@@ -2731,6 +3013,32 @@ IsolatedAnalyzerOutput {
 exports[`When running analysis on resistor-color-duo fixtures and expecting matches resistor-color-duo/235's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
+      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const colors = ...
+
+export const decodedValue = (...)
+\`\`\`",
+      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const %{name} = %{value}
+
+export const decodedValue = (...)
+\`\`\`",
+      "type": "actionable",
+      "variables": Object {
+        "name": "colors",
+        "value": "...",
+      },
+    },
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_number_over_parse",
       "message": "💬 Use \`Number(...)\` when the input is expected to be a number. It's more
@@ -3144,6 +3452,32 @@ exports[`When running analysis on resistor-color-duo fixtures and expecting matc
 IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
+      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const resistor = ...
+
+export const decodedValue = (...)
+\`\`\`",
+      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const %{name} = %{value}
+
+export const decodedValue = (...)
+\`\`\`",
+      "type": "actionable",
+      "variables": Object {
+        "name": "resistor",
+        "value": "...",
+      },
+    },
+    CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.use_array_comprehensions",
       "message": "💬 Replace \`.forEach(...)\` with a comprehension such as \`map\`.",
       "template": "💬 Replace \`%{current}\` with a comprehension such as \`map\`.",
@@ -3440,25 +3774,30 @@ exports[`When running analysis on resistor-color-duo fixtures and expecting matc
 IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
-      "externalTemplate": "javascript.resistor-color-duo.must_use_a_helper",
-      "message": "📕 Mentor the student to add helper function and DRY-up this solution. The
-solution to \`resistor-color\` can be used as helper method here. When using an
-\`Array\` as colors source, in a years time, will the student recall why it's
-the _index_ in that array? When using an \`Object\`, what does the value mean?
-Re-using \`colorCode\` explains this in both cases.
+      "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
+      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
 
-💬 Using a helper method is good practice, because it replaces a cryptic \\"member
-call\\" with a named call, that can be documented individually.",
-      "template": "📕 Mentor the student to add helper function and DRY-up this solution. The
-solution to \`resistor-color\` can be used as helper method here. When using an
-\`Array\` as colors source, in a years time, will the student recall why it's
-the _index_ in that array? When using an \`Object\`, what does the value mean?
-Re-using \`colorCode\` explains this in both cases.
+\`\`\`javascript
+const COLORS = ...
 
-💬 Using a helper method is good practice, because it replaces a cryptic \\"member
-call\\" with a named call, that can be documented individually.",
+export const decodedValue = (...)
+\`\`\`",
+      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const %{name} = %{value}
+
+export const decodedValue = (...)
+\`\`\`",
       "type": "actionable",
-      "variables": Object {},
+      "variables": Object {
+        "name": "COLORS",
+        "value": "...",
+      },
     },
   ],
   "summary": undefined,
@@ -3651,6 +3990,32 @@ strict than the \`parseXXX\` family and applies in this exercise.",
 exports[`When running analysis on resistor-color-duo fixtures and expecting matches resistor-color-duo/289's output: output 1`] = `
 IsolatedAnalyzerOutput {
   "comments": Array [
+    CommentImpl {
+      "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
+      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const array = ...
+
+export const decodedValue = (...)
+\`\`\`",
+      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const %{name} = %{value}
+
+export const decodedValue = (...)
+\`\`\`",
+      "type": "actionable",
+      "variables": Object {
+        "name": "array",
+        "value": "...",
+      },
+    },
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_number_over_parse",
       "message": "💬 Use \`Number(...)\` when the input is expected to be a number. It's more
