@@ -1148,7 +1148,6 @@ export class ResistorColorDuoSolution {
   private mainExport: ExtractedExport
   private fileConstants: ProgramConstants
   private mainConstant: Constant | undefined
-  private _hasLocalConstant = false
 
   constructor(public readonly program: Program, source: string) {
     this.source = new Source(source)
