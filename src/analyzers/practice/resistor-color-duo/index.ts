@@ -21,6 +21,7 @@ import {
   MethodNotFound,
   MissingExpectedCall,
   ResistorColorDuoSolution,
+  ShouldDefineTopLevelConstant,
   UnexpectedCallFound,
 } from './ResistorColorDuoSolution'
 
@@ -117,6 +118,21 @@ const ISSUE_UNEXPECTED_CALL = factory<'unexpected' | 'expected'>`
 📕 Found \`${'unexpected'}\`, expected \`${'expected'}\`.
 `(
   'javascript.resistor-color-duo.expected_different_call',
+  CommentType.Actionable
+)
+
+const PREFER_EXTRACTED_TOP_LEVEL_CONSTANT = factory<'value' | 'name'>`
+Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const ${'name'} = ${'value'}
+
+export const decodedValue = (...)
+\`\`\`
+`(
+  'javascript.resistor-color-duo.prefer_extracted_top_level_constant',
   CommentType.Actionable
 )
 
@@ -275,6 +291,13 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
       }
 
       output.disapprove()
+    } else if (lastIssue instanceof ShouldDefineTopLevelConstant) {
+      output.add(
+        PREFER_EXTRACTED_TOP_LEVEL_CONSTANT({
+          name: lastIssue.name,
+          value: lastIssue.value,
+        })
+      )
     } else {
       this.logger.error(
         'The analyzer did not handle the issue: ' + JSON.stringify(lastIssue)

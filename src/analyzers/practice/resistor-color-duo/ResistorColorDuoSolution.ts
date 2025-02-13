@@ -4,6 +4,7 @@ import {
   ExtractedVariable,
   extractExports,
   extractFunctions,
+  extractVariables,
   findAll,
   findFirst,
   findTopLevelConstants,
@@ -20,7 +21,7 @@ import {
   SpecificObjectPropertyCall,
   SpecificPropertyCall,
 } from '@exercism/static-analysis'
-import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { TSESTree } from '@typescript-eslint/typescript-estree'
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
 import { Source } from '~src/analyzers/SourceImpl'
 import { parameterName } from '~src/analyzers/utils/extract_parameter'
@@ -73,6 +74,10 @@ export class UnexpectedCallFound {
   ) {}
 }
 
+export class ShouldDefineTopLevelConstant {
+  constructor(public readonly name: string, public readonly value: string) {}
+}
+
 type Issue =
   | undefined
   | MissingExpectedCall
@@ -80,6 +85,7 @@ type Issue =
   | MethodNotFound
   | HelperCallNotFound
   | UnexpectedCallFound
+  | ShouldDefineTopLevelConstant
 
 class Constant {
   public readonly name: string
@@ -505,6 +511,15 @@ class Entry {
         }
 
         argument = finalStatement.argument
+      }
+    }
+
+    if (!constant) {
+      const issue = this.checkForShouldDefineTopLevelConstantIssue()
+      if (issue instanceof ShouldDefineTopLevelConstant) {
+        logger.log('~> found a constant that was not declared at the top level')
+        this.lastIssue_ = issue
+        return false
       }
     }
 
@@ -1111,6 +1126,20 @@ class Entry {
     logger.log(`~> constant is not optimal`)
     return false
   }
+
+  private checkForShouldDefineTopLevelConstantIssue():
+    | ShouldDefineTopLevelConstant
+    | undefined {
+    const localConstants = extractVariables(this.body).filter(
+      (constant) =>
+        constant.init?.type === TSESTree.AST_NODE_TYPES.ArrayExpression ||
+        constant.init?.type === TSESTree.AST_NODE_TYPES.ObjectExpression
+    )
+    if (localConstants.length) {
+      const nameOfFirstConstant = localConstants[0].name || 'COLORS'
+      return new ShouldDefineTopLevelConstant(nameOfFirstConstant, '...')
+    }
+  }
 }
 
 export class ResistorColorDuoSolution {
@@ -1120,6 +1149,7 @@ export class ResistorColorDuoSolution {
   private mainExport: ExtractedExport
   private fileConstants: ProgramConstants
   private mainConstant: Constant | undefined
+  private _hasLocalConstant = false
 
   constructor(public readonly program: Program, source: string) {
     this.source = new Source(source)
