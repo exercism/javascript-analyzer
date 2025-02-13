@@ -21,8 +21,7 @@ import {
   SpecificObjectPropertyCall,
   SpecificPropertyCall,
 } from '@exercism/static-analysis'
-import { TSESTree } from '@typescript-eslint/typescript-estree'
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
 import { Source } from '~src/analyzers/SourceImpl'
 import { parameterName } from '~src/analyzers/utils/extract_parameter'
 import { assertNamedExport } from '~src/asserts/assert_named_export'
