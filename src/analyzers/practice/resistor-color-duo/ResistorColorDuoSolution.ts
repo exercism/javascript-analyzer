@@ -21,7 +21,8 @@ import {
   SpecificObjectPropertyCall,
   SpecificPropertyCall,
 } from '@exercism/static-analysis'
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
 import { Source } from '~src/analyzers/SourceImpl'
 import { parameterName } from '~src/analyzers/utils/extract_parameter'
 import { assertNamedExport } from '~src/asserts/assert_named_export'
@@ -1131,8 +1132,8 @@ class Entry {
     | undefined {
     const localConstants = extractVariables(this.body).filter(
       (constant) =>
-        constant.init?.type === TSESTree.AST_NODE_TYPES.ArrayExpression ||
-        constant.init?.type === TSESTree.AST_NODE_TYPES.ObjectExpression
+        constant.init?.type === AST_NODE_TYPES.ArrayExpression ||
+        constant.init?.type === AST_NODE_TYPES.ObjectExpression
     )
     if (localConstants.length) {
       const nameOfFirstConstant = localConstants[0].name || 'COLORS'
