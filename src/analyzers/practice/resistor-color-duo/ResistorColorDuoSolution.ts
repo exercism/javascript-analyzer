@@ -515,7 +515,7 @@ class Entry {
     }
 
     if (!constant) {
-      const issue = this.checkForShouldDefineTopLevelConstantIssue()
+      const issue = this.hasConstantDefinedInBody()
       if (issue instanceof ShouldDefineTopLevelConstant) {
         logger.log('~> found a constant that was not declared at the top level')
         this.lastIssue_ = issue
@@ -1127,9 +1127,7 @@ class Entry {
     return false
   }
 
-  private checkForShouldDefineTopLevelConstantIssue():
-    | ShouldDefineTopLevelConstant
-    | undefined {
+  private hasConstantDefinedInBody(): ShouldDefineTopLevelConstant | undefined {
     const localConstants = extractVariables(this.body).filter(
       (constant) =>
         constant.init?.type === AST_NODE_TYPES.ArrayExpression ||
