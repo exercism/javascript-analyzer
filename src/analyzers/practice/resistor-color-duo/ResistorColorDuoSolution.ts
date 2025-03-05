@@ -74,10 +74,6 @@ export class UnexpectedCallFound {
   ) {}
 }
 
-export class ShouldDefineTopLevelConstant {
-  constructor(public readonly name: string, public readonly value: string) {}
-}
-
 type Issue =
   | undefined
   | MissingExpectedCall
@@ -85,7 +81,6 @@ type Issue =
   | MethodNotFound
   | HelperCallNotFound
   | UnexpectedCallFound
-  | ShouldDefineTopLevelConstant
 
 class Constant {
   public readonly name: string
@@ -486,6 +481,18 @@ class Entry {
     return parameterName(this.params[0])
   }
 
+  public get nameOfConstantDefinedInBody(): string | null {
+    const localConstants = extractVariables(this.body).filter(
+      (constant) =>
+        constant.init?.type === AST_NODE_TYPES.ArrayExpression ||
+        constant.init?.type === AST_NODE_TYPES.ObjectExpression
+    )
+    if (localConstants.length) {
+      return localConstants[0].name || 'COLORS'
+    }
+    return null
+  }
+
   public isOptimal(
     constant: Readonly<Constant> | undefined,
     program: Program
@@ -514,13 +521,9 @@ class Entry {
       }
     }
 
-    if (!constant) {
-      const issue = this.hasConstantDefinedInBody()
-      if (issue instanceof ShouldDefineTopLevelConstant) {
-        logger.log('~> found a constant that was not declared at the top level')
-        this.lastIssue_ = issue
-        return false
-      }
+    if (!constant && !!this.nameOfConstantDefinedInBody) {
+      logger.log('~> found a constant that was not declared at the top level')
+      return false
     }
 
     if (this.hasOneMap) {
@@ -1126,18 +1129,6 @@ class Entry {
     logger.log(`~> constant is not optimal`)
     return false
   }
-
-  private hasConstantDefinedInBody(): ShouldDefineTopLevelConstant | undefined {
-    const localConstants = extractVariables(this.body).filter(
-      (constant) =>
-        constant.init?.type === AST_NODE_TYPES.ArrayExpression ||
-        constant.init?.type === AST_NODE_TYPES.ObjectExpression
-    )
-    if (localConstants.length) {
-      const nameOfFirstConstant = localConstants[0].name || 'COLORS'
-      return new ShouldDefineTopLevelConstant(nameOfFirstConstant, '...')
-    }
-  }
 }
 
 export class ResistorColorDuoSolution {
@@ -1206,6 +1197,10 @@ export class ResistorColorDuoSolution {
 
   public get hasOneConstant(): boolean {
     return this.fileConstants.length === 1
+  }
+
+  public get shouldExtractTopLevelConstant(): boolean {
+    return !this.mainConstant && !!this.entry.nameOfConstantDefinedInBody
   }
 
   public get hasOptimalEntry(): boolean {

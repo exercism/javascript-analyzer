@@ -21,7 +21,6 @@ import {
   MethodNotFound,
   MissingExpectedCall,
   ResistorColorDuoSolution,
-  ShouldDefineTopLevelConstant,
   UnexpectedCallFound,
 } from './ResistorColorDuoSolution'
 
@@ -291,13 +290,6 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
       }
 
       output.disapprove()
-    } else if (lastIssue instanceof ShouldDefineTopLevelConstant) {
-      output.add(
-        PREFER_EXTRACTED_TOP_LEVEL_CONSTANT({
-          name: lastIssue.name,
-          value: lastIssue.value,
-        })
-      )
     } else {
       this.logger.error(
         'The analyzer did not handle the issue: ' + JSON.stringify(lastIssue)
@@ -310,6 +302,15 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     solution: ResistorColorDuoSolution,
     output: WritableOutput
   ): void | never {
+    if (solution.shouldExtractTopLevelConstant) {
+      output.add(
+        PREFER_EXTRACTED_TOP_LEVEL_CONSTANT({
+          name: solution.entry.nameOfConstantDefinedInBody,
+          value: '...',
+        })
+      )
+    }
+
     if (solution || output) {
       return
     }
