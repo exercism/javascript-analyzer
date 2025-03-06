@@ -120,15 +120,17 @@ const ISSUE_UNEXPECTED_CALL = factory<'unexpected' | 'expected'>`
   CommentType.Actionable
 )
 
-const PREFER_EXTRACTED_TOP_LEVEL_CONSTANT = factory<'value' | 'name'>`
-Instead of defining the constant _inside_ the function, consider extracting it
+const PREFER_EXTRACTED_TOP_LEVEL_CONSTANT = factory<
+  'value' | 'name' | 'method.signature'
+>`
+📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const ${'name'} = ${'value'}
 
-export const decodedValue = (...)
+export ${'method.signature'}
 \`\`\`
 `(
   'javascript.resistor-color-duo.prefer_extracted_top_level_constant',
@@ -307,6 +309,7 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
         PREFER_EXTRACTED_TOP_LEVEL_CONSTANT({
           name: solution.entry.nameOfConstantDefinedInBody,
           value: '...',
+          'method.signature': solution.entry.signature,
         })
       )
     }

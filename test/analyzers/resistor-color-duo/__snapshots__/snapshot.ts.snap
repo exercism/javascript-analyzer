@@ -88,26 +88,27 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
-      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+      "message": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const colors = ...
 
-export const decodedValue = (...)
+export function decodedValue(input) ...
 \`\`\`",
-      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+      "template": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const %{name} = %{value}
 
-export const decodedValue = (...)
+export %{method.signature}
 \`\`\`",
       "type": "actionable",
       "variables": Object {
+        "method.signature": "function decodedValue(input) ...",
         "name": "colors",
         "value": "...",
       },
@@ -616,26 +617,27 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
-      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+      "message": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const COLORS = ...
 
-export const decodedValue = (...)
+export const decodedValue = (resistorColors) => ...
 \`\`\`",
-      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+      "template": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const %{name} = %{value}
 
-export const decodedValue = (...)
+export %{method.signature}
 \`\`\`",
       "type": "actionable",
       "variables": Object {
+        "method.signature": "const decodedValue = (resistorColors) => ...",
         "name": "COLORS",
         "value": "...",
       },
@@ -1240,26 +1242,27 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
-      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+      "message": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const COLORS = ...
 
-export const decodedValue = (...)
+export const decodedValue = colorArray => ...
 \`\`\`",
-      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+      "template": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const %{name} = %{value}
 
-export const decodedValue = (...)
+export %{method.signature}
 \`\`\`",
       "type": "actionable",
       "variables": Object {
+        "method.signature": "const decodedValue = colorArray => ...",
         "name": "COLORS",
         "value": "...",
       },
@@ -1363,26 +1366,27 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
-      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+      "message": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const CODES = ...
 
-export const decodedValue = (...)
+export const decodedValue = (colors) => ...
 \`\`\`",
-      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+      "template": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const %{name} = %{value}
 
-export const decodedValue = (...)
+export %{method.signature}
 \`\`\`",
       "type": "actionable",
       "variables": Object {
+        "method.signature": "const decodedValue = (colors) => ...",
         "name": "CODES",
         "value": "...",
       },
@@ -1935,26 +1939,27 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
-      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+      "message": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const COLORS = ...
 
-export const decodedValue = (...)
+export const decodedValue = (args) => ...
 \`\`\`",
-      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+      "template": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const %{name} = %{value}
 
-export const decodedValue = (...)
+export %{method.signature}
 \`\`\`",
       "type": "actionable",
       "variables": Object {
+        "method.signature": "const decodedValue = (args) => ...",
         "name": "COLORS",
         "value": "...",
       },
@@ -2012,26 +2017,27 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
-      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+      "message": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const colorMap = ...
 
-export const decodedValue = (...)
+export function decodedValue([first, second]) ...
 \`\`\`",
-      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+      "template": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const %{name} = %{value}
 
-export const decodedValue = (...)
+export %{method.signature}
 \`\`\`",
       "type": "actionable",
       "variables": Object {
+        "method.signature": "function decodedValue([first, second]) ...",
         "name": "colorMap",
         "value": "...",
       },
@@ -2045,26 +2051,27 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
-      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+      "message": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const colors = ...
 
-export const decodedValue = (...)
+export const decodedValue = ([colorOne, colorTwo]) => ...
 \`\`\`",
-      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+      "template": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const %{name} = %{value}
 
-export const decodedValue = (...)
+export %{method.signature}
 \`\`\`",
       "type": "actionable",
       "variables": Object {
+        "method.signature": "const decodedValue = ([colorOne, colorTwo]) => ...",
         "name": "colors",
         "value": "...",
       },
@@ -2151,26 +2158,27 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
-      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+      "message": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const bandColors = ...
 
-export const decodedValue = (...)
+export function decodedValue (colors) ...
 \`\`\`",
-      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+      "template": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const %{name} = %{value}
 
-export const decodedValue = (...)
+export %{method.signature}
 \`\`\`",
       "type": "actionable",
       "variables": Object {
+        "method.signature": "function decodedValue (colors) ...",
         "name": "bandColors",
         "value": "...",
       },
@@ -2468,26 +2476,27 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
-      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+      "message": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const COLORS = ...
 
-export const decodedValue = (...)
+export function decodedValue([color1, color2]) ...
 \`\`\`",
-      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+      "template": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const %{name} = %{value}
 
-export const decodedValue = (...)
+export %{method.signature}
 \`\`\`",
       "type": "actionable",
       "variables": Object {
+        "method.signature": "function decodedValue([color1, color2]) ...",
         "name": "COLORS",
         "value": "...",
       },
@@ -2528,26 +2537,27 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
-      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+      "message": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const COLORS = ...
 
-export const decodedValue = (...)
+export const decodedValue = (arr) => ...
 \`\`\`",
-      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+      "template": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const %{name} = %{value}
 
-export const decodedValue = (...)
+export %{method.signature}
 \`\`\`",
       "type": "actionable",
       "variables": Object {
+        "method.signature": "const decodedValue = (arr) => ...",
         "name": "COLORS",
         "value": "...",
       },
@@ -2802,26 +2812,27 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
-      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+      "message": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const COLORS = ...
 
-export const decodedValue = (...)
+export const decodedValue = colors => ...
 \`\`\`",
-      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+      "template": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const %{name} = %{value}
 
-export const decodedValue = (...)
+export %{method.signature}
 \`\`\`",
       "type": "actionable",
       "variables": Object {
+        "method.signature": "const decodedValue = colors => ...",
         "name": "COLORS",
         "value": "...",
       },
@@ -3015,26 +3026,27 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
-      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+      "message": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const colors = ...
 
-export const decodedValue = (...)
+export function decodedValue([color1, color2]) ...
 \`\`\`",
-      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+      "template": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const %{name} = %{value}
 
-export const decodedValue = (...)
+export %{method.signature}
 \`\`\`",
       "type": "actionable",
       "variables": Object {
+        "method.signature": "function decodedValue([color1, color2]) ...",
         "name": "colors",
         "value": "...",
       },
@@ -3453,26 +3465,27 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
-      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+      "message": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const resistor = ...
 
-export const decodedValue = (...)
+export const decodedValue = (colorsArr) => ...
 \`\`\`",
-      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+      "template": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const %{name} = %{value}
 
-export const decodedValue = (...)
+export %{method.signature}
 \`\`\`",
       "type": "actionable",
       "variables": Object {
+        "method.signature": "const decodedValue = (colorsArr) => ...",
         "name": "resistor",
         "value": "...",
       },
@@ -3775,26 +3788,27 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
-      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+      "message": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const COLORS = ...
 
-export const decodedValue = (...)
+export const decodedValue = (colorArray) => ...
 \`\`\`",
-      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+      "template": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const %{name} = %{value}
 
-export const decodedValue = (...)
+export %{method.signature}
 \`\`\`",
       "type": "actionable",
       "variables": Object {
+        "method.signature": "const decodedValue = (colorArray) => ...",
         "name": "COLORS",
         "value": "...",
       },
@@ -3992,26 +4006,27 @@ IsolatedAnalyzerOutput {
   "comments": Array [
     CommentImpl {
       "externalTemplate": "javascript.resistor-color-duo.prefer_extracted_top_level_constant",
-      "message": "Instead of defining the constant _inside_ the function, consider extracting it
+      "message": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const array = ...
 
-export const decodedValue = (...)
+export const decodedValue = (colors) => ...
 \`\`\`",
-      "template": "Instead of defining the constant _inside_ the function, consider extracting it
+      "template": "📕 Instead of defining the constant _inside_ the function, consider extracting it
 to the top-level. Constants, functions, and classes that are not \`export\`ed,
 are not accessible from outside the file.
 
 \`\`\`javascript
 const %{name} = %{value}
 
-export const decodedValue = (...)
+export %{method.signature}
 \`\`\`",
       "type": "actionable",
       "variables": Object {
+        "method.signature": "const decodedValue = (colors) => ...",
         "name": "array",
         "value": "...",
       },
