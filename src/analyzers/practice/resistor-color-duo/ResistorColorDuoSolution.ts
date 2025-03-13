@@ -4,6 +4,7 @@ import {
   ExtractedVariable,
   extractExports,
   extractFunctions,
+  extractVariables,
   findAll,
   findFirst,
   findTopLevelConstants,
@@ -480,6 +481,18 @@ class Entry {
     return parameterName(this.params[0])
   }
 
+  public get nameOfConstantDefinedInBody(): string | null {
+    const localConstants = extractVariables(this.body).filter(
+      (constant) =>
+        constant.init?.type === AST_NODE_TYPES.ArrayExpression ||
+        constant.init?.type === AST_NODE_TYPES.ObjectExpression
+    )
+    if (localConstants.length) {
+      return localConstants[0].name || 'COLORS'
+    }
+    return null
+  }
+
   public isOptimal(
     constant: Readonly<Constant> | undefined,
     program: Program
@@ -506,6 +519,11 @@ class Entry {
 
         argument = finalStatement.argument
       }
+    }
+
+    if (!constant && !!this.nameOfConstantDefinedInBody) {
+      logger.log('~> found a constant that was not declared at the top level')
+      return false
     }
 
     if (this.hasOneMap) {
@@ -1179,6 +1197,10 @@ export class ResistorColorDuoSolution {
 
   public get hasOneConstant(): boolean {
     return this.fileConstants.length === 1
+  }
+
+  public get shouldExtractTopLevelConstant(): boolean {
+    return !this.mainConstant && !!this.entry.nameOfConstantDefinedInBody
   }
 
   public get hasOptimalEntry(): boolean {
