@@ -1,6 +1,9 @@
-import { ExtractedFunction, NoMethodError } from '@exercism/static-analysis'
+import {
+  type ExtractedFunction,
+  NoMethodError,
+} from '@exercism/static-analysis'
 import type { TSESTree } from '@typescript-eslint/typescript-estree'
-import { extractNamedFunction } from '~src/extracts/extract_named_function'
+import { extractNamedFunction } from '~src/extracts/extract_named_function.js'
 
 type Node = TSESTree.Node
 
@@ -19,7 +22,7 @@ export function assertNamedFunction(
 ): ExtractedFunction | never {
   // Find the function
   const fn = Array.isArray(root)
-    ? root.find((fn) => fn.name === name)
+    ? (root as readonly ExtractedFunction[]).find((fn) => fn.name === name)
     : extractNamedFunction(name, root as Node)
 
   // Does it exist?

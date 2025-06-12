@@ -4,10 +4,10 @@ import type {
   ExecutionOptions,
   Output,
   OutputProcessor,
-} from '~src/interface'
-import { FileOutput } from '~src/output/processor/FileOutput'
-import { LogOutput } from '~src/output/processor/LogOutput'
-import { PassThroughOutput } from '~src/output/processor/PassThroughOutput'
+} from '~src/interface.js'
+import { FileOutput } from '~src/output/processor/FileOutput.js'
+import { LogOutput } from '~src/output/processor/LogOutput.js'
+import { PassThroughOutput } from '~src/output/processor/PassThroughOutput.js'
 
 /**
  * Run a specific analyzer, given a set of execution options

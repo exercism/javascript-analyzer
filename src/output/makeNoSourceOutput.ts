@@ -1,7 +1,7 @@
 import type { NoSourceError } from '@exercism/static-analysis'
-import { ERROR_CAPTURED_NO_SOURCE } from '~src/comments/shared'
-import type { Output } from '~src/interface'
-import { AnalyzerOutput } from './AnalyzerOutput'
+import { ERROR_CAPTURED_NO_SOURCE } from '~src/comments/shared.js'
+import type { Output } from '~src/interface.d.js'
+import { AnalyzerOutput } from './AnalyzerOutput.js'
 
 /**
  * Makes a generic output based on a NoSourceError

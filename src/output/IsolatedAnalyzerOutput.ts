@@ -1,5 +1,5 @@
-import type { Comment, WritableOutput } from '~src/interface'
-import { AnalyzerOutput } from './AnalyzerOutput'
+import type { Comment, WritableOutput } from '~src/interface.js'
+import { AnalyzerOutput } from './AnalyzerOutput.js'
 
 export class EarlyFinalization extends Error {
   constructor() {
@@ -18,16 +18,20 @@ export class IsolatedAnalyzerOutput
    * @deprecated add a {celebratory} or {informative} comment instead
    */
   public approve(comment?: Comment): never {
-    comment && this.add(comment)
+    if (comment) {
+      this.add(comment)
+    }
     return this.freeze()
   }
 
   /**
-   * Mark the solution as dissapproved
+   * Mark the solution as disapproved
    * @deprecated add an {actionable} or {essential} comment instead
    */
   public disapprove(comment?: Comment): never {
-    comment && this.add(comment)
+    if (comment) {
+      this.add(comment)
+    }
     return this.freeze()
   }
 
@@ -36,7 +40,9 @@ export class IsolatedAnalyzerOutput
    * @deprecated do nothing, or add an {actionable} or {essential} comment instead
    */
   public redirect(comment?: Comment): never {
-    comment && this.add(comment)
+    if (comment) {
+      this.add(comment)
+    }
     return this.freeze()
   }
 
@@ -45,6 +51,7 @@ export class IsolatedAnalyzerOutput
   }
 
   public freeze(summary?: string): never {
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     this.summary = summary || this.summary
 
     super.freeze()

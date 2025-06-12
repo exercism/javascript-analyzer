@@ -1,19 +1,19 @@
+import type { Input } from '@exercism/static-analysis'
 import {
   AstParser,
-  Input,
   NoExportError,
   NoMethodError,
 } from '@exercism/static-analysis'
 import type { TSESTree } from '@typescript-eslint/typescript-estree'
-import { CommentType, factory } from '../../../comments/comment'
+import { CommentType, factory } from '~src/comments/comment.js'
 import {
   EXEMPLAR_SOLUTION,
   NO_METHOD,
   NO_NAMED_EXPORT,
-} from '../../../comments/shared'
-import { ExecutionOptions, WritableOutput } from '../../../interface'
-import { IsolatedAnalyzerImpl } from '../../IsolatedAnalyzerImpl'
-import { AnnalynsInfiltrationSolution } from './AnnalynsInfiltrationSolution'
+} from '~src/comments/shared.js'
+import type { ExecutionOptions, WritableOutput } from '~src/interface.d.js'
+import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl.js'
+import { AnnalynsInfiltrationSolution } from './AnnalynsInfiltrationSolution.js'
 
 export const MUST_NOT_USE_LITERALS = factory`
   Remove all unnecessary literals.
@@ -61,7 +61,7 @@ export const MUST_NOT_USE_BITWISE = factory`
   Use logical operators instead of bitwise operators.
 
   Whilst there is nothing wrong with using bitwise operators (such as \`|\` and
-  \`&\`), this exercise wants you to explore logical boolean operators (such 
+  \`&\`), this exercise wants you to explore logical boolean operators (such
   as \`||\` and \`&&\`). Different exercises are devoted to bitwise operators.
 `(
   'javascript.annalyns-infiltration.must_not_use_bitwise',
@@ -140,11 +140,13 @@ export class AnnalynsInfiltrationAnalyzer extends IsolatedAnalyzerImpl {
       return new AnnalynsInfiltrationSolution(program, source)
     } catch (error) {
       if (error instanceof NoMethodError) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         output.add(NO_METHOD({ 'method.name': error.method }))
         output.finish()
       }
 
       if (error instanceof NoExportError) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         output.add(NO_NAMED_EXPORT({ 'export.name': error.namedExport }))
         output.finish()
       }

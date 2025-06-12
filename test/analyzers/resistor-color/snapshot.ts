@@ -1,5 +1,6 @@
-import { ResistorColorAnalyzer } from '~src/analyzers/practice/resistor-color'
-import { makeTestGenerator } from '~test/helpers/snapshot'
+import { describe } from '@jest/globals'
+import { ResistorColorAnalyzer } from '~src/analyzers/practice/resistor-color/index.js'
+import { makeTestGenerator } from '~test/helpers/snapshot.js'
 
 const snapshotTestsGenerator = makeTestGenerator(
   'resistor-color',

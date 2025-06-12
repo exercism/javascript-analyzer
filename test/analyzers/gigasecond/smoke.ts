@@ -1,5 +1,6 @@
-import { GigasecondAnalyzer } from '~src/analyzers/practice/gigasecond'
-import { makeAnalyze } from '~test/helpers/smoke'
+import { describe, it, expect } from '@jest/globals'
+import { GigasecondAnalyzer } from '~src/analyzers/practice/gigasecond/index.js'
+import { makeAnalyze } from '~test/helpers/smoke.js'
 
 const analyze = makeAnalyze(() => new GigasecondAnalyzer())
 

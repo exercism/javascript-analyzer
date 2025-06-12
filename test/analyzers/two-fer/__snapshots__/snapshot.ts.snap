@@ -2,14 +2,14 @@
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/0's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/1's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -19,7 +19,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -30,7 +30,7 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/10's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -40,7 +40,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -51,13 +51,13 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/11's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
       "message": "No function called \`twoFer\`. The tests won't pass without it.",
       "template": "No function called \`%{method.name}\`. The tests won't pass without it.",
       "type": "essential",
-      "variables": Object {
+      "variables": {
         "method.name": "twoFer",
       },
     },
@@ -68,7 +68,7 @@ AnalyzerOutput {
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/12's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -78,7 +78,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -89,14 +89,14 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/70's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/100's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -106,7 +106,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -117,7 +117,7 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/101's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.general.prefer_strict_equality",
       "message": "In _JavaScript_, always prefer [strict (identity and non-identity) equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity)
@@ -137,7 +137,7 @@ unless you explicitly want to coerce the type of one of the two operands.
 There are definitely cases where you'll want to use non-strict equality, but
 that's not the case in this exercise.",
       "type": "actionable",
-      "variables": Object {},
+      "variables": {},
     },
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
@@ -148,7 +148,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -159,7 +159,7 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/102's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.general.prefer_strict_equality",
       "message": "In _JavaScript_, always prefer [strict (identity and non-identity) equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity)
@@ -179,7 +179,7 @@ unless you explicitly want to coerce the type of one of the two operands.
 There are definitely cases where you'll want to use non-strict equality, but
 that's not the case in this exercise.",
       "type": "actionable",
-      "variables": Object {},
+      "variables": {},
     },
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
@@ -190,7 +190,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -201,14 +201,14 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/103's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/104's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -218,7 +218,7 @@ of X to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "X",
       },
     },
@@ -229,7 +229,7 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/105's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -239,7 +239,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -250,24 +250,24 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/106's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/107's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_explicity_default_value",
-      "message": "Instead of relying on name being \\"undefined\\" when
+      "message": "Instead of relying on name being "undefined" when
 no value is passed in, you could set the default value of 'name' to
 'you'.",
-      "template": "Instead of relying on %{maybe_undefined_expression} being \\"undefined\\" when
+      "template": "Instead of relying on %{maybe_undefined_expression} being "undefined" when
 no value is passed in, you could set the default value of '%{parameter}' to
 'you'.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "maybe_undefined_expression": "name",
         "parameter": "name",
       },
@@ -279,14 +279,14 @@ no value is passed in, you could set the default value of '%{parameter}' to
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/108's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/109's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -296,7 +296,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -307,7 +307,7 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/110's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.general.prefer_strict_equality",
       "message": "In _JavaScript_, always prefer [strict (identity and non-identity) equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity)
@@ -327,7 +327,7 @@ unless you explicitly want to coerce the type of one of the two operands.
 There are definitely cases where you'll want to use non-strict equality, but
 that's not the case in this exercise.",
       "type": "actionable",
-      "variables": Object {},
+      "variables": {},
     },
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
@@ -338,7 +338,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -349,7 +349,7 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/111's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -359,7 +359,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -370,13 +370,13 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/112's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.general.no_method",
       "message": "No function called \`twoFer\`. The tests won't pass without it.",
       "template": "No function called \`%{method.name}\`. The tests won't pass without it.",
       "type": "essential",
-      "variables": Object {
+      "variables": {
         "method.name": "twoFer",
       },
     },
@@ -387,13 +387,13 @@ AnalyzerOutput {
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/113's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/114's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -403,7 +403,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -414,7 +414,7 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/115's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -424,7 +424,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -435,7 +435,7 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/116's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -445,7 +445,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -456,7 +456,7 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/118's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -466,7 +466,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -477,14 +477,14 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/119's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/120's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -494,7 +494,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -505,7 +505,7 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/121's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -515,7 +515,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -526,14 +526,14 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/122's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/123's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -543,7 +543,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -554,7 +554,7 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/124's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -564,7 +564,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -575,101 +575,101 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/129's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/133's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/138's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/139's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/143's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/147's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/148's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/166's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/171's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/175's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/181's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/183's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/192's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/194's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/313's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [
+  "comments": [
     CommentImpl {
       "externalTemplate": "javascript.two-fer.optimise_default_value",
       "message": "You currently use a conditional to branch in case there is no value passed into
@@ -679,7 +679,7 @@ of name to 'you' to avoid this conditional.",
 \`twoFer\`. Instead you could set the [default value](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
 of %{parameter} to 'you' to avoid this conditional.",
       "type": "actionable",
-      "variables": Object {
+      "variables": {
         "parameter": "name",
       },
     },
@@ -690,14 +690,14 @@ of %{parameter} to 'you' to avoid this conditional.",
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/400's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;
 
 exports[`When running analysis on two-fer fixtures and expecting matches two-fer/493's output: output 1`] = `
 AnalyzerOutput {
-  "comments": Array [],
+  "comments": [],
   "summary": undefined,
 }
 `;

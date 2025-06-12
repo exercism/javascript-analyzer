@@ -1,5 +1,6 @@
-import { AnalyzerOutput } from '~src/output/AnalyzerOutput'
-import { factory } from '~src/comments/comment'
+import { describe, expect, it } from '@jest/globals'
+import { factory } from '~src/comments/comment.js'
+import { AnalyzerOutput } from '~src/output/AnalyzerOutput.js'
 
 const COMMENT_TEMPLATE_IDENTIFIER = 'javascript.test.output'
 const COMMENT = factory`something to test with`(COMMENT_TEMPLATE_IDENTIFIER)

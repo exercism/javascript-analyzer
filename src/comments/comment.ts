@@ -1,4 +1,5 @@
-import { Comment } from '~src/interface'
+/* eslint-disable @typescript-eslint/naming-convention */
+import type { Comment } from '~src/interface.d.js'
 
 type TemplateKeys = (number | string)[]
 type NamedTags<R extends string> = Record<R, string | undefined>
@@ -108,9 +109,7 @@ export function factory<R extends string = ''>(
         const key = keys[i]
 
         const value =
-          typeof key === 'number'
-            ? (positionalValues[key] as string)
-            : dictionary[key as R]
+          typeof key === 'number' ? positionalValues[key] : dictionary[key as R]
 
         const tag = buildTemplateTag(key)
 
@@ -122,8 +121,8 @@ export function factory<R extends string = ''>(
       return new CommentImpl(
         // Trim the right side of the output, so that the closing statement of
         // the factory can be made on a new line (see example).
-        message.trimRight(),
-        template.trimRight(),
+        message.trimEnd(),
+        template.trimEnd(),
         // Widen the type so we don't need to make `Comment` a generic
         combineValues({ dictionary, positionalValues }),
         externalTemplate,
@@ -164,8 +163,8 @@ function separateValues<R extends string>(
     Array.isArray(last) ||
     Object.keys(last).length === 0
   ) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const dictionary: NamedTags<R> = {} as any
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+    const dictionary: NamedTags<R> = {} as NamedTags<R>
     return {
       dictionary,
       positionalValues,

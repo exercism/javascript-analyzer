@@ -1,8 +1,8 @@
-import { ExecutionOptionsImpl } from '~src/utils/execution_options'
-import { ExerciseImpl } from '~src/ExerciseImpl'
-import { BootstrapResult } from '~src/utils/bootstrap'
-import { ExecutionOptions } from '~src/interface'
 import { Logger, setProcessLogger } from '@exercism/static-analysis'
+import { ExerciseImpl } from '~src/ExerciseImpl.js'
+import type { ExecutionOptions } from '~src/interface.d.js'
+import type { BootstrapResult } from '~src/utils/bootstrap.js'
+import { ExecutionOptionsImpl } from '~src/utils/execution_options.js'
 
 export function bootstrap({
   exercise,

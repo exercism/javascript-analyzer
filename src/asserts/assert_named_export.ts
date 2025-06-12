@@ -1,6 +1,6 @@
-import { ExtractedExport, NoExportError } from '@exercism/static-analysis'
+import { type ExtractedExport, NoExportError } from '@exercism/static-analysis'
 import type { TSESTree } from '@typescript-eslint/typescript-estree'
-import { extractNamedExport } from '~src/extracts/extract_named_export'
+import { extractNamedExport } from '~src/extracts/extract_named_export.js'
 
 type Node = TSESTree.Node
 
@@ -19,7 +19,9 @@ export function assertNamedExport(
 ): ExtractedExport | never {
   // Find the export
   const fn = Array.isArray(root)
-    ? root.find((fn) => fn.exported === exported)
+    ? (root as readonly ExtractedExport[]).find(
+        (fn) => fn.exported === exported
+      )
     : extractNamedExport(exported, root as Node)
 
   // Does it exist?

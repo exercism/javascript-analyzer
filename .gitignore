@@ -6,3 +6,11 @@ analysis.json
 analysis.out
 analysis.md
 tmp
+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

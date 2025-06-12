@@ -1,6 +1,6 @@
+import type { ExtractedFunction } from '@exercism/static-analysis'
 import {
   AstParser,
-  ExtractedFunction,
   extractExports,
   extractFunctions,
   findFirst,
@@ -13,13 +13,14 @@ import {
   guardReturnBlockStatement,
   guardUnaryExpression,
 } from '@exercism/static-analysis'
-import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
-import { readFileSync } from 'fs'
-import path from 'path'
-import { Source } from '~src/analyzers/SourceImpl'
-import { assertPublicApi } from '~src/asserts/assert_public_api'
-import { PublicApi } from '../../PublicApi'
-import { parameterName } from '../../utils/extract_parameter'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
+import { readFileSync } from 'node:fs'
+import { Source } from '~src/analyzers/SourceImpl.js'
+import { assertPublicApi } from '~src/asserts/assert_public_api.js'
+import { PublicApi } from '../../PublicApi.js'
+import { parameterName } from '../../utils/extract_parameter.js'
+import { exemplarPath } from '~src/analyzers/utils/config.js'
 
 export const CAN_EXECUTE_FAST_ATTACK = 'canExecuteFastAttack'
 export const CAN_SPY = 'canSpy'
@@ -53,9 +54,8 @@ class FastAttack extends PublicApi {
   }
 
   public get hasConditional(): boolean {
-    return !!findFirstOfType(
-      this.implementation.body,
-      AST_NODE_TYPES.IfStatement
+    return Boolean(
+      findFirstOfType(this.implementation.body, AST_NODE_TYPES.IfStatement)
     )
   }
 
@@ -75,7 +75,9 @@ class FastAttack extends PublicApi {
       this.implementation.body,
       AST_NODE_TYPES.CallExpression
     )
-    return !!callExpression && guardCallExpression(callExpression, 'Boolean')
+    return (
+      Boolean(callExpression) && guardCallExpression(callExpression!, 'Boolean')
+    )
   }
 }
 
@@ -116,9 +118,8 @@ class Spy extends PublicApi {
   }
 
   public get hasConditional(): boolean {
-    return !!findFirstOfType(
-      this.implementation.body,
-      AST_NODE_TYPES.IfStatement
+    return Boolean(
+      findFirstOfType(this.implementation.body, AST_NODE_TYPES.IfStatement)
     )
   }
 
@@ -134,10 +135,12 @@ class Spy extends PublicApi {
   }
 
   public get hasBitwise(): boolean {
-    return !!findFirst(
-      this.implementation.body,
-      (node): node is TSESTree.Node =>
-        guardBinaryExpression(node, '&') || guardBinaryExpression(node, '|')
+    return Boolean(
+      findFirst(
+        this.implementation.body,
+        (node): node is TSESTree.Node =>
+          guardBinaryExpression(node, '&') || guardBinaryExpression(node, '|')
+      )
     )
   }
 
@@ -146,7 +149,9 @@ class Spy extends PublicApi {
       this.implementation.body,
       AST_NODE_TYPES.CallExpression
     )
-    return !!callExpression && guardCallExpression(callExpression, 'Boolean')
+    return (
+      Boolean(callExpression) && guardCallExpression(callExpression!, 'Boolean')
+    )
   }
 }
 
@@ -198,9 +203,8 @@ class SignalPrisoner extends PublicApi {
   }
 
   public get hasConditional(): boolean {
-    return !!findFirstOfType(
-      this.implementation.body,
-      AST_NODE_TYPES.IfStatement
+    return Boolean(
+      findFirstOfType(this.implementation.body, AST_NODE_TYPES.IfStatement)
     )
   }
 
@@ -216,10 +220,12 @@ class SignalPrisoner extends PublicApi {
   }
 
   public get hasBitwise(): boolean {
-    return !!findFirst(
-      this.implementation.body,
-      (node): node is TSESTree.Node =>
-        guardBinaryExpression(node, '&') || guardBinaryExpression(node, '|')
+    return Boolean(
+      findFirst(
+        this.implementation.body,
+        (node): node is TSESTree.Node =>
+          guardBinaryExpression(node, '&') || guardBinaryExpression(node, '|')
+      )
     )
   }
 
@@ -228,7 +234,9 @@ class SignalPrisoner extends PublicApi {
       this.implementation.body,
       AST_NODE_TYPES.CallExpression
     )
-    return !!callExpression && guardCallExpression(callExpression, 'Boolean')
+    return (
+      Boolean(callExpression) && guardCallExpression(callExpression!, 'Boolean')
+    )
   }
 }
 
@@ -477,10 +485,12 @@ class FreePrisoner extends PublicApi {
   }
 
   public get hasBitwise(): boolean {
-    return !!findFirst(
-      this.implementation.body,
-      (node): node is TSESTree.Node =>
-        guardBinaryExpression(node, '&') || guardBinaryExpression(node, '|')
+    return Boolean(
+      findFirst(
+        this.implementation.body,
+        (node): node is TSESTree.Node =>
+          guardBinaryExpression(node, '&') || guardBinaryExpression(node, '|')
+      )
     )
   }
 
@@ -489,7 +499,9 @@ class FreePrisoner extends PublicApi {
       this.implementation.body,
       AST_NODE_TYPES.CallExpression
     )
-    return !!callExpression && guardCallExpression(callExpression, 'Boolean')
+    return (
+      Boolean(callExpression) && guardCallExpression(callExpression!, 'Boolean')
+    )
   }
 }
 
@@ -503,7 +515,10 @@ export class AnnalynsInfiltrationSolution {
 
   private exemplar!: Source
 
-  constructor(public readonly program: TSESTree.Program, source: string) {
+  constructor(
+    public readonly program: TSESTree.Program,
+    source: string
+  ) {
     this.source = new Source(source)
 
     const functions = extractFunctions(program)
@@ -568,11 +583,7 @@ export class AnnalynsInfiltrationSolution {
   }
 
   public readExemplar(directory: string): void {
-    const configPath = path.join(directory, '.meta', 'config.json')
-    const config = JSON.parse(readFileSync(configPath).toString())
-
-    const exemplarPath = path.join(directory, config.files.exemplar[0])
-    this.exemplar = new Source(readFileSync(exemplarPath).toString())
+    this.exemplar = new Source(readFileSync(exemplarPath(directory)).toString())
   }
 
   public get isExemplar(): boolean {

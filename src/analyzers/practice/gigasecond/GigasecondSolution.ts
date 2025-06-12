@@ -1,6 +1,9 @@
-import {
+import type {
   ExtractedExport,
   ExtractedFunction,
+  ProgramConstants,
+} from '@exercism/static-analysis'
+import {
   ExtractedVariable,
   extractExports,
   extractFunctions,
@@ -13,14 +16,14 @@ import {
   guardIdentifier,
   guardLiteral,
   isNewExpression,
-  ProgramConstants,
 } from '@exercism/static-analysis'
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
-import { Source } from '~src/analyzers/SourceImpl'
-import { parameterName } from '~src/analyzers/utils/extract_parameter'
-import { assertNamedExport } from '~src/asserts/assert_named_export'
-import { assertNamedFunction } from '~src/asserts/assert_named_function'
-import { extractSignature } from '~src/extracts/extract_declaration'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
+import { Source } from '~src/analyzers/SourceImpl.js'
+import { parameterName } from '~src/analyzers/utils/extract_parameter.js'
+import { assertNamedExport } from '~src/asserts/assert_named_export.js'
+import { assertNamedFunction } from '~src/asserts/assert_named_function.js'
+import { extractSignature } from '~src/extracts/extract_declaration.js'
 
 type Node = TSESTree.Node
 type Program = TSESTree.Program
@@ -35,8 +38,6 @@ type LargeNumberComprehension =
   | TSESTree.Literal
   | TSESTree.VariableDeclarator
 
-type MainExport = ReturnType<typeof extractExports>[number]
-
 const EXPECTED_METHOD = 'gigasecond'
 const EXPECTED_EXPORT = 'gigasecond'
 
@@ -45,7 +46,7 @@ class Constant {
   private _memoized: { [key: string]: string | number | boolean }
 
   constructor(private readonly constant: Readonly<ExtractedVariable>) {
-    this.name = constant.name || '<NO-CONSTANT-NAME>'
+    this.name = constant.name ?? '<NO-CONSTANT-NAME>'
     this._memoized = {}
   }
 
@@ -65,7 +66,7 @@ class Constant {
     }
 
     if ('isOptimisedExpression' in this._memoized) {
-      return !!this._memoized['isOptimisedComprehension']
+      return Boolean(this._memoized['isOptimisedComprehension'])
     }
 
     return (this._memoized['isOptimisedComprehension'] =
@@ -80,7 +81,7 @@ class Constant {
     }
 
     if ('isLargeNumberLiteral' in this._memoized) {
-      return !!this._memoized['isLargeNumberLiteral']
+      return Boolean(this._memoized['isLargeNumberLiteral'])
     }
 
     return (this._memoized['isLargeNumberLiteral'] = isLargeNumberLiteral(init))
@@ -88,7 +89,7 @@ class Constant {
 
   public isOptimal(): boolean {
     if ('isOptimal' in this._memoized) {
-      return !!this._memoized['isOptimal']
+      return Boolean(this._memoized['isOptimal'])
     }
 
     const result = this.isOfKindConst && this.isOptimisedExpression
@@ -105,7 +106,7 @@ class Entry {
   private readonly body: Node
 
   constructor(method: Readonly<ExtractedFunction>, source: Readonly<Source>) {
-    this.name = method.name || EXPECTED_METHOD
+    this.name = method.name ?? EXPECTED_METHOD
     this.params = method.params
     this.body = method.body
 
@@ -125,19 +126,19 @@ class Entry {
   }
 
   public get hasDateParse(): boolean {
-    return !!findMemberCall(this.body, 'Date', 'parse')
+    return Boolean(findMemberCall(this.body, 'Date', 'parse'))
   }
 
   public get hasDateValueOnInput(): boolean {
-    return !!findMemberCall(this.body, this.parameterName, 'valueOf')
+    return Boolean(findMemberCall(this.body, this.parameterName, 'valueOf'))
   }
 
   public get hasGetSecondsOnInput(): boolean {
-    return !!findMemberCall(this.body, this.parameterName, 'getSeconds')
+    return Boolean(findMemberCall(this.body, this.parameterName, 'getSeconds'))
   }
 
   public get hasSetSecondsOnInput(): boolean {
-    return !!findMemberCall(this.body, this.parameterName, 'setSeconds')
+    return Boolean(findMemberCall(this.body, this.parameterName, 'setSeconds'))
   }
 
   public get parameterType(): Parameter['type'] {
@@ -226,7 +227,7 @@ class Entry {
 
     if (
       comprehension &&
-      comprehension.type == AST_NODE_TYPES.VariableDeclarator
+      comprehension.type === AST_NODE_TYPES.VariableDeclarator
     ) {
       // Don't care about the kind because _there is no constant_. In that sense
       // it will not take into account the kind of the constant here.
@@ -261,9 +262,9 @@ class Entry {
         : guardIdentifier(expression.right, constant.name) && expression.right
 
       logger.log(
-        `=> identifier: ${!!identifier}, expression: ${!!callExpression}`
+        `=> identifier: ${Boolean(identifier)}, expression: ${Boolean(callExpression)}`
       )
-      return !!(callExpression && identifier)
+      return Boolean(callExpression && identifier)
     }
 
     // In this case the constant is just not extracted into the top-level, but
@@ -271,21 +272,26 @@ class Entry {
     const comprehensionInExpression =
       expression.left === comprehension || expression.right === comprehension
 
-    return !!(callExpression && comprehensionInExpression)
+    return Boolean(callExpression && comprehensionInExpression)
   }
 }
 
 export class GigasecondSolution {
   public readonly source: Source
 
-  private mainMethod: Entry
-  private mainExport: ExtractedExport
-  private fileConstants: ProgramConstants
-  private mainConstant: Constant | undefined
-  private largeNumberComprehension: LargeNumberComprehension | undefined
-  private largeNumberLiteral: LargeNumberComprehension | undefined
+  private readonly mainMethod: Entry
+  private readonly mainExport: ExtractedExport
+  private readonly fileConstants: ProgramConstants
+  private readonly mainConstant: Constant | undefined
+  private readonly largeNumberComprehension:
+    | LargeNumberComprehension
+    | undefined
+  private readonly largeNumberLiteral: LargeNumberComprehension | undefined
 
-  constructor(public readonly program: Program, source: string) {
+  constructor(
+    public readonly program: Program,
+    source: string
+  ) {
     this.source = new Source(source)
 
     const functions = extractFunctions(program)
@@ -317,7 +323,7 @@ export class GigasecondSolution {
           guardIdentifier(value.id) &&
           (value.id.name.toUpperCase().includes('GIGASECOND') ||
             value.id.name.toUpperCase().includes('MS'))
-      ) || this.fileConstants[0]
+      ) ?? this.fileConstants[0]
 
     this.mainConstant =
       (expectedConstant &&
@@ -381,10 +387,10 @@ export class GigasecondSolution {
 
   public get hasInlineExport(): boolean {
     // export function gigasecond
-    // => no specififers
+    // => no specifiers
     //
     // export { gigasecond }
-    // => yes specififers
+    // => yes specifiers
     //
     return this.mainExport.exportKind === 'value'
   }
@@ -416,7 +422,7 @@ function findNumberComprehension(
       default:
         return false
     }
-  }) as LargeNumberComprehension | undefined
+  })
 }
 
 function isOptimisedComprehension(expression: Expression): boolean {
@@ -540,7 +546,7 @@ function findNumberLiteral(
       default:
         return false
     }
-  }) as LargeNumberComprehension | undefined
+  })
 }
 
 function isLargeNumberLiteral(node: TSESTree.Node): boolean {

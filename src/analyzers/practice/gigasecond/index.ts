@@ -1,22 +1,24 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+import type { Input } from '@exercism/static-analysis'
 import {
   AstParser,
   guardIdentifier,
-  Input,
   NoExportError,
   NoMethodError,
 } from '@exercism/static-analysis'
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
-import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl'
-import { CommentType, factory } from '~src/comments/comment'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
+import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl.js'
+import { CommentType, factory } from '~src/comments/comment.js'
 import {
   NO_METHOD,
   NO_NAMED_EXPORT,
   NO_PARAMETER,
   PREFER_CONST_OVER_LET_AND_VAR,
   UNEXPECTED_PARAMETER,
-} from '~src/comments/shared'
-import type { WritableOutput } from '~src/interface'
-import { GigasecondSolution } from './GigasecondSolution'
+} from '~src/comments/shared.js'
+import type { WritableOutput } from '~src/interface.d.js'
+import { GigasecondSolution } from './GigasecondSolution.js'
 
 const TIP_EXPORT_INLINE = factory<'method.signature'>`
 Did you know that you can export functions, classes and constants directly
@@ -309,7 +311,7 @@ export class GigasecondAnalyzer extends IsolatedAnalyzerImpl {
                   'GIGASECOND_IN_MS',
                 value:
                   (comprehension.init &&
-                    solution.source.get(comprehension.init)) ||
+                    solution.source.get(comprehension.init)) ??
                   '...',
               })
             )

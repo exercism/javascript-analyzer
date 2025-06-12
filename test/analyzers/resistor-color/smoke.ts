@@ -1,5 +1,6 @@
-import { ResistorColorAnalyzer } from '~src/analyzers/practice/resistor-color'
-import { makeAnalyze } from '~test/helpers/smoke'
+import { describe, it, expect } from '@jest/globals'
+import { ResistorColorAnalyzer } from '~src/analyzers/practice/resistor-color/index.js'
+import { makeAnalyze } from '~test/helpers/smoke.js'
 
 const analyze = makeAnalyze(() => new ResistorColorAnalyzer())
 

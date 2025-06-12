@@ -8,9 +8,9 @@
 // exercise analyzer with the ~/test/ input directory and turning on debug and
 // console logging.
 
-import { find } from './analyzers/Autoload'
-import { Bootstrap } from './utils/bootstrap'
-import { run } from './utils/runner'
+import { find } from './analyzers/Autoload.js'
+import { Bootstrap } from './utils/bootstrap.js'
+import { run } from './utils/runner.js'
 
 //
 const { exercise, options, input, logger } = Bootstrap.call()
@@ -27,9 +27,6 @@ logger.log(
 // so it can be instantiated here. This allows us to add new analyzers without
 // needing to update a bookkeeping construct
 //
-const AnalyzerClass = find(exercise)
-const analyzer = new AnalyzerClass()
-
 // The runner uses the execution options to determine what should happen with
 // the output. For example the --dry flag will make sure there is nothing
 // written to a file.
@@ -37,6 +34,9 @@ const analyzer = new AnalyzerClass()
 // The basis for the runner is calling analyzer.run(input) -- the output is then
 // logged and/or written to a file.
 //
-run(analyzer, input, options)
+find(exercise)
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  .then((AnalyzerClass) => new AnalyzerClass())
+  .then((analyzer) => run(analyzer, input, options))
   .then(() => process.exit(0))
-  .catch((err) => logger.fatal(err.toString()))
+  .catch((err: unknown) => logger.fatal(String(err)))

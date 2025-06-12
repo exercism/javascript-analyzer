@@ -1,16 +1,16 @@
+import type { ExtractedFunction } from '@exercism/static-analysis'
 import {
   AstParser,
-  ExtractedFunction,
   extractExports,
   extractFunctions,
 } from '@exercism/static-analysis'
-import { TSESTree } from '@typescript-eslint/typescript-estree'
-import { readFileSync } from 'fs'
-import path from 'path'
-import { Source } from '~src/analyzers/SourceImpl'
-import { assertPublicApi } from '~src/asserts/assert_public_api'
-import { PublicApi } from '../../PublicApi'
-import { parameterName } from '../../utils/extract_parameter'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { readFileSync } from 'node:fs'
+import { Source } from '~src/analyzers/SourceImpl.js'
+import { exemplarPath } from '~src/analyzers/utils/config.js'
+import { assertPublicApi } from '~src/asserts/assert_public_api.js'
+import { PublicApi } from '../../PublicApi.js'
+import { parameterName } from '../../utils/extract_parameter.js'
 
 export const DAY_RATE = 'dayRate'
 export const MONTH_RATE = 'priceWithMonthlyDiscount'
@@ -70,7 +70,10 @@ export class FreelancerRatesSolution {
 
   private exemplar!: Source
 
-  constructor(public readonly program: TSESTree.Program, source: string) {
+  constructor(
+    public readonly program: TSESTree.Program,
+    source: string
+  ) {
     this.source = new Source(source)
 
     const functions = extractFunctions(program)
@@ -88,11 +91,7 @@ export class FreelancerRatesSolution {
   }
 
   public readExemplar(directory: string): void {
-    const configPath = path.join(directory, '.meta', 'config.json')
-    const config = JSON.parse(readFileSync(configPath).toString())
-
-    const exemplarPath = path.join(directory, config.files.exemplar[0])
-    this.exemplar = new Source(readFileSync(exemplarPath).toString())
+    this.exemplar = new Source(readFileSync(exemplarPath(directory)).toString())
   }
 
   public get isExemplar(): boolean {

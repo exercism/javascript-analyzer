@@ -1,5 +1,6 @@
-import { Analyzer, ExecutionOptions, Output } from '~src/interface'
-import { FixtureInput } from './input/FixtureInput'
+import { describe, expect, it } from '@jest/globals'
+import type { Analyzer, ExecutionOptions, Output } from '~src/interface.js'
+import { FixtureInput } from './input/FixtureInput.js'
 
 const EMPTY_OPTIONS: ExecutionOptions = {
   debug: false,
@@ -13,12 +14,14 @@ const EMPTY_OPTIONS: ExecutionOptions = {
 }
 
 type AnalyzerFactory = () => Analyzer
-type generateAll = (fixtures: readonly number[]) => void
+type GenerateAllFn = (fixtures: readonly number[]) => void
 
+// eslint-disable-next-line jest/no-export
 export function makeTestGenerator(
   slug: string,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   AnalyzerFactory: AnalyzerFactory
-): generateAll {
+): GenerateAllFn {
   function analyze(fixture: number): Promise<Output> {
     const analyzer = AnalyzerFactory()
     const input = new FixtureInput(slug, fixture)
@@ -26,11 +29,11 @@ export function makeTestGenerator(
     return analyzer.run(input, EMPTY_OPTIONS)
   }
 
-  return async function (fixtures: readonly number[]): Promise<void> {
+  return function (fixtures: readonly number[]): void {
     describe(`and expecting`, () => {
       fixtures
         .slice()
-        .sort()
+        .sort((a, b) => a - b)
         .forEach((fixture) => {
           const identifier = `${slug}/${fixture}`
           it(`matches ${identifier}'s output`, async () => {

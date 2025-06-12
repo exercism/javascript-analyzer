@@ -1,5 +1,6 @@
-import { GigasecondAnalyzer } from '~src/analyzers/practice/gigasecond'
-import { makeTestGenerator } from '~test/helpers/snapshot'
+import { describe } from '@jest/globals'
+import { GigasecondAnalyzer } from '~src/analyzers/practice/gigasecond/index.js'
+import { makeTestGenerator } from '~test/helpers/snapshot.js'
 
 const snapshotTestsGenerator = makeTestGenerator(
   'gigasecond',

@@ -1,20 +1,19 @@
+import type { Input } from '@exercism/static-analysis'
 import {
   AstParser,
-  getProcessLogger,
-  Input,
   NoExportError,
   NoMethodError,
 } from '@exercism/static-analysis'
-import { TSESTree } from '@typescript-eslint/typescript-estree'
-import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl'
-import { CommentType, factory } from '~src/comments/comment'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl.js'
+import { CommentType, factory } from '~src/comments/comment.js'
 import {
   NO_METHOD,
   NO_NAMED_EXPORT,
   NO_PARAMETER,
   UNEXPECTED_PARAMETER,
-} from '~src/comments/shared'
-import { WritableOutput } from '~src/interface'
+} from '~src/comments/shared.js'
+import type { WritableOutput } from '~src/interface.d.js'
 import {
   HelperCallNotFound,
   HelperNotOptimal,
@@ -22,7 +21,7 @@ import {
   MissingExpectedCall,
   ResistorColorDuoSolution,
   UnexpectedCallFound,
-} from './ResistorColorDuoSolution'
+} from './ResistorColorDuoSolution.js'
 
 const TIP_EXPORT_INLINE = factory<'method.signature'>`
 Did you know that you can export functions, classes and constants directly
@@ -120,6 +119,23 @@ const ISSUE_UNEXPECTED_CALL = factory<'unexpected' | 'expected'>`
   CommentType.Actionable
 )
 
+const PREFER_EXTRACTED_TOP_LEVEL_CONSTANT = factory<
+  'value' | 'name' | 'method.signature'
+>`
+📕 Instead of defining the constant _inside_ the function, consider extracting it
+to the top-level. Constants, functions, and classes that are not \`export\`ed,
+are not accessible from outside the file.
+
+\`\`\`javascript
+const ${'name'} = ${'value'}
+
+export ${'method.signature'}
+\`\`\`
+`(
+  'javascript.resistor-color-duo.prefer_extracted_top_level_constant',
+  CommentType.Actionable
+)
+
 type Program = TSESTree.Program
 
 export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
@@ -158,10 +174,12 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
       return new ResistorColorDuoSolution(program, source)
     } catch (error) {
       if (error instanceof NoMethodError) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         output.disapprove(NO_METHOD({ 'method.name': error.method }))
       }
 
       if (error instanceof NoExportError) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         output.disapprove(NO_NAMED_EXPORT({ 'export.name': error.namedExport }))
       }
 
@@ -176,6 +194,7 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     // If there is no parameter then this solution won't pass the tests.
     //
     if (!entry.hasAtLeastOneParameter) {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       output.disapprove(NO_PARAMETER({ 'function.name': entry.name }))
     }
 
@@ -241,6 +260,7 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     if (lastIssue instanceof HelperNotOptimal) {
       // output.add(BETA_COMMENTARY_PREFIX())
       output.disapprove(
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         ISSUE_OPTIMISE_HELPER({ 'method.name': lastIssue.helperName })
       )
     } else if (lastIssue instanceof HelperCallNotFound) {
@@ -249,6 +269,7 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     } else if (lastIssue instanceof MethodNotFound) {
       // output.add(BETA_COMMENTARY_PREFIX())
       output.disapprove(
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         ISSUE_METHOD_NOT_FOUND({ 'method.name': lastIssue.methodName })
       )
     } else if (lastIssue instanceof UnexpectedCallFound) {
@@ -262,7 +283,9 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
       // output.add(BETA_COMMENTARY_PREFIX())
       output.add(
         ISSUE_EXPECTED_CALL({
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           'method.name': lastIssue.methodName,
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           'expected.reason': lastIssue.reason,
         })
       )
@@ -287,6 +310,17 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
     solution: ResistorColorDuoSolution,
     output: WritableOutput
   ): void | never {
+    if (solution.shouldExtractTopLevelConstant) {
+      output.add(
+        PREFER_EXTRACTED_TOP_LEVEL_CONSTANT({
+          name: String(solution.entry.nameOfConstantDefinedInBody),
+          value: '...',
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          'method.signature': solution.entry.signature,
+        })
+      )
+    }
+
     if (solution || output) {
       return
     }
@@ -347,6 +381,7 @@ export class ResistorColorDuoAnalyzer extends IsolatedAnalyzerImpl {
       // export { gigasecond }
       output.add(
         TIP_EXPORT_INLINE({
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           'method.signature': solution.entry.signature,
         })
       )

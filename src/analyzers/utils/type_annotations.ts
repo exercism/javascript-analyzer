@@ -1,5 +1,8 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
-import { parameterName } from './extract_parameter'
+import {
+  AST_NODE_TYPES,
+  type TSESTree,
+} from '@typescript-eslint/typescript-estree'
+import { parameterName } from './extract_parameter.js'
 
 type TSTypeAnnotation = TSESTree.TSTypeAnnotation
 type TypeNode = TSESTree.TypeNode
@@ -14,6 +17,7 @@ export function parameterType(parameter: Parameter, fallback = 'any'): string {
     case AST_NODE_TYPES.RestElement: // ...arg?: type
       return (
         (parameter.typeAnnotation &&
+          // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
           annotateType(parameter.typeAnnotation, fallback)) ||
         fallback
       )
@@ -22,6 +26,7 @@ export function parameterType(parameter: Parameter, fallback = 'any'): string {
     case AST_NODE_TYPES.AssignmentPattern: {
       return (
         (parameter.left.typeAnnotation &&
+          // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
           annotateType(parameter.left.typeAnnotation, fallback)) ||
         fallback
       )
@@ -61,6 +66,10 @@ export function annotateEntityName(entityName: EntityName): string {
       )}`
     }
 
+    case AST_NODE_TYPES.ThisExpression: {
+      return 'this'
+    }
+
     default: {
       return entityName
     }
@@ -80,7 +89,7 @@ function annotate(typeNode?: TypeNode, fallback = 'any'): string {
       return 'any'
     }
     case AST_NODE_TYPES.TSArrayType: {
-      return `Array<${typeNode.elementType}>`
+      return `Array<${typeNode.elementType.type}>`
     }
     case AST_NODE_TYPES.TSBigIntKeyword: {
       return 'bigint'
@@ -124,9 +133,7 @@ function annotate(typeNode?: TypeNode, fallback = 'any'): string {
         .join(' & ')
     }
     case AST_NODE_TYPES.TSImportType: {
-      return `${typeNode.isTypeOf ? 'typeof ' : ''} import(${
-        typeNode.parameter
-      })${
+      return `import(...)${
         typeNode.qualifier ? `.${annotateEntityName(typeNode.qualifier)}` : ''
       } <...>` // todo type parameters
     }
@@ -176,9 +183,6 @@ function annotate(typeNode?: TypeNode, fallback = 'any'): string {
     case AST_NODE_TYPES.TSOptionalType: {
       return `${annotate(typeNode.typeAnnotation, fallback)}?`
     }
-    case AST_NODE_TYPES.TSParenthesizedType: {
-      return `(${annotate(typeNode.typeAnnotation, fallback)})`
-    }
     case AST_NODE_TYPES.TSRestType: {
       return `...${annotate(typeNode.typeAnnotation, fallback)}`
     }
@@ -209,16 +213,16 @@ function annotate(typeNode?: TypeNode, fallback = 'any'): string {
       )}`
     }
     case AST_NODE_TYPES.TSTypePredicate: {
-      return `${typeNode.parameterName} is ${annotateType(
+      return `${typeNode.parameterName.type === AST_NODE_TYPES.TSThisType ? 'this' : typeNode.parameterName.name} is ${annotateType(
         typeNode.typeAnnotation,
         fallback
       )}`
     }
     case AST_NODE_TYPES.TSTypeQuery: {
-      return `typeof ${annotateEntityName(typeNode.exprName)}`
+      return `typeof ${typeNode.exprName.type === AST_NODE_TYPES.Identifier ? typeNode.exprName.name : '(...)'}`
     }
     case AST_NODE_TYPES.TSTypeReference: {
-      return `${typeNode.typeName}<...>` // TODO type parameters
+      return `${typeNode.typeName.type === AST_NODE_TYPES.ThisExpression ? 'this' : typeNode.typeName.type === AST_NODE_TYPES.Identifier ? typeNode.typeName.name : '(complex)'}<...>` // TODO type parameters
     }
     case AST_NODE_TYPES.TSUndefinedKeyword: {
       return 'undefined'
@@ -240,6 +244,36 @@ function annotate(typeNode?: TypeNode, fallback = 'any'): string {
     }
     case AST_NODE_TYPES.TSIntrinsicKeyword: {
       return typeNode.type
+    }
+    case AST_NODE_TYPES.TSAbstractKeyword: {
+      return 'abstract '
+    }
+    case AST_NODE_TYPES.TSAsyncKeyword: {
+      return 'async'
+    }
+    case AST_NODE_TYPES.TSDeclareKeyword: {
+      return 'declare'
+    }
+    case AST_NODE_TYPES.TSExportKeyword: {
+      return 'export'
+    }
+    case AST_NODE_TYPES.TSPrivateKeyword: {
+      return 'private'
+    }
+    case AST_NODE_TYPES.TSProtectedKeyword: {
+      return 'protected'
+    }
+    case AST_NODE_TYPES.TSPublicKeyword: {
+      return 'public'
+    }
+    case AST_NODE_TYPES.TSQualifiedName: {
+      return '(...)' // TODO
+    }
+    case AST_NODE_TYPES.TSReadonlyKeyword: {
+      return 'readonly'
+    }
+    case AST_NODE_TYPES.TSStaticKeyword: {
+      return 'static'
     }
     default: {
       return typeNode

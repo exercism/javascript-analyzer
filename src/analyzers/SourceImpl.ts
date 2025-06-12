@@ -1,5 +1,8 @@
 import { extractSource } from '@exercism/static-analysis'
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
+import {
+  AST_NODE_TYPES,
+  type TSESTree,
+} from '@typescript-eslint/typescript-estree'
 
 type NodeWithLocation = TSESTree.Node & {
   range?: TSESTree.Range
@@ -7,7 +10,7 @@ type NodeWithLocation = TSESTree.Node & {
 }
 
 interface Source {
-  get(node: NodeWithLocation): string
+  get: (node: NodeWithLocation) => string
 }
 
 class SourceImpl implements Source {
@@ -41,7 +44,9 @@ class SourceImpl implements Source {
       case AST_NODE_TYPES.VariableDeclaration: {
         const first = node.declarations[0].init
         return this.get(node).replace(
+          // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
           (first && this.get(first)) || '...',
+          // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
           (first && this.getOuter(first)) || '...'
         )
       }

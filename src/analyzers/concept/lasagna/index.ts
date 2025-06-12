@@ -1,12 +1,12 @@
+import type { Input } from '@exercism/static-analysis'
 import {
   AstParser,
-  Input,
   NoExportError,
   NoMethodError,
 } from '@exercism/static-analysis'
-import { TSESTree } from '@typescript-eslint/typescript-estree'
-import { ExecutionOptions, WritableOutput } from '~src/interface'
-import { CommentType, factory } from '../../../comments/comment'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl.js'
+import { CommentType, factory } from '~src/comments/comment.js'
 import {
   EXEMPLAR_SOLUTION,
   FUNCTION_NOT_OPTIMAL,
@@ -14,15 +14,15 @@ import {
   NO_NAMED_EXPORT,
   PREFER_CONST_OVER_LET_AND_VAR,
   REPLACE_MAGIC_WITH_IDENTIFIER,
-} from '../../../comments/shared'
-import { IsolatedAnalyzerImpl } from '../../IsolatedAnalyzerImpl'
+} from '~src/comments/shared.js'
+import type { ExecutionOptions, WritableOutput } from '~src/interface.d.js'
 import {
   EXPECTED_MINUTES_IN_OVEN,
   LasagnaSolution,
   PREPARATION_TIME_IN_MINUTES,
   REMAINING_MINUTES_IN_OVEN,
   TOTAL_TIME_IN_MINUTES,
-} from './LasagnaSolution'
+} from './LasagnaSolution.js'
 
 type Program = TSESTree.Program
 
@@ -145,11 +145,13 @@ export class LasagnaAnalyzer extends IsolatedAnalyzerImpl {
       return new LasagnaSolution(program, source)
     } catch (error) {
       if (error instanceof NoMethodError) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         output.add(NO_METHOD({ 'method.name': error.method }))
         output.finish()
       }
 
       if (error instanceof NoExportError) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         output.add(NO_NAMED_EXPORT({ 'export.name': error.namedExport }))
         output.finish()
       }

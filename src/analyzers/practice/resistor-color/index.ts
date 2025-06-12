@@ -1,20 +1,20 @@
+import type { Input } from '@exercism/static-analysis'
 import {
   AstParser,
-  Input,
   NoExportError,
   NoMethodError,
 } from '@exercism/static-analysis'
-import { TSESTree } from '@typescript-eslint/typescript-estree'
-import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl'
-import { CommentType, factory } from '~src/comments/comment'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl.js'
+import { CommentType, factory } from '~src/comments/comment.js'
 import {
   NO_METHOD,
   NO_NAMED_EXPORT,
   NO_PARAMETER,
   UNEXPECTED_PARAMETER,
-} from '~src/comments/shared'
-import { WritableOutput } from '~src/interface'
-import { ResistorColorSolution } from './ResistorColorSolution'
+} from '~src/comments/shared.js'
+import type { WritableOutput } from '~src/interface.d.js'
+import { ResistorColorSolution } from './ResistorColorSolution.js'
 
 const TIP_EXPORT_INLINE = factory<'method.signature' | 'constant.signature'>`
 Did you know that you can export functions, classes and constants directly
@@ -110,10 +110,12 @@ export class ResistorColorAnalyzer extends IsolatedAnalyzerImpl {
       return new ResistorColorSolution(program, source)
     } catch (error) {
       if (error instanceof NoMethodError) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         output.disapprove(NO_METHOD({ 'method.name': error.method }))
       }
 
       if (error instanceof NoExportError) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         output.disapprove(NO_NAMED_EXPORT({ 'export.name': error.namedExport }))
       }
 
@@ -128,6 +130,7 @@ export class ResistorColorAnalyzer extends IsolatedAnalyzerImpl {
     // If there is no parameter then this solution won't pass the tests.
     //
     if (!entry.hasAtLeastOneParameter) {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       output.disapprove(NO_PARAMETER({ 'function.name': entry.name }))
     }
 
@@ -232,7 +235,9 @@ export class ResistorColorAnalyzer extends IsolatedAnalyzerImpl {
       // export { gigasecond }
       output.add(
         TIP_EXPORT_INLINE({
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           'method.signature': solution.entry.signature,
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           'constant.signature': solution.constant.signature,
         })
       )

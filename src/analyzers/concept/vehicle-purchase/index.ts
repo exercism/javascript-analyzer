@@ -1,25 +1,23 @@
+import type { Input } from '@exercism/static-analysis'
 import {
   AstParser,
-  Input,
   NoExportError,
   NoMethodError,
 } from '@exercism/static-analysis'
-import { TSESTree } from '@typescript-eslint/typescript-estree'
-import { CommentType, factory } from '../../../comments/comment'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl.js'
+import { CommentType, factory } from '~src/comments/comment.js'
 import {
   EXEMPLAR_SOLUTION,
-  FUNCTION_NOT_OPTIMAL,
   NO_METHOD,
   NO_NAMED_EXPORT,
-} from '../../../comments/shared'
-import { WritableOutput, ExecutionOptions } from '../../../interface'
-import { IsolatedAnalyzerImpl } from '../../IsolatedAnalyzerImpl'
+} from '~src/comments/shared.js'
+import type { ExecutionOptions, WritableOutput } from '~src/interface.d.js'
 import {
   CALCULATE_RESELL_PRICE,
   CHOOSE_VEHICLE,
-  NEEDS_LICENSE,
   VehiclePurchaseSolution,
-} from './VehiclePurchaseSolution'
+} from './VehiclePurchaseSolution.js'
 type Program = TSESTree.Program
 
 const UNNECESSARY_IF_STATEMENT = factory`
@@ -108,11 +106,13 @@ export class VehiclePurchaseAnalyzer extends IsolatedAnalyzerImpl {
       return new VehiclePurchaseSolution(program, source)
     } catch (error: unknown) {
       if (error instanceof NoMethodError) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         output.add(NO_METHOD({ 'method.name': error.method }))
         output.finish()
       }
 
       if (error instanceof NoExportError) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         output.add(NO_NAMED_EXPORT({ 'export.name': error.namedExport }))
       }
 

@@ -1,8 +1,8 @@
 import type { ParserError } from '@exercism/static-analysis'
-import { Source } from '~src/analyzers/SourceImpl'
-import { PARSE_ERROR } from '~src/comments/shared'
-import type { Output } from '~src/interface'
-import { AnalyzerOutput } from './AnalyzerOutput'
+import { Source } from '~src/analyzers/SourceImpl.js'
+import { PARSE_ERROR } from '~src/comments/shared.js'
+import type { Output } from '~src/interface.d.js'
+import { AnalyzerOutput } from './AnalyzerOutput.js'
 
 /**
  * Makes a generic output, based on a ParserError
@@ -15,7 +15,7 @@ export function makeParseErrorOutput(err: ParserError): Output {
   const output = new AnalyzerOutput()
 
   const { message, ...details } = err.original
-  const source = new Source(err.source || '')
+  const source = new Source(err.source ?? '')
 
   const startLine = details.lineNumber - 2
   const endLine = details.lineNumber + 3 /* last line might be empty */

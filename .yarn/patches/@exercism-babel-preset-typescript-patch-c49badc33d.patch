@@ -1,0 +1,18 @@
+diff --git a/index.cjs b/index.cjs
+index 9f22f7c8f439c20348bcb67afb50117aa9689ef3..a20b57a8a28236df5cb2a92ea5b0e8e77065f1a1 100644
+--- a/index.cjs
++++ b/index.cjs
+@@ -12,7 +12,12 @@ module.exports = function (_api, opts = {}) {
+           corejs: opts['corejs'] || '3.43',
+         },
+       ],
+-      require('@babel/preset-typescript'),
++      [
++        require('@babel/preset-typescript'),
++        {
++          "rewriteImportExtensions": true
++        }
++      ]
+     ],
+     plugins: [],
+   };

@@ -1,5 +1,6 @@
-import { TwoFerAnalyzer } from '~src/analyzers/practice/two-fer'
-import { makeAnalyze } from '~test/helpers/smoke'
+import { describe, expect, it } from '@jest/globals'
+import { TwoFerAnalyzer } from '~src/analyzers/practice/two-fer/index.js'
+import { makeAnalyze } from '~test/helpers/smoke.js'
 
 const analyze = makeAnalyze(() => new TwoFerAnalyzer())
 

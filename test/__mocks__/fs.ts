@@ -1,30 +1,36 @@
-import path from 'path'
-import {
-  BaseEncodingOptions,
+import { jest } from '@jest/globals'
+import path from 'node:path'
+import type {
+  ObjectEncodingOptions as BaseEncodingOptions,
   Dirent,
   Mode,
   OpenMode,
   PathLike,
   Stats,
-} from 'fs'
-import type { promises } from 'fs'
+} from 'node:fs'
+import type { promises } from 'node:fs'
 type FileHandle = promises.FileHandle
 
 const fs = jest.createMockFromModule('fs') as Omit<
   typeof import('fs'),
   never
 > & {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   __setMockFiles: typeof __setMockFiles
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   __getWrittenFiles: typeof __getWrittenFiles
 }
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 fs.promises = {} as typeof fs.promises
 
 // This is a custom function that our tests can use during setup to specify
 // what the files on the "mock" filesystem should look like when any of the
 // `fs` APIs are used.
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 let mockFiles: { [dir: string]: { [file: string]: string } } =
   Object.create(null)
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 let writtenFiles: { [dir: string]: { [file: string]: string } } =
   Object.create(null)
 
@@ -59,8 +65,11 @@ class CanOnlyWriteUnmockedFiles extends Error {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 function __setMockFiles(newMockFiles: { [path: string]: string }): void {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   mockFiles = Object.create(null)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   writtenFiles = Object.create(null)
 
   for (const fullPath in newMockFiles) {
@@ -76,7 +85,9 @@ function __setMockFiles(newMockFiles: { [path: string]: string }): void {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 function __getWrittenFiles(): typeof writtenFiles {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return JSON.parse(JSON.stringify(writtenFiles))
 }
 
@@ -177,6 +188,7 @@ function readFile(
 async function readFile(
   filePath: PathLike | FileHandle
 ): Promise<string | Buffer> {
+  // eslint-disable-next-line @typescript-eslint/no-base-to-string
   const key = path.normalize(filePath.toString())
   const dir = path.dirname(key)
   const file = path.basename(key)
@@ -214,6 +226,7 @@ async function writeFile(
   filePath: PathLike | FileHandle,
   data: string | Uint8Array
 ): Promise<void> {
+  // eslint-disable-next-line @typescript-eslint/no-base-to-string
   const key = path.normalize(filePath.toString())
   const dir = path.dirname(key)
   const file = path.basename(key)
@@ -244,6 +257,7 @@ async function stat(filePath: PathLike): Promise<Stats> {
     key in mockFiles || (dir in mockFiles && file in mockFiles[dir])
 
   if (exists) {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return {} as Stats
   }
 
@@ -253,9 +267,13 @@ async function stat(filePath: PathLike): Promise<Stats> {
 fs.__getWrittenFiles = __getWrittenFiles
 fs.__setMockFiles = __setMockFiles
 
-fs.promises.readdir = readdir
-fs.promises.readFile = readFile
-fs.promises.writeFile = writeFile
-fs.promises.stat = stat
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+fs.promises.readdir = readdir as any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+fs.promises.readFile = readFile as any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+fs.promises.writeFile = writeFile as any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+fs.promises.stat = stat as any
 
 export default fs

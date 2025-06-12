@@ -1,6 +1,7 @@
-import { ExtractedExport, ExtractedFunction } from '@exercism/static-analysis'
-import { assertNamedExport } from './assert_named_export'
-import { assertNamedFunction } from './assert_named_function'
+import type { ExtractedFunction } from '@exercism/static-analysis'
+import { type ExtractedExport } from '@exercism/static-analysis'
+import { assertNamedExport } from './assert_named_export.js'
+import { assertNamedFunction } from './assert_named_function.js'
 
 export function assertPublicApi(
   exported: string,

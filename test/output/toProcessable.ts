@@ -1,5 +1,6 @@
-import { AnalyzerOutput } from '~src/output/AnalyzerOutput'
-import { CommentType, factory } from '~src/comments/comment'
+import { describe, expect, it } from '@jest/globals'
+import { CommentType, factory } from '~src/comments/comment.js'
+import { AnalyzerOutput } from '~src/output/AnalyzerOutput.js'
 
 const COMMENT_WITHOUT_PARAMS_IDENTIFIER =
   'javascript.test.output.to-processable.simple'
@@ -149,7 +150,7 @@ describe('AnalyzerOutput#toProcessable', () => {
     })
   })
 
-  describe('with an informative comment', () => {
+  describe('with an celebratory comment', () => {
     it('generates the correct output', async () => {
       const output = new AnalyzerOutput()
       output.add(COMMENT_PARTY())

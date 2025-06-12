@@ -23,7 +23,7 @@ is better, but too many is not good) fixture numbers to be tested.
 
 ```typescript
 import { SlugAnalyzer } from '~src/analyzers/<type>/<slug>'
-import { makeTestGenerator } from '~test/helpers/snapshot'
+import { makeTestGenerator } from '~test/helpers/snapshot.js'
 
 const snapshotTestsGenerator = makeTestGenerator(
   '<slug>',

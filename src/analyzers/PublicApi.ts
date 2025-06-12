@@ -1,5 +1,5 @@
-import { ExtractedFunction, traverse } from '@exercism/static-analysis'
-import { parameterName } from './utils/extract_parameter'
+import { type ExtractedFunction, traverse } from '@exercism/static-analysis'
+import { parameterName } from './utils/extract_parameter.js'
 
 export class PublicApi {
   public readonly parameter: string

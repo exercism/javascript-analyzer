@@ -1,12 +1,12 @@
 import {
-  ExtractedExport,
+  type ExtractedExport,
   findTopLevelConstants,
   guardIdentifier,
-  ProgramConstant,
+  type ProgramConstant,
   StructureError,
 } from '@exercism/static-analysis'
-import { TSESTree } from '@typescript-eslint/typescript-estree'
-import { assertNamedExport } from '../asserts/assert_named_export'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { assertNamedExport } from '../asserts/assert_named_export.js'
 
 export class NoPublicConstantError extends StructureError {
   constructor(public name: string) {

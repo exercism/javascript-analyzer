@@ -1,9 +1,10 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
 
 type Parameter = TSESTree.Parameter
-type ObjectLiteralElementLike = TSESTree.ObjectLiteralElementLike
+// type ObjectLiteralElementLike = TSESTree.ObjectLiteralElementLike
 type Expression = TSESTree.Expression
-type PropertyName = TSESTree.PropertyName
+// type PropertyName = TSESTree.PropertyName
 type VariableDeclarator = TSESTree.VariableDeclarator
 type DestructuringPattern = TSESTree.DestructuringPattern
 
@@ -79,6 +80,7 @@ export function parameterName(
   }
 }
 
+/*
 function objectLiteralElementName(
   element: ObjectLiteralElementLike,
   fallback = '<unknown>'
@@ -123,6 +125,7 @@ function propertyName(key: PropertyName, fallback = '<unknown>'): string {
       return fallback
   }
 }
+*/
 
 function expressionName(
   element: Expression | DestructuringPattern,
@@ -135,7 +138,7 @@ function expressionName(
       // Disabled this rule here because we _want_ the fall-through
       // eslint-disable-next-line no-case-declarations
       const result = parameterName(element, fallback)
-      return Array.isArray(result) ? result[0] : result
+      return Array.isArray(result) ? (result as string[])[0] : result
 
     // Don't know how to get the name
     default:

@@ -1,6 +1,9 @@
 import { guardIdentifier } from '@exercism/static-analysis'
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
-import { extractNamedFunction } from '~src/extracts/extract_named_function'
+import {
+  AST_NODE_TYPES,
+  type TSESTree,
+} from '@typescript-eslint/typescript-estree'
+import { extractNamedFunction } from '~src/extracts/extract_named_function.js'
 
 type Program = TSESTree.Program
 type Node = TSESTree.Node
@@ -20,7 +23,7 @@ type AnyMainMethodNode =
  */
 export type MainMethod<
   T extends string = string,
-  TNode extends AnyMainMethodNode = AnyMainMethodNode
+  TNode extends AnyMainMethodNode = AnyMainMethodNode,
 > = {
   id: Identifier & { name: T }
   parent: undefined | Node
@@ -45,13 +48,14 @@ export function extractMainMethod<T extends string = string>(
 
       return {
         ...node,
-        parent: undefined,
+        parent: undefined as unknown as Program,
         id: node.id as Identifier & { name: T },
       }
     }
     case AST_NODE_TYPES.ArrowFunctionExpression: {
       const { id, ...rest } = node
 
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       return {
         ...rest,
         id: {
@@ -65,6 +69,7 @@ export function extractMainMethod<T extends string = string>(
     case AST_NODE_TYPES.FunctionExpression: {
       const { id, ...rest } = node
 
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       return {
         ...rest,
         id: {

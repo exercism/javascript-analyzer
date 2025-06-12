@@ -1,19 +1,19 @@
-import { reportException } from '@exercism/static-analysis/dist/errors/handler'
-import { InlineInput } from '@exercism/static-analysis/dist/input/InlineInput'
-import type { Input } from '@exercism/static-analysis/dist/input/Input'
+import type { Input } from '@exercism/static-analysis'
 import {
+  InlineInput,
   Logger,
+  reportException,
   setProcessLogger as setGlobalLogger,
-} from '@exercism/static-analysis/dist/utils/logger'
-import { ExerciseImpl } from './ExerciseImpl'
+} from '@exercism/static-analysis'
+import { ExerciseImpl } from './ExerciseImpl.js'
 import type {
   Analyzer,
   ExecutionOptions,
   Exercise,
   Output,
   OutputProcessor,
-} from './interface'
-import { LogOutput } from './output/processor/LogOutput'
+} from './interface.js'
+import { LogOutput } from './output/processor/LogOutput.js'
 
 /**
  * Run a specific analyzer, given a set of execution options

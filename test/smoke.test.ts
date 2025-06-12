@@ -1,8 +1,10 @@
-import { TwoFerAnalyzer } from '~src/analyzers/practice/two-fer'
-import { run } from '~src/utils/runner'
-import { find } from '~src/analyzers/Autoload'
+import { describe, it, expect } from '@jest/globals'
 
-import { bootstrap } from '~test/helpers/bootstrap'
+import { TwoFerAnalyzer } from '~src/analyzers/practice/two-fer/index.js'
+import { run } from '~src/utils/runner.js'
+import { find } from '~src/analyzers/Autoload.js'
+
+import { bootstrap } from '~test/helpers/bootstrap.js'
 import { InlineInput } from '@exercism/static-analysis'
 
 const { options, exercise } = bootstrap({ exercise: 'two-fer' })
@@ -39,7 +41,7 @@ describe('When running analysis', () => {
     expect(output.comments[0].type).toBe('informative')
   })
 
-  it('can dissapprove with comment', async () => {
+  it('can disapprove with comment', async () => {
     const solutionContent = `
     export const twoFer = (name) => {
       return \`One for \${name || 'you'}, one for me.\`;
@@ -56,8 +58,9 @@ describe('When running analysis', () => {
 })
 
 describe('When autoloading analyzers', () => {
-  it('can find an analyzer based on an exercise', () => {
-    const ActualAnalyzer = find(exercise)
+  it('can find an analyzer based on an exercise', async () => {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const ActualAnalyzer = await find(exercise)
     expect(ActualAnalyzer).toBe(TwoFerAnalyzer)
   })
 })

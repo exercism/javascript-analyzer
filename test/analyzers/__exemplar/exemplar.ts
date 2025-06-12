@@ -1,8 +1,13 @@
+import { describe, it, expect } from '@jest/globals'
 import { DirectoryWithConfigInput } from '@exercism/static-analysis'
-import path from 'path'
-import { ExemplarAnalyzer } from '~src/analyzers/concept/__exemplar'
-import { EXEMPLAR_SOLUTION } from '~src/comments/shared'
-import { makeAnalyze, makeOptions } from '~test/helpers/smoke'
+import path from 'node:path'
+import { ExemplarAnalyzer } from '~src/analyzers/concept/__exemplar/index.js'
+import { EXEMPLAR_SOLUTION } from '~src/comments/shared.js'
+import { makeAnalyze, makeOptions } from '~test/helpers/smoke.js'
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const __dirname = import.meta.dirname
+
 ;[
   'amusement-park',
   'bird-watcher',

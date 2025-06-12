@@ -1,5 +1,6 @@
-import { TwoFerAnalyzer } from '~src/analyzers/practice/two-fer'
-import { makeTestGenerator } from '~test/helpers/snapshot'
+import { describe } from '@jest/globals'
+import { TwoFerAnalyzer } from '~src/analyzers/practice/two-fer/index.js'
+import { makeTestGenerator } from '~test/helpers/snapshot.js'
 
 const snapshotTestsGenerator = makeTestGenerator(
   'two-fer',

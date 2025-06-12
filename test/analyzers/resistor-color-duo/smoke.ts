@@ -1,5 +1,6 @@
-import { ResistorColorDuoAnalyzer } from '~src/analyzers/practice/resistor-color-duo'
-import { makeAnalyze } from '~test/helpers/smoke'
+import { describe, it, expect } from '@jest/globals'
+import { ResistorColorDuoAnalyzer } from '~src/analyzers/practice/resistor-color-duo/index.js'
+import { makeAnalyze } from '~test/helpers/smoke.js'
 
 const analyze = makeAnalyze(() => new ResistorColorDuoAnalyzer())
 

@@ -1,14 +1,14 @@
+import type { Input } from '@exercism/static-analysis'
 import {
   DirectoryInput,
-  Input,
+  DirectoryWithConfigInput,
   Logger,
   registerExceptionHandler,
   setProcessLogger,
-  DirectoryWithConfigInput,
 } from '@exercism/static-analysis'
-import { ExerciseImpl } from '~src/ExerciseImpl'
-import { ExecutionOptions, Exercise } from '~src/interface'
-import { ExecutionOptionsImpl } from './execution_options'
+import { ExerciseImpl } from '~src/ExerciseImpl.js'
+import type { ExecutionOptions, Exercise } from '~src/interface.d.js'
+import { ExecutionOptionsImpl } from './execution_options.js'
 
 export interface BootstrapResult {
   exercise: Exercise

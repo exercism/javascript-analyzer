@@ -1,5 +1,6 @@
 import yargs from 'yargs'
-import type { ExecutionOptions } from '~src/interface'
+import type { ExecutionOptions } from '~src/interface.d.js'
+import { hideBin } from 'yargs/helpers'
 
 export class ExecutionOptionsImpl implements ExecutionOptions {
   public debug!: boolean
@@ -16,7 +17,7 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
   }
 
   public static create(): ExecutionOptions {
-    const args = yargs
+    const args = yargs(hideBin(process.argv))
       .usage('Usage: $0 <exercise> <input-directory> [options]')
       .example(
         '$0 two-fer ~/javascript/two-fer/128/',
@@ -30,7 +31,7 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
       .describe('c', 'If given, outputs to the console')
       .describe(
         'o',
-        'Path relative to the input dir where the analyzis results are stored'
+        'Path relative to the input dir where the analysis results are stored'
       )
       .describe(
         'noTemplates',
@@ -50,9 +51,11 @@ export class ExecutionOptionsImpl implements ExecutionOptions {
       .default('o', './analysis.json')
       .default('dry', false)
       .help('h')
-      .alias('h', 'help').argv
+      .alias('h', 'help')
+      .parse()
 
-    const { d, c, o, dry, p, noTemplates, _ } = args
+    const { d, c, o, dry, p, noTemplates, _ } = args as never
+
     return new ExecutionOptionsImpl({
       debug: d,
       console: c,

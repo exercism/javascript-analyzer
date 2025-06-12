@@ -1,12 +1,12 @@
-import { registerExceptionHandler } from '@exercism/static-analysis/dist/errors/handler'
 import {
   Logger,
+  registerExceptionHandler,
   setProcessLogger,
-} from '@exercism/static-analysis/dist/utils/logger'
-import { spawn, spawnSync } from 'child_process'
-import fs from 'fs'
-import path from 'path'
-import { ExecutionOptionsImpl } from './utils/execution_options'
+} from '@exercism/static-analysis'
+import { spawn, spawnSync } from 'node:child_process'
+import fs from 'node:fs'
+import path from 'node:path'
+import { ExecutionOptionsImpl } from './utils/execution_options.js'
 
 // The calls below uses the arguments passed to the process to figure out
 // which exercise to target, where the input lives (url/solution id) and what
@@ -35,13 +35,13 @@ const input = options.inputDir.trim()
 let uuid = undefined
 if (input.startsWith('https://exercism.io/')) {
   uuid = input.split('/').reverse()[0]
-  if (uuid.length != 32) {
+  if (uuid.length !== 32) {
     process.stderr.write(
       `Expected a UUID (length 32), got '${uuid}' (len: ${uuid.length})`
     )
     process.exit(-2)
   }
-} else if (input.length == 32) {
+} else if (input.length === 32) {
   uuid = input
 } else if (fs.existsSync(input)) {
   logger.error('=> input seems to be local')
@@ -70,7 +70,7 @@ if (downloadResult.error) {
 }
 
 const [, downloadOut] = downloadResult.output
-const localPath = downloadOut.toString().trim()
+const localPath = String(downloadOut).trim()
 
 // Capture CLI tool issues (reported but not true)
 if (!fs.existsSync(localPath)) {
@@ -101,14 +101,14 @@ const analyzeProcess = spawn(
   { cwd: process.cwd(), env: process.env }
 )
 
-analyzeProcess.stderr.on('data', (data) => {
-  logger.error(data.toString().trim())
+analyzeProcess.stderr.on('data', (data: unknown) => {
+  logger.error(String(data).trim())
 })
 
-analyzeProcess.stdout.on('data', (data) => {
-  logger.log(data.toString().trim())
+analyzeProcess.stdout.on('data', (data: unknown) => {
+  logger.log(String(data).trim())
 })
 
 analyzeProcess.on('close', (code) => {
-  process.exit(code || undefined)
+  process.exit(code ?? undefined)
 })

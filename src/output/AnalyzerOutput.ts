@@ -1,29 +1,4 @@
-import type { Comment, ExecutionOptions, Output } from '~src/interface'
-
-enum SolutionStatus {
-  /**
-   * This is the default situation and should be used when there is any
-   * uncertainty.
-   *
-   * @deprecated don't return any status or use an {Essential} comment.
-   * */
-  Redirect = 'refer_to_mentor',
-  /**
-   * To be used when a solution matches pre-known optimal solutions or when a
-   * solution can be approved but with a known improvement.
-   *
-   * @deprecated don't return any status or use a {Celebratory} comment.
-   * */
-  Approve = 'approve',
-  /**
-   * To be used when a solution can be disapproved as suboptimal and a comment
-   * is provided.
-   *
-   * @deprecated replace with one or more comments with {Essential} or an
-   *   {Actionable} type.
-   **/
-  Disapprove = 'disapprove',
-}
+import type { Comment, ExecutionOptions, Output } from '~src/interface.js'
 
 /**
  * The interface for the analyzer output is described [here][doc].
@@ -50,7 +25,7 @@ export class AnalyzerOutput implements Output {
   }
 
   /**
-   * Mark the solution as dissapproved
+   * Mark the solution as disapproved
    * @deprecated add an {actionable} or {essential} comment instead
    */
   public disapprove(): void {
@@ -77,6 +52,7 @@ export class AnalyzerOutput implements Output {
   }
 
   public freeze(summary?: string): void {
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     this.summary = summary || this.summary
 
     Object.freeze(this)

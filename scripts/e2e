@@ -1,14 +1,18 @@
 #!/usr/bin/env node
 
-const shelljs = require('shelljs')
-const path = require('path')
+import shelljs from 'shelljs'
+import { resolve, join } from 'path'
 
-const root = path.resolve(__dirname, '..')
-const binRoot = path.resolve(root, 'bin')
-const fixtureRoot = path.resolve(root, 'test', 'fixtures')
-const tmp = path.join(shelljs.tempdir(), 'javascript-analyzer')
+const { tempdir, mkdir, cat, exec, rm, exit } = shelljs
 
-shelljs.mkdir('-p', tmp)
+const __dirname = import.meta.dirname
+
+const root = resolve(__dirname, '..')
+const binRoot = resolve(root, 'bin')
+const fixtureRoot = resolve(root, 'test', 'fixtures')
+const tmp = join(tempdir(), 'javascript-analyzer')
+
+mkdir('-p', tmp)
 
 const TESTS = [
   {
@@ -55,22 +59,16 @@ const TESTS = [
 ]
 
 TESTS.forEach(({ input, expected }) => {
-  const out = path.join(tmp, input.file)
+  const out = join(tmp, input.file)
 
-  shelljs
-    .cat(path.join(fixtureRoot, input.slug, input.fixture, input.file))
-    .to(out)
+  cat(join(fixtureRoot, input.slug, input.fixture, input.file)).to(out)
 
-  shelljs.exec(
-    `node ${path.join(root, 'dist', 'analyze.js')} ${input.slug} ${tmp} ${tmp}`
-  )
+  exec(`node ${join(root, 'dist', 'analyze.js')} ${input.slug} ${tmp} ${tmp}`)
 
-  const result = JSON.parse(
-    shelljs.cat(path.join(tmp, 'analysis.json')).toString()
-  )
+  const result = JSON.parse(cat(join(tmp, 'analysis.json')).toString())
 
-  shelljs.rm(out)
-  shelljs.rm(path.join(tmp, 'analysis.json'))
+  rm(out)
+  rm(join(tmp, 'analysis.json'))
 
   console.log(`Testing ${input.slug} (fixture ${input.fixture})`)
 
@@ -80,9 +78,9 @@ TESTS.forEach(({ input, expected }) => {
       result
     )
 
-    shelljs.exit(-1)
+    exit(-1)
   }
 })
 
 console.log('All e2e tests passed')
-shelljs.exit(0)
+exit(0)

@@ -1,0 +1,12 @@
+diff --git a/index.cjs b/index.cjs
+index 09b2b05459a1bab29283e5a1f4b5887b87bcc7a0..9f22f7c8f439c20348bcb67afb50117aa9689ef3 100644
+--- a/index.cjs
++++ b/index.cjs
+@@ -7,6 +7,7 @@ module.exports = function (_api, opts = {}) {
+           targets: {
+             node: 'current',
+           },
++          modules: false,
+           useBuiltIns: 'usage',
+           corejs: opts['corejs'] || '3.43',
+         },

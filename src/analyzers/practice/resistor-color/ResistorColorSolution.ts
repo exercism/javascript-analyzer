@@ -1,6 +1,11 @@
-import {
+import type {
   ExtractedExport,
   ExtractedFunction,
+  ProgramConstant,
+  ProgramConstants,
+  SpecificPropertyCall,
+} from '@exercism/static-analysis'
+import {
   extractExports,
   extractFunctions,
   findFirst,
@@ -10,23 +15,18 @@ import {
   guardIdentifier,
   guardLiteral,
   guardMemberExpression,
-  ProgramConstant,
-  ProgramConstants,
-  SpecificPropertyCall,
 } from '@exercism/static-analysis'
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
-import { Source } from '~src/analyzers/SourceImpl'
-import { parameterName } from '~src/analyzers/utils/extract_parameter'
-import { assertNamedExport } from '~src/asserts/assert_named_export'
-import { assertNamedFunction } from '~src/asserts/assert_named_function'
-import { extractSignature } from '~src/extracts/extract_declaration'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
+import { Source } from '~src/analyzers/SourceImpl.js'
+import { parameterName } from '~src/analyzers/utils/extract_parameter.js'
+import { assertNamedExport } from '~src/asserts/assert_named_export.js'
+import { assertNamedFunction } from '~src/asserts/assert_named_function.js'
+import { extractSignature } from '~src/extracts/extract_declaration.js'
 
 type Node = TSESTree.Node
 type Program = TSESTree.Program
 type Parameter = TSESTree.Parameter
-type Expression = TSESTree.Expression
-
-type MainExport = ReturnType<typeof extractExports>[number]
 
 const EXPECTED_METHOD = 'colorCode'
 const EXPECTED_EXPORT_METHOD = 'colorCode'
@@ -78,7 +78,7 @@ class Constant {
     if (init.type === AST_NODE_TYPES.ArrayExpression) {
       // Each literal needs to be present, and needs to be present exactly in this order
       return init.elements.every((value, index): boolean =>
-        guardLiteral(value, literals[index])
+        Boolean(value && guardLiteral(value, literals[index]))
       )
     }
 
@@ -103,7 +103,7 @@ class Constant {
   }
 
   public isOptimalObject(node = this.constant): boolean {
-    if (!node || !node.init) {
+    if (!node?.init) {
       return false
     }
 
@@ -185,7 +185,7 @@ class Entry {
   private readonly body: Node
 
   constructor(method: Readonly<ExtractedFunction>, source: Readonly<Source>) {
-    this.name = method.name || EXPECTED_METHOD
+    this.name = method.name ?? EXPECTED_METHOD
     this.params = method.params
     this.body = method.body
 
@@ -357,8 +357,8 @@ class Entry {
       // Only looking for:
       //
       // REF_COLORS[param]
-      return (
-        (this.params.length === 1 &&
+      return Boolean(
+        this.params.length === 1 &&
           guardIdentifier(this.params[0]) &&
           constant.referencedSourceObjectName &&
           guardMemberExpression(
@@ -366,8 +366,7 @@ class Entry {
             constant.referencedSourceObjectName,
             this.parameterName
           ) &&
-          body.computed) ||
-        false
+          body.computed
       )
     }
 
@@ -380,15 +379,18 @@ class Entry {
 export class ResistorColorSolution {
   public readonly source: Source
 
-  private mainMethod: Entry
-  private mainExports: {
+  private readonly mainMethod: Entry
+  private readonly mainExports: {
     function: ExtractedExport
     constant: ExtractedExport
   }
-  private fileConstants: ProgramConstants
-  private mainConstant: Constant | undefined
+  private readonly fileConstants: ProgramConstants
+  private readonly mainConstant: Constant | undefined
 
-  constructor(public readonly program: Program, source: string) {
+  constructor(
+    public readonly program: Program,
+    source: string
+  ) {
     this.source = new Source(source)
 
     const functions = extractFunctions(program)
@@ -421,19 +423,19 @@ export class ResistorColorSolution {
     const expectedConstant =
       this.fileConstants.find((constant) =>
         guardIdentifier(constant.id, EXPECTED_CONSTANT)
-      ) ||
+      ) ??
       // Or find the first array or object assignment
       this.fileConstants.find(
         (constant) =>
           constant.init &&
-          [
+          ![
             AST_NODE_TYPES.ArrayExpression,
             AST_NODE_TYPES.ObjectExpression,
-          ].indexOf(constant.init.type) === -1
+          ].includes(constant.init.type)
       )
 
     this.mainConstant =
-      (expectedConstant && new Constant(expectedConstant, this.source)) ||
+      (expectedConstant && new Constant(expectedConstant, this.source)) ??
       undefined
   }
 

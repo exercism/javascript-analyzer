@@ -1,8 +1,11 @@
 import { readFile } from '@exercism/static-analysis'
 import { spawnSync } from 'child_process'
 import path from 'path'
-import { Output } from './interface'
-import { Bootstrap } from './utils/bootstrap'
+import type { Output } from './interface.d.js'
+import { Bootstrap } from './utils/bootstrap.js'
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const __dirname = import.meta.dirname
 
 // The bootstrap call uses the arguments passed to the process to figure out
 // which exercise to target, where the input lives (directory input) and what
@@ -19,13 +22,12 @@ logger.log('=> DEBUG mode is on')
 
 readFile(path.join(options.inputDir, 'analysis.json'))
   .then(
-    (jsonString: Buffer | string): Pick<Output, 'status' | 'comments'> =>
+    (jsonString: Buffer | string): Pick<Output, 'comments'> =>
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       JSON.parse(jsonString.toString())
   )
-  .then((output: Pick<Output, 'status' | 'comments'>): void => {
-    logger.log(
-      `=> Got ${output.status} with ${output.comments.length} comments`
-    )
+  .then((output: Pick<Output, 'comments'>): void => {
+    logger.log(`=> Got ${output.comments.length} comments`)
     const spawned = spawnSync(
       'ruby',
       [
@@ -48,7 +50,10 @@ readFile(path.join(options.inputDir, 'analysis.json'))
       }
     )
 
-    spawned.error && logger.log(spawned.error.toString())
+    if (spawned.error) {
+      logger.log(spawned.error.toString())
+    }
+
     if (spawned.output) {
       const [, out, err] = spawned.output
       if (out) {
@@ -60,4 +65,4 @@ readFile(path.join(options.inputDir, 'analysis.json'))
       }
     }
   })
-  .catch((err): void => logger.error(err))
+  .catch((err: unknown): void => void logger.error(String(err)))

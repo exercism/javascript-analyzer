@@ -6,11 +6,12 @@ module.exports = {
   moduleNameMapper: {
     '^~src/(.*)$': '<rootDir>/src/$1',
     '^~test/(.*)$': '<rootDir>/test/$1',
+    '(.+)\\.js': '$1',
   },
   testMatch: [
-    '**/__tests__/**/*.[jt]s?(x)',
-    '**/test/**/*.[jt]s?(x)',
-    '**/?(*.)+(spec|test).[jt]s?(x)',
+    '**/__tests__/**/*.[jt]s',
+    '**/test/**/*.[jt]s',
+    '**/?(*.)+(spec|test).[jt]s',
   ],
   testPathIgnorePatterns: [
     '/(?:production_)?node_modules/',
@@ -22,4 +23,5 @@ module.exports = {
   transform: {
     '^.+\\.[jt]sx?$': 'babel-jest',
   },
+  extensionsToTreatAsEsm: ['.ts'],
 }

@@ -1,11 +1,11 @@
 import { DirectoryWithConfigInput } from '@exercism/static-analysis'
-import { DirectoryInput } from '@exercism/static-analysis/dist/input/DirectoryInput'
-import { readDir } from '@exercism/static-analysis/dist/utils/fs'
+import { DirectoryInput } from '@exercism/static-analysis'
+import { readDir } from '@exercism/static-analysis'
 import path from 'path'
-import { find } from './analyzers/Autoload'
-import type { Comment, Output } from './interface'
-import { FileOutput } from './output/processor/FileOutput'
-import { Bootstrap } from './utils/bootstrap'
+import { find } from './analyzers/Autoload.js'
+import type { Comment, Output } from './interface.d.js'
+import { FileOutput } from './output/processor/FileOutput.js'
+import { Bootstrap } from './utils/bootstrap.js'
 
 // The bootstrap call uses the arguments passed to the process to figure out
 // which exercise to target, where the input lives (directory input) and what
@@ -19,25 +19,30 @@ import { Bootstrap } from './utils/bootstrap'
 //
 const { exercise, options, logger } = Bootstrap.call()
 
-const AnalyzerClass = find(exercise)
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const __dirname = import.meta.dirname
+
 const FIXTURES_ROOT = path.join(
   options.inputDir || path.join(__dirname, '..', 'test', 'fixtures'),
   exercise.slug
 )
 
-console.log('Analyzer found:', AnalyzerClass)
 console.log('Fixtures root:', FIXTURES_ROOT)
 
 /**
- * Pad the input `value` to `length` using the `padc` pad character
+ * Pad the input `value` to `length` using the `padChar` pad character
  *
  * @param {(string | number | bigint)} value
  * @param {number} [length=20]
- * @param {string} [padc=' ']
+ * @param {string} [padChar=' ']
  * @returns {string} the padded string
  */
-function pad(value: string | number | bigint, length = 20, padc = ' '): string {
-  const pad = Array(length).fill(padc).join('')
+function pad(
+  value: string | number | bigint,
+  length = 20,
+  padChar = ' '
+): string {
+  const pad = Array(length).fill(padChar).join('')
   return (pad + value).slice(-length)
 }
 
@@ -86,7 +91,11 @@ function line(
 const rootTimeStamp = process.hrtime.bigint()
 logger.log(`=> start batch runner for ${exercise.slug}`)
 
-readDir(FIXTURES_ROOT)
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const AnalyzerClass = await find(exercise)
+console.log('Analyzer found:', AnalyzerClass)
+
+await readDir(FIXTURES_ROOT)
   .then(async (fixtureDirs) =>
     Promise.all(
       fixtureDirs.map(async (fixtureDir) => {
@@ -140,10 +149,10 @@ readDir(FIXTURES_ROOT)
           .filter((value, index, self) => self.indexOf(value) === index)
 
         const status: OutputGroup =
-          uniques.find((value) => value === 'essential') ||
-          uniques.find((value) => value === 'actionable') ||
-          uniques.find((value) => value === 'informative') ||
-          uniques.find((value) => value === 'celebratory') ||
+          uniques.find((value) => value === 'essential') ??
+          uniques.find((value) => value === 'actionable') ??
+          uniques.find((value) => value === 'informative') ??
+          uniques.find((value) => value === 'celebratory') ??
           (comments.length === 0 ? 'none' : 'unknown')
 
         groups[status] = groups[status] || {
@@ -175,7 +184,7 @@ readDir(FIXTURES_ROOT)
       (aggregated, status) => {
         const { count, comments, runtimes, fixtures } = grouped[status]
 
-        const sortedRuntimes = runtimes.sort()
+        const sortedRuntimes = runtimes.sort((a, b) => Number(a - b))
 
         const totalRuntime = runtimes.reduce(
           (result, time): bigint => result + time,
@@ -225,12 +234,10 @@ readDir(FIXTURES_ROOT)
 
     const groupKeys = Object.keys(aggregatedGroups) as OutputGroup[]
     const allRuntimesSorted = groupKeys
-      .reduce(
-        (runtimes, status): bigint[] =>
-          runtimes.concat(grouped[status].runtimes),
-        [] as bigint[]
-      )
-      .sort()
+      .reduce<
+        bigint[]
+      >((runtimes, status): bigint[] => runtimes.concat(grouped[status].runtimes), [])
+      .sort((a, b) => Number(a - b))
 
     const totalCount = groupKeys.reduce(
       (result, status): number => result + aggregatedGroups[status].count,
@@ -252,10 +259,10 @@ readDir(FIXTURES_ROOT)
       BigInt(0)
     )
 
-    const allComments = groupKeys.reduce(
+    const allComments = groupKeys.reduce<Comment[]>(
       (comments, status): Comment[] =>
         comments.concat(grouped[status].comments),
-      [] as Comment[]
+      []
     )
     const allUniqueComments = [
       ...new Set(

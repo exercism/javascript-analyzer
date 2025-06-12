@@ -1,7 +1,6 @@
-import type { Input } from '@exercism/static-analysis'
+import type { Input, Logger } from '@exercism/static-analysis'
 import {
   getProcessLogger,
-  Logger,
   NoSourceError,
   ParserError,
 } from '@exercism/static-analysis'
@@ -10,13 +9,13 @@ import type {
   ExecutionOptions,
   Output,
   WritableOutput,
-} from '~src/interface'
+} from '~src/interface.d.js'
 import {
   EarlyFinalization,
   IsolatedAnalyzerOutput,
-} from '~src/output/IsolatedAnalyzerOutput'
-import { makeNoSourceOutput } from '~src/output/makeNoSourceOutput'
-import { makeParseErrorOutput } from '~src/output/makeParseErrorOutput'
+} from '~src/output/IsolatedAnalyzerOutput.js'
+import { makeNoSourceOutput } from '~src/output/makeNoSourceOutput.js'
+import { makeParseErrorOutput } from '~src/output/makeParseErrorOutput.js'
 
 export abstract class IsolatedAnalyzerImpl implements Analyzer {
   protected readonly logger: Logger
@@ -32,7 +31,7 @@ export abstract class IsolatedAnalyzerImpl implements Analyzer {
    * Runs the analyzer
    *
    * This is defined as a property instead of a method, so that it can not be
-   * overriddden in a subclass. Subclasses should override @see execute instead.
+   * overridden in a subclass. Subclasses should override @see execute instead.
    *
    * @returns The promise that resolves the analyzer output.
    *
@@ -61,7 +60,7 @@ export abstract class IsolatedAnalyzerImpl implements Analyzer {
       // The isolated analyzer output can use exceptions as control flow.
       // This block here explicitly accepts this.
       if (err instanceof EarlyFinalization) {
-        this.logger.log(`=> early finalization (${output.summary || '-'})`)
+        this.logger.log(`=> early finalization (${output.summary ?? '-'})`)
       } else {
         throw err
       }

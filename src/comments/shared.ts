@@ -1,4 +1,4 @@
-import { CommentType, factory } from './comment'
+import { CommentType, factory } from './comment.js'
 
 /**
  * The factories here SHOULD be kept in sync with exercism/website-copy. Under
@@ -116,10 +116,10 @@ true for this top-level constant. (Not to be confused with _immutable values_).
 export const BETA_COMMENTARY_PREFIX = factory`
 🧪 This solution's output contains a new format of comments that is currently
 in Beta. Instead of providing copyable commentary, this analyzer will give
-helpful content for mentoring this soluton.
+helpful content for mentoring this solution.
 
 - \`💬\` indicates **copyable content**. This can be changed to match your
-tone but the overal message matches the mentoring guidelines for this track.
+tone but the overall message matches the mentoring guidelines for this track.
 - \`⚡\` indicates **danger**. The analyzer could not do its job properly. You
 MUST double check if it did not make a mistake. If it DID make a mistake,
 please open an issue [here](https://github.com/exercism/javascript-analyzer/issues/new?assignees=&labels=%3Abug%3A+bug&template=incorrect-analysis.md&title=Incorrect+Analysis%3A+) so the analyzer can be updated.

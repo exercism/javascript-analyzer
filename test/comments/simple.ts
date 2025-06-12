@@ -1,4 +1,5 @@
-import { factory } from '~src/comments/comment'
+import { describe, expect, it } from '@jest/globals'
+import { factory } from '~src/comments/comment.js'
 
 describe(`Comment Factory (simple)`, () => {
   const templatable = factory`
@@ -12,14 +13,14 @@ describe(`Comment Factory (simple)`, () => {
   })
 
   describe('templatable factory', () => {
-    const parametarable = templatable('test.javascript.simple')
+    const parametrizable = templatable('test.javascript.simple')
 
-    it('generates a parametered comment factory', () => {
-      expect(parametarable).toBeInstanceOf(Function)
+    it('generates a parametrized comment factory', () => {
+      expect(parametrizable).toBeInstanceOf(Function)
     })
 
     describe('comment generation', () => {
-      const comment = parametarable()
+      const comment = parametrizable()
 
       it('generates the message', () => {
         expect(comment.message).toBe('simple example')

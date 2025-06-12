@@ -1,6 +1,13 @@
+import type {
+  ExtractedFunction,
+  Identifier,
+  IdentifierWithName,
+  ProgramConstant,
+  ProgramConstants,
+  SpecificFunctionCall,
+} from '@exercism/static-analysis'
 import {
   AstParser,
-  ExtractedFunction,
   extractExports,
   extractFunctions,
   findFirst,
@@ -9,20 +16,16 @@ import {
   guardCallExpression,
   guardIdentifier,
   guardLiteral,
-  Identifier,
-  IdentifierWithName,
-  ProgramConstant,
-  ProgramConstants,
-  SpecificFunctionCall,
   traverse,
 } from '@exercism/static-analysis'
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
-import { readFileSync } from 'fs'
-import path from 'path'
-import { assertPublicApi } from '../../../asserts/assert_public_api'
-import { assertPublicConstant } from '../../../asserts/assert_public_constant'
-import { Source } from '../../SourceImpl'
-import { parameterName } from '../../utils/extract_parameter'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
+import { readFileSync } from 'node:fs'
+import { exemplarPath } from '~src/analyzers/utils/config.js'
+import { assertPublicApi } from '~src/asserts/assert_public_api.js'
+import { assertPublicConstant } from '~src/asserts/assert_public_constant.js'
+import { Source } from '../../SourceImpl.js'
+import { parameterName } from '../../utils/extract_parameter.js'
 
 export const REMAINING_MINUTES_IN_OVEN = 'remainingMinutesInOven'
 export const PREPARATION_TIME_IN_MINUTES = 'preparationTimeInMinutes'
@@ -157,18 +160,20 @@ class TotalTimeInMinutes {
   }
 
   public get hasCallToPreparationTime(): boolean {
-    return !!findFirst(
-      this.implementation.body,
-      (
-        node
-      ): node is SpecificFunctionCall<typeof PREPARATION_TIME_IN_MINUTES> =>
-        guardCallExpression(node, PREPARATION_TIME_IN_MINUTES)
+    return Boolean(
+      findFirst(
+        this.implementation.body,
+        (
+          node
+        ): node is SpecificFunctionCall<typeof PREPARATION_TIME_IN_MINUTES> =>
+          guardCallExpression(node, PREPARATION_TIME_IN_MINUTES)
+      )
     )
   }
 }
 
 class PreparationTimeInMinutes {
-  private numberOfLayers: string
+  private readonly numberOfLayers: string
 
   constructor(
     private readonly implementation: ExtractedFunction,
@@ -191,13 +196,12 @@ class PreparationTimeInMinutes {
   public get predefinedConstantName(): string {
     return (
       (
-        this.constants.find(
-          (constant) =>
-            !!(
-              guardIdentifier(constant.id) &&
+        this.constants.find((constant) =>
+          Boolean(
+            guardIdentifier(constant.id) &&
               constant.init &&
               guardLiteral(constant.init, 2)
-            )
+          )
         )?.id as Identifier
       )?.name ?? 'PREPARATION_MINUTES_PER_LAYER'
     )
@@ -308,7 +312,10 @@ export class LasagnaSolution {
 
   private exemplar!: Source
 
-  constructor(public readonly program: TSESTree.Program, source: string) {
+  constructor(
+    public readonly program: TSESTree.Program,
+    source: string
+  ) {
     this.source = new Source(source)
 
     const functions = extractFunctions(program)
@@ -340,11 +347,7 @@ export class LasagnaSolution {
    * @param directory base directory to this solution
    */
   public readExemplar(directory: string): void {
-    const configPath = path.join(directory, '.meta', 'config.json')
-    const config = JSON.parse(readFileSync(configPath).toString())
-
-    const exemplarPath = path.join(directory, config.files.exemplar[0])
-    this.exemplar = new Source(readFileSync(exemplarPath).toString())
+    this.exemplar = new Source(readFileSync(exemplarPath(directory)).toString())
   }
 
   /**

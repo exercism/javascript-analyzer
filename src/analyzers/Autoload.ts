@@ -1,29 +1,42 @@
 import { getProcessLogger } from '@exercism/static-analysis'
 import path from 'path'
-import type { Analyzer, Exercise } from '~src/interface'
+import type { Analyzer, Exercise } from '~src/interface.d.js'
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const __dirname = import.meta.dirname
 
 type AnalyzerConstructor = new () => Analyzer
 
 /**
  * Find an analyzer for a specific exercise
  *
- * @param exercise The exericse
+ * @param exercise The exercise
  * @returns the Analyzer constructor
  */
-export function find(exercise: Readonly<Exercise>): AnalyzerConstructor {
-  const file = autoload(exercise)
+export async function find(
+  exercise: Readonly<Exercise>
+): Promise<AnalyzerConstructor> {
+  const file: unknown = await autoload(exercise)
+
+  if (typeof file !== 'object' || !file || !('default' in file)) {
+    throw new Error(`Expected ${exercise.slug} to be autoloaded`)
+  }
 
   // By default, load the default export
   const key =
     file['default'] instanceof Function
       ? 'default'
-      : Object.keys(file).find((key): boolean => file[key] instanceof Function)
+      : Object.keys(file).find(
+          (key): boolean =>
+            (file as Record<string, AnalyzerConstructor>)[key] instanceof
+            Function
+        )
 
   if (key === undefined) {
     throw new Error(`No Analyzer found in './${exercise.slug}`)
   }
 
-  const analyzer = file[key]
+  const analyzer = (file as Record<string, AnalyzerConstructor>)[key]
   getProcessLogger().log(`=> analyzer: ${analyzer.name}`)
   return analyzer
 }
@@ -31,18 +44,21 @@ export function find(exercise: Readonly<Exercise>): AnalyzerConstructor {
 class RequireError extends Error {
   constructor(
     public readonly modulePath: string,
-    public readonly inner: unknown
+    public readonly inner: Error
   ) {
     super('Failed to require ' + modulePath)
     Error.captureStackTrace(this, this.constructor)
   }
 }
 
-function autoload(exercise: Readonly<Exercise>): ReturnType<NodeRequire> {
-  // explicit path (no extension)
+async function autoload(
+  exercise: Readonly<Exercise>
+): Promise<ReturnType<NodeJS.Require>> {
   const modulePaths = [
-    path.join(__dirname, 'practice', exercise.slug, 'index'),
-    path.join(__dirname, 'concept', exercise.slug, 'index'),
+    path.join(__dirname, 'practice', exercise.slug, 'index.js'),
+    path.join(__dirname, 'concept', exercise.slug, 'index.js'),
+    `file://${path.join(__dirname, 'practice', exercise.slug, 'index.js')}`,
+    `file://${path.join(__dirname, 'concept', exercise.slug, 'index.js')}`,
   ]
 
   // These exercises can also defer to the exemplar analyzer only
@@ -69,16 +85,21 @@ function autoload(exercise: Readonly<Exercise>): ReturnType<NodeRequire> {
       'vehicle-purchase',
     ].includes(exercise.slug)
   ) {
-    modulePaths.push(path.join(__dirname, 'concept', '__exemplar', 'index'))
+    modulePaths.push(path.join(__dirname, 'concept', '__exemplar', 'index.js'))
+    modulePaths.push(
+      `file://${path.join(__dirname, 'concept', '__exemplar', 'index.js')}`
+    )
   }
 
-  const results = modulePaths.map((modulePath) => {
-    try {
-      return require(modulePath)
-    } catch (err) {
-      return new RequireError(modulePath, err)
-    }
-  })
+  const results = await Promise.all(
+    modulePaths.map(async (modulePath) => {
+      try {
+        return (await import(modulePath)) as unknown
+      } catch (err) {
+        return new RequireError(modulePath, err as Error)
+      }
+    })
+  )
 
   if (results.every((result) => result instanceof RequireError)) {
     const slug = exercise.slug
@@ -95,7 +116,7 @@ function autoload(exercise: Readonly<Exercise>): ReturnType<NodeRequire> {
 
         Original errors:
 
-        `.trimLeft()
+        `.trimStart()
     )
 
     logger.fatal(

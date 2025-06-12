@@ -1,9 +1,17 @@
-import {
+import type {
   ExtractedExport,
   ExtractedFunction,
+  Logger,
+  ProgramConstants,
+  SpecificFunctionCall,
+  SpecificObjectPropertyCall,
+  SpecificPropertyCall,
+} from '@exercism/static-analysis'
+import {
   ExtractedVariable,
   extractExports,
   extractFunctions,
+  extractVariables,
   findAll,
   findFirst,
   findTopLevelConstants,
@@ -14,21 +22,16 @@ import {
   guardLiteral,
   guardMemberExpression,
   guardTemplateLiteral,
-  Logger,
-  ProgramConstants,
-  SpecificFunctionCall,
-  SpecificObjectPropertyCall,
-  SpecificPropertyCall,
 } from '@exercism/static-analysis'
 import type { TSESTree } from '@typescript-eslint/typescript-estree'
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
-import { Source } from '~src/analyzers/SourceImpl'
-import { parameterName } from '~src/analyzers/utils/extract_parameter'
-import { assertNamedExport } from '~src/asserts/assert_named_export'
-import { assertNamedFunction } from '~src/asserts/assert_named_function'
-import { extractSignature } from '~src/extracts/extract_declaration'
-import { extractNamedFunction } from '~src/extracts/extract_named_function'
-import { guardLiteralCaseInsensitive } from '../../utils/guard_literal_case_insensitive'
+import { Source } from '~src/analyzers/SourceImpl.js'
+import { parameterName } from '~src/analyzers/utils/extract_parameter.js'
+import { assertNamedExport } from '~src/asserts/assert_named_export.js'
+import { assertNamedFunction } from '~src/asserts/assert_named_function.js'
+import { extractSignature } from '~src/extracts/extract_declaration.js'
+import { extractNamedFunction } from '~src/extracts/extract_named_function.js'
+import { guardLiteralCaseInsensitive } from '../../utils/guard_literal_case_insensitive.js'
 
 type Node = TSESTree.Node
 type Program = TSESTree.Program
@@ -36,9 +39,6 @@ type Parameter = TSESTree.Parameter
 type Expression = TSESTree.Expression
 type CallExpression = TSESTree.CallExpression
 type TemplateLiteral = TSESTree.TemplateLiteral
-type Statement = TSESTree.Statement
-
-type MainExport = ReturnType<typeof extractExports>[number]
 
 const EXPECTED_METHOD = 'decodedValue'
 const EXPECTED_EXPORT = 'decodedValue'
@@ -89,7 +89,7 @@ class Constant {
     private readonly constant: Readonly<ExtractedVariable>,
     source: Source
   ) {
-    this.name = constant.name || '<NO NAME>'
+    this.name = constant.name ?? '<NO NAME>'
     this.signature = source.getOuter(constant.node)
   }
 
@@ -102,13 +102,11 @@ class Constant {
   }
 
   public get isOptimalArray(): boolean {
-    const init = this.constant.init as Expression
+    const init = this.constant.init!
 
     if (!init) {
       return false
     }
-
-    init.type
 
     const literals = [
       'black',
@@ -126,7 +124,7 @@ class Constant {
     if (init.type === AST_NODE_TYPES.ArrayExpression) {
       // Each literal needs to be present, and needs to be present exactly in this order
       return init.elements.every((value, index): boolean =>
-        guardLiteral(value, literals[index])
+        Boolean(value && guardLiteral(value, literals[index]))
       )
     }
 
@@ -156,7 +154,7 @@ class Constant {
     if (init.type === AST_NODE_TYPES.ArrayExpression) {
       // Each literal needs to be present, and needs to be present exactly in this order
       return init.elements.every((value, index): boolean =>
-        guardLiteralCaseInsensitive(value, literals[index])
+        Boolean(value && guardLiteralCaseInsensitive(value, literals[index]))
       )
     }
 
@@ -181,7 +179,7 @@ class Constant {
   public isOptimalObject(
     node: ExtractedVariable | undefined = this.constant
   ): boolean {
-    if (!node || !node.init) {
+    if (!node?.init) {
       return false
     }
 
@@ -214,7 +212,7 @@ class Constant {
   public isNonOptimalObject(
     node: ExtractedVariable | undefined = this.constant
   ): boolean {
-    if (!node || !node.init) {
+    if (!node?.init) {
       return false
     }
 
@@ -298,7 +296,7 @@ class Constant {
           )
         })
       ) {
-        return this.constant.name || undefined
+        return this.constant.name ?? undefined
       }
 
       return undefined
@@ -339,7 +337,7 @@ class Entry {
   private lastIssue_: Issue
 
   constructor(method: Readonly<ExtractedFunction>, source: Readonly<Source>) {
-    this.name = method.name || EXPECTED_METHOD
+    this.name = method.name ?? EXPECTED_METHOD
     this.params = method.params
     this.body = method.body
 
@@ -365,12 +363,12 @@ class Entry {
   public get hasOptimalParameter(): boolean {
     const [param] = this.params
     return (
-      !!param &&
+      Boolean(param) &&
       param.type === AST_NODE_TYPES.ArrayPattern &&
       param.elements.length === 2 &&
-      !!param.elements[0] &&
+      Boolean(param.elements[0]) &&
       guardIdentifier(param.elements[0]) &&
-      !!param.elements[1] &&
+      Boolean(param.elements[1]) &&
       guardIdentifier(param.elements[1])
     )
   }
@@ -467,7 +465,7 @@ class Entry {
         template.quasis.length === 3 &&
         template.quasis.every((quasi) => quasi.value.cooked === '') &&
         template.expressions.length === 2 &&
-        template.expressions[0].type === template.expressions[1].type) ||
+        template.expressions[0].type === template.expressions[1].type) ??
       false
     )
   }
@@ -478,6 +476,18 @@ class Entry {
 
   public get parameterName(): string {
     return parameterName(this.params[0])
+  }
+
+  public get nameOfConstantDefinedInBody(): string | null {
+    const localConstants = extractVariables(this.body).filter(
+      (constant) =>
+        constant.init?.type === AST_NODE_TYPES.ArrayExpression ||
+        constant.init?.type === AST_NODE_TYPES.ObjectExpression
+    )
+    if (localConstants.length) {
+      return localConstants[0].name ?? 'COLORS'
+    }
+    return null
   }
 
   public isOptimal(
@@ -506,6 +516,11 @@ class Entry {
 
         argument = finalStatement.argument
       }
+    }
+
+    if (!constant && Boolean(this.nameOfConstantDefinedInBody)) {
+      logger.log('~> found a constant that was not declared at the top level')
+      return false
     }
 
     if (this.hasOneMap) {
@@ -638,7 +653,7 @@ class Entry {
       //
       if (helperMethodName) {
         const helperDeclaration =
-          extractNamedFunction(helperMethodName, program) ||
+          extractNamedFunction(helperMethodName, program) ??
           extractNamedFunction(helperMethodName, body)
         if (!helperDeclaration) {
           logger.log(`~> could not find helper ${helperMethodName}`)
@@ -682,7 +697,7 @@ class Entry {
               firstMap.arguments[0]) ||
               (firstMap.arguments[0].type ===
                 AST_NODE_TYPES.FunctionExpression &&
-                firstMap.arguments[0]))) ||
+                firstMap.arguments[0]))) ??
           undefined
 
         if (
@@ -707,7 +722,7 @@ class Entry {
             call.arguments.length === 1 &&
             guardIdentifier(call.arguments[0], name)
           ) {
-            delete extraneousCalls[i]
+            extraneousCalls.splice(i, 1)
             helperMethodName = call.callee.name
           }
         }
@@ -719,7 +734,7 @@ class Entry {
         }
 
         const helperDeclaration =
-          extractNamedFunction(helperMethodName, program) ||
+          extractNamedFunction(helperMethodName, program) ??
           extractNamedFunction(helperMethodName, body)
         if (!helperDeclaration) {
           logger.log(`~> could not find helper ${helperMethodName}`)
@@ -805,7 +820,7 @@ class Entry {
   ): boolean {
     logger.log(
       `~> reduce optimal check is not implemented: ${body.type} (${
-        constant && constant.name
+        constant?.name
       })`
     )
     // colors.slice(0, 2).reduce((acc, color) => acc * 10 + colorCode(code), 0)
@@ -850,13 +865,15 @@ class Entry {
     ) {
       const [tens, ones] = param.elements
 
-      const tensName = (tens && guardIdentifier(tens) && tens.name) || undefined
-      const onesName = (ones && guardIdentifier(ones) && ones.name) || undefined
+      const tensName = (tens && guardIdentifier(tens) && tens.name) ?? undefined
+      const onesName = (ones && guardIdentifier(ones) && ones.name) ?? undefined
 
       isTensValue =
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         (tensName && ((node): boolean => guardIdentifier(node, tensName))) ||
         undefined
       isOnesValue =
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         (onesName && ((node): boolean => guardIdentifier(node, onesName))) ||
         undefined
 
@@ -910,7 +927,7 @@ class Entry {
     }
 
     const helperDeclaration =
-      extractNamedFunction(helperMethodName, program) ||
+      extractNamedFunction(helperMethodName, program) ??
       extractNamedFunction(helperMethodName, body)
     if (!helperDeclaration) {
       logger.log(`~> could not find helper ${helperMethodName}`)
@@ -1116,12 +1133,15 @@ class Entry {
 export class ResistorColorDuoSolution {
   public readonly source: Source
 
-  private mainMethod: Entry
-  private mainExport: ExtractedExport
-  private fileConstants: ProgramConstants
-  private mainConstant: Constant | undefined
+  private readonly mainMethod: Entry
+  private readonly mainExport: ExtractedExport
+  private readonly fileConstants: ProgramConstants
+  private readonly mainConstant: Constant | undefined
 
-  constructor(public readonly program: Program, source: string) {
+  constructor(
+    public readonly program: Program,
+    source: string
+  ) {
     this.source = new Source(source)
 
     const functions = extractFunctions(program)
@@ -1148,7 +1168,7 @@ export class ResistorColorDuoSolution {
     const expectedConstant =
       this.fileConstants.find((constant) =>
         guardIdentifier(constant.id, PROBABLE_CONSTANT)
-      ) ||
+      ) ??
       // Or find the first array or object assignment
       this.fileConstants.find(
         (constant) =>
@@ -1156,7 +1176,7 @@ export class ResistorColorDuoSolution {
           [
             AST_NODE_TYPES.ArrayExpression,
             AST_NODE_TYPES.ObjectExpression,
-          ].indexOf(constant.init.type) !== -1
+          ].includes(constant.init.type)
       )
 
     this.mainConstant =
@@ -1169,7 +1189,7 @@ export class ResistorColorDuoSolution {
             expectedConstant.init
           ),
           this.source
-        )) ||
+        )) ??
       undefined
   }
 
@@ -1179,6 +1199,10 @@ export class ResistorColorDuoSolution {
 
   public get hasOneConstant(): boolean {
     return this.fileConstants.length === 1
+  }
+
+  public get shouldExtractTopLevelConstant(): boolean {
+    return !this.mainConstant && Boolean(this.entry.nameOfConstantDefinedInBody)
   }
 
   public get hasOptimalEntry(): boolean {

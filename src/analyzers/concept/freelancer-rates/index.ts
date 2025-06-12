@@ -1,6 +1,6 @@
+import type { Input } from '@exercism/static-analysis'
 import {
   AstParser,
-  Input,
   NoExportError,
   NoMethodError,
 } from '@exercism/static-analysis'
@@ -9,10 +9,10 @@ import {
   EXEMPLAR_SOLUTION,
   NO_METHOD,
   NO_NAMED_EXPORT,
-} from '../../../comments/shared'
-import { ExecutionOptions, WritableOutput } from '../../../interface'
-import { IsolatedAnalyzerImpl } from '../../IsolatedAnalyzerImpl'
-import { FreelancerRatesSolution } from './FreelancerRatesSolution'
+} from '~src/comments/shared.js'
+import type { ExecutionOptions, WritableOutput } from '~src/interface.d.js'
+import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl.js'
+import { FreelancerRatesSolution } from './FreelancerRatesSolution.js'
 
 type Program = TSESTree.Program
 
@@ -46,11 +46,13 @@ export class FreelancerRatesAnalyzer extends IsolatedAnalyzerImpl {
       return new FreelancerRatesSolution(program, source)
     } catch (error) {
       if (error instanceof NoMethodError) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         output.add(NO_METHOD({ 'method.name': error.method }))
         output.finish()
       }
 
       if (error instanceof NoExportError) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         output.add(NO_NAMED_EXPORT({ 'export.name': error.namedExport }))
         output.finish()
       }

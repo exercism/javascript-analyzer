@@ -1,6 +1,10 @@
+import type {
+  ExtractedFunction,
+  Input,
+  ParsedSource,
+} from '@exercism/static-analysis'
 import {
   AstParser,
-  ExtractedFunction,
   extractExports,
   findAll,
   findFirstOfType,
@@ -9,21 +13,18 @@ import {
   guardIdentifier,
   guardLiteral,
   guardLogicalExpression,
-  guardReturnBlockStatement,
   guardReturnStatementWithValue,
   guardTemplateLiteral,
   guardUnaryExpression,
-  Input,
   NoSourceError,
-  ParsedSource,
   ParserError,
 } from '@exercism/static-analysis'
-import { ReturnStatement } from '@typescript-eslint/types/dist/ast-spec'
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/typescript-estree'
-import { AnalyzerImpl } from '~src/analyzers/AnalyzerImpl'
-import { parameterName } from '~src/analyzers/utils/extract_parameter'
-import { annotateType } from '~src/analyzers/utils/type_annotations'
-import { CommentType, factory } from '~src/comments/comment'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree'
+import { AnalyzerImpl } from '~src/analyzers/AnalyzerImpl.js'
+import { parameterName } from '~src/analyzers/utils/extract_parameter.js'
+import { annotateType } from '~src/analyzers/utils/type_annotations.js'
+import { CommentType, factory } from '~src/comments/comment.js'
 import {
   NO_METHOD,
   NO_NAMED_EXPORT,
@@ -32,17 +33,17 @@ import {
   PREFER_STRICT_EQUALITY,
   PREFER_TEMPLATED_STRINGS,
   UNEXPECTED_SPLAT_ARGS,
-} from '~src/comments/shared'
-import { extractNamedFunction } from '~src/extracts/extract_named_function'
-import { makeNoSourceOutput } from '~src/output/makeNoSourceOutput'
-import { makeParseErrorOutput } from '~src/output/makeParseErrorOutput'
+} from '~src/comments/shared.js'
+import { extractNamedFunction } from '~src/extracts/extract_named_function.js'
+import { makeNoSourceOutput } from '~src/output/makeNoSourceOutput.js'
+import { makeParseErrorOutput } from '~src/output/makeParseErrorOutput.js'
 
 type ConditionalExpression = TSESTree.ConditionalExpression
 type IfStatement = TSESTree.IfStatement
 type LogicalExpression = TSESTree.LogicalExpression
-type Parameter = TSESTree.Parameter
 type Program = TSESTree.Program
 type TemplateLiteral = TSESTree.TemplateLiteral
+type ReturnStatement = TSESTree.ReturnStatement
 
 /**
  * The factories here SHOULD be kept in sync with exercism/website-copy. Under
@@ -133,11 +134,15 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
       // report as blown up. This converts these errors to the commentary.
       if (err instanceof NoSourceError) {
         const output = makeNoSourceOutput(err)
-        output.comments.forEach((comment) => this.comment(comment))
+        output.comments.forEach((comment) => {
+          this.comment(comment)
+        })
         this.redirect()
       } else if (err instanceof ParserError) {
         const output = makeParseErrorOutput(err)
-        output.comments.forEach((comment) => this.comment(comment))
+        output.comments.forEach((comment) => {
+          this.comment(comment)
+        })
         this.redirect()
       }
 
@@ -153,8 +158,10 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     // First we check that there is a two-fer function and that this function
     // is exported.
     if (!this.mainMethod) {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       this.comment(NO_METHOD({ 'method.name': 'twoFer' }))
     } else if (!exported) {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       this.comment(NO_NAMED_EXPORT({ 'export.name': 'twoFer' }))
     }
 
@@ -180,12 +187,14 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
         //
         // const twoFer = () => { console.log(...) }
         //
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         this.comment(NO_VALUE_RETURNED({ 'export.name': 'twoFer' }))
       } else if (
         !returnStatements.some((node) => guardReturnStatementWithValue(node))
       ) {
         // In this case there isn't a single return statement that returns a
         // value.
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         this.comment(NO_VALUE_RETURNED({ 'export.name': 'twoFer' }))
       }
     }
@@ -199,6 +208,7 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     // If there is no parameter or it doesn't have a default value,
     // then this solution won't pass the tests.
     if (this.mainMethod.params.length === 0) {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       this.disapprove(NO_PARAMETER({ 'function.name': this.mainMethod.name }))
     }
 
@@ -212,7 +222,9 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
 
       this.disapprove(
         UNEXPECTED_SPLAT_ARGS({
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           'splat-arg.name': splatArgName,
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           'parameter.type': splatArgType,
         })
       )
@@ -327,6 +339,7 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
         this.comment(
           OPTIMISE_EXPLICIT_DEFAULT_VALUE({
             parameter,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             maybe_undefined_expression: expression.left.name,
           })
         )
@@ -357,6 +370,7 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
         this.comment(
           OPTIMISE_EXPLICIT_DEFAULT_VALUE({
             parameter,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             maybe_undefined_expression: conditionalExpression.consequent.name,
           })
         )
@@ -550,14 +564,16 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     // have any specifiers:
     //
     // export function gigasecond
-    // => no specififers
+    // => no specifiers
     //
     // export { gigasecond }
-    // => yes specififers
+    // => yes specifiers
     //
-    return !!extractExports(this.program).find(
-      (extracted) =>
-        extracted.exported === 'twoFer' && extracted.exportKind === 'value'
+    return Boolean(
+      extractExports(this.program).find(
+        (extracted) =>
+          extracted.exported === 'twoFer' && extracted.exportKind === 'value'
+      )
     )
   }
 
@@ -573,7 +589,7 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
       this.mainMethod.node,
       AST_NODE_TYPES.TemplateLiteral
     )
-    return !!(
+    return Boolean(
       template && template.quasis.length + template.expressions.length === 3
     )
   }

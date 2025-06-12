@@ -1,7 +1,8 @@
-import fs from 'fs'
-import path from 'path'
-import { ExecutionOptions } from '~src/interface'
-import { FileOutput } from '~src/output/processor/FileOutput'
+import { beforeEach, describe, expect, it } from '@jest/globals'
+import fs from 'node:fs'
+import path from 'node:path'
+import type { ExecutionOptions } from '~src/interface.d.js'
+import { FileOutput } from '~src/output/processor/FileOutput.js'
 
 const mockedFs = fs as unknown as MockedFs
 

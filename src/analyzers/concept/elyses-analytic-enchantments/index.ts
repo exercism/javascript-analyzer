@@ -1,20 +1,20 @@
+import type { Input } from '@exercism/static-analysis'
 import {
   AstParser,
-  Input,
   NoExportError,
   NoMethodError,
 } from '@exercism/static-analysis'
-import { TSESTree } from '@typescript-eslint/typescript-estree'
-import { CommentType, factory } from '../../../comments/comment'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import { CommentType, factory } from '~src/comments/comment.js'
 import {
   EXEMPLAR_SOLUTION,
   FUNCTION_NOT_OPTIMAL,
   NO_METHOD,
   NO_NAMED_EXPORT,
   PREFER_BUILT_IN_METHOD,
-} from '../../../comments/shared'
-import { WritableOutput, ExecutionOptions } from '../../../interface'
-import { IsolatedAnalyzerImpl } from '../../IsolatedAnalyzerImpl'
+} from '~src/comments/shared.js'
+import type { WritableOutput, ExecutionOptions } from '~src/interface.d.js'
+import { IsolatedAnalyzerImpl } from '~src/analyzers/IsolatedAnalyzerImpl.js'
 import {
   DOES_STACK_INCLUDE_CARD,
   DOES_STACK_INCLUDE_ODD_CARD,
@@ -23,7 +23,7 @@ import {
   GET_FIRST_EVEN_CARD_POSITION,
   GET_FIRST_ODD_CARD,
   IS_EACH_CARD_EVEN,
-} from './ElysesAnalyticEnchantmentsSolution'
+} from './ElysesAnalyticEnchantmentsSolution.js'
 
 type Program = TSESTree.Program
 
@@ -77,11 +77,13 @@ export class ElysesAnalyticEnchantmentsAnalyzer extends IsolatedAnalyzerImpl {
       return new ElysesAnalyticEnchantmentsSolution(program, source)
     } catch (error) {
       if (error instanceof NoMethodError) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         output.add(NO_METHOD({ 'method.name': error.method }))
         output.finish()
       }
 
       if (error instanceof NoExportError) {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         output.add(NO_NAMED_EXPORT({ 'export.name': error.namedExport }))
       }
 

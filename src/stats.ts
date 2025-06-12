@@ -1,8 +1,8 @@
-import { AstParser } from '@exercism/static-analysis/dist/AstParser'
-import { DirectoryInput } from '@exercism/static-analysis/dist/input/DirectoryInput'
-import { readDir } from '@exercism/static-analysis/dist/utils/fs'
-import path from 'path'
-import { Bootstrap } from './utils/bootstrap'
+import { AstParser } from '@exercism/static-analysis'
+import { DirectoryInput } from '@exercism/static-analysis'
+import { readDir } from '@exercism/static-analysis'
+import path from 'node:path'
+import { Bootstrap } from './utils/bootstrap.js'
 
 // The bootstrap call uses the arguments passed to the process to figure out
 // which exercise to target, where the input lives (directory input) and what
@@ -27,7 +27,7 @@ function pad(value: string | number, pad = '       '): string {
 
 logger.log(`=> start statistics collection for ${exercise.slug}`)
 
-readDir(FIXTURES_ROOT)
+await readDir(FIXTURES_ROOT)
   .then(async (fixtureDirs) =>
     Promise.all(
       fixtureDirs.map(async (fixtureDir) => {
@@ -43,7 +43,8 @@ readDir(FIXTURES_ROOT)
           const [{ program: root }] = results
 
           return JSON.stringify(root)
-        } catch ({ message, ...other }) {
+        } catch (reason) {
+          const { message, ...other } = reason as Error
           logger.error(
             `=> skipping ~${path.relative(
               path.dirname(FIXTURES_ROOT),
@@ -68,10 +69,10 @@ readDir(FIXTURES_ROOT)
       valid: realTrees.length,
       total: trees.length,
       unique: Object.keys(
-        realTrees.reduce((counts, tree) => {
+        realTrees.reduce<{ [tree: string]: number }>((counts, tree) => {
           counts[tree] = (counts[tree] || 0) + 1
           return counts
-        }, {} as { [tree: string]: number })
+        }, {})
       ).length,
     }
 

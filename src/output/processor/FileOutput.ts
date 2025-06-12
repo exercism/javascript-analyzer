@@ -1,10 +1,11 @@
 import { getProcessLogger, writeFile } from '@exercism/static-analysis'
-import path from 'path'
+import path from 'node:path'
 
-import { ExecutionOptions, OutputProcessor } from '~src/interface'
+import type { ExecutionOptions, OutputProcessor } from '~src/interface.js'
 
 type FileOutputOptions = Pick<ExecutionOptions, 'output' | 'inputDir'>
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const FileOutput: OutputProcessor = async (
   previous: Promise<string>,
   options: FileOutputOptions
