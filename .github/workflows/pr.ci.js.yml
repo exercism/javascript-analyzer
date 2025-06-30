@@ -7,7 +7,7 @@ on: pull_request
 
 jobs:
   precheck:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout PR
@@ -25,7 +25,7 @@ jobs:
         run: yarn lint
 
   unit_tests:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     strategy:
       matrix:
@@ -50,7 +50,7 @@ jobs:
         run: yarn test:e2e
 
   smoke_tests:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
