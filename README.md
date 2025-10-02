@@ -1,7 +1,7 @@
 # @exercism/javascript-analyzer
 
 [![javascript-analyzer / main](https://github.com/exercism/javascript-analyzer/actions/workflows/ci.js.yml/badge.svg)](https://github.com/exercism/javascript-analyzer/actions/workflows/ci.js.yml)
-[![javascript-analyzer / deploy](https://github.com/exercism/javascript-analyzer/actions/workflows/deploys.yml/badge.svg)](https://github.com/exercism/javascript-analyzer/actions/workflows/deploys.yml)
+[![Deploy](https://github.com/exercism/javascript-analyzer/actions/workflows/deploy.yml/badge.svg)](https://github.com/exercism/javascript-analyzer/actions/workflows/deploy.yml)
 
 Runs static analysis using [`@exercism/static-analysis`][git-static-analysis] on exercises from the [`@exercism/javascript` track][git-javascript].
 
