@@ -300,7 +300,23 @@ class Entry {
       return false
     }
 
-    return this.isOptimalHelper(argument, constant)
+    const result = this.isOptimalHelper(argument, constant)
+
+    if (
+      !constant.isOptimalArray &&
+      !constant.isOptimalObject() &&
+      argument &&
+      [
+        AST_NODE_TYPES.MemberExpression,
+        AST_NODE_TYPES.CallExpression,
+        AST_NODE_TYPES.ObjectExpression,
+      ].includes(argument.type)
+    ) {
+      return true
+    }
+
+    return result
+
   }
 
   public isOptimalHelper(func: Node, constant: Readonly<Constant>): boolean {

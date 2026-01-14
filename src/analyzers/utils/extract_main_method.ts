@@ -79,3 +79,61 @@ export function extractMainMethod<T extends string = string>(
 
   return undefined
 }
+
+
+function isNewExpression(node: unknown): node is TSESTree.NewExpression {
+  return (
+    typeof node === 'object' &&
+    node !== null &&
+    (node as TSESTree.Node).type === 'NewExpression'
+  )
+}
+
+function isStubThrowStatement(statement: TSESTree.Statement): boolean {
+  if (statement.type !== 'ThrowStatement') return false
+
+  const argument = statement.argument
+  if (!isNewExpression(argument)) return false
+
+  const callee = argument.callee
+  if (callee.type !== 'Identifier' || callee.name !== 'Error') return false
+
+  const [firstArg] = argument.arguments
+  if (!firstArg || firstArg.type !== 'Literal') return false
+  if (typeof firstArg.value !== 'string') return false
+
+  return (
+    firstArg.value.includes('Please implement') ||
+    firstArg.value.includes('Remove this line and implement') ||
+    firstArg.value.includes('Implement the') ||
+    firstArg.value.includes('Remove this statement and implement')
+  )
+}
+
+
+export function hasStubThrow(fn: { body?: TSESTree.Node }): boolean {
+  if (!fn.body || fn.body.type !== 'BlockStatement') return false
+
+  const statements = fn.body.body
+
+  // Case 1: single-line stub throw
+  if (statements.length === 1 && isStubThrowStatement(statements[0])) {
+    return true
+  }
+
+  // Case 2: unreachable stub throw after return
+  for (let i = 0; i < statements.length - 1; i++) {
+    const current = statements[i]
+    const next = statements[i + 1]
+
+    if (
+      current.type === 'ReturnStatement' &&
+      isStubThrowStatement(next)
+    ) {
+      return true
+    }
+  }
+
+  return false
+}
+

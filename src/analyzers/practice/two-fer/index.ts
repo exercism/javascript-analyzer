@@ -36,6 +36,8 @@ import {
 import { extractNamedFunction } from '~src/extracts/extract_named_function'
 import { makeNoSourceOutput } from '~src/output/makeNoSourceOutput'
 import { makeParseErrorOutput } from '~src/output/makeParseErrorOutput'
+import { hasStubThrow } from '~src/analyzers/utils/extract_main_method'
+import { REMOVE_STUB_THROW } from '~src/comments/remove_stub_throw'
 
 type ConditionalExpression = TSESTree.ConditionalExpression
 type IfStatement = TSESTree.IfStatement
@@ -82,7 +84,7 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
   private program!: Program
   private source!: string
 
-  private mainMethod!: ExtractedFunction
+  private mainMethod?: ExtractedFunction
 
   protected async execute(input: Input): Promise<void> {
     const [parsed] = await this.parse(input)
@@ -90,11 +92,16 @@ export class TwoFerAnalyzer extends AnalyzerImpl {
     this.program = parsed.program
     this.source = parsed.source
 
-    this.mainMethod = extractNamedFunction('twoFer', this.program)!
+    this.mainMethod = extractNamedFunction('twoFer', this.program)
 
     // Firstly we want to check that the structure of this solution is correct
     // and that there is nothing structural stopping it from passing the tests
     this.checkStructure()
+    if (!this.mainMethod) return
+
+    if (hasStubThrow(this.mainMethod)) {
+      this.disapprove(REMOVE_STUB_THROW())
+    }
 
     // Now we want to ensure that the method signature is sane and that it has
     // valid arguments
