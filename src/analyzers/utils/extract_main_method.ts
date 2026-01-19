@@ -79,3 +79,41 @@ export function extractMainMethod<T extends string = string>(
 
   return undefined
 }
+
+function isNewExpression(node: unknown): node is TSESTree.NewExpression {
+  return (
+    typeof node === 'object' &&
+    node !== null &&
+    (node as TSESTree.Node).type === 'NewExpression'
+  )
+}
+
+function isStubThrowStatement(statement: TSESTree.Statement): boolean {
+  if (statement.type !== 'ThrowStatement') return false
+
+  const argument = statement.argument
+  if (!isNewExpression(argument)) return false
+
+  const callee = argument.callee
+  if (callee.type !== 'Identifier' || callee.name !== 'Error') return false
+
+  const [firstArg] = argument.arguments
+  if (!firstArg || firstArg.type !== 'Literal') return false
+  if (typeof firstArg.value !== 'string') return false
+
+  return (
+    firstArg.value.includes('Please implement') ||
+    firstArg.value.includes('Remove this line and implement') ||
+    firstArg.value.includes('Implement the') ||
+    firstArg.value.includes('Remove this statement and implement')
+  )
+}
+
+export function hasStubThrow(fn: { body?: TSESTree.Node }): boolean {
+  if (!fn.body || fn.body.type !== 'BlockStatement') return false
+
+  return fn.body.body.some(
+    (statement) =>
+      statement.type === 'ThrowStatement' && isStubThrowStatement(statement)
+  )
+}
