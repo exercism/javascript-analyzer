@@ -1,4 +1,4 @@
-FROM node:lts-alpine as builder
+FROM node:lts-alpine3.23@sha256:d1b3b4da11eefd5941e7f0b9cf17783fc99d9c6fc34884a665f40a06dbdfc94f AS builder
 
 # Install SSL ca certificates
 RUN apk update && apk add ca-certificates
@@ -17,7 +17,7 @@ RUN yarn install
 RUN yarn install --production --modules-folder './production_node_modules'
 
 # Build a minimal and secured container
-FROM node:lts-alpine
+FROM node:lts-alpine3.23@sha256:d1b3b4da11eefd5941e7f0b9cf17783fc99d9c6fc34884a665f40a06dbdfc94f
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /javascript-analyzer/package.json /opt/analyzer/package.json
